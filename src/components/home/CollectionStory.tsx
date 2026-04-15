@@ -49,8 +49,8 @@ export const CollectionStory = () => {
                   From the deep emerald mines to the artisanal workshops where gold is hammered into delicate filigree, our process remains rooted in tradition while embracing contemporary elegance.
                 </p>
                 <div className="pt-6">
-                  <div className="text-brand-gold font-serif text-3xl mb-2 italic">Anjana Sharma</div>
-                  <div className="text-[10px] tracking-[0.2em] font-bold uppercase">Founder & Creative Director</div>
+                  <div className="text-brand-gold font-serif text-3xl mb-2 italic">Bhandhana</div>
+                  <div className="text-[10px] tracking-[0.2em] font-bold uppercase">Founder </div>
                 </div>
               </div>
             </motion.div>
