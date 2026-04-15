@@ -5,12 +5,6 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.6.85"],
 
 
-
-
-
-
-
-  
   // ✅ FIX 2: Allow external images
   images: {
     remotePatterns: [
