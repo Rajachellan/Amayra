@@ -1,0 +1,8 @@
+src/app/globals.css
+lint_results.txt
+eslint_out.json
+eslint_debug.json
+lint_output.txt
+full_lint.txt
+dev_output.txt
+eslint_results.json

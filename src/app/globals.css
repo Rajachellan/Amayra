@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FCFAEE;
+  /* Ivory White */
+  --foreground: #2D2D2D;
+  --primary-emerald: #022c22;
+  --secondary-gold: #C5A059;
+  /* Luxe Gold */
+  --accent-gold: #FFD700;
+  --beige-luxe: #F3EFE0;
+  --brown-luxe: #463426;
+  --text-muted: #6B7280;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-emerald: var(--primary-emerald);
+  --color-brand-gold: var(--secondary-gold);
+  --color-accent-gold: var(--accent-gold);
+  --color-beige: var(--beige-luxe);
+  --color-brown: var(--brown-luxe);
+
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-montserrat);
+
+  --animate-move: carousel-move 20s linear infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes carousel-move {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-montserrat), sans-serif;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-playfair), serif;
+}
+
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #FFD700 100%);
+}
+
+.text-gold {
+  background: linear-gradient(135deg, #B8860B 0%, #D4AF37 50%, #FFD700 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

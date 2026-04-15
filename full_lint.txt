@@ -1,0 +1,57 @@
+﻿
+C:\SRI\Jewellery_website\src\app\category\[id]\page.tsx
+   9:10  warning  'Filter' is defined but never used                        @typescript-eslint/no-unused-vars
+   9:18  warning  'SlidersHorizontal' is defined but never used             @typescript-eslint/no-unused-vars
+  17:28  warning  'setSelectedMaterial' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\SRI\Jewellery_website\src\app\product\[id]\page.tsx
+  14:10  warning  'motion' is defined but never used                                                                                                                     @typescript-eslint/no-unused-vars
+  44:9   error    Do not use an `<a>` element to navigate to `/`. Use `<Link />` from `next/link` instead. See: https://nextjs.org/docs/messages/no-html-link-for-pages  @next/next/no-html-link-for-pages
+
+C:\SRI\Jewellery_website\src\app\profile\page.tsx
+  9:62  warning  'CreditCard' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\SRI\Jewellery_website\src\components\layout\Footer.tsx
+  3:31  warning  'Globe' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\SRI\Jewellery_website\src\components\layout\Navbar.tsx
+  7:10  warning  'Button' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\SRI\Jewellery_website\src\context\CartContext.tsx
+  25:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\SRI\Jewellery_website\src\context\CartContext.tsx:25:7
+  23 |     const savedCart = localStorage.getItem("cart");
+  24 |     if (savedCart) {
+> 25 |       setCart(JSON.parse(savedCart));
+     |       ^^^^^^^ Avoid calling setState() directly within an effect
+  26 |     }
+  27 |   }, []);
+  28 |  react-hooks/set-state-in-effect
+
+C:\SRI\Jewellery_website\src\context\WishlistContext.tsx
+  21:7  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+C:\SRI\Jewellery_website\src\context\WishlistContext.tsx:21:7
+  19 |     const savedWishlist = localStorage.getItem("wishlist");
+  20 |     if (savedWishlist) {
+> 21 |       setWishlist(JSON.parse(savedWishlist));
+     |       ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  22 |     }
+  23 |   }, []);
+  24 |  react-hooks/set-state-in-effect
+
+Γ£û 10 problems (3 errors, 7 warnings)
+
