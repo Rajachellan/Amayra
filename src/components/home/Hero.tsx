@@ -108,17 +108,23 @@ export const Hero = () => {
               className="object-cover object-center"
             />
 
-            {/* Directional dark overlay — left heavy so text is always readable */}
-            <div
-              className="absolute inset-0 z-10"
-              style={{ background: "linear-gradient(105deg, rgba(8,6,4,0.88) 0%, rgba(8,6,4,0.58) 55%, rgba(8,6,4,0.22) 100%)" }}
-            />
-            {/* Bottom vignette */}
-            <div
-              className="absolute inset-0 z-10"
-              style={{ background: "linear-gradient(to top, rgba(8,6,4,0.72) 0%, transparent 45%)" }}
-            />
+           {/* Left dark overlay only */}
+<div
+  className="absolute inset-0 z-10"
+  style={{
+    background:
+      "linear-gradient(to right, rgba(8,6,4,0.9) 0%, rgba(8,6,4,0.6) 35%, rgba(8,6,4,0.2) 55%, transparent 70%)",
+  }}
+/>
 
+{/* Bottom vignette (optional but softer) */}
+<div
+  className="absolute inset-0 z-10"
+  style={{
+    background:
+      "linear-gradient(to top, rgba(8,6,4,0.6) 0%, transparent 35%)",
+  }}
+/>
             {/* ── CONTENT ── */}
             <div className="absolute inset-0 z-20 flex flex-col justify-center px-[8%]" style={{ maxWidth: 700 }}>
 
