@@ -35,7 +35,7 @@ export const FilterSideDrawer = ({ isOpen, onClose, filters, setFilters }: Filte
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/40 z-[100] backdrop-blur-sm"
+            className="fixed inset-0 bg-black/40 z-[100]"
           />
           <motion.div
             initial={{ x: "100%" }}

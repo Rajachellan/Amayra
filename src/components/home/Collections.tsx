@@ -68,7 +68,6 @@ export const Collections = () => {
               />
               <div className="absolute inset-0 
   bg-gradient-to-t from-black/70 via-black/20 to-transparent 
-  backdrop-blur-[4px] 
   opacity-70 group-hover:opacity-90 
   transition-all duration-500"
               />
@@ -93,3 +92,4 @@ export const Collections = () => {
     </section>
   );
 };
+     ;

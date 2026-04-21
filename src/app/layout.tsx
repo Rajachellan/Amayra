@@ -1,23 +1,29 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Montserrat } from "next/font/google";
+import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { Metadata } from "next";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
 });
 
-const montserrat = Montserrat({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-montserrat",
+  variable: "--font-inter",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Gems of Shree Aarna | Premium Luxury Jewellery",
-  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience luxury with Gems of Shree Aarna.",
+  title: "Gems of Shree Aarna | High-End Luxury Jewellery",
+  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience high-end luxury with Gems of Shree Aarna.",
 };
 
 export default function RootLayout({
@@ -27,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${montserrat.variable} min-h-full flex flex-col`}>
+      <body className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`}>
         <CartProvider>
           <WishlistProvider>
             <Toaster position="top-right" />

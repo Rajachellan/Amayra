@@ -70,7 +70,7 @@ export const InstagramReels = () => {
               <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors" />
 
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-full bg-white/30 flex items-center justify-center border border-white/30 group-hover:scale-110 transition-transform">
                   <Play className="text-white fill-white w-5 h-5 ml-1" />
                 </div>
               </div>

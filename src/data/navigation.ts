@@ -1,6 +1,8 @@
 export interface NavItem {
   name: string;
   href: string;
+  description?: string;
+  previewImage?: string;
   subItems?: {
     name: string;
     href: string;
@@ -10,77 +12,48 @@ export interface NavItem {
 
 export const navigationData: NavItem[] = [
   {
-    name: "Shop New",
-    href: "/category/new",
+    name: "Shop",
+    href: "/category/all",
+    description: "Explore our complete gallery of handcrafted brilliance.",
+    previewImage: "/images/luxury/shop-preview.png",
     subItems: [
-      { name: "New Arrivals", href: "/category/new?filter=isNewArrival" },
-      { name: "Best Sellers", href: "/category/new?filter=isBestSeller" },
-      { name: "Instagram Reels", href: "/category/reels", description: "Shop the latest looks from our reels" },
+      { name: "New Arrivals", href: "/category/new" },
+      { name: "Best Sellers", href: "/category/all?filter=best" },
+      { name: "Limited Edition", href: "/category/all?filter=limited" },
+      { name: "View All", href: "/category/all" },
     ],
   },
   {
-    name: "Necklaces",
+    name: "Collections",
     href: "/category/necklaces",
+    description: "Curated series of heritage and modern masterpieces.",
+    previewImage: "/images/luxury/collections-preview.png",
     subItems: [
-      { name: "Kundan Sets", href: "/category/necklaces?sub=Kundan" },
-      { name: "Victorian Diamond Sets", href: "/category/necklaces?sub=Victorian" },
-      { name: "South Indian Sets", href: "/category/necklaces?sub=South Indian" },
-      { name: "Temple Jewellery", href: "/category/necklaces?sub=Temple" },
-      { name: "Handcrafted Hasli", href: "/category/necklaces?sub=South Indian" },
-      { name: "Antique Necklace Sets", href: "/category/necklaces?sub=Kundan" },
-      { name: "American Diamond Sets", href: "/category/necklaces?sub=Victorian" },
+      { name: "Heritage Series", href: "/category/necklaces?sub=Kundan" },
+      { name: "Victorian Classics", href: "/category/necklaces?sub=Victorian" },
+      { name: "Temple Art", href: "/category/necklaces?sub=Temple" },
+      { name: "Modern Minimal", href: "/category/earrings?sub=Daily Wear" },
     ],
   },
   {
-    name: "Earrings",
-    href: "/category/earrings",
-    subItems: [
-      { name: "Daily Wear Studs", href: "/category/earrings?sub=Daily Wear" },
-      { name: "Jhumkas", href: "/category/earrings?sub=Jhumkas" },
-      { name: "Chandbalis", href: "/category/earrings?sub=Chandbalis" },
-      { name: "Ear Chains", href: "/category/earrings?sub=Jhumkas" },
-      { name: "Hoops", href: "/category/earrings?sub=Hoops" },
-    ],
-  },
-  {
-    name: "Bridal Couture",
+    name: "Bridal",
     href: "/category/bridal",
+    description: "Designed for timeless wedding elegance and royal charm.",
+    previewImage: "/images/luxury/bridal-preview.png",
     subItems: [
-      { name: "Bridal Sets", href: "/category/bridal?sub=Heritage Sets" },
-      { name: "Maang Tikka", href: "/category/bridal?sub=Maang Tikka" },
-      { name: "Heritage Collections", href: "/category/bridal?sub=Heritage Sets" },
+      { name: "Royal Sets", href: "/category/bridal?sub=Heritage Sets" },
+      { name: "Mathapattis", href: "/category/bridal?sub=Maang Tikka" },
       { name: "Nose Pins", href: "/category/bridal?sub=Maang Tikka" },
+      { name: "Waist Belts", href: "/category/bridal?sub=Heritage Sets" },
     ],
   },
   {
-    name: "Brooches & More",
-    href: "/category/other",
-    subItems: [
-      { name: "Brooches", href: "/category/other?sub=Brooches" },
-      { name: "Bracelets", href: "/category/other?sub=Bracelets" },
-      { name: "Bangles", href: "/category/other?sub=Temple" },
-      { name: "Rings", href: "/category/other?sub=Solitaire" },
-    ],
+    name: "New Arrivals",
+    href: "/category/new",
   },
   {
-    name: "Shop by Color",
-    href: "/category/all",
-    subItems: [
-      { name: "Emerald Green", href: "/category/all?color=Emerald" },
-      { name: "Ruby Red", href: "/category/all?color=Ruby" },
-      { name: "Sapphire Blue", href: "/category/all?color=Blue" },
-      { name: "Classic Gold", href: "/category/all?color=Gold" },
-      { name: "Silver & White", href: "/category/all?color=White" },
-    ],
-  },
-  {
-    name: "Gifting",
-    href: "/category/all",
-    subItems: [
-      { name: "Gifts Under ₹999", href: "/category/all?maxPrice=999" },
-      { name: "Gifts Under ₹1999", href: "/category/all?maxPrice=1999" },
-      { name: "Luxury Gifting", href: "/category/all?minPrice=5000" },
-      { name: "Bestseller Gifts", href: "/category/all?filter=isBestSeller" },
-    ],
+    name: "About",
+    href: "/about",
   },
 ];
+

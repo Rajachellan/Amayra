@@ -1,12 +1,13 @@
 import { Product } from "../types";
-
+import Image from "next/image";
+import neckles from "../assets/neckles.jpg"
 export const products: Product[] = [
   {
     id: "1",
     name: "Classic Diamond Solitaire Ring",
     price: 85000,
     oldPrice: 105000,
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3f413?q=80&w=2070&auto=format&fit=crop",
+    image:  neckles ,
     category: "Rings",
     subCategory: "Solitaire",
     color: "White",

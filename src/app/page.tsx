@@ -1,60 +1,51 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
-import { Collections } from "@/components/home/Collections";
-import { WhyChooseUs } from "@/components/home/WhyChooseUs";
-import { CategoryCircularNav } from "@/components/home/CategoryCircularNav";
-import { OccasionSection } from "@/components/home/OccasionSection";
-import { InstagramBridalCarousel } from "@/components/home/InstagramBridalCarousel";
-import { CelebritySection } from "@/components/home/CelebritySection";
-import { BridalSection } from "@/components/home/BridalSection";
-import { BridalGallery } from "@/components/home/BridalGallery";
-import { OffersSection } from "@/components/home/OffersSection";
-import { CollectionStory } from "@/components/home/CollectionStory";
-import { StylingGuide } from "@/components/home/StylingGuide";
-
+import { MoodCategories } from "@/components/home/MoodCategories";
+import { ProductSpotlight } from "@/components/home/ProductSpotlight";
+import { Craftsmanship } from "@/components/home/Craftsmanship";
+import { ReviewsSlider } from "@/components/home/ReviewsSlider";
+import { InstagramGrid } from "@/components/home/InstagramGrid";
+import { PremiumHighlights } from "@/components/home/PremiumHighlights";
+import { MagazineGallery } from "@/components/home/MagazineGallery";
+import { ClientStories } from "@/components/home/ClientStories";
+import { LimitedOfferBanner } from "@/components/home/LimitedOfferBanner";
+import { PreviewBanner } from "@/components/home/PreviewBanner"
 export default function Home() {
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background selection:bg-champagne/30 overflow-x-hidden">
       <Navbar />
       
-      {/* 1. Hero Section - Luxurious & Visually Striking */}
+      {/* 1. Hero Experience */}
       <Hero />
 
-      {/* 2. Offers Section - Immediate Value Perception */}
-      <OffersSection />
+      {/* 2. Shop by Mood - Aesthetic Entry Points */}
+      <MoodCategories />
 
-      {/* 3. Quick Category Navigation - Effortless Entry */}
-      <CategoryCircularNav />
+      {/* 3. Featured Jewelry Spotlight - Single Masterpiece Story */}
+      <ProductSpotlight />
 
-      {/* 4. Instagram Bridal Video Section - Modern Reel Feedback */}
-      <InstagramBridalCarousel />
+      {/* 4. Craftsmanship Section - Heritage & Process */}
+      <Craftsmanship />
 
-      {/* 5. Featured Collections - Elegant Portals */}
-      <Collections />
+      {/* 6. Instagram Reels Section - 3x2 Video Grid (Hover Play) */}
+      <InstagramGrid />
 
-      {/* 6. Bridal Image Gallery - Masonry Visual Richness */}
-      <BridalGallery />
+      {/* 7. Why Choose Us - Premium Highlights */}
+      <PremiumHighlights />
 
-      {/* 7. Shop by Occasion */}
-      <OccasionSection />
+      {/* 8. Editorial Gallery - Magazine-style Spreads */}
+      <MagazineGallery />
 
-      {/* 8. Immersive Bridal Showcase / Luxe Banner */}
-      <BridalSection />
-
-      {/* 9. Celebrity Endorsements */}
-      <CelebritySection />
-
-      {/* 10. Heritage Story & Heritage Grid */}
-      <CollectionStory />
-
-      {/* 11. Why Choose Us Benefits */}
-      <WhyChooseUs />
-
-      {/* 12. Styling & Inspiration */}
-      <StylingGuide />
-
+      {/* 9. Client Stories - Testimonials with Imagery */}
+      <ClientStories />
+      <PreviewBanner/>
+      {/* 10. Limited Offer Banner - Selective CTA */}
+      <LimitedOfferBanner />
+  {/* 5. Customer Reviews - Voices of Elegance (Auto-Scroll) */}
+      <ReviewsSlider />
       <Footer />
     </main>
   );
 }
+

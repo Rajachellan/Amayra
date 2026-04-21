@@ -62,7 +62,7 @@ export const StylingGuide = () => {
                   className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-brand-emerald/20 opacity-40 group-hover:opacity-0 transition-opacity duration-700" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <Plus className="text-white w-6 h-6" />
                 </div>
               </div>

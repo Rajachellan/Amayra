@@ -1,274 +1,207 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-import banner from "../../../public/images/grooms-indian-saber-wedding-ceremony.jpg";
-import banner2 from "../../../public/images/midsection-smiling-young-bride-home.jpg";
-import banner3 from "../../../public/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg";
-
-const slides = [
+import banner1 from "../../../public/images/jewels-banner2.jpg"
+import banner2 from "../../../public/images/banner4.jpg"
+import banner3 from "../../../public/images/banner3.jpg"
+import banner4 from "../../../public/images/banner5.jpg"
+import banner5 from "../../../public/images/banner2.jpg"
+const SLIDES = [
   {
     id: 1,
-    image: banner,
-    title: "Celestial\nBridal Couture",
-    subtitle: "The Santorini Luxe Series",
-    description: "Discover the magic of heritage craftsmanship designed for your most special moments.",
-    badge: "Exclusive Launch",
-    cta: "Explore Bridal Collections",
-    href: "/category/bridal",
+    image: banner1,
+    title: "Elegance Redefined",
+    tagline: "Discover curated masterpieces designed for those who appreciate heritage artistry.",
+    cta: "Explore Collection",
+    link: "/category/all"
   },
   {
     id: 2,
-    image: banner3,
-    title: "Ethereal\nRadiance",
-    subtitle: "Vintage Kundan Masterpieces",
-    description: "Handcrafted 22K gold jewellery that celebrates the timeless beauty of tradition.",
-    badge: "Best Seller",
-    cta: "Shop Heritage",
-    href: "/category/heritage",
+    image: banner2,
+    title: "The Bridal Edit",
+    tagline: "Unveiling timeless treasures crafted for your most unforgettable moments.",
+    cta: "Discover Bridal",
+    link: "/category/bridal"
   },
   {
     id: 3,
-    image: banner2,
-    title: "Timeless\nBrilliance",
-    subtitle: "Victorian Diamond Collection",
-    description: "Experience the brilliance of ethically sourced diamonds handset in vintage-inspired settings.",
-    badge: "New Release",
-    cta: "View Diamonds",
-    href: "/category/diamonds",
+    image: banner3,
+    title: "Heritage Brilliance",
+    tagline: "Artisanal excellence passed down through generations of master craftsmen.",
+    cta: "Our Story",
+    link: "/about"
   },
+  {
+    id: 4,
+    image: banner4,
+    title: "Modern Refinement",
+    tagline: "Clean lines and contemporary designs for the modern visionary.",
+    cta: "Shop Minimal",
+    link: "/category/modern"
+  },
+  {
+    id: 5,
+    image: banner5,
+    title: "The Atelier Mood",
+    tagline: "Step into the world of Shree Aarna, where every gem tells a deep story.",
+    cta: "Visit Atelier",
+    link: "/about"
+  }
 ];
 
 export const Hero = () => {
-  const [current, setCurrent] = useState(0);
-  const [animating, setAnimating] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    }, 6000);
-    return () => clearInterval(timer);
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % SLIDES.length);
   }, []);
 
-  const goTo = (index: number) => {
-    if (animating || index === current) return;
-    setAnimating(true);
-    setCurrent(index);
-    setTimeout(() => setAnimating(false), 1200);
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + SLIDES.length) % SLIDES.length);
   };
 
-  const nextSlide = () => goTo(current === slides.length - 1 ? 0 : current + 1);
-  const prevSlide = () => goTo(current === 0 ? slides.length - 1 : current - 1);
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+    const timer = setInterval(nextSlide, 5000);
+    return () => clearInterval(timer);
+  }, [isAutoPlaying, nextSlide]);
 
   return (
-    <>
-      {/* Google Fonts — add this once in your layout.tsx <head> instead if preferred */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap');
-        .font-cormorant { font-family: 'Cormorant Garamond', Georgia, serif; }
-        .font-montserrat { font-family: 'Montserrat', sans-serif; }
-        .hero-title { white-space: pre-line; }
-        @keyframes progress-bar {
-          from { height: 0%; }
-          to   { height: 100%; }
-        }
-        .animate-progress { animation: progress-bar 6s linear forwards; }
-        .cta-fill {
-          position: absolute;
-          inset: 0;
-          background: #c9a84c;
-          transform: translateX(-101%);
-          transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        .cta-btn:hover .cta-fill { transform: translateX(0); }
-      `}</style>
-
-      <section className="relative w-full overflow-hidden bg-[#0a0805]" style={{ height: "100svh", minHeight: 700 }}>
-
-        <AnimatePresence mode="wait">
+    <section 
+      className="relative w-full h-[90vh] md:h-screen min-h-[600px] overflow-hidden bg-background"
+      onMouseEnter={() => setIsAutoPlaying(false)}
+      onMouseLeave={() => setIsAutoPlaying(true)}
+    >
+      <AnimatePresence initial={false} mode="wait">
+        <motion.div
+          key={currentIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5, ease: "easeInOut" }}
+          className="absolute inset-0 z-0"
+        >
+          {/* Background Image with Slow Zoom */}
           <motion.div
-            key={slides[current].id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: "easeInOut" }}
-            className="absolute inset-0"
+            initial={{ scale: 1 }}
+            animate={{ scale: 1.08 }}
+            transition={{ duration: 6, ease: "linear" }}
+            className="relative w-full h-full"
           >
-            {/* Background image */}
             <Image
-              src={slides[current].image}
-              alt={slides[current].title}
+              src={SLIDES[currentIndex].image}
+              alt={SLIDES[currentIndex].title}
               fill
               priority
-              sizes="100vw"
-              className="object-cover object-center"
+              className="object-cover object-center brightness-[0.85]"
             />
-
-           {/* Left dark overlay only */}
-<div
-  className="absolute inset-0 z-10"
-  style={{
-    background:
-      "linear-gradient(to right, rgba(8,6,4,0.9) 0%, rgba(8,6,4,0.6) 35%, rgba(8,6,4,0.2) 55%, transparent 70%)",
-  }}
-/>
-
-{/* Bottom vignette (optional but softer) */}
-<div
-  className="absolute inset-0 z-10"
-  style={{
-    background:
-      "linear-gradient(to top, rgba(8,6,4,0.6) 0%, transparent 35%)",
-  }}
-/>
-            {/* ── CONTENT ── */}
-            <div className="absolute inset-0 z-20 flex flex-col justify-center px-[8%]" style={{ maxWidth: 700 }}>
-
-              {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2, duration: 0.7 }}
-                className="flex items-center gap-3 mb-7"
-              >
-                <div className="h-px w-7 bg-[#c9a84c]" />
-                <span className="font-montserrat text-[10px] font-medium uppercase tracking-[0.35em] text-[#c9a84c]">
-                  {slides[current].badge}
-                </span>
-              </motion.div>
-
-              {/* Subtitle */}
-              <motion.p
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35, duration: 0.8 }}
-                className="font-cormorant mb-3 text-lg italic tracking-[0.12em] text-[#c9a84c]/80"
-                style={{ fontWeight: 300 }}
-              >
-                {slides[current].subtitle}
-              </motion.p>
-
-              {/* Title */}
-              <motion.h1
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.9 }}
-                className="hero-title font-cormorant mb-5 leading-[1.0] text-white"
-                style={{ fontWeight: 300, fontSize: "clamp(48px, 7vw, 80px)" }}
-              >
-                {slides[current].title}
-              </motion.h1>
-
-              {/* Ornament line + diamond */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.65, duration: 0.8 }}
-                className="mb-5 flex items-center gap-3"
-              >
-                <div className="h-px w-14 bg-[#c9a84c]/50" />
-                <div className="h-[6px] w-[6px] rotate-45 bg-[#c9a84c]" />
-              </motion.div>
-
-              {/* Description */}
-              <motion.p
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.75, duration: 0.8 }}
-                className="font-montserrat mb-10 max-w-md text-sm font-light leading-loose tracking-widest text-white/60"
-              >
-                {slides[current].description}
-              </motion.p>
-
-              {/* CTA */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.9, duration: 0.8 }}
-                className="flex items-center gap-6"
-              >
-                <Link
-                  href={slides[current].href}
-                  className="cta-btn font-montserrat relative inline-flex items-center gap-3 overflow-hidden border border-[#c9a84c]/50 px-8 py-[14px] text-[10px] font-medium uppercase tracking-[0.3em] text-[#c9a84c] transition-colors duration-500 hover:text-[#1a1209] hover:border-[#c9a84c]"
-                >
-                  <div className="cta-fill" />
-                  <span className="relative z-10">{slides[current].cta}</span>
-                  {/* Arrow */}
-                  <span className="relative z-10 flex items-center">
-                    <span className="block h-px w-4 bg-current transition-all duration-500 group-hover:w-6" />
-                    <span
-                      className="ml-[-1px] block h-[6px] w-[6px] rotate-45 border-t border-r border-current"
-                      style={{ marginLeft: -4 }}
-                    />
-                  </span>
-                </Link>
-
-                <span className="font-montserrat cursor-pointer text-[10px] font-light uppercase tracking-[0.25em] text-white/35 transition-colors duration-300 hover:text-white/65">
-                  View Lookbook
-                </span>
-              </motion.div>
-
-            </div>
           </motion.div>
-        </AnimatePresence>
+          
+          {/* Multi-layered Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-10" />
+          <div className="absolute inset-0 bg-black/10 z-10" />
+        </motion.div>
+      </AnimatePresence>
 
-        {/* ── CORNER BRACKETS ── */}
-        <div className="pointer-events-none absolute left-6 top-6 z-30 h-10 w-10 border-l border-t border-[#c9a84c]/30" />
-        <div className="pointer-events-none absolute bottom-6 right-36 z-30 h-10 w-10 border-b border-r border-[#c9a84c]/30" />
+      {/* Hero Content Overlay */}
+      <div className="absolute inset-0 flex items-center z-20">
+        <div className="max-w-7xl mx-auto px-6 w-full">
+          <div className="max-w-3xl lg:items-start lg:text-left items-center text-center flex flex-col">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="space-y-6 md:space-y-8"
+              >
+                <div className="space-y-4">
+                  <motion.span 
+                    initial={{ letterSpacing: "0.2em" }}
+                    animate={{ letterSpacing: "0.6em" }}
+                    className="text-champagne uppercase text-[10px] md:text-xs font-bold block"
+                  >
+                    Exclusive Collection
+                  </motion.span>
+                  
+                  <h1 className="text-white text-4xl md:text-6xl lg:text-[85px] font-serif leading-[1.1] tracking-tight drop-shadow-xl">
+                    {SLIDES[currentIndex].title.split(" ").map((word, i) => (
+                      <span key={i} className={i % 2 !== 0 ? "italic font-light opacity-90" : ""}>
+                        {word}{" "}
+                      </span>
+                    ))}
+                  </h1>
+                </div>
 
-        {/* ── SLIDE COUNTER ── */}
-        <div className="absolute right-14 top-10 z-30 font-montserrat text-[10px] tracking-[0.2em] text-white/25">
-          <span className="text-[#c9a84c]/70">{String(current + 1).padStart(2, "0")}</span>
-          {" / "}
-          {String(slides.length).padStart(2, "0")}
+                <div className="backdrop-blur-md bg-white/10 p-5 md:p-8 rounded-2xl border border-white/10 luxury-shadow-hover inline-block max-w-xl">
+                  <p className="text-white/95 text-xs md:text-sm font-light tracking-[0.2em] leading-relaxed uppercase">
+                    {SLIDES[currentIndex].tagline}
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-10 pt-4">
+                  <Link 
+                    href={SLIDES[currentIndex].link}
+                    className="px-14 py-5 rounded-full bg-white text-foreground text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 hover:bg-champagne hover:text-white hover:scale-105 shadow-2xl"
+                  >
+                    {SLIDES[currentIndex].cta}
+                  </Link>
+                  <button className="text-white text-[10px] uppercase tracking-[0.4em] font-medium gold-hover py-2 hidden md:block">
+                    Book Appointment
+                  </button>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
+      </div>
 
-        {/* ── NAVIGATION ARROWS ── */}
-        <div className="absolute bottom-12 right-12 z-30 flex gap-0.5">
+      {/* Subtle Light Overlay for Contrast */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent z-10 hidden lg:block" />
+
+
+      {/* Navigation Arrows */}
+      <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-between items-center z-30 pointer-events-none">
+        <button 
+          onClick={prevSlide}
+          className="w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
+        >
+          <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+        </button>
+        <button 
+          onClick={nextSlide}
+          className="w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
+        >
+          <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
+
+      {/* Pagination Dots */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-4 z-30">
+        {SLIDES.map((_, index) => (
           <button
-            onClick={prevSlide}
-            aria-label="Previous slide"
-            className="flex h-11 w-11 items-center justify-center border border-white/15 text-white/55 transition-all duration-300 hover:border-[#c9a84c]/50 hover:text-[#c9a84c]"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </button>
-          <button
-            onClick={nextSlide}
-            aria-label="Next slide"
-            className="flex h-11 w-11 items-center justify-center border border-white/15 text-white/55 transition-all duration-300 hover:border-[#c9a84c]/50 hover:text-[#c9a84c]"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
+            key={index}
+            onClick={() => setCurrentIndex(index)}
+            className={`transition-all duration-500 rounded-full ${
+              currentIndex === index 
+                ? "w-8 h-[2px] bg-champagne" 
+                : "w-2 h-[2px] bg-white/40 hover:bg-white"
+            }`}
+          />
+        ))}
+      </div>
 
-        {/* ── VERTICAL INDICATORS ── */}
-        <div className="absolute bottom-12 left-12 z-30 flex flex-col gap-2">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => goTo(idx)}
-              aria-label={`Go to slide ${idx + 1}`}
-              className={`flex items-center gap-2.5 transition-opacity duration-300 ${idx === current ? "opacity-100" : "opacity-35 hover:opacity-60"
-                }`}
-            >
-              {/* Progress bar */}
-              <div className="relative h-8 w-px overflow-hidden bg-[#c9a84c]/30">
-                {idx === current && (
-                  <div className="animate-progress absolute left-0 top-0 w-full bg-[#c9a84c]" />
-                )}
-              </div>
-              <span className="font-montserrat text-[10px] tracking-[0.15em] text-[#c9a84c]">
-                {String(idx + 1).padStart(2, "0")}
-              </span>
-            </button>
-          ))}
-        </div>
-
-      </section>
-    </>
+      {/* Vertical Indicator */}
+      <div className="absolute right-10 top-1/2 -translate-y-1/2 flex flex-col items-center gap-4 z-30 hidden lg:flex">
+        <span className="text-white/20 text-[8px] uppercase tracking-[0.6em] rotate-90 mb-8">Scroll</span>
+        <div className="w-[1px] h-20 bg-gradient-to-b from-white/40 to-transparent" />
+      </div>
+    </section>
   );
 };
