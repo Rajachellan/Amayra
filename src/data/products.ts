@@ -1,5 +1,4 @@
 import { Product } from "../types";
-import Image from "next/image";
 import neckles from "../assets/neckles.jpg"
 export const products: Product[] = [
   {
