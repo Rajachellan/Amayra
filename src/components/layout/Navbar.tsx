@@ -34,23 +34,23 @@ export const Navbar = () => {
     [0, 80],
     ["rgba(187, 110, 17, 0)", "rgba(61, 57, 52, 0.05)"]
   );
-const iconColor = useTransform(
-  scrollY,
-  [0, 80],
-  ["#d8d8d8ff", "#1f2937"] // white → dark (gray-800)
-);
-const navTextColor = useTransform(
-  scrollY,
-  [0, 80],
-  ["#d8d6d6ff", "#000000"]
-);
+  const iconColor = useTransform(
+    scrollY,
+    [0, 80],
+    ["#d8d8d8ff", "#1f2937"] // white → dark (gray-800)
+  );
+  const navTextColor = useTransform(
+    scrollY,
+    [0, 80],
+    ["#d8d6d6ff", "#000000"]
+  );
   const leftMenu = navigationData.slice(0, 3);
   const rightMenu = navigationData.slice(3);
 
   return (
     <motion.nav
-      style={{ 
-        height: navHeight, 
+      style={{
+        height: navHeight,
         backgroundColor: navBg,
         boxShadow: navShadow,
         borderBottomColor: navBorder,
@@ -59,33 +59,33 @@ const navTextColor = useTransform(
       onMouseLeave={() => setActiveMenu(null)}
     >
       <div className="container mx-auto px-6 h-full flex items-center justify-between relative">
-        
-        {/* Left Side Menu */}
-<div className="hidden lg:flex items-center space-x-12 flex-1">
-  {leftMenu.map((item) => (
-    <div 
-      key={item.name}
-      onMouseEnter={() => setActiveMenu(item.name)}
-      className="relative py-2 flex items-center"
-    >
-      <motion.div style={{ color: navTextColor }}>
-        <Link
-          href={item.href}
-          className="text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300"
-        >
-          {item.name}
-        </Link>
-      </motion.div>
 
-      <CompactDropdown 
-        item={item} 
-        isOpen={activeMenu === item.name} 
-      />
-    </div>
-  ))}
-</div>
+        {/* Left Side Menu */}
+        <div className="hidden lg:flex items-center space-x-12 flex-1">
+          {leftMenu.map((item) => (
+            <div
+              key={item.name}
+              onMouseEnter={() => setActiveMenu(item.name)}
+              className="relative py-2 flex items-center"
+            >
+              <motion.div style={{ color: navTextColor }}>
+                <Link
+                  href={item.href}
+                  className="text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
+
+              <CompactDropdown
+                item={item}
+                isOpen={activeMenu === item.name}
+              />
+            </div>
+          ))}
+        </div>
         {/* Center: Logo */}
-        <motion.div 
+        <motion.div
           style={{ scale: logoScale }}
           className="flex justify-center flex-shrink-0 px-10 transition-transform duration-500"
         >
@@ -102,73 +102,73 @@ const navTextColor = useTransform(
         </motion.div>
 
         {/* Right Side Menu + Icons */}
-      <div className="hidden lg:flex items-center justify-end space-x-12 flex-1">
-  
-  {rightMenu.map((item) => (
-    <div 
-      key={item.name}
-      onMouseEnter={() => setActiveMenu(item.name)}
-      className="relative py-2 flex items-center"
-    >
-      <motion.div style={{ color: navTextColor }}>
-        <Link
-          href={item.href}
-          className="text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300"
-        >
-          {item.name}
-        </Link>
-      </motion.div>
+        <div className="hidden lg:flex items-center justify-end space-x-12 flex-1">
 
-      {item.subItems && (
-        <CompactDropdown 
-          item={item} 
-          isOpen={activeMenu === item.name} 
-        />
-      )}
-    </div>
-  ))}
+          {rightMenu.map((item) => (
+            <div
+              key={item.name}
+              onMouseEnter={() => setActiveMenu(item.name)}
+              className="relative py-2 flex items-center"
+            >
+              <motion.div style={{ color: navTextColor }}>
+                <Link
+                  href={item.href}
+                  className="text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
 
-  {/* Icons */}
-  <div className="flex items-center space-x-7 pl-8 border-l border-gray-300/30 ml-4">
-    
-    {/* Search */}
-    <motion.button style={{ color: navTextColor }}>
-      <Search className="w-[17px] h-[17px] stroke-[1.5]" />
-    </motion.button>
+              {item.subItems && (
+                <CompactDropdown
+                  item={item}
+                  isOpen={activeMenu === item.name}
+                />
+              )}
+            </div>
+          ))}
 
-    {/* Wishlist */}
-    <motion.div style={{ color: navTextColor }}>
-      <Link href="/wishlist" className="relative">
-        <Heart className="w-[17px] h-[17px] stroke-[1.5]" />
+          {/* Icons */}
+          <div className="flex items-center space-x-7 pl-8 border-l border-gray-300/30 ml-4">
 
-        {wishlist.length > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
-            {wishlist.length}
-          </span>
-        )}
-      </Link>
-    </motion.div>
+            {/* Search */}
+            <motion.button style={{ color: navTextColor }}>
+              <Search className="w-[17px] h-[17px] stroke-[1.5]" />
+            </motion.button>
 
-    {/* Cart */}
-    <motion.div style={{ color: navTextColor }}>
-      <Link href="/cart" className="relative">
-        <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
+            {/* Wishlist */}
+            <motion.div style={{ color: navTextColor }}>
+              <Link href="/wishlist" className="relative">
+                <Heart className="w-[17px] h-[17px] stroke-[1.5]" />
 
-        {cart.length > 0 && (
-          <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
-            {cart.length}
-          </span>
-        )}
-      </Link>
-    </motion.div>
+                {wishlist.length > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
+                    {wishlist.length}
+                  </span>
+                )}
+              </Link>
+            </motion.div>
 
-  </div>
-</div>
+            {/* Cart */}
+            <motion.div style={{ color: navTextColor }}>
+              <Link href="/cart" className="relative">
+                <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
+
+                {cart.length > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
+                    {cart.length}
+                  </span>
+                )}
+              </Link>
+            </motion.div>
+
+          </div>
+        </div>
 
         {/* Mobile Toggle */}
         <div className="lg:hidden flex items-center text-foreground/80">
-          <button 
-            onClick={() => setIsMobileMenuOpen(true)} 
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
             className="hover:text-champagne transition-colors"
           >
             <Menu className="w-6 h-6 stroke-[1.3]" />

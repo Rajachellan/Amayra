@@ -33,7 +33,7 @@ export const PremiumHighlights = () => {
       {/* Subtle accent glows */}
       <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-champagne/10 to-transparent" />
       <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-champagne/10 to-transparent" />
-      
+
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 text-center">
           {HIGHLIGHTS.map((item, index) => (
@@ -58,7 +58,7 @@ export const PremiumHighlights = () => {
           ))}
         </div>
       </div>
-      
+
       {/* Decorative center divider */}
       <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-32 h-[1px] bg-champagne/30" />
     </section>

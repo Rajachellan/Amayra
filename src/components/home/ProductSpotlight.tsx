@@ -18,7 +18,7 @@ export const ProductSpotlight = () => {
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
-          
+
           {/* Text Story Section */}
           <div className="lg:col-span-5 order-2 lg:order-1">
             <motion.div
@@ -49,13 +49,13 @@ export const ProductSpotlight = () => {
                 </div>
 
                 <div className="flex items-center gap-10">
-                  <Link 
+                  <Link
                     href="/product/1"
                     className="px-12 py-5 rounded-full bg-foreground text-background text-[10px] uppercase tracking-[0.3em] font-medium transition-all duration-500 hover:bg-champagne hover:scale-105"
                   >
                     View Details
                   </Link>
-                  <Link 
+                  <Link
                     href="/cart"
                     className="text-[10px] uppercase tracking-[0.4em] font-semibold text-foreground border-b border-champagne pb-1 hover:text-champagne transition-colors"
                   >
@@ -81,14 +81,14 @@ export const ProductSpotlight = () => {
                 fill
                 className=" transition-transform duration-[3s] group-hover:scale-110"
               />
-              
+
               {/* Corner Frame Accents */}
               <div className="absolute top-8 left-8 w-12 h-12 border-t border-l border-white/20 rounded-tl-2xl" />
               <div className="absolute bottom-8 right-8 w-12 h-12 border-b border-r border-white/20 rounded-br-2xl" />
 
               {/* Grain Texture Over Image */}
               <div className="grain-overlay opacity-[0.05]" />
-              
+
               {/* Hover Glow */}
               <div className="absolute inset-0 bg-gradient-to-tr from-champagne/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             </motion.div>

@@ -34,7 +34,7 @@ const MOODS = [
     id: "minimal",
     title: "Minimal Chic",
     subtitle: "Contemporary brilliance, minimal form",
-    image:"/images/luxury/neckles7.jpg",
+    image: "/images/luxury/neckles7.jpg",
     color: "bg-pearl",
     href: "/category/silver",
   },
@@ -85,7 +85,7 @@ export const MoodCategories = () => {
                   />
                   <div className="absolute inset-0 bg-foreground/5 group-hover:bg-foreground/5 transition-colors" />
                 </div>
-                
+
                 {/* Subtle border detail */}
                 <div className="absolute inset-4 border border-foreground/10 rounded-[20px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </Link>

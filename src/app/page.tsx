@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background selection:bg-champagne/30 overflow-x-hidden">
       <Navbar />
-      
+
       {/* 1. Hero Experience */}
       <Hero />
 
@@ -39,10 +39,10 @@ export default function Home() {
 
       {/* 9. Client Stories - Testimonials with Imagery */}
       <ClientStories />
-      <PreviewBanner/>
+      <PreviewBanner />
       {/* 10. Limited Offer Banner - Selective CTA */}
       <LimitedOfferBanner />
-  {/* 5. Customer Reviews - Voices of Elegance (Auto-Scroll) */}
+      {/* 5. Customer Reviews - Voices of Elegance (Auto-Scroll) */}
       <ReviewsSlider />
       <Footer />
     </main>

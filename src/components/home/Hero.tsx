@@ -72,8 +72,8 @@ export const Hero = () => {
   }, [isAutoPlaying, nextSlide]);
 
   return (
-    <section 
-      className="relative w-full h-[90vh] md:h-screen min-h-[600px] overflow-hidden bg-background"
+    <section
+      className="relative w-full h-[90vh]  min-h-[600px] overflow-hidden bg-background"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >
@@ -101,7 +101,7 @@ export const Hero = () => {
               className="object-cover object-center brightness-[0.85]"
             />
           </motion.div>
-          
+
           {/* Multi-layered Overlays */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-10" />
           <div className="absolute inset-0 bg-black/10 z-10" />
@@ -122,14 +122,14 @@ export const Hero = () => {
                 className="space-y-6 md:space-y-8"
               >
                 <div className="space-y-4">
-                  <motion.span 
+                  <motion.span
                     initial={{ letterSpacing: "0.2em" }}
                     animate={{ letterSpacing: "0.6em" }}
                     className="text-champagne uppercase text-[10px] md:text-xs font-bold block"
                   >
                     Exclusive Collection
                   </motion.span>
-                  
+
                   <h1 className="text-white text-4xl md:text-6xl lg:text-[85px] font-serif leading-[1.1] tracking-tight drop-shadow-xl">
                     {SLIDES[currentIndex].title.split(" ").map((word, i) => (
                       <span key={i} className={i % 2 !== 0 ? "italic font-light opacity-90" : ""}>
@@ -146,7 +146,7 @@ export const Hero = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-center gap-6 md:gap-10 pt-4">
-                  <Link 
+                  <Link
                     href={SLIDES[currentIndex].link}
                     className="px-14 py-5 rounded-full bg-white text-foreground text-[10px] uppercase tracking-[0.4em] font-bold transition-all duration-500 hover:bg-champagne hover:text-white hover:scale-105 shadow-2xl"
                   >
@@ -168,13 +168,13 @@ export const Hero = () => {
 
       {/* Navigation Arrows */}
       <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-between items-center z-30 pointer-events-none">
-        <button 
+        <button
           onClick={prevSlide}
           className="w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
         >
           <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
         </button>
-        <button 
+        <button
           onClick={nextSlide}
           className="w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
         >
@@ -188,11 +188,10 @@ export const Hero = () => {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`transition-all duration-500 rounded-full ${
-              currentIndex === index 
-                ? "w-8 h-[2px] bg-champagne" 
+            className={`transition-all duration-500 rounded-full ${currentIndex === index
+                ? "w-8 h-[2px] bg-champagne"
                 : "w-2 h-[2px] bg-white/40 hover:bg-white"
-            }`}
+              }`}
           />
         ))}
       </div>
