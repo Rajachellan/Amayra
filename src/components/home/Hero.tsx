@@ -5,11 +5,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import banner1 from "../../../public/images/jewels-banner2.jpg"
+import banner1 from "../../../public/images/banner-8.jpg"
 import banner2 from "../../../public/images/banner4.jpg"
 import banner3 from "../../../public/images/banner3.jpg"
 import banner4 from "../../../public/images/banner5.jpg"
-import banner5 from "../../../public/images/banner2.jpg"
+import banner5 from "../../../public/images/banner-9.jpg"
 const SLIDES = [
   {
     id: 1,

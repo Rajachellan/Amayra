@@ -133,7 +133,7 @@ export const Navbar = () => {
           }`}>
             <Link href="/" className="relative group block">
               <Image
-                src="/images/aarna-01-01-removebg-preview.png"
+                src="/logo3.png"
                 alt="Shree Aarna Logo"
                 width={140}
                 height={70}

@@ -116,30 +116,89 @@ export const Footer = () => {
               handcrafted diamond and gold jewellery that speaks to the soul.
             </p>
 
-            <div className="flex space-x-5 text-[10px] font-semibold">
-              {["INSTA", "FB", "TWITTER", "YOUTUBE"].map((social) => (
-                <Link
-                  key={social}
-                  href="#"
-                  className="transition-colors duration-300"
-                  style={{ color: "#7A746D" }}
-                  onMouseEnter={(e) =>
-                    ((e.currentTarget.style.color = "#C4A064"))
-                  }
-                  onMouseLeave={(e) =>
-                    ((e.currentTarget.style.color = "#7A746D"))
-                  }
-                >
-                  {social}
-                </Link>
-              ))}
-            </div>
+        <div className="flex space-x-5">
+  {[
+    {
+      name: "Instagram",
+      svg: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+          <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 
+          0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm5 
+          5a5 5 0 110 10 5 5 0 010-10zm6.5-.75a1.25 
+          1.25 0 11-2.5 0 1.25 1.25 0 012.5 
+          0zM12 9a3 3 0 100 6 3 3 0 000-6z" />
+        </svg>
+      ),
+    },
+    {
+      name: "Facebook",
+      svg: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+          <path d="M13 22v-8h3l1-4h-4V7c0-1.03.29-1.73 
+          1.76-1.73H17V2.14C16.52 2.07 15.36 2 
+          14.04 2 11.3 2 9.5 3.66 9.5 
+          6.7V10H7v4h2.5v8H13z" />
+        </svg>
+      ),
+    },
+    {
+      name: "Twitter",
+      svg: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+          <path d="M22 5.92c-.77.35-1.6.58-2.46.69a4.28 
+          4.28 0 001.88-2.36 8.59 8.59 0 01-2.71 
+          1.03 4.26 4.26 0 00-7.27 3.88A12.09 
+          12.09 0 013 4.8a4.26 4.26 0 001.32 
+          5.69 4.2 4.2 0 01-1.93-.53v.05a4.26 
+          4.26 0 003.42 4.18 4.3 4.3 0 01-1.92.07 
+          4.26 4.26 0 003.98 2.95A8.55 8.55 0 
+          012 19.54 12.07 12.07 0 008.29 21c7.55 
+          0 11.68-6.26 11.68-11.68v-.53A8.18 
+          8.18 0 0022 5.92z" />
+        </svg>
+      ),
+    },
+    {
+      name: "YouTube",
+      svg: (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+          <path d="M21.8 8s-.2-1.4-.8-2a2.85 
+          2.85 0 00-2-1C16.4 4.7 12 4.7 12 
+          4.7h0s-4.4 0-7 .3a2.85 2.85 0 
+          00-2 1c-.6.6-.8 2-.8 2S2 9.6 2 
+          11.2v1.6c0 1.6.2 3.2.2 
+          3.2s.2 1.4.8 2a3.36 3.36 0 
+          002.2 1c1.6.2 6.8.3 6.8.3s4.4 
+          0 7-.3a2.85 2.85 0 002-1c.6-.6.8-2 
+          .8-2s.2-1.6.2-3.2v-1.6C22 
+          9.6 21.8 8 21.8 8zM10 
+          14.5v-5l5 2.5-5 2.5z" />
+        </svg>
+      ),
+    },
+  ].map((item, index) => (
+    <Link
+      key={index}
+      href="#"
+      className="transition-all duration-300"
+      style={{ color: "#7A746D" }}
+      onMouseEnter={(e) =>
+        (e.currentTarget.style.color = "#C4A064")
+      }
+      onMouseLeave={(e) =>
+        (e.currentTarget.style.color = "#7A746D")
+      }
+    >
+      {item.svg}
+    </Link>
+  ))}
+</div>
           </div>
 
           {/* Collections */}
           <div>
             <h4
-              className="text-[14px] font-bold tracking-[0.4em] uppercase mb-7 "
+              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7"
               style={{ color: "#C4A064" }}
             >
               Collections
@@ -169,7 +228,7 @@ export const Footer = () => {
           {/* Company */}
           <div>
             <h4
-              className="text-[14px] font-bold tracking-[0.4em] uppercase mb-7"
+              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7"
               style={{ color: "#C4A064" }}
             >
               Company
@@ -199,7 +258,7 @@ export const Footer = () => {
           {/* Contact */}
           <div>
             <h4
-              className="text-[14px] font-bold tracking-[0.4em] uppercase mb-7"
+              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7"
               style={{ color: "#C4A064" }}
             >
               Contact
