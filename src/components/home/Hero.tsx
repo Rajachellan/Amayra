@@ -13,7 +13,7 @@ import banner5 from "../../../public/images/banner-9.jpg"
 const SLIDES = [
   {
     id: 1,
-    image: banner1,
+    image: banner3,
     title: "Elegance Redefined",
     tagline: "Discover curated masterpieces designed for those who appreciate heritage artistry.",
     cta: "Explore Collection",
@@ -29,7 +29,7 @@ const SLIDES = [
   },
   {
     id: 3,
-    image: banner3,
+    image: banner1,
     title: "Heritage Brilliance",
     tagline: "Artisanal excellence passed down through generations of master craftsmen.",
     cta: "Our Story",
