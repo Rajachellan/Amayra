@@ -151,7 +151,7 @@ export const PreviewBanner = () => {
         <div className="flex flex-col md:flex-row items-center gap-8 w-full px-14">
 
           {/* Large Image with Dots */}
-          <div className="relative w-full md:w-[55%] aspect-[3/4] rounded-sm overflow-hidden shadow-lg flex-shrink-0">
+          <div className="relative w-full md:w-[38%] aspect-[3/4] rounded-sm overflow-hidden shadow-lg flex-shrink-0">
             <img
               src={slide.mainImage}
               alt={slide.title}
@@ -192,7 +192,7 @@ export const PreviewBanner = () => {
           </div>
 
           {/* Product Preview Panel */}
-          <div className="w-full md:w-[40%] flex flex-col items-center gap-4">
+          <div className="w-full md:w-[30%] flex flex-col items-center gap-4">
             {activeProduct ? (
               <div
                 key={activeDot}

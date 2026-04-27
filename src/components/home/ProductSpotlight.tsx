@@ -6,7 +6,10 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import neckles from "../../../public/images/neckles.jpg"
 
+import { useCart } from "@/context/CartContext";
+
 export const ProductSpotlight = () => {
+  const { addToCart } = useCart();
   return (
     <section className="py-32 bg-pearl relative overflow-hidden">
       {/* Decorative vertical lettering */}
@@ -55,12 +58,20 @@ export const ProductSpotlight = () => {
                   >
                     View Details
                   </Link>
-                  <Link
-                    href="/cart"
-                    className="text-[10px] uppercase tracking-[0.4em] font-semibold text-foreground border-b border-champagne pb-1 hover:text-champagne transition-colors"
+                  <button
+                    onClick={() => addToCart({
+                      id: "spotlight-kundan",
+                      name: "Imperial Kundan Masterpiece",
+                      price: 245000,
+                      image: "/images/luxury/kundan.jpg",
+                      category: "Necklaces",
+                      description: "A symphony of hand-cut polki diamonds and deep emeralds.",
+                      stock: 1,
+                    })}
+                    className="text-[10px] uppercase tracking-[0.4em] font-semibold text-foreground border-b border-champagne pb-1 hover:text-champagne transition-colors bg-transparent cursor-pointer"
                   >
                     Add to Collection
-                  </Link>
+                  </button>
                 </div>
               </div>
             </motion.div>

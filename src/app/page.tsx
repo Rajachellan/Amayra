@@ -11,6 +11,16 @@ import { MagazineGallery } from "@/components/home/MagazineGallery";
 import { ClientStories } from "@/components/home/ClientStories";
 import { LimitedOfferBanner } from "@/components/home/LimitedOfferBanner";
 import { PreviewBanner } from "@/components/home/PreviewBanner"
+import { CategorySection } from "@/components/home/MainCategorySection"
+import { OffersSection } from "@/components/home/OfferBanner";
+import { SmallNavigationMenu } from "@/components/home/SmallNavigateMenu"
+import { SignatureBlocks } from "@/components/home/SignatureBlocks";
+import { CelebritySection } from "@/components/home/CelebritySection";
+import { CelebritySpotlight } from "@/components/home/CelebritySpotlight";
+import { CollectionStory } from "@/components/home/CollectionStory";
+import { WhyChooseUs } from "@/components/about/WhyChooseUs";
+import { StylingGuide } from "@/components/home/StylingGuide";
+import FAQ from "@/components/home/FAQ"
 export default function Home() {
   return (
     <main className="min-h-screen bg-background selection:bg-champagne/30 overflow-x-hidden">
@@ -18,7 +28,15 @@ export default function Home() {
 
       {/* 1. Hero Experience */}
       <Hero />
-
+      <SmallNavigationMenu />
+     
+      <OffersSection />
+       <CategorySection />
+       <SignatureBlocks/>
+       
+       <CelebritySpotlight/>
+        {/* 6. Instagram Reels Section - 3x2 Video Grid (Hover Play) */}
+      <InstagramGrid />
       {/* 2. Shop by Mood - Aesthetic Entry Points */}
       <MoodCategories />
 
@@ -28,8 +46,7 @@ export default function Home() {
       {/* 4. Craftsmanship Section - Heritage & Process */}
       <Craftsmanship />
 
-      {/* 6. Instagram Reels Section - 3x2 Video Grid (Hover Play) */}
-      <InstagramGrid />
+     
 
       {/* 7. Why Choose Us - Premium Highlights */}
       <PremiumHighlights />
@@ -38,11 +55,15 @@ export default function Home() {
       <MagazineGallery />
 
       {/* 9. Client Stories - Testimonials with Imagery */}
-      <ClientStories />
+      {/* <ClientStories /> */}
       <PreviewBanner />
       {/* 10. Limited Offer Banner - Selective CTA */}
-      <LimitedOfferBanner />
+      {/* <LimitedOfferBanner /> */}
       {/* 5. Customer Reviews - Voices of Elegance (Auto-Scroll) */}
+      <CollectionStory/>
+      <WhyChooseUs/>
+      <StylingGuide/>
+      <FAQ/>
       <ReviewsSlider />
       <Footer />
     </main>

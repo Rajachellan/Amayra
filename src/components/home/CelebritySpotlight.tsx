@@ -6,9 +6,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // ─── Replace these with your actual image imports ───────────────────────────
-import actress1 from "../../assets/actress (1).jpg";
-import actress2 from "../../assets/actress (2).jpg";
-import actress3 from "../../assets/actress (3).jpg";
+import actress1 from "../../assets/actress1.png";
+import actress2 from "../../assets/actress2.png";
+import actress3 from "../../assets/actress3.png";
+import actress4 from "../../assets/celebraty-1.jpg"
 // Add more imports as needed:
 // import actress4 from "../../assets/actress (4).jpg";
 // import actress5 from "../../assets/actress (5).jpg";
@@ -25,7 +26,7 @@ const CELEBRITIES = [
   {
     id: 2,
     name: "Sanjana Sanghi",
-    image: actress2,
+    image: actress4,
     collection: "Royal Kundan Series",
     tag: "New Arrival",
   },
@@ -79,44 +80,44 @@ const POSITIONS: Record<
     scale: 1,
     opacity: 1,
     zIndex: 30,
-    width: "340px",
-    height: "500px",
+    width: "640px",
+    height: "430px",
   },
   1: {
-    x: "52%",
+    x: "65%",
     z: -180,
-    scale: 0.82,
-    opacity: 0.55,
+    scale: 0.85,
+    opacity: 0.6,
     zIndex: 20,
-    width: "300px",
-    height: "440px",
+    width: "420px",
+    height: "420px",
   },
   [-1]: {
-    x: "-52%",
+    x: "-65%",
     z: -180,
-    scale: 0.82,
-    opacity: 0.55,
+    scale: 0.85,
+    opacity: 0.6,
     zIndex: 20,
-    width: "300px",
-    height: "440px",
+    width: "420px",
+    height: "420px",
   },
   2: {
-    x: "92%",
+    x: "115%",
     z: -320,
-    scale: 0.65,
-    opacity: 0.2,
+    scale: 0.7,
+    opacity: 0.25,
     zIndex: 10,
-    width: "280px",
-    height: "410px",
+    width: "390px",
+    height: "380px",
   },
   [-2]: {
-    x: "-92%",
+    x: "-115%",
     z: -320,
-    scale: 0.65,
-    opacity: 0.2,
+    scale: 0.7,
+    opacity: 0.25,
     zIndex: 10,
-    width: "280px",
-    height: "410px",
+    width: "390px",
+    height: "380px",
   },
 };
 
@@ -140,7 +141,7 @@ export const CelebritySpotlight = () => {
   const goTo = (i: number) => setCurrent(i);
 
   return (
-    <section className="relative py-24 bg-background overflow-hidden">
+    <section className="relative h-[100dvh] flex flex-col justify-center bg-background overflow-hidden py-8">
       {/* ── Subtle warm vignette overlay ─────────────────────────────────── */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -155,15 +156,15 @@ export const CelebritySpotlight = () => {
 
       <div className="container mx-auto px-6">
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="text-center mb-14 space-y-3">
+        <div className="text-center mb-6 space-y-1">
           <span
-            className="block text-[10px] uppercase tracking-[0.55em] text-foreground/40 font-medium"
+            className="block text-[8px] uppercase tracking-[0.5em] text-foreground/40 font-medium"
             style={{ fontFamily: "'Raleway', sans-serif" }}
           >
             Exclusively Curated
           </span>
           <h2
-            className="text-foreground text-4xl md:text-[52px] leading-tight"
+            className="text-foreground text-3xl md:text-5xl leading-tight"
             style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400 }}
           >
             Celebrity Style Spotlight
@@ -179,13 +180,13 @@ export const CelebritySpotlight = () => {
         {/* ── 3-D Stage ────────────────────────────────────────────────────── */}
         <div
           className="relative flex items-center justify-center"
-          style={{ perspective: "1400px", height: "540px" }}
+          style={{ perspective: "1400px", height: "400px" }}
         >
           {/* Prev button */}
           <button
             onClick={prev}
             aria-label="Previous celebrity"
-            className="absolute left-0 md:left-6 z-40 w-11 h-11 rounded-full border border-foreground/15 bg-background flex items-center justify-center text-foreground/50 hover:border-champagne hover:text-foreground transition-all duration-400 shadow-sm"
+            className="absolute left-0 md:left-4 z-50 w-10 h-10 rounded-full border border-foreground/15 bg-background flex items-center justify-center text-foreground/50 hover:border-champagne hover:text-foreground transition-all duration-400 shadow-sm"
           >
             <ChevronLeft className="w-5 h-5 stroke-[1.2]" />
           </button>
@@ -194,7 +195,7 @@ export const CelebritySpotlight = () => {
           <button
             onClick={next}
             aria-label="Next celebrity"
-            className="absolute right-0 md:right-6 z-40 w-11 h-11 rounded-full border border-foreground/15 bg-background flex items-center justify-center text-foreground/50 hover:border-champagne hover:text-foreground transition-all duration-400 shadow-sm"
+            className="absolute right-0 md:right-4 z-50 w-10 h-10 rounded-full border border-foreground/15 bg-background flex items-center justify-center text-foreground/50 hover:border-champagne hover:text-foreground transition-all duration-400 shadow-sm"
           >
             <ChevronRight className="w-5 h-5 stroke-[1.2]" />
           </button>
@@ -238,15 +239,14 @@ export const CelebritySpotlight = () => {
                       : "0 12px 40px -8px rgba(0,0,0,0.12)",
                   }}
                 >
-                  {/* Image */}
-                  <Image
-                    src={celeb.image}
-                    alt={celeb.name}
-                    fill
-                    className="object-cover object-top transition-transform duration-700 ease-out"
-                    style={{ transform: isActive ? "scale(1.02)" : "scale(1)" }}
-                    priority={isActive}
-                  />
+                <Image
+                  src={celeb.image}
+                  alt={celeb.name}
+                  fill
+                  className="object-cover transition-transform duration-700 ease-out"
+                  style={{ transform: isActive ? "scale(1.02)" : "scale(1)" }}
+                  priority={isActive}
+                />
 
                   {/* ── Gradient overlay (always visible for side cards) ── */}
                   <div
@@ -371,7 +371,7 @@ export const CelebritySpotlight = () => {
         </div>
 
         {/* ── Dot navigation ────────────────────────────────────────────────── */}
-        <div className="flex items-center justify-center gap-2 mt-10">
+        <div className="flex items-center justify-center gap-2 mt-4">
           {CELEBRITIES.map((_, i) => (
             <button
               key={i}
@@ -393,7 +393,7 @@ export const CelebritySpotlight = () => {
 
         {/* ── Counter ──────────────────────────────────────────────────────── */}
         <p
-          className="text-center mt-4 text-[11px] tracking-[0.3em] text-foreground/30"
+          className="text-center mt-2 text-[10px] tracking-[0.2em] text-foreground/30"
           style={{ fontFamily: "'Cormorant Garamond', serif", fontStyle: "italic" }}
         >
           {String(current + 1).padStart(2, "0")} &mdash;{" "}

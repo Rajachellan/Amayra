@@ -121,7 +121,7 @@ export const Hero = () => {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="space-y-6 md:space-y-8"
               >
-                <div className="space-y-4">
+                <div className="space-y-4 mt-40">
                   <motion.span
                     initial={{ letterSpacing: "0.2em" }}
                     animate={{ letterSpacing: "0.6em" }}
@@ -130,7 +130,7 @@ export const Hero = () => {
                     Exclusive Collection
                   </motion.span>
 
-                  <h1 className="text-white text-4xl md:text-6xl lg:text-[85px] font-serif leading-[1.1] tracking-tight drop-shadow-xl">
+                  <h1 className="text-white text-4xl md:text-5xl font-serif leading-[1.1] tracking-tight drop-shadow-xl">
                     {SLIDES[currentIndex].title.split(" ").map((word, i) => (
                       <span key={i} className={i % 2 !== 0 ? "italic font-light opacity-90" : ""}>
                         {word}{" "}
@@ -139,8 +139,8 @@ export const Hero = () => {
                   </h1>
                 </div>
 
-                <div className="backdrop-blur-md bg-white/10 p-5 md:p-8 rounded-2xl border border-white/10 luxury-shadow-hover inline-block max-w-xl">
-                  <p className="text-white/95 text-xs md:text-sm font-light tracking-[0.2em] leading-relaxed uppercase">
+                <div className="backdrop-blur-md bg-white/10 p-5  rounded-2xl border border-white/10 luxury-shadow-hover inline-block max-w-xl">
+                  <p className="text-white/95 font-mono text-xs md:text-sm font-light tracking-[0.2em] leading-relaxed uppercase">
                     {SLIDES[currentIndex].tagline}
                   </p>
                 </div>
