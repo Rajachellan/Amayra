@@ -311,6 +311,9 @@ export const Footer = () => {
                     color: "#8B7355",
                   }}
                 >
+
+
+                  
                   {card}
                 </div>
               ))}
