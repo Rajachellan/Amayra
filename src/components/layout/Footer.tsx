@@ -310,7 +310,9 @@ export const Footer = () => {
                     background: "rgba(196,160,100,0.15)",
                     color: "#8B7355",
                   }}
-                >        
+                >       
+                
+                 
                   {card}
                 </div>
               ))}
