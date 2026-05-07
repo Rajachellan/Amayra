@@ -15,7 +15,7 @@ export const PageBanner: React.FC<PageBannerProps> = ({
   title, 
   subtitle, 
   image, 
-  height = "h-[45vh]" 
+  height = "h-[65vh]" 
 }) => {
   return (
     <section className={`relative ${height} flex items-center justify-center overflow-hidden`}>

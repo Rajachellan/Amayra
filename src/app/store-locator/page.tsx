@@ -44,7 +44,7 @@ const StoreLocator = () => {
         title="Our Boutiques"
         subtitle="Visit Us"
         image="/images/luxury/pexels-nirav-jani-1955297-20736197.jpg"
-        height="h-[50vh]"
+        height="h-[60vh]"
       />
 
       <section className="py-20 container mx-auto px-6">

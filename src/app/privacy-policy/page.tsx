@@ -15,7 +15,7 @@ const PrivacyPolicy = () => {
         title="Privacy Policy"
         subtitle="Legal"
         image="/images/luxury/pexels-ankunijjar-31772511.jpg"
-        height="h-[35vh]"
+        height="h-[65vh]"
       />
 
       <section className="pb-24 container mx-auto px-6 max-w-4xl pt-20">

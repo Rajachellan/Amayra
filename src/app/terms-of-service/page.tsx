@@ -13,8 +13,8 @@ const TermsOfService = () => {
       <PageBanner 
         title="Terms of Service"
         subtitle="Legal"
-        image="/images/luxury/bangles.avif"
-        height="h-[35vh]"
+        image="/images/banner1.jpg"
+        height="h-[65vh]"
       />
 
       <section className="pb-24 container mx-auto px-6 max-w-4xl pt-20">
