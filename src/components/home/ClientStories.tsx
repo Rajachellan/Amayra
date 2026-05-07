@@ -11,7 +11,7 @@ export const ClientStories = () => {
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -46,11 +46,11 @@ export const ClientStories = () => {
 
               <div className="space-y-4">
                 <p className="text-foreground/50 text-sm font-light leading-relaxed">
-                  Choosing Shree Aarna wasn&apos;t just a purchase; it was a journey into my own heritage. The team didn&apos;t just show me jewelry; they showed me a reflection of my family&apos;s history. Every diamond feels like a legacy in the making.
+                  Choosing Amayra wasn&apos;t just a purchase; it was a journey into my own heritage. The team didn&apos;t just show me jewelry; they showed me a reflection of my family&apos;s history. Every diamond feels like a legacy in the making.
                 </p>
                 <div className="flex flex-col">
                   <span className="text-foreground text-[11px] uppercase tracking-[0.2em] font-bold">Ananya Verma</span>
-                  <span className="text-champagne text-[10px] uppercase tracking-[0.1em] font-medium">Shree Aarna Bride, 2026</span>
+                  <span className="text-champagne text-[10px] uppercase tracking-[0.1em] font-medium">Amayra Bride, 2026</span>
                 </div>
               </div>
 

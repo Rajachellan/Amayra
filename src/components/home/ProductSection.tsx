@@ -197,9 +197,16 @@ const ProductCard = ({ product, size, toggleWishlist, addToCart, isInWishlist }:
         <h3 className="text-foreground text-[11px] md:text-xs uppercase tracking-[0.25em] font-medium transition-colors group-hover:text-champagne">
           {product.name}
         </h3>
-        <p className="text-foreground/40 text-[13px] md:text-[15px] font-serif italic tracking-wider">
-          ₹{product.price.toLocaleString()}
-        </p>
+        <div className="flex items-center space-x-3">
+          <p className="text-foreground text-[14px] md:text-[16px] font-serif font-semibold tracking-wider">
+            ₹{product.price.toLocaleString()}
+          </p>
+          {product.oldPrice && (
+            <p className="text-foreground/30 line-through text-[11px] md:text-[13px] font-serif italic tracking-wider">
+              ₹{product.oldPrice.toLocaleString()}
+            </p>
+          )}
+        </div>
       </div>
     </Link>
   );

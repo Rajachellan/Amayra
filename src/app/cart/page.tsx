@@ -63,7 +63,12 @@ export default function CartPage() {
                           <Plus className="w-4 h-4 text-gray-400" />
                         </button>
                       </div>
-                      <span className="font-bold text-lg text-brand-emerald">₹{(item.price * item.quantity).toLocaleString()}</span>
+                      <div className="flex flex-col items-center sm:items-end">
+                        <span className="font-bold text-lg text-brand-emerald">₹{(item.price * item.quantity).toLocaleString()}</span>
+                        {item.oldPrice && (
+                          <span className="text-xs text-gray-400 line-through">₹{(item.oldPrice * item.quantity).toLocaleString()}</span>
+                        )}
+                      </div>
                       <button
                         onClick={() => removeFromCart(item.id)}
                         className="text-gray-400 hover:text-red-500 transition-colors flex items-center space-x-1 uppercase text-[10px] tracking-widest"

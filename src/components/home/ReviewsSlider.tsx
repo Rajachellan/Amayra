@@ -31,7 +31,7 @@ const REVIEWS = [
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
     rating: 5,
-    text: "Exceptional service and exquisite designs. Gems of Shree Aarna truly understands what high-end jewelry should feel like.",
+    text: "Exceptional service and exquisite designs. Amayra truly understands what high-end jewelry should feel like.",
   },
 ];
 
@@ -51,7 +51,7 @@ export const ReviewsSlider = () => {
   return (
     <section
       className="relative overflow-hidden min-h-screen flex items-center"
-     
+
     >
       {/* Gold ambient top glow */}
       <div

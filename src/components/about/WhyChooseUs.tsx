@@ -13,7 +13,7 @@ const features = [
   {
     icon: <RefreshCcw className="w-5 h-5" strokeWidth={1.25} />,
     title: "LIFETIME MAINTENANCE",
-    desc: "Complimentary polishing and stone checking for all Gems of Shree Aarna pieces.",
+    desc: "Complimentary polishing and stone checking for all Amayra pieces.",
   },
   {
     icon: <ScrollText className="w-5 h-5" strokeWidth={1.25} />,
@@ -31,7 +31,7 @@ export const WhyChooseUs = () => {
   return (
     <section
       className="relative overflow-hidden min-h-screen flex items-center"
-      
+
     >
       {/* Decorative background circle */}
       <div
@@ -67,9 +67,9 @@ export const WhyChooseUs = () => {
               className="font-serif text-3xl md:text-4xl mb-5 leading-snug"
               style={{ color: "#1C1510" }}
             >
-              Why Shree{" "}
+              Why
               <span className="italic" style={{ color: "#C4A064" }}>
-                Aarna?
+                Amayra?
               </span>
             </h2>
 
@@ -79,7 +79,7 @@ export const WhyChooseUs = () => {
             />
 
             <p
-              className="text-xs font-light leading-[1.8] tracking-wide"
+              className="text-md font-light leading-[1.8] tracking-wide"
               style={{ color: "rgba(28,21,16,0.65)" }}
             >
               Beyond the gold and gemstones, we provide a service that is as enduring as our
@@ -96,7 +96,7 @@ export const WhyChooseUs = () => {
                   35+
                 </div>
                 <div
-                  className="text-[8px] uppercase tracking-[0.2em]"
+                  className="text-[10px] uppercase tracking-[0.1em]"
                   style={{ color: "rgba(28,21,16,0.45)" }}
                 >
                   Years of Legacy
@@ -110,7 +110,7 @@ export const WhyChooseUs = () => {
                   12K+
                 </div>
                 <div
-                  className="text-[8px] uppercase tracking-[0.2em]"
+                  className="text-[10px] uppercase tracking-[0.2em]"
                   style={{ color: "rgba(28,21,16,0.45)" }}
                 >
                   Happy Clients
@@ -159,13 +159,13 @@ export const WhyChooseUs = () => {
                 </div>
 
                 <h4
-                  className="text-[10px] uppercase tracking-[0.35em] font-semibold mb-3"
+                  className="text-[13px] uppercase tracking-[0.35em] font-bold mb-3"
                   style={{ color: "#1C1510" }}
                 >
                   {item.title}
                 </h4>
                 <p
-                  className="text-xs font-light leading-[1.85]"
+                  className="text-sm font-light leading-[1.85]"
                   style={{ color: "rgba(28,21,16,0.55)" }}
                 >
                   {item.desc}

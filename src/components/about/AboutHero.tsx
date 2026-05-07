@@ -6,14 +6,14 @@ export const AboutHero = () => {
   return (
     <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
       {/* Hero Image */}
-      <motion.div 
+      <motion.div
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="absolute inset-0"
       >
-        <Image 
-          src="/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg" 
+        <Image
+          src="/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg"
           alt="Luxury Heritage Jewellery"
           fill
           priority
@@ -40,7 +40,7 @@ export const AboutHero = () => {
               <span className="italic">Timeless Elegance</span>
             </h1>
             <p className="text-lg md:text-xl font-light text-[#3D3934] leading-relaxed mb-12 text-editorial">
-              For over three decades, Gems of Shree Aarna has been the custodian of heritage, 
+              For over three decades, Amayra has been the custodian of heritage,
               weaving stories of gold and precious stones into masterpieces that transcend time.
             </p>
             <div className="flex flex-wrap gap-6">
@@ -57,7 +57,7 @@ export const AboutHero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 1 }}

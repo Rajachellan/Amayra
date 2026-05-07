@@ -47,7 +47,7 @@ const SLIDES = [
     id: 5,
     image: banner5,
     title: "The Atelier Mood",
-    tagline: "Step into the world of Shree Aarna, where every gem tells a deep story.",
+    tagline: "Step into the world of Amayra, where every gem tells a deep story.",
     cta: "Visit Atelier",
     link: "/about"
   }
@@ -189,8 +189,8 @@ export const Hero = () => {
             key={index}
             onClick={() => setCurrentIndex(index)}
             className={`transition-all duration-500 rounded-full ${currentIndex === index
-                ? "w-8 h-[2px] bg-champagne"
-                : "w-2 h-[2px] bg-white/40 hover:bg-white"
+              ? "w-8 h-[2px] bg-champagne"
+              : "w-2 h-[2px] bg-white/40 hover:bg-white"
               }`}
           />
         ))}

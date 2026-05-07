@@ -18,7 +18,7 @@ export const CollectionStory = () => {
             "radial-gradient(circle at 80% 20%, rgba(196,160,100,0.08) 0%, transparent 70%)",
         }}
       />
-      
+
       <div className="relative container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-center gap-16 md:gap-20">
           {/* Image Column */}
@@ -95,7 +95,7 @@ export const CollectionStory = () => {
                 style={{ color: "#6B5E51" }}
               >
                 <p>
-                  At Gems of Shree Aarna, we believe every piece of jewellery is a vessel of
+                  At  Amayra, we believe every piece of jewellery is a vessel of
                   memories. For over three decades, our master craftsmen have dedicated their
                   lives to the art of working with precious stones and pure gold.
                 </p>
@@ -111,13 +111,13 @@ export const CollectionStory = () => {
                 style={{ borderTop: "1px solid rgba(196,160,100,0.15)" }}
               >
                 <div className="font-serif text-3xl italic mb-1" style={{ color: "#C4A064" }}>
-                  Bhandhana
+                  Bandana
                 </div>
                 <div
-                  className="text-[10px] tracking-[0.3em] font-bold uppercase"
+                  className="text-[13px] tracking-[0.3em] font-bold uppercase"
                   style={{ color: "rgba(74,63,53,0.5)" }}
                 >
-                  Founder & Master Artisan
+                  Founder
                 </div>
               </div>
             </motion.div>

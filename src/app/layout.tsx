@@ -22,8 +22,8 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Gems of Shree Aarna | High-End Luxury Jewellery",
-  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience high-end luxury with Gems of Shree Aarna.",
+  title: "Amayra | High-End Luxury Jewellery",
+  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience high-end luxury with Amayra.",
 };
 
 export default function RootLayout({

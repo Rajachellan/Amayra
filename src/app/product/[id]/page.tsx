@@ -88,10 +88,10 @@ export default function ProductPage() {
                 {product.name}
               </h1>
 
-              <div className="flex items-center space-x-4 mb-8">
-                <span className="text-3xl font-bold text-brand-emerald">₹{product.price.toLocaleString()}</span>
+              <div className="flex items-baseline space-x-6 mb-8">
+                <span className="text-4xl font-bold text-brand-emerald">₹{product.price.toLocaleString()}</span>
                 {product.oldPrice && (
-                  <span className="text-xl text-gray-400 line-through">₹{product.oldPrice.toLocaleString()}</span>
+                  <span className="text-2xl text-gray-400/50 line-through font-light">₹{product.oldPrice.toLocaleString()}</span>
                 )}
                 {product.discount && (
                   <span className="bg-brand-gold/10 text-brand-gold px-3 py-1 text-xs font-bold tracking-widest">

@@ -104,7 +104,7 @@ export const Footer = () => {
                 className="text-sm tracking-[0.5em] block mt-[-3px]"
                 style={{ color: "#C4A064" }}
               >
-                SHREE AARNA
+                Amayra
               </span>
             </div>
 
@@ -116,36 +116,36 @@ export const Footer = () => {
               handcrafted diamond and gold jewellery that speaks to the soul.
             </p>
 
-        <div className="flex space-x-5">
-  {[
-    {
-      name: "Instagram",
-      svg: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-          <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 
+            <div className="flex space-x-5">
+              {[
+                {
+                  name: "Instagram",
+                  svg: (
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 
           0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm5 
           5a5 5 0 110 10 5 5 0 010-10zm6.5-.75a1.25 
           1.25 0 11-2.5 0 1.25 1.25 0 012.5 
           0zM12 9a3 3 0 100 6 3 3 0 000-6z" />
-        </svg>
-      ),
-    },
-    {
-      name: "Facebook",
-      svg: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-          <path d="M13 22v-8h3l1-4h-4V7c0-1.03.29-1.73 
+                    </svg>
+                  ),
+                },
+                {
+                  name: "Facebook",
+                  svg: (
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M13 22v-8h3l1-4h-4V7c0-1.03.29-1.73 
           1.76-1.73H17V2.14C16.52 2.07 15.36 2 
           14.04 2 11.3 2 9.5 3.66 9.5 
           6.7V10H7v4h2.5v8H13z" />
-        </svg>
-      ),
-    },
-    {
-      name: "Twitter",
-      svg: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-          <path d="M22 5.92c-.77.35-1.6.58-2.46.69a4.28 
+                    </svg>
+                  ),
+                },
+                {
+                  name: "Twitter",
+                  svg: (
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M22 5.92c-.77.35-1.6.58-2.46.69a4.28 
           4.28 0 001.88-2.36 8.59 8.59 0 01-2.71 
           1.03 4.26 4.26 0 00-7.27 3.88A12.09 
           12.09 0 013 4.8a4.26 4.26 0 001.32 
@@ -155,14 +155,14 @@ export const Footer = () => {
           012 19.54 12.07 12.07 0 008.29 21c7.55 
           0 11.68-6.26 11.68-11.68v-.53A8.18 
           8.18 0 0022 5.92z" />
-        </svg>
-      ),
-    },
-    {
-      name: "YouTube",
-      svg: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-          <path d="M21.8 8s-.2-1.4-.8-2a2.85 
+                    </svg>
+                  ),
+                },
+                {
+                  name: "YouTube",
+                  svg: (
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                      <path d="M21.8 8s-.2-1.4-.8-2a2.85 
           2.85 0 00-2-1C16.4 4.7 12 4.7 12 
           4.7h0s-4.4 0-7 .3a2.85 2.85 0 
           00-2 1c-.6.6-.8 2-.8 2S2 9.6 2 
@@ -173,26 +173,26 @@ export const Footer = () => {
           .8-2s.2-1.6.2-3.2v-1.6C22 
           9.6 21.8 8 21.8 8zM10 
           14.5v-5l5 2.5-5 2.5z" />
-        </svg>
-      ),
-    },
-  ].map((item, index) => (
-    <Link
-      key={index}
-      href="#"
-      className="transition-all duration-300"
-      style={{ color: "#7A746D" }}
-      onMouseEnter={(e) =>
-        (e.currentTarget.style.color = "#C4A064")
-      }
-      onMouseLeave={(e) =>
-        (e.currentTarget.style.color = "#7A746D")
-      }
-    >
-      {item.svg}
-    </Link>
-  ))}
-</div>
+                    </svg>
+                  ),
+                },
+              ].map((item, index) => (
+                <Link
+                  key={index}
+                  href="#"
+                  className="transition-all duration-300"
+                  style={{ color: "#7A746D" }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.color = "#C4A064")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.color = "#7A746D")
+                  }
+                >
+                  {item.svg}
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Collections */}
@@ -293,7 +293,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between py-7 gap-4">
           <p className="text-[10px]" style={{ color: "#8A837B" }}>
-            © 2026 Gems of Shree Aarna. All Rights Reserved.
+            © 2026 Amayra. All Rights Reserved.
           </p>
 
           <div className="flex items-center gap-6">
@@ -310,7 +310,7 @@ export const Footer = () => {
                     background: "rgba(196,160,100,0.15)",
                     color: "#8B7355",
                   }}
-                >       
+                >
                   {card}
                 </div>
               ))}

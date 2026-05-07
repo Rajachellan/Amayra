@@ -11,7 +11,7 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen flex flex-col bg-[#FAF9F6]">
       <Navbar />
-      
+
       <div className="flex-grow flex items-center justify-center py-40 px-6">
         <div className="w-full max-w-md bg-white p-10 shadow-sm border border-gray-100">
           <div className="text-center mb-10">
@@ -59,7 +59,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-10 text-center">
-            <p className="text-xs text-gray-400 tracking-widest uppercase mb-4">New to Shree Aarna?</p>
+            <p className="text-xs text-gray-400 tracking-widest uppercase mb-4">New to Amayra?</p>
             <Link href="/auth/signup">
               <Button variant="outline" className="w-full">CREATE AN ACCOUNT</Button>
             </Link>

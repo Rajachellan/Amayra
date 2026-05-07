@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ChevronRight } from "lucide-react";
 
 const sections = [
-  { id: "intro", title: "Introduction", content: "Welcome to Gems of Shree Aarna. By accessing this website, you agree to be bound by these Terms and Conditions. Our services are provided to you subject to the following notices, terms, and conditions." },
+  { id: "intro", title: "Introduction", content: "Welcome to Amayra. By accessing this website, you agree to be bound by these Terms and Conditions. Our services are provided to you subject to the following notices, terms, and conditions." },
   { id: "products", title: "Product Information", content: "We make every effort to display the colors and details of our jewellery as accurately as possible. However, as the actual colors you see will depend on your monitor, we cannot guarantee that your monitor's display of any color will be accurate. Weights mentioned are approximate and may vary slightly." },
   { id: "pricing", title: "Pricing & Payments", content: "Prices for our products are subject to change without notice. We reserve the right at any time to modify or discontinue the Service without notice. All transactions are processed in INR unless otherwise specified." },
   { id: "shipping", title: "Shipping & Delivery", content: "Domestic shipping within India is complimentary for all orders above ₹50,000. For international orders, shipping rates and customs duties will apply as per the destination country's regulations." },
@@ -59,11 +59,10 @@ export default function TermsPage() {
                   <button
                     key={section.id}
                     onClick={() => scrollToSection(section.id)}
-                    className={`w-full text-left px-6 py-4 transition-all flex items-center justify-between group ${
-                      activeTab === section.id 
-                      ? "bg-champagne/10 text-champagne border-l-2 border-champagne" 
+                    className={`w-full text-left px-6 py-4 transition-all flex items-center justify-between group ${activeTab === section.id
+                      ? "bg-champagne/10 text-champagne border-l-2 border-champagne"
                       : "text-foreground/40 hover:text-foreground/70"
-                    }`}
+                      }`}
                   >
                     <span className="text-[10px] uppercase tracking-widest font-medium">
                       {section.title}
@@ -84,9 +83,9 @@ export default function TermsPage() {
                     {section.content}
                   </p>
                   <p className="text-foreground/60 font-light leading-loose text-editorial text-lg mt-6">
-                    Quisque facilisis eros in metus varius, non scelerisque sem interdum. 
-                    Curabitur varius, justo at interdum aliquet, libero lacus congue nunc, 
-                    id ultrices tellus diam id ligula. Nullam sit amet magna ex. 
+                    Quisque facilisis eros in metus varius, non scelerisque sem interdum.
+                    Curabitur varius, justo at interdum aliquet, libero lacus congue nunc,
+                    id ultrices tellus diam id ligula. Nullam sit amet magna ex.
                     Sed feugiat porta nisi, sed convallis metus.
                   </p>
                 </div>

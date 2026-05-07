@@ -4,11 +4,15 @@ import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { Product as GlobalProduct } from "@/types";
-
+import neeckles from "../../../public/images/neckles_5.jpg"
+import neckles2 from "../../../public/images/luxury/temple.png"
+import bngles from "../../../public/images/luxury/bangles.avif"
+import Image from "next/image";
 type LocalProduct = {
     id: number;
     name: string;
     price: string;
+    oldPrice?: string;
     category: "bestsellers" | "newarrivals" | "trending";
     badge?: string;
     image: string;
@@ -21,6 +25,7 @@ const products: LocalProduct[] = [
         id: 1,
         name: "Miera Kundan Emerald Drop Earrings",
         price: "₹1,290",
+        oldPrice:"₹1,800",
         category: "bestsellers",
         badge: "Best Loved",
         image:
@@ -33,6 +38,7 @@ const products: LocalProduct[] = [
         price: "₹3,200",
         category: "bestsellers",
         badge: "Top Pick",
+        oldPrice:"₹3,800",
         image:
             "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80",
         accent: "#d4a373",
@@ -41,6 +47,7 @@ const products: LocalProduct[] = [
         id: 3,
         name: "Floral Kundan Maang Teeka",
         price: "₹2,800",
+        oldPrice:"₹3,200",
         category: "bestsellers",
         badge: "Bridal Edit",
         image:
@@ -51,6 +58,7 @@ const products: LocalProduct[] = [
         id: 4,
         name: "Pearl Sheesh Phool Tiara",
         price: "₹5,400",
+        oldPrice:"₹5,800",
         category: "bestsellers",
         badge: "Signature",
         image:
@@ -63,6 +71,7 @@ const products: LocalProduct[] = [
         id: 5,
         name: "Rose Gold Celestial Choker",
         price: "₹4,100",
+        oldPrice:"₹4,890",
         category: "newarrivals",
         badge: "Just In",
         image:
@@ -73,16 +82,17 @@ const products: LocalProduct[] = [
         id: 6,
         name: "Meenakari Lotus Jhumkas",
         price: "₹1,850",
+        oldPrice:"₹2,500",
         category: "newarrivals",
         badge: "New",
-        image:
-            "https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=600&q=80",
+        image:"/images/neckles_5.jpg",
         accent: "#d4a373",
     },
     {
         id: 7,
         name: "Polki Diamond Layered Necklace",
         price: "₹6,500",
+        oldPrice:"6,870",
         category: "newarrivals",
         badge: "Just Arrived",
         image:
@@ -93,10 +103,11 @@ const products: LocalProduct[] = [
         id: 8,
         name: "Champagne Pearl Cuff Bracelet",
         price: "₹2,350",
+        oldPrice:"₹2,650",
         category: "newarrivals",
         badge: "Fresh",
         image:
-            "https://images.unsplash.com/photo-1601121141499-bf4a4a7ab0f8?w=600&q=80",
+            "/images/luxury/temple.png",
         accent: "#c9a84c",
     },
 
@@ -105,6 +116,7 @@ const products: LocalProduct[] = [
         id: 9,
         name: "Vintage Jadau Collar Necklace",
         price: "₹7,200",
+        oldPrice:"₹7,630",
         category: "trending",
         badge: "Viral",
         image:
@@ -115,6 +127,7 @@ const products: LocalProduct[] = [
         id: 10,
         name: "Boho Gold Stacking Rings Set",
         price: "₹980",
+        oldPrice:"₹1,530",
         category: "trending",
         badge: "Trending",
         image:
@@ -125,16 +138,17 @@ const products: LocalProduct[] = [
         id: 11,
         name: "Kundan Floral Hair Chain",
         price: "₹3,600",
+        oldPrice:"₹3,980",
         category: "trending",
         badge: "Hot Now",
-        image:
-            "https://images.unsplash.com/photo-1630350895461-9818bb96d8c7?w=600&q=80",
+        image:    "/images/luxury/bangles.avif",
         accent: "#b08850",
     },
     {
         id: 12,
         name: "Gold Enamelled Peacock Earrings",
         price: "₹2,100",
+        oldPrice:"₹3,790",
         category: "trending",
         badge: "Loved By All",
         image:
@@ -312,14 +326,14 @@ export function SmallNavigationMenu() {
                                 }}
                             >
                                 {/* Image */}
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-full h-full object-cover transition-transform duration-700"
-                                    style={{
-                                        transform: hoveredId === product.id ? "scale(1.07)" : "scale(1)",
-                                    }}
-                                />
+                               <div className="relative w-full h-full">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        fill
+                                        className="object-cover transition-transform duration-700"
+                                    />
+                                </div>
 
                                 {/* Shimmer overlay on hover */}
                                 <div
@@ -404,39 +418,64 @@ export function SmallNavigationMenu() {
                             </div>
 
                             {/* Product Info */}
-                            <div className="px-1">
-                                <h3
-                                    className="text-sm sm:text-base leading-snug mb-1 transition-colors duration-300"
-                                    style={{
-                                        color: hoveredId === product.id ? "#c9a84c" : "#3a2a1a",
-                                        fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-                                        fontWeight: 500,
-                                        letterSpacing: "0.01em",
-                                    }}
-                                >
-                                    {product.name}
-                                </h3>
-                                <div className="flex items-center justify-between">
-                                    <p
-                                        className="text-sm font-semibold"
-                                        style={{
-                                            color: "#c9a84c",
-                                            fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-                                            letterSpacing: "0.04em",
-                                        }}
-                                    >
-                                        {product.price}
-                                    </p>
-                                    {/* Small star accent */}
-                                    <div className="flex gap-0.5">
-                                        {[...Array(5)].map((_, i) => (
-                                            <svg key={i} width="8" height="8" viewBox="0 0 20 20" fill={i < 4 ? "#c9a84c" : "#e8d5b0"}>
-                                                <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
-                                            </svg>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="px-1">
+    <h3
+        className="text-sm sm:text-base leading-snug mb-1 transition-colors duration-300"
+        style={{
+            color: hoveredId === product.id ? "#c9a84c" : "#3a2a1a",
+            fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+            fontWeight: 500,
+            letterSpacing: "0.01em",
+        }}
+    >
+        {product.name}
+    </h3>
+
+    <div className="flex items-center justify-between">
+        
+        {/* Price Section */}
+        <div className="flex items-center gap-2">
+            
+            {/* Old Price */}
+            <p
+                className="text-xs sm:text-sm font-semibold line-through"
+                style={{
+                    color: "#9c9c9c",
+                    fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+                }}
+            >
+                {product.oldPrice}
+            </p>
+
+            {/* Discount Price */}
+            <p
+                className="text-xl font-semibold"
+                style={{
+                    color: "#c9a84c",
+                    fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+                    letterSpacing: "0.02em",
+                }}
+            >
+                {product.price}
+            </p>
+        </div>
+
+        {/* Small star accent */}
+        <div className="flex gap-0.5">
+            {[...Array(5)].map((_, i) => (
+                <svg
+                    key={i}
+                    width="8"
+                    height="8"
+                    viewBox="0 0 20 20"
+                    fill={i < 4 ? "#c9a84c" : "#e8d5b0"}
+                >
+                    <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
+                </svg>
+            ))}
+        </div>
+    </div>
+</div>
                         </div>
                     ))}
                 </div>

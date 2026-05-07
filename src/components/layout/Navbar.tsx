@@ -45,14 +45,14 @@ export const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
   const lastScrollY = useRef(0);
   const { scrollY } = useScroll();
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
+
       // Determine if page is scrolled
       setIsScrolled(currentScrollY > 20);
 
@@ -64,7 +64,7 @@ export const Navbar = () => {
         // Scrolling up or at the top
         setIsVisible(true);
       }
-      
+
       lastScrollY.current = currentScrollY;
     };
 
@@ -73,23 +73,22 @@ export const Navbar = () => {
   }, []);
 
   const isWhite = isScrolled || isHovered || isMobileMenuOpen;
-  
+
   const leftMenu = navigationData.slice(0, 3);
   const rightMenu = navigationData.slice(3);
 
   return (
     <motion.header
       initial={{ y: 0 }}
-      animate={{ 
+      animate={{
         y: isVisible ? 0 : -150,
         backgroundColor: isWhite ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0)",
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
-      className={`fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-300 ${
-        isWhite 
-          ? "shadow-lg border-b border-foreground/5 backdrop-blur-none" 
+      className={`fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-300 ${isWhite
+          ? "shadow-lg border-b border-foreground/5 backdrop-blur-none"
           : "border-none backdrop-blur-xl bg-gradient-to-b from-black/40 via-black/10 to-transparent"
-      }`}
+        }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false);
@@ -97,10 +96,9 @@ export const Navbar = () => {
       }}
     >
       <MarqueeBanner />
-      
-      <nav className={`w-full flex items-center transition-all duration-300 ${
-        isScrolled ? "h-20" : "h-24"
-      }`}>
+
+      <nav className={`w-full flex items-center transition-all duration-300 ${isScrolled ? "h-20" : "h-24"
+        }`}>
         <div className="container mx-auto px-6 h-full flex items-center justify-between relative">
           {/* Left Side Menu */}
           <div className="hidden lg:flex items-center space-x-12 flex-1">
@@ -112,9 +110,8 @@ export const Navbar = () => {
               >
                 <Link
                   href={item.href}
-                  className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${
-                    isWhite ? "text-foreground" : "text-white/90"
-                  }`}
+                  className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${isWhite ? "text-foreground" : "text-white/90"
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -128,13 +125,12 @@ export const Navbar = () => {
           </div>
 
           {/* Center: Logo */}
-          <div className={`flex justify-center flex-shrink-0 px-10 transition-transform duration-500 ${
-            isScrolled ? "scale-90" : "scale-100"
-          }`}>
+          <div className={`flex justify-center flex-shrink-0 px-10 transition-transform duration-500 ${isScrolled ? "scale-90" : "scale-100"
+            }`}>
             <Link href="/" className="relative group block">
               <Image
                 src="/logo3.png"
-                alt="Shree Aarna Logo"
+                alt="Amayra Logo"
                 width={140}
                 height={70}
                 className={`object-contain transition-all duration-500`}
@@ -153,9 +149,8 @@ export const Navbar = () => {
               >
                 <Link
                   href={item.href}
-                  className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${
-                    isWhite ? "text-foreground" : "text-white/90"
-                  }`}
+                  className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${isWhite ? "text-foreground" : "text-white/90"
+                    }`}
                 >
                   {item.name}
                 </Link>
@@ -170,9 +165,8 @@ export const Navbar = () => {
             ))}
 
             {/* Icons */}
-            <div className={`flex items-center space-x-7 pl-8 border-l transition-colors duration-300 ml-4 ${
-              isWhite ? "border-foreground/10" : "border-white/20"
-            }`}>
+            <div className={`flex items-center space-x-7 pl-8 border-l transition-colors duration-300 ml-4 ${isWhite ? "border-foreground/10" : "border-white/20"
+              }`}>
               {/* Search */}
               <button className={`${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}>
                 <Search className="w-[17px] h-[17px] stroke-[1.5]" />

@@ -75,7 +75,7 @@ export const StylingGuide = () => {
             className="font-sans text-xs tracking-wider leading-relaxed max-w-lg mx-auto"
             style={{ color: "rgba(28,21,16,0.55)" }}
           >
-            Curated tips from our lead designers on how to wear your Gems of Shree Aarna
+            Curated tips from our lead designers on how to wear your Amayra
             pieces with effortless elegance.
           </p>
         </div>
@@ -92,13 +92,13 @@ export const StylingGuide = () => {
               className="group"
             >
               {/* Image container */}
-             <div className="relative w-full aspect-[4/3] max-h-[50vh] mb-4 overflow-hidden rounded-xl">
-        <Image
-          src={tip.image}
-          alt={tip.title}
-          fill
-          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
-        />
+              <div className="relative w-full aspect-[4/3] max-h-[50vh] mb-4 overflow-hidden rounded-xl">
+                <Image
+                  src={tip.image}
+                  alt={tip.title}
+                  fill
+                  className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-110"
+                />
                 {/* Dark overlay that lifts on hover */}
                 <div
                   className="absolute inset-0 transition-opacity duration-700"

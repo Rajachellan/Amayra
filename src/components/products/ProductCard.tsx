@@ -84,12 +84,12 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             {product.name}
           </h3>
         </Link>
-        <div className="flex items-center justify-center space-x-4">
-          <span className="text-foreground/80 font-serif text-sm">
+        <div className="flex items-center justify-center space-x-3">
+          <span className="text-foreground font-serif text-base font-semibold">
             ₹{product.price.toLocaleString()}
           </span>
           {product.oldPrice && (
-            <span className="text-foreground/30 line-through text-[11px] font-light italic">
+            <span className="text-foreground/30 line-through text-[11px] font-light">
               ₹{product.oldPrice.toLocaleString()}
             </span>
           )}

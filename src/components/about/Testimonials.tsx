@@ -14,7 +14,7 @@ const reviews = [
   {
     name: "Vikram Malhotra",
     role: "Collector",
-    text: "Gems of Shree Aarna has a soul in their designs. I've collected many antique pieces, and theirs are the most authentic I've found in years.",
+    text: "Amayra has a soul in their designs. I've collected many antique pieces, and theirs are the most authentic I've found in years.",
     rating: 5
   },
   {
@@ -30,7 +30,7 @@ export const Testimonials = () => {
     <section className="section-padding bg-background relative overflow-hidden">
       {/* Background Decal */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none">
-         <h1 className="text-[20vw] font-serif select-none">Heritage</h1>
+        <h1 className="text-[20vw] font-serif select-none">Heritage</h1>
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
@@ -50,7 +50,7 @@ export const Testimonials = () => {
               className="min-w-[300px] snap-center p-12 bg-pearl/30 border border-white/50 relative"
             >
               <div className="flex gap-1 text-champagne mb-8">
-                 {[...Array(item.rating)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
+                {[...Array(item.rating)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
               </div>
               <p className="font-light leading-loose text-foreground/70 mb-10 italic">
                 {`“${item.text}”`}

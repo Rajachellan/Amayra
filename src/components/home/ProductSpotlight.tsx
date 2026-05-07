@@ -48,7 +48,10 @@ export const ProductSpotlight = () => {
               <div className="pt-4 flex flex-col space-y-6">
                 <div className="space-y-1">
                   <span className="text-[10px] uppercase tracking-widest text-[#6B6661]">Market Value</span>
-                  <p className="text-2xl font-serif text-foreground">₹2,45,000</p>
+                  <div className="flex items-baseline gap-3">
+                    <p className="text-3xl font-serif text-foreground">₹2,45,000</p>
+                    <p className="text-lg font-serif text-foreground/30 line-through">₹3,15,000</p>
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-10">
@@ -63,6 +66,7 @@ export const ProductSpotlight = () => {
                       id: "spotlight-kundan",
                       name: "Imperial Kundan Masterpiece",
                       price: 245000,
+                      oldPrice: 315000,
                       image: "/images/luxury/kundan.jpg",
                       category: "Necklaces",
                       description: "A symphony of hand-cut polki diamonds and deep emeralds.",
