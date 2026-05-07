@@ -224,7 +224,7 @@ export function SmallNavigationMenu() {
             />
 
             {/* Header */}
-            <header className="text-center xl:pt-30 pt-20  px-4 shrink-0">
+            <header className="text-center mt-10  px-4 shrink-0">
                 <p
                     className="text-[10px] tracking-[0.3em] uppercase mb-1"
                     style={{ color: "#c9a84c", letterSpacing: "0.3em" }}
