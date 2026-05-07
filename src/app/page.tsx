@@ -21,6 +21,7 @@ import { CollectionStory } from "@/components/home/CollectionStory";
 import { WhyChooseUs } from "@/components/about/WhyChooseUs";
 import { StylingGuide } from "@/components/home/StylingGuide";
 import FAQ from "@/components/home/FAQ"
+import { CompanyBanners } from "@/components/home/CompanyBanners";
 export default function Home() {
   return (
     <main className="min-h-screen bg-background selection:bg-champagne/30 overflow-x-hidden">
@@ -65,6 +66,7 @@ export default function Home() {
       <StylingGuide/>
       <FAQ/>
       <ReviewsSlider />
+      <CompanyBanners />
       <Footer />
     </main>
   );

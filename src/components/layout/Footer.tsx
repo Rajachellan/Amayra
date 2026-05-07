@@ -236,19 +236,19 @@ export const Footer = () => {
 
             <ul className="space-y-4 font-semibold">
               {[
-                "Our Story",
-                "Shipping & Returns",
-                "Privacy Policy",
-                "Terms of Service",
-                "Store Locator",
+                { name: "Our Story", href: "/our-story" },
+                { name: "Shipping & Returns", href: "/shipping-returns" },
+                { name: "Privacy Policy", href: "/privacy-policy" },
+                { name: "Terms of Service", href: "/terms-of-service" },
+                { name: "Store Locator", href: "/store-locator" },
               ].map((item) => (
-                <li key={item}>
+                <li key={item.name}>
                   <Link
-                    href="#"
-                    className="text-xs uppercase tracking-widest"
+                    href={item.href}
+                    className="text-xs uppercase tracking-widest hover:text-champagne transition-colors"
                     style={{ color: "#6B645D" }}
                   >
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}

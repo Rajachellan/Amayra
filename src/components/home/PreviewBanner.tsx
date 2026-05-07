@@ -30,11 +30,11 @@ const sliders: Slider[] = [
     id: 1,
     title: "Bridal Royale",
     subtitle: "Opulence redefined for the modern bride",
-    mainImage:"/images/bridal_collections/bridal_collections (2).jpg",
+    mainImage: "/images/bridal_collections/bridal_collections (2).jpg",
     dots: [
-      { id: "d1a", x: 20, y: 75, product: { name: "Kundan Maang Tikka", collection: "Bridal Royale", price: "$124.00", image: "/images/luxury/bangles_1.jpg", desc: "Hand-crafted kundan setting with pearl drops" } },
-      { id: "d1b", x: 42, y: 40, product: { name: "Polki Choker Necklace", collection: "Bridal Royale", price: "$219.00", image: "images/luxury/neckles.jpg", desc: "Layered polki choker with emerald accents" } },
-      { id: "d1c", x: 64, y: 35, product: { name: "Gold Bangle Set", collection: "Bridal Royale", price: "$89.00", image: "/images/luxury/jumka.jpg", desc: "Set of 6 intricately carved gold-tone bangles" } },
+      { id: "d1a", x: 18, y: 77, product: { name: "Kundan Maang Tikka", collection: "Bridal Royale", price: "$124.00", image: "/images/luxury/bangles_1.jpg", desc: "Hand-crafted kundan setting with pearl drops" } },
+      { id: "d1b", x: 40, y: 43, product: { name: "Polki Choker Necklace", collection: "Bridal Royale", price: "$219.00", image: "images/luxury/neckles.jpg", desc: "Layered polki choker with emerald accents" } },
+      { id: "d1c", x: 65, y: 36, product: { name: "Gold Bangle Set", collection: "Bridal Royale", price: "$89.00", image: "/images/luxury/jumka.jpg", desc: "Set of 6 intricately carved gold-tone bangles" } },
     ],
   },
   {
@@ -44,7 +44,7 @@ const sliders: Slider[] = [
     mainImage: "/images/bride_2.jpg",
     dots: [
       { id: "d2a", x: 53, y: 44, product: { name: "Basra Trellis Choker", collection: "Basraa Wedding", price: "$59.34", image: "/images/ring.jpg", desc: "Geometric trellis pattern with gold finish" } },
-      { id: "d2b", x: 30, y: 55, product: { name: "Pearl Drop Earrings", collection: "Basraa Wedding", price: "$44.00", image: "https://images.unsplash.com/photo-1590548784585-643d2b9f2925?w=400&q=80", desc: "Freshwater pearl drops in antique gold" } },
+      { id: "d2b", x: 34, y: 53, product: { name: "Pearl Drop Earrings", collection: "Basraa Wedding", price: "$44.00", image: "https://images.unsplash.com/photo-1590548784585-643d2b9f2925?w=400&q=80", desc: "Freshwater pearl drops in antique gold" } },
       { id: "d2c", x: 40, y: 77, product: { name: "Meenakari Ring", collection: "Basraa Wedding", price: "$32.00", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80", desc: "Vibrant meenakari enamel floral ring" } },
     ],
   },
@@ -54,8 +54,8 @@ const sliders: Slider[] = [
     subtitle: "Heirlooms reimagined for today",
     mainImage: "/images/bride5.jpg",
     dots: [
-      { id: "d3a", x: 78, y: 55, product: { name: "Jadau Matha Patti", collection: "Regal Heritage", price: "$178.00", image: "/images/ring5.jpg", desc: "Traditional jadau headpiece with ruby inlay" } },
-      { id: "d3b", x: 45, y: 80, product: { name: "Temple Necklace", collection: "Regal Heritage", price: "$245.00", image: "/images/pendant.jpg", desc: "South Indian temple motif gold necklace" } },
+      { id: "d3a", x: 79, y: 48, product: { name: "Jadau Matha Patti", collection: "Regal Heritage", price: "$178.00", image: "/images/ring5.jpg", desc: "Traditional jadau headpiece with ruby inlay" } },
+      { id: "d3b", x: 45, y: 70, product: { name: "Temple Necklace", collection: "Regal Heritage", price: "$245.00", image: "/images/pendant.jpg", desc: "South Indian temple motif gold necklace" } },
     ],
   },
 ];
@@ -145,16 +145,14 @@ export const PreviewBanner = () => {
                 style={{ left: `${dot.x}%`, top: `${dot.y}%`, outline: "none", background: "transparent", border: "none", padding: 0 }}
               >
                 <span
-                  className={`absolute inset-0 rounded-full animate-ping ${
-                    activeDot === dot.id ? "bg-amber-400/50" : "bg-white/50"
-                  }`}
+                  className={`absolute inset-0 rounded-full animate-ping ${activeDot === dot.id ? "bg-amber-400/50" : "bg-white/50"
+                    }`}
                 />
                 <span
-                  className={`relative block w-4 h-4 rounded-full border-2 shadow-md transition-all duration-200 ${
-                    activeDot === dot.id
+                  className={`relative block w-4 h-4 rounded-full border-2 shadow-md transition-all duration-200 ${activeDot === dot.id
                       ? "bg-amber-400 border-amber-500 scale-125"
                       : "bg-white border-white/90 hover:scale-110"
-                  }`}
+                    }`}
                 />
               </button>
             ))}
@@ -252,7 +250,7 @@ export const PreviewBanner = () => {
               ))}
             </div>
           </div>
-</div>
+        </div>
         {/* Right Arrow */}
         <button
           onClick={next}
@@ -271,11 +269,10 @@ export const PreviewBanner = () => {
           <button
             key={i}
             onClick={() => goTo(i)}
-            className={`rounded-full transition-all duration-300 cursor-pointer ${
-              i === current
+            className={`rounded-full transition-all duration-300 cursor-pointer ${i === current
                 ? "w-6 h-1.5 bg-stone-700"
                 : "w-1.5 h-1.5 bg-stone-300 hover:bg-stone-400"
-            }`}
+              }`}
             style={{ outline: "none", border: "none" }}
           />
         ))}
