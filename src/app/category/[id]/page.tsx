@@ -88,7 +88,7 @@ function CategoryContent() {
                 type="radio"
                 name="price"
                 checked={filters.maxPrice === range.max}
-                onChange={() => setFilters({ ...filters, maxPrice: range.max })}
+                onChange={() => setFilters({ ...filters, maxPrice: range.max ?? null })}
                 className="w-4 h-4 accent-champagne"
               />
               <span className="text-xs uppercase tracking-widest text-gray-600 group-hover:text-champagne transition-colors">{range.label}</span>
