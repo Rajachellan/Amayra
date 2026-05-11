@@ -37,7 +37,7 @@ const categories = [
   },
   {
     name: "Bangles",
-    image:"/images/bangles.jpg",
+    image: "/images/bangles.jpg",
     href: "/category/bangles",
     desc: "Traditional Wristwear"
   },
@@ -111,7 +111,7 @@ export const CategorySection = () => {
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="max-w-2xl">
-            <motion.h3 
+            <motion.h3
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -119,7 +119,7 @@ export const CategorySection = () => {
             >
               Curated Collections
             </motion.h3>
-            <motion.h2 
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -129,28 +129,26 @@ export const CategorySection = () => {
               Shop by Category
             </motion.h2>
           </div>
-          
+
           <div className="flex items-center gap-4">
             <button
               onClick={() => scroll("left")}
-              className={`w-10 h-10 rounded-full border border-champagne/30 flex items-center justify-center transition-all ${
-                canScrollLeft ? "opacity-100 hover:bg-champagne hover:text-white" : "opacity-30 cursor-not-allowed"
-              }`}
+              className={`w-10 h-10 rounded-full border border-champagne/30 flex items-center justify-center transition-all ${canScrollLeft ? "opacity-100 hover:bg-champagne hover:text-white" : "opacity-30 cursor-not-allowed"
+                }`}
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => scroll("right")}
-              className={`w-10 h-10 rounded-full border border-champagne/30 flex items-center justify-center transition-all ${
-                canScrollRight ? "opacity-100 hover:bg-champagne hover:text-white" : "opacity-30 cursor-not-allowed"
-              }`}
+              className={`w-10 h-10 rounded-full border border-champagne/30 flex items-center justify-center transition-all ${canScrollRight ? "opacity-100 hover:bg-champagne hover:text-white" : "opacity-30 cursor-not-allowed"
+                }`}
             >
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <div 
+        <div
           ref={scrollRef}
           onScroll={checkScroll}
           className="flex gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-8 pt-4 px-2"
@@ -168,7 +166,7 @@ export const CategorySection = () => {
               <Link href={cat.href} className="block relative">
                 {/* Outer Layout with Gap */}
                 <div className="relative aspect-[4/5] bg-white p-2 rounded-t-full rounded-b-3xl shadow-xl border border-champagne/10 mb-5 transition-all duration-700 group-hover:shadow-2xl group-hover:shadow-champagne/20 group-hover:-translate-y-2">
-                  
+
                   {/* Inner Image Container */}
                   <div className="relative w-full h-full rounded-t-full rounded-b-2xl overflow-hidden">
                     <Image
@@ -178,14 +176,14 @@ export const CategorySection = () => {
                       className="object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
-                    
+
                     <div className="absolute bottom-6 left-0 w-full text-center px-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                       <p className="text-white/80 text-[7px] uppercase tracking-[0.4em] mb-1.5">{cat.desc}</p>
                       <h4 className="text-white font-serif text-xl tracking-wide">{cat.name}</h4>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="text-center">
                   <span className="inline-block text-[9px] tracking-[0.4em] font-bold text-champagne uppercase opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 group-hover:translate-y-0">
                     Explore More

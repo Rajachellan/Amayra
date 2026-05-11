@@ -6,6 +6,9 @@ import { toast } from "react-hot-toast";
 
 interface CartContextType {
   cart: CartItem[];
+  isCartOpen: boolean;
+  setIsCartOpen: (isOpen: boolean) => void;
+  toggleCart: () => void;
   addToCart: (product: Product) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
@@ -17,6 +20,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // Load cart from local storage
   useEffect(() => {
@@ -31,6 +35,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  const toggleCart = () => setIsCartOpen((prev) => !prev);
+
   const addToCart = (product: Product) => {
     setCart((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
@@ -43,6 +49,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       toast.success(`Added ${product.name} to cart`);
       return [...prev, { ...product, quantity: 1 }];
     });
+    // Automatically open cart when item is added
+    setIsCartOpen(true);
   };
 
   const removeFromCart = (id: string) => {
@@ -71,7 +79,17 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, subtotal }}
+      value={{ 
+        cart, 
+        isCartOpen, 
+        setIsCartOpen, 
+        toggleCart, 
+        addToCart, 
+        removeFromCart, 
+        updateQuantity, 
+        clearCart, 
+        subtotal 
+      }}
     >
       {children}
     </CartContext.Provider>

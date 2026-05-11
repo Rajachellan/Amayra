@@ -4,6 +4,7 @@ import { Toaster } from "react-hot-toast";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { Metadata } from "next";
+import { CartDrawer } from "@/components/layout/CartDrawer";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
         <CartProvider>
           <WishlistProvider>
             <Toaster position="top-right" />
+            <CartDrawer />
             {children}
           </WishlistProvider>
         </CartProvider>

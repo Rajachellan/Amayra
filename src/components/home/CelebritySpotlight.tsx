@@ -239,14 +239,14 @@ export const CelebritySpotlight = () => {
                       : "0 12px 40px -8px rgba(0,0,0,0.12)",
                   }}
                 >
-                <Image
-                  src={celeb.image}
-                  alt={celeb.name}
-                  fill
-                  className="object-cover transition-transform duration-700 ease-out"
-                  style={{ transform: isActive ? "scale(1.02)" : "scale(1)" }}
-                  priority={isActive}
-                />
+                  <Image
+                    src={celeb.image}
+                    alt={celeb.name}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out"
+                    style={{ transform: isActive ? "scale(1.02)" : "scale(1)" }}
+                    priority={isActive}
+                  />
 
                   {/* ── Gradient overlay (always visible for side cards) ── */}
                   <div

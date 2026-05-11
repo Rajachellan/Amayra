@@ -18,14 +18,19 @@ const MarqueeBanner = () => {
   ];
 
   return (
-    <div className="w-full bg-[#1A1A1A] py-2 overflow-hidden border-b border-white/5">
+    <div className="w-full bg-[#1A1A1A] py-2 overflow-hidden border-b border-white/5 cursor-pointer group"
+      onClick={() => {
+        const nextBtn = document.querySelector('.hero-next-button') as HTMLButtonElement;
+        if (nextBtn) nextBtn.click();
+      }}
+    >
       <div className="flex animate-marquee whitespace-nowrap">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex shrink-0 items-center">
             {announcements.map((text, idx) => (
               <span
                 key={idx}
-                className="text-[9px] text-white/80 font-medium tracking-[0.3em] uppercase mx-12"
+                className="text-[9px] text-white/80 font-medium tracking-[0.3em] uppercase mx-12 group-hover:text-champagne transition-colors"
               >
                 {text}
               </span>
@@ -38,13 +43,14 @@ const MarqueeBanner = () => {
 };
 
 export const Navbar = () => {
-  const { cart } = useCart();
+  const { cart, toggleCart } = useCart();
   const { wishlist } = useWishlist();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const lastScrollY = useRef(0);
   const { scrollY } = useScroll();
@@ -72,7 +78,7 @@ export const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isWhite = isScrolled || isHovered || isMobileMenuOpen;
+  const isWhite = isScrolled || isHovered || isMobileMenuOpen || isSearchOpen;
 
   const leftMenu = navigationData.slice(0, 3);
   const rightMenu = navigationData.slice(3);
@@ -86,8 +92,8 @@ export const Navbar = () => {
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
       className={`fixed top-0 left-0 w-full z-50 flex flex-col transition-all duration-300 ${isWhite
-          ? "shadow-lg border-b border-foreground/5 backdrop-blur-none"
-          : "border-none backdrop-blur-xl bg-gradient-to-b from-black/40 via-black/10 to-transparent"
+        ? "shadow-lg border-b border-foreground/5 backdrop-blur-none"
+        : "border-none backdrop-blur-xl bg-gradient-to-b from-black/40 via-black/10 to-transparent"
         }`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -100,6 +106,32 @@ export const Navbar = () => {
       <nav className={`w-full flex items-center transition-all duration-300 ${isScrolled ? "h-20" : "h-24"
         }`}>
         <div className="container mx-auto px-6 h-full flex items-center justify-between relative">
+
+          {/* Search Overlay */}
+          <AnimatePresence>
+            {isSearchOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="absolute inset-0 z-50 bg-white flex items-center px-6"
+              >
+                <div className="w-full max-w-4xl mx-auto flex items-center">
+                  <Search className="w-5 h-5 text-gray-400 mr-4" />
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Search our collections..."
+                    className="flex-1 bg-transparent border-none focus:outline-none text-lg font-serif tracking-widest uppercase"
+                  />
+                  <button onClick={() => setIsSearchOpen(false)} className="p-2 hover:bg-gray-50 rounded-full ml-4">
+                    <X className="w-6 h-6 text-gray-400" />
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Left Side Menu */}
           <div className="hidden lg:flex items-center space-x-12 flex-1">
             {leftMenu.map((item) => (
@@ -111,7 +143,7 @@ export const Navbar = () => {
                 <Link
                   href={item.href}
                   className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${isWhite ? "text-foreground" : "text-white/90"
-                    }`}
+                    } hover:text-champagne`}
                 >
                   {item.name}
                 </Link>
@@ -133,7 +165,8 @@ export const Navbar = () => {
                 alt="Amayra Logo"
                 width={140}
                 height={70}
-                className={`object-contain transition-all duration-500`}
+                className={`object-contain transition-all duration-500 $`}
+
                 priority
               />
             </Link>
@@ -150,7 +183,7 @@ export const Navbar = () => {
                 <Link
                   href={item.href}
                   className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${isWhite ? "text-foreground" : "text-white/90"
-                    }`}
+                    } hover:text-champagne`}
                 >
                   {item.name}
                 </Link>
@@ -168,12 +201,15 @@ export const Navbar = () => {
             <div className={`flex items-center space-x-7 pl-8 border-l transition-colors duration-300 ml-4 ${isWhite ? "border-foreground/10" : "border-white/20"
               }`}>
               {/* Search */}
-              <button className={`${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}>
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className={`${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}
+              >
                 <Search className="w-[17px] h-[17px] stroke-[1.5]" />
               </button>
 
               {/* Wishlist */}
-              <Link href="/wishlist" className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}>
+              <Link href="/wishlist" className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}>
                 <Heart className="w-[17px] h-[17px] stroke-[1.5]" />
                 {wishlist.length > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-champagne text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
@@ -183,22 +219,42 @@ export const Navbar = () => {
               </Link>
 
               {/* Cart */}
-              <Link href="/cart" className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}>
+              <button
+                onClick={toggleCart}
+                className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}
+              >
                 <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
                 {cart.length > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-foreground text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
                     {cart.length}
                   </span>
                 )}
-              </Link>
+              </button>
             </div>
           </div>
 
-          {/* Mobile Toggle */}
-          <div className="lg:hidden flex items-center">
+          {/* Mobile Search & Menu Toggle */}
+          <div className="lg:hidden flex items-center space-x-4">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className={`${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}
+            >
+              <Search className="w-5 h-5 stroke-[1.5]" />
+            </button>
+            <button
+              onClick={toggleCart}
+              className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}
+            >
+              <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
+              {cart.length > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-foreground text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
+                  {cart.length}
+                </span>
+              )}
+            </button>
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className={`${isWhite ? "text-foreground" : "text-white"} hover:text-champagne transition-colors`}
+              className={`${isWhite ? "text-foreground" : "text-white"} hover:text-champagne transition-colors p-2 -mr-2`}
             >
               <Menu className="w-6 h-6 stroke-[1.3]" />
             </button>

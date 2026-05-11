@@ -167,7 +167,7 @@ export const Hero = () => {
 
 
       {/* Navigation Arrows */}
-      <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-between items-center z-30 pointer-events-none">
+      {/* <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-between items-center z-30 pointer-events-none">
         <button
           onClick={prevSlide}
           className="w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
@@ -176,11 +176,11 @@ export const Hero = () => {
         </button>
         <button
           onClick={nextSlide}
-          className="w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
+          className="hero-next-button w-12 h-12 rounded-full border border-white/20 bg-black/10 backdrop-blur-md flex items-center justify-center text-white transition-all hover:bg-white hover:text-foreground pointer-events-auto group"
         >
           <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </button>
-      </div>
+      </div> */}
 
       {/* Pagination Dots */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-4 z-30">
