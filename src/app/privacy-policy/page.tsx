@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
           </section>
 
           <div className="pt-12 border-t border-foreground/10 text-sm italic">
-            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:privacy@shreeaarna.com" className="text-champagne underline">privacy@shreeaarna.com</a>.
+            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:privacy@amayra.com" className="text-champagne underline">privacy@amayra.com</a>.
           </div>
         </motion.div>
       </section>

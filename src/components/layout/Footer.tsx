@@ -94,14 +94,14 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <div className="mb-7">
-              <span
+              {/* <span
                 className="text-xl tracking-[0.25em] block"
                 style={{ color: "#2C2A28" }}
               >
-                GEMS OF
-              </span>
+              Amayra
+              </span> */}
               <span
-                className="text-sm tracking-[0.5em] block mt-[-3px]"
+                className="text-xl uppercase tracking-[0.5em] block mt-[-3px]"
                 style={{ color: "#C4A064" }}
               >
                 Amayra
@@ -283,7 +283,7 @@ export const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4" color="#C4A064" />
                 <span className="text-sm text-[#6B645D]">
-                  concierge@shreeaarna.com
+                  concierge@amayra.com
                 </span>
               </li>
             </ul>

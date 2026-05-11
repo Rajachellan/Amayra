@@ -84,7 +84,7 @@ const TermsOfService = () => {
           </section>
 
           <div className="pt-12 border-t border-foreground/10 text-sm italic">
-            If you have any questions about these Terms, please contact us at <a href="mailto:legal@shreeaarna.com" className="text-champagne underline">legal@shreeaarna.com</a>.
+            If you have any questions about these Terms, please contact us at <a href="mailto:legal@amayra.com" className="text-champagne underline">legal@amayra.com</a>.
           </div>
         </motion.div>
       </section>

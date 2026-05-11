@@ -222,7 +222,6 @@ export function SmallNavigationMenu() {
                     background: "linear-gradient(90deg, transparent, #c9a84c, #f0d9a0, #c9a84c, transparent)",
                 }}
             />
-
             {/* Header */}
             <header className="text-center mt-10  px-4 shrink-0">
                 <p
