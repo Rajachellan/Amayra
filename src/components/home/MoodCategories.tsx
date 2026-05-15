@@ -81,6 +81,7 @@ export const MoodCategories = () => {
                     src={mood.image}
                     alt={mood.title}
                     fill
+                    sizes="(max-width: 768px) 100vw, 25vw"
                     className="object-cover transition-transform duration-[2s] group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-foreground/5 group-hover:bg-foreground/5 transition-colors" />

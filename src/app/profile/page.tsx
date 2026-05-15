@@ -123,7 +123,7 @@ export default function ProfilePage() {
                         <div key={order.id} className="border border-gray-100 p-6 flex items-center justify-between group hover:border-brand-gold transition-colors duration-300">
                           <div className="flex items-center space-x-6">
                             <div className="relative w-16 h-20 shrink-0 overflow-hidden">
-                              <Image src={order.image} alt={order.id} fill className="object-cover" />
+                              <Image src={order.image} alt={order.id} fill sizes="64px" className="object-cover" />
                             </div>
                             <div>
                               <p className="font-bold text-brand-emerald tracking-widest uppercase mb-1">{order.id}</p>

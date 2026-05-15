@@ -4,170 +4,47 @@ import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { Product as GlobalProduct } from "@/types";
-import neeckles from "../../../public/images/neckles_5.jpg"
-import neckles2 from "../../../public/images/luxury/temple.png"
-import bngles from "../../../public/images/luxury/bangles.avif"
 import Image from "next/image";
-type LocalProduct = {
-    id: number;
-    name: string;
-    price: string;
-    oldPrice?: string;
-    category: "bestsellers" | "newarrivals" | "trending";
-    badge?: string;
-    image: string;
-    accent: string;
-};
-
-const products: LocalProduct[] = [
-    // BESTSELLERS
-    {
-        id: 1,
-        name: "Miera Kundan Emerald Drop Earrings",
-        price: "₹1,290",
-        oldPrice:"₹1,800",
-        category: "bestsellers",
-        badge: "Best Loved",
-        image:
-            "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=600&q=80",
-        accent: "#c9a84c",
-    },
-    {
-        id: 2,
-        name: "Antique Gold Polki Bangles",
-        price: "₹3,200",
-        category: "bestsellers",
-        badge: "Top Pick",
-        oldPrice:"₹3,800",
-        image:
-            "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80",
-        accent: "#d4a373",
-    },
-    {
-        id: 3,
-        name: "Floral Kundan Maang Teeka",
-        price: "₹2,800",
-        oldPrice:"₹3,200",
-        category: "bestsellers",
-        badge: "Bridal Edit",
-        image:
-            "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=600&q=80",
-        accent: "#b08850",
-    },
-    {
-        id: 4,
-        name: "Pearl Sheesh Phool Tiara",
-        price: "₹5,400",
-        oldPrice:"₹5,800",
-        category: "bestsellers",
-        badge: "Signature",
-        image:
-            "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80",
-        accent: "#c9a84c",
-    },
-
-    // NEW ARRIVALS
-    {
-        id: 5,
-        name: "Rose Gold Celestial Choker",
-        price: "₹4,100",
-        oldPrice:"₹4,890",
-        category: "newarrivals",
-        badge: "Just In",
-        image:
-            "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
-        accent: "#c9a84c",
-    },
-    {
-        id: 6,
-        name: "Meenakari Lotus Jhumkas",
-        price: "₹1,850",
-        oldPrice:"₹2,500",
-        category: "newarrivals",
-        badge: "New",
-        image:"/images/neckles_5.jpg",
-        accent: "#d4a373",
-    },
-    {
-        id: 7,
-        name: "Polki Diamond Layered Necklace",
-        price: "₹6,500",
-        oldPrice:"6,870",
-        category: "newarrivals",
-        badge: "Just Arrived",
-        image:
-            "https://images.unsplash.com/photo-1620656798579-1984d9e87df7?w=600&q=80",
-        accent: "#b08850",
-    },
-    {
-        id: 8,
-        name: "Champagne Pearl Cuff Bracelet",
-        price: "₹2,350",
-        oldPrice:"₹2,650",
-        category: "newarrivals",
-        badge: "Fresh",
-        image:
-            "/images/luxury/temple.png",
-        accent: "#c9a84c",
-    },
-
-    // TRENDING NOW
-    {
-        id: 9,
-        name: "Vintage Jadau Collar Necklace",
-        price: "₹7,200",
-        oldPrice:"₹7,630",
-        category: "trending",
-        badge: "Viral",
-        image:
-            "https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=600&q=80",
-        accent: "#c9a84c",
-    },
-    {
-        id: 10,
-        name: "Boho Gold Stacking Rings Set",
-        price: "₹980",
-        oldPrice:"₹1,530",
-        category: "trending",
-        badge: "Trending",
-        image:
-            "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80",
-        accent: "#d4a373",
-    },
-    {
-        id: 11,
-        name: "Kundan Floral Hair Chain",
-        price: "₹3,600",
-        oldPrice:"₹3,980",
-        category: "trending",
-        badge: "Hot Now",
-        image:    "/images/luxury/bangles.avif",
-        accent: "#b08850",
-    },
-    {
-        id: 12,
-        name: "Gold Enamelled Peacock Earrings",
-        price: "₹2,100",
-        oldPrice:"₹3,790",
-        category: "trending",
-        badge: "Loved By All",
-        image:
-            "https://images.unsplash.com/photo-1589128777073-263566ae5e4d?w=600&q=80",
-        accent: "#c9a84c",
-    },
-];
+import Link from "next/link";
+import { shopApi } from "@/lib/api/shop";
+import { mapListItemToProduct } from "@/lib/mapProduct";
 
 type Tab = "bestsellers" | "newarrivals" | "trending";
 
-const convertToGlobalProduct = (p: LocalProduct): GlobalProduct => ({
-    id: `small-nav-${p.id}`,
-    name: p.name,
-    price: parseInt(p.price.replace(/[^\d]/g, "")),
-    image: p.image,
-    category: p.category,
-    description: p.name,
-    stock: 10,
-});
+type RowProduct = {
+    idStr: string;
+    slug: string;
+    name: string;
+    price: string;
+    oldPrice?: string;
+    category: Tab;
+    badge?: string;
+    image: string;
+    accent: string;
+    global: GlobalProduct;
+};
+
+function toRow(
+    p: GlobalProduct,
+    tab: Tab,
+    badge?: string
+): RowProduct {
+    const img = typeof p.image === "string" ? p.image : "";
+    return {
+        idStr: p.id,
+        slug: p.slug ?? p.id,
+        name: p.name,
+        price: `₹${p.price.toLocaleString()}`,
+        oldPrice: p.oldPrice != null ? `₹${p.oldPrice.toLocaleString()}` : undefined,
+        category: tab,
+        badge:
+            badge ??
+            (tab === "bestsellers" ? "Bestseller" : tab === "newarrivals" ? "New" : "Trending"),
+        image: img,
+        accent: "#c9a84c",
+        global: p,
+    };
+}
 
 const tabs: { key: Tab; label: string }[] = [
     { key: "bestsellers", label: "Best Sellers" },
@@ -180,10 +57,31 @@ export function SmallNavigationMenu() {
     const { toggleWishlist, isInWishlist } = useWishlist();
     const [activeTab, setActiveTab] = useState<Tab>("bestsellers");
     const [animating, setAnimating] = useState(false);
-    const [visibleProducts, setVisibleProducts] = useState<LocalProduct[]>(
-        products.filter((p) => p.category === "bestsellers")
-    );
-    const [hoveredId, setHoveredId] = useState<number | null>(null);
+    const [pool, setPool] = useState<Record<Tab, RowProduct[]>>({
+        bestsellers: [],
+        newarrivals: [],
+        trending: [],
+    });
+    const visibleProducts = pool[activeTab];
+    const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+    useEffect(() => {
+        Promise.all([
+            shopApi.products({ sort: "bestseller", limit: 4, page: 1 }),
+            shopApi.products({ category: "new", limit: 4, page: 1 }),
+            shopApi.products({ trending: "true", limit: 4, page: 1 }),
+        ])
+            .then(([b, n, t]) => {
+                setPool({
+                    bestsellers: b.items.map((x) => toRow(mapListItemToProduct(x), "bestsellers")),
+                    newarrivals: n.items.map((x) => toRow(mapListItemToProduct(x), "newarrivals")),
+                    trending: t.items.map((x) => toRow(mapListItemToProduct(x), "trending")),
+                });
+            })
+            .catch(() =>
+                setPool({ bestsellers: [], newarrivals: [], trending: [] })
+            );
+    }, []);
     const indicatorRef = useRef<HTMLDivElement>(null);
     const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
 
@@ -192,7 +90,7 @@ export function SmallNavigationMenu() {
         setAnimating(true);
         setTimeout(() => {
             setActiveTab(tab);
-            setVisibleProducts(products.filter((p) => p.category === tab));
+            /* visibleProducts derived from pool + activeTab */
             setAnimating(false);
         }, 300);
     };
@@ -303,9 +201,9 @@ export function SmallNavigationMenu() {
                 >
                     {visibleProducts.map((product, index) => (
                         <div
-                            key={product.id}
+                            key={product.idStr}
                             className="group cursor-pointer"
-                            onMouseEnter={() => setHoveredId(product.id)}
+                            onMouseEnter={() => setHoveredId(product.idStr)}
                             onMouseLeave={() => setHoveredId(null)}
                             style={{
                                 animationDelay: `${index * 80}ms`,
@@ -318,7 +216,7 @@ export function SmallNavigationMenu() {
                                 style={{
                                     aspectRatio: "1/1",
                                     boxShadow:
-                                        hoveredId === product.id
+                                        hoveredId === product.idStr
                                             ? "0 10px 30px rgba(201,168,76,0.2), 0 4px 10px rgba(0,0,0,0.08)"
                                             : "0 4px 12px rgba(0,0,0,0.05)",
                                     transition: "box-shadow 0.4s ease",
@@ -340,7 +238,7 @@ export function SmallNavigationMenu() {
                                     style={{
                                         background:
                                             "linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(240,208,128,0.13) 100%)",
-                                        opacity: hoveredId === product.id ? 1 : 0,
+                                        opacity: hoveredId === product.idStr ? 1 : 0,
                                     }}
                                 />
 
@@ -365,14 +263,14 @@ export function SmallNavigationMenu() {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        toggleWishlist(convertToGlobalProduct(product));
+                                        toggleWishlist(product.global);
                                     }}
                                     className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-300"
                                     style={{
                                         background: "rgba(255,255,255,0.82)",
                                         backdropFilter: "blur(6px)",
-                                        opacity: hoveredId === product.id ? 1 : 0,
-                                        transform: hoveredId === product.id ? "scale(1)" : "scale(0.8)",
+                                        opacity: hoveredId === product.idStr ? 1 : 0,
+                                        transform: hoveredId === product.idStr ? "scale(1)" : "scale(0.8)",
                                         boxShadow: "0 2px 8px rgba(0,0,0,0.10)",
                                     }}
                                 >
@@ -380,7 +278,7 @@ export function SmallNavigationMenu() {
                                         width="14"
                                         height="14"
                                         viewBox="0 0 24 24"
-                                        fill={isInWishlist(`small-nav-${product.id}`) ? "#c9a84c" : "none"}
+                                        fill={isInWishlist(product.global.id) ? "#c9a84c" : "none"}
                                         stroke="#c9a84c"
                                         strokeWidth="2"
                                     >
@@ -393,7 +291,7 @@ export function SmallNavigationMenu() {
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        addToCart(convertToGlobalProduct(product));
+                                        addToCart(product.global);
                                     }}
                                     className="absolute bottom-0 left-0 right-0 flex items-center justify-center py-3 text-xs tracking-widest uppercase transition-all duration-400 w-full border-none cursor-pointer"
                                     style={{
@@ -403,7 +301,7 @@ export function SmallNavigationMenu() {
                                         letterSpacing: "0.18em",
                                         fontSize: "0.65rem",
                                         fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-                                        transform: hoveredId === product.id ? "translateY(0)" : "translateY(100%)",
+                                        transform: hoveredId === product.idStr ? "translateY(0)" : "translateY(100%)",
                                         transition: "transform 0.35s cubic-bezier(.4,0,.2,1)",
                                     }}
                                 >
@@ -418,10 +316,11 @@ export function SmallNavigationMenu() {
 
                             {/* Product Info */}
                         <div className="px-1">
+    <Link href={`/product/${product.slug}`}>
     <h3
         className="text-sm sm:text-base leading-snug mb-1 transition-colors duration-300"
         style={{
-            color: hoveredId === product.id ? "#c9a84c" : "#3a2a1a",
+            color: hoveredId === product.idStr ? "#c9a84c" : "#3a2a1a",
             fontFamily: "'Cormorant Garamond', 'Georgia', serif",
             fontWeight: 500,
             letterSpacing: "0.01em",
@@ -429,6 +328,7 @@ export function SmallNavigationMenu() {
     >
         {product.name}
     </h3>
+    </Link>
 
     <div className="flex items-center justify-between">
         

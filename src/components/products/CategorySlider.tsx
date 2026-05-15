@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 interface CategorySliderProps {
   currentCategory: string;
-  subCategories: { name: string; image: string }[];
+  subCategories: { name: string; slug: string; image: string }[];
 }
 
 export const CategorySlider = ({ currentCategory, subCategories }: CategorySliderProps) => {
@@ -35,18 +35,21 @@ export const CategorySlider = ({ currentCategory, subCategories }: CategorySlide
           {subCategories.map((sub) => (
             <button
               key={sub.name}
-              onClick={() => router.push(`/category/${currentCategory.toLowerCase()}?sub=${sub.name}`)}
+              onClick={() =>
+              router.push(`/category/${currentCategory.toLowerCase()}?sub=${encodeURIComponent(sub.slug)}`)
+            }
               className="flex flex-col items-center space-y-3 min-w-[80px] group text-center"
             >
-              <div className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all duration-300 relative ${currentSub === sub.name ? "border-brand-gold" : "border-gray-100 group-hover:border-brand-gold"}`}>
+              <div className={`w-16 h-16 rounded-full overflow-hidden border-2 transition-all duration-300 relative ${currentSub === sub.slug ? "border-brand-gold" : "border-gray-100 group-hover:border-brand-gold"}`}>
                 <Image
                   src={sub.image}
                   alt={sub.name}
                   fill
+                  sizes="64px"
                   className="object-cover"
                 />
               </div>
-              <span className={`text-[10px] uppercase tracking-widest font-bold transition-colors ${currentSub === sub.name ? "text-brand-gold" : "text-gray-400 group-hover:text-brand-gold"}`}>
+              <span className={`text-[10px] uppercase tracking-widest font-bold transition-colors ${currentSub === sub.slug ? "text-brand-gold" : "text-gray-400 group-hover:text-brand-gold"}`}>
                 {sub.name}
               </span>
             </button>

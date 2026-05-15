@@ -63,12 +63,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
         {/* Image Container */}
         <div className="relative overflow-hidden aspect-[4/5] cursor-pointer" onClick={() => setIsLightboxOpen(true)}>
-          <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
-          />
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
+            />
           
           {/* Quick Add Overlay */}
           <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out bg-gradient-to-t from-black/60 to-transparent flex justify-center">
@@ -92,7 +93,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             <span className="text-champagne text-[9px] uppercase tracking-[0.4em] block mb-2 font-bold">
               {product.category}
             </span>
-            <Link href={`/product/${product.id}`} className="block group/title w-full">
+            <Link href={`/product/${product.slug ?? product.id}`} className="block group/title w-full">
               <h3 className="font-serif text-base text-foreground mb-2 transition-colors duration-500 group-hover/title:text-champagne truncate">
                 {product.name}
               </h3>
@@ -146,6 +147,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                   src={product.image}
                   alt={product.name}
                   fill
+                  sizes="(max-width: 768px) 100vw, 80vw"
                   className="object-contain"
                   priority
                 />

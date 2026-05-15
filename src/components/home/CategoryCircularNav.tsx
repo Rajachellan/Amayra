@@ -82,6 +82,7 @@ export const CategoryCircularNav = () => {
                       src={cat.image}
                       alt={cat.name}
                       fill
+                      sizes="112px"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                   </div>

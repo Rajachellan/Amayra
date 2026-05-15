@@ -1,23 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { products } from "@/data/products";
+import { shopApi } from "@/lib/api/shop";
+import { mapListItemToProduct } from "@/lib/mapProduct";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { Heart, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
+import type { Product } from "@/types";
 
 export const ProductSection = () => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
 
-  // Pick specific products for the editorial layout
-  const featuredProducts = products.slice(0, 5);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        let r = await shopApi.products({ featured: "true", limit: 5, page: 1 });
+        if (!r.items.length) {
+          r = await shopApi.products({ limit: 5, page: 1 });
+        }
+        if (!cancelled) setFeaturedProducts(r.items.map(mapListItemToProduct));
+      } catch {
+        if (!cancelled) setFeaturedProducts([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
-  const handleWishlist = (e: React.MouseEvent, product: (typeof products)[0]) => {
+  const handleWishlist = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     toggleWishlist(product);
   };
@@ -55,6 +73,7 @@ export const ProductSection = () => {
             transition={{ duration: 1.2 }}
             className="md:col-span-4 md:row-span-2"
           >
+            {featuredProducts[0] && (
             <ProductCard
               product={featuredProducts[0]}
               size="large"
@@ -62,6 +81,7 @@ export const ProductSection = () => {
               addToCart={addToCart}
               isInWishlist={isInWishlist}
             />
+            )}
           </motion.div>
 
           {/* Item 2: Small adjacent */}
@@ -72,6 +92,7 @@ export const ProductSection = () => {
             transition={{ duration: 1, delay: 0.2 }}
             className="md:col-span-2 mt-0 md:mt-20"
           >
+            {featuredProducts[1] && (
             <ProductCard
               product={featuredProducts[1]}
               size="small"
@@ -79,6 +100,7 @@ export const ProductSection = () => {
               addToCart={addToCart}
               isInWishlist={isInWishlist}
             />
+            )}
           </motion.div>
 
           {/* Item 3: Small below 2 */}
@@ -89,6 +111,7 @@ export const ProductSection = () => {
             transition={{ duration: 1, delay: 0.4 }}
             className="md:col-span-2"
           >
+            {featuredProducts[2] && (
             <ProductCard
               product={featuredProducts[2]}
               size="small"
@@ -96,6 +119,7 @@ export const ProductSection = () => {
               addToCart={addToCart}
               isInWishlist={isInWishlist}
             />
+            )}
           </motion.div>
 
           {/* Item 4: Medium/Wide */}
@@ -106,6 +130,7 @@ export const ProductSection = () => {
             transition={{ duration: 1, delay: 0.3 }}
             className="md:col-span-3 -mt-4 md:-mt-24"
           >
+            {featuredProducts[3] && (
             <ProductCard
               product={featuredProducts[3]}
               size="medium"
@@ -113,6 +138,7 @@ export const ProductSection = () => {
               addToCart={addToCart}
               isInWishlist={isInWishlist}
             />
+            )}
           </motion.div>
 
           {/* Item 5: Medium/Wide */}
@@ -123,6 +149,7 @@ export const ProductSection = () => {
             transition={{ duration: 1, delay: 0.5 }}
             className="md:col-span-3"
           >
+            {featuredProducts[4] && (
             <ProductCard
               product={featuredProducts[4]}
               size="medium"
@@ -130,6 +157,7 @@ export const ProductSection = () => {
               addToCart={addToCart}
               isInWishlist={isInWishlist}
             />
+            )}
           </motion.div>
 
         </div>
@@ -148,15 +176,29 @@ export const ProductSection = () => {
   );
 };
 
-const ProductCard = ({ product, size, toggleWishlist, addToCart, isInWishlist }: any) => {
+const ProductCard = ({
+  product,
+  size,
+  toggleWishlist,
+  addToCart,
+  isInWishlist,
+}: {
+  product: Product;
+  size: "large" | "small" | "medium";
+  toggleWishlist: (e: React.MouseEvent, product: Product) => void;
+  addToCart: (p: Product) => void;
+  isInWishlist: (id: string) => boolean;
+}) => {
+  const href = `/product/${product.slug ?? product.id}`;
   return (
-    <Link href={`/product/${product.id}`} className="group block h-full">
+    <Link href={href} className="group block h-full">
       <div className={`relative overflow-hidden transition-all duration-700 bg-pearl border border-foreground/[0.03] group-hover:border-champagne group-hover:shadow-2xl group-hover:shadow-[var(--gold-glow)] ${size === "large" ? "aspect-[4/3] md:aspect-[5/4]" : "aspect-[4/5] md:aspect-[3/4]"
         }`}>
         <Image
           src={product.image}
           alt={product.name}
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-1000 group-hover:scale-110"
         />
 
@@ -184,7 +226,7 @@ const ProductCard = ({ product, size, toggleWishlist, addToCart, isInWishlist }:
         </div>
 
         {/* Floating Tag */}
-        {product.isNew && (
+        {product.isNewArrival && (
           <div className="absolute top-6 left-6">
             <span className="px-4 py-1.5 bg-background text-[8px] uppercase tracking-[0.3em] font-medium text-foreground border border-foreground/5 rounded-full">
               New Edit

@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
@@ -34,12 +35,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`}>
+      <body className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`} suppressHydrationWarning>
         <CartProvider>
           <WishlistProvider>
             <Toaster position="top-right" />
             <CartDrawer />
-            {children}
+            <Suspense fallback={null}>
+              {children}
+            </Suspense>
           </WishlistProvider>
         </CartProvider>
       </body>

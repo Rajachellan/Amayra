@@ -298,7 +298,7 @@ export const Footer = () => {
 
           <div className="flex items-center gap-6">
             <span className="text-[10px]" style={{ color: "#A39B92" }}>
-              Powered by Luxury Tech
+              Developed by <Link target="_blank" href="https://rankraze.com">Rankraze</Link>
             </span>
 
             <div className="flex gap-2">

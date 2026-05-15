@@ -1,13 +1,14 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useScroll } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import Image from "next/image";
-import { navigationData } from "@/data/navigation";
+import { navigationData, type NavItem } from "@/data/navigation";
 import { CompactDropdown } from "./CompactDropdown";
+import { shopApi } from "@/lib/api/shop";
 
 const MarqueeBanner = () => {
   const announcements = [
@@ -45,15 +46,59 @@ const MarqueeBanner = () => {
 export const Navbar = () => {
   const { cart, toggleCart } = useCart();
   const { wishlist } = useWishlist();
+  const [shopSubItems, setShopSubItems] = useState<NonNullable<NavItem["subItems"]> | null>(null);
+  const [collectionSubItems, setCollectionSubItems] = useState<NonNullable<NavItem["subItems"]> | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const lastScrollY = useRef(0);
-  const { scrollY } = useScroll();
+
+  useEffect(() => {
+    setMounted(true);
+    shopApi
+      .categoriesTree()
+      .then((tree) => {
+        const sub: NonNullable<NavItem["subItems"]> = [];
+        for (const root of tree) {
+          sub.push({ name: root.name, href: `/category/${root.slug}` });
+          for (const ch of root.children || []) {
+            sub.push({ name: ch.name, href: `/category/${ch.slug}` });
+          }
+        }
+        sub.push({ name: "New Arrivals", href: "/category/new" });
+        sub.push({ name: "View All", href: "/category/all" });
+        setShopSubItems(sub.slice(0, 14));
+      })
+      .catch(() => setShopSubItems(null));
+    shopApi
+      .collections({ featured: true })
+      .then((cols) => {
+        setCollectionSubItems(
+          cols.map((c) => ({
+            name: c.name,
+            href: `/category/all?collection=${encodeURIComponent(c.slug)}`,
+          }))
+        );
+      })
+      .catch(() => setCollectionSubItems(null));
+  }, []);
+
+  const navItems = useMemo(() => {
+    return navigationData.map((item) => {
+      if (item.name === "Shop" && shopSubItems?.length) {
+        return { ...item, subItems: shopSubItems };
+      }
+      if (item.name === "Collections" && collectionSubItems?.length) {
+        return { ...item, subItems: collectionSubItems };
+      }
+      return item;
+    });
+  }, [shopSubItems, collectionSubItems]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,8 +125,8 @@ export const Navbar = () => {
 
   const isWhite = isScrolled || isHovered || isMobileMenuOpen || isSearchOpen;
 
-  const leftMenu = navigationData.slice(0, 3);
-  const rightMenu = navigationData.slice(3);
+  const leftMenu = navItems.slice(0, 3);
+  const rightMenu = navItems.slice(3);
 
   return (
     <motion.header
@@ -159,14 +204,14 @@ export const Navbar = () => {
           {/* Center: Logo */}
           <div className={`flex justify-center flex-shrink-0 px-10 transition-transform duration-500 ${isScrolled ? "scale-90" : "scale-100"
             }`}>
-            <Link href="/" className="relative group block">
+              <Link href="/" className="relative group block">
               <Image
                 src="/logo3.png"
                 alt="Amayra Logo"
                 width={140}
                 height={70}
-                className={`object-contain transition-all duration-500 $`}
-
+                style={{ width: "auto", height: "auto" }}
+                className={`object-contain transition-all duration-500 ${isWhite ? "opacity-100" : "brightness-0 invert"}`}
                 priority
               />
             </Link>
@@ -211,7 +256,7 @@ export const Navbar = () => {
               {/* Wishlist */}
               <Link href="/wishlist" className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}>
                 <Heart className="w-[17px] h-[17px] stroke-[1.5]" />
-                {wishlist.length > 0 && (
+                {mounted && wishlist.length > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-champagne text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
                     {wishlist.length}
                   </span>
@@ -224,7 +269,7 @@ export const Navbar = () => {
                 className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}
               >
                 <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
-                {cart.length > 0 && (
+                {mounted && cart.length > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-foreground text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
                     {cart.length}
                   </span>
@@ -246,7 +291,7 @@ export const Navbar = () => {
               className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors`}
             >
               <ShoppingBag className="w-5 h-5 stroke-[1.5]" />
-              {cart.length > 0 && (
+              {mounted && cart.length > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 bg-foreground text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
                   {cart.length}
                 </span>
@@ -287,7 +332,7 @@ export const Navbar = () => {
               </div>
 
               <div className="flex flex-col space-y-8">
-                {navigationData.map((item) => (
+                {navItems.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}

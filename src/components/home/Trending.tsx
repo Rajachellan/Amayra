@@ -1,13 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ProductCard } from "../products/ProductCard";
-import { products } from "@/data/products";
 import { Button } from "../ui/Button";
 import Link from "next/link";
+import { shopApi } from "@/lib/api/shop";
+import { mapListItemToProduct } from "@/lib/mapProduct";
+import type { Product } from "@/types";
 
 export const Trending = () => {
-  const trendingProducts = products.slice(0, 4);
+  const [trendingProducts, setTrendingProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        let r = await shopApi.products({ trending: "true", limit: 4, page: 1 });
+        if (!r.items.length) {
+          r = await shopApi.products({ sort: "trending", limit: 4, page: 1 });
+        }
+        if (!cancelled) setTrendingProducts(r.items.map(mapListItemToProduct));
+      } catch {
+        if (!cancelled) setTrendingProducts([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="py-24 bg-gray-50">
@@ -27,9 +47,13 @@ export const Trending = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {trendingProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {trendingProducts.length === 0 ? (
+            <p className="text-gray-400 col-span-full text-center py-8">Loading…</p>
+          ) : (
+            trendingProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          )}
         </div>
 
         <div className="mt-12 text-center md:hidden">

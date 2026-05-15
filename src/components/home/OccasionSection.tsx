@@ -67,6 +67,7 @@ export const OccasionSection = () => {
                     src={occ.image}
                     alt={occ.name}
                     fill
+                    sizes="(max-width: 768px) 50vw, 20vw"
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-brand-emerald/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

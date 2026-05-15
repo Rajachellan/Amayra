@@ -11,6 +11,12 @@ import { Trash2, Plus, Minus, ArrowRight, ShieldCheck, Ticket } from "lucide-rea
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, subtotal } = useCart();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   const shipping = 0;
   const tax = subtotal * 0.03; // Simulated GST
@@ -33,11 +39,11 @@ export default function CartPage() {
             
             {/* Cart Items */}
             <div className="w-full lg:w-2/3 space-y-6">
-              {cart.length > 0 ? (
+              {mounted && cart.length > 0 ? (
                 cart.map((item) => (
                   <div key={item.id} className="bg-white p-6 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
                     <div className="relative w-32 h-40 overflow-hidden shrink-0">
-                      <Image src={item.image} alt={item.name} fill className="object-cover" />
+                      <Image src={item.image} alt={item.name} fill sizes="128px" className="object-cover" />
                     </div>
                     
                     <div className="flex-grow space-y-2 text-center sm:text-left">
@@ -130,7 +136,7 @@ export default function CartPage() {
                     <span className="font-serif text-xl tracking-widest uppercase">Total</span>
                     <span className="font-bold text-2xl text-brand-emerald">₹{total.toLocaleString()}</span>
                   </div>
-                  <Button variant="gold" size="lg" className="w-full" disabled={cart.length === 0}>
+                  <Button variant="gold" size="lg" className="w-full" disabled={!mounted || cart.length === 0}>
                     PROCEED TO CHECKOUT <ArrowRight className="ml-2 w-5 h-5" />
                   </Button>
                 </div>

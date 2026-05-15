@@ -38,17 +38,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
   const addToCart = (product: Product) => {
+    let message = `Added ${product.name} to cart`;
+    
     setCart((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
-        toast.success(`Increased ${product.name} quantity`);
+        message = `Increased ${product.name} quantity`;
         return prev.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      toast.success(`Added ${product.name} to cart`);
       return [...prev, { ...product, quantity: 1 }];
     });
+
+    toast.success(message);
     // Automatically open cart when item is added
     setIsCartOpen(true);
   };
