@@ -211,7 +211,7 @@ export const Navbar = () => {
                 width={140}
                 height={70}
                 style={{ width: "auto", height: "auto" }}
-                className={`object-contain transition-all duration-500 ${isWhite ? "opacity-100" : "brightness-0 invert"}`}
+                className={`object-contain transition-all duration-500 `}
                 priority
               />
             </Link>

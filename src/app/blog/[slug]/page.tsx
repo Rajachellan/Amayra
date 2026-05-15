@@ -1,227 +1,195 @@
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
-import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
+import React, { use } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { api, mediaSrc } from "@/lib/api";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { ChevronLeft, Share2, Link2, Clock, User } from "lucide-react";
-import { FaFacebookF, FaXTwitter } from "react-icons/fa6";
+import { BLOG_POSTS } from "@/data/blogs";
+import { ArrowLeft, Calendar, Clock, Share2, Bookmark } from "lucide-react";
+import { notFound } from "next/navigation";
 
-type Blog = {
-  _id: string;
-  title: string;
-  slug: string;
-  content: string;
-  coverImage?: string;
-  author?: string;
-  tags: string[];
-  publishedAt?: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  keywords?: string[];
-};
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
-function BlogPostContent() {
-  const params = useParams();
-  const router = useRouter();
-  const slug = params.slug as string;
-  
-  const [post, setPost] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState("");
-  const [related, setRelated] = useState<Blog[]>([]);
-  const [mounted, setMounted] = useState(false);
+const BlogDetailsPage = ({ params }: PageProps) => {
+  const { slug } = use(params);
+  const post = BLOG_POSTS.find((p) => p.slug === slug);
 
-  useEffect(() => {
-    setMounted(true);
-    async function fetchPost() {
-      try {
-        const res = await api<Blog>(`/blogs/${slug}`);
-        setPost(res);
-        
-        // Fetch related posts (simple logic: get recent blogs)
-        const all = await api<{ items: Blog[] }>("/blogs?limit=4");
-        setRelated(all.items.filter(b => b._id !== res._id).slice(0, 3));
-      } catch (error) {
-        setErr("Article not found.");
-      } finally {
-        setLoading(false);
-      }
-    }
-    if (slug) fetchPost();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-[#FDFCF9]" suppressHydrationWarning>
-         <div className="w-12 h-12 border-2 border-stone-200 border-t-stone-900 rounded-full animate-spin" suppressHydrationWarning />
-      </div>
-    );
-  }
-
-  if (err || !post) {
-    return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-[#FDFCF9] px-4" suppressHydrationWarning>
-        <h1 className="text-2xl font-serif text-stone-900 mb-4">{err || "Article not found"}</h1>
-        <Link href="/blog" className="text-stone-500 hover:text-stone-900 underline text-xs uppercase tracking-widest">
-          Return to The Muse
-        </Link>
-      </div>
-    );
+  if (!post) {
+    notFound();
   }
 
   return (
-    <main className="bg-[#FDFCF9] min-h-screen" suppressHydrationWarning>
+    <main className="min-h-screen bg-background selection:bg-champagne/30 overflow-x-hidden">
       <Navbar />
 
-      {/* 1. EDITORIAL HERO */}
-      <header className="relative w-full h-[85vh] overflow-hidden">
-        <motion.div 
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2 }}
-          className="absolute inset-0"
-        >
-          <Image
-            src={post.coverImage ? mediaSrc(post.coverImage) : "/images/banner3.jpg"}
-            alt={post.title}
-            fill
-            priority
-            className="object-cover brightness-[0.7] contrast-[1.1]"
-          />
-        </motion.div>
-        
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#FDFCF9]" />
-        
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 z-10">
+      {/* Hero / Header Section */}
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+        <div className="container mx-auto max-w-4xl">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            className="max-w-5xl"
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center text-center space-y-6"
           >
-            <span className="inline-block px-6 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-[10px] uppercase tracking-[0.4em] font-bold text-white mb-8">
-              {post.tags?.[0] || "Editorial"}
+            <Link 
+              href="/blog"
+              className="group flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-text-muted hover:text-champagne transition-colors"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1" />
+              Back to Journal
+            </Link>
+
+            <span className="px-4 py-1.5 bg-champagne/10 text-champagne text-[10px] uppercase tracking-[0.2em] font-bold rounded-full">
+              {post.category}
             </span>
-            <h1 className="text-4xl md:text-7xl font-serif text-white leading-[1.1] tracking-tight mb-8 drop-shadow-2xl">
+
+            <h1 className="text-4xl md:text-6xl font-serif text-foreground leading-[1.15]">
               {post.title}
             </h1>
-            
-            <div className="flex flex-wrap items-center justify-center gap-8 text-[11px] uppercase tracking-[0.2em] font-bold text-white/80">
-              <div className="flex items-center gap-2">
-                <User className="w-3 h-3" />
-                <span>{post.author || "Amayra Editor"}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-3 h-3" />
-                <span>{mounted && post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'Recently'}</span>
-              </div>
+
+            <div className="flex items-center gap-8 text-[11px] uppercase tracking-[0.15em] text-text-muted pt-4">
+              <span className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-champagne/60" />
+                {post.date}
+              </span>
+              <span className="flex items-center gap-2">
+                <Clock className="w-4 h-4 text-champagne/60" />
+                {post.readTime}
+              </span>
             </div>
           </motion.div>
         </div>
+      </section>
 
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-white/40"
-        >
-          <span className="text-[8px] uppercase tracking-[0.5em] rotate-90 mb-4">Scroll</span>
-          <div className="w-px h-12 bg-white/20" />
-        </motion.div>
-      </header>
-
-      {/* 2. CONTENT SPREAD */}
-      <section className="relative px-6 py-24 max-w-4xl mx-auto">
-        {/* Floating Share Side */}
-        <div className="hidden lg:block absolute left-[-120px] top-24 sticky top-40 space-y-6">
-          <p className="text-[9px] uppercase tracking-[0.3em] font-bold text-stone-300 rotate-90 mb-12 origin-left">Share Muse</p>
-          <div className="flex flex-col gap-4">
-            <button className="w-10 h-10 rounded-full border border-stone-100 flex items-center justify-center text-stone-400 hover:text-stone-900 hover:border-stone-900 transition-all">
-              <FaXTwitter className="w-4 h-4" />
-            </button>
-            <button className="w-10 h-10 rounded-full border border-stone-100 flex items-center justify-center text-stone-400 hover:text-stone-900 hover:border-stone-900 transition-all">
-              <FaFacebookF className="w-4 h-4" />
-            </button>
-            <button className="w-10 h-10 rounded-full border border-stone-100 flex items-center justify-center text-stone-400 hover:text-stone-900 hover:border-stone-900 transition-all">
-              <Link2 className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Article Body */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="editorial-content"
-        >
-          <div 
-            className="prose prose-stone prose-lg md:prose-xl mx-auto 
-            prose-headings:font-serif prose-headings:font-normal prose-headings:tracking-tight
-            prose-p:text-stone-600 prose-p:leading-relaxed prose-p:font-light
-            prose-blockquote:border-l-stone-900 prose-blockquote:font-serif prose-blockquote:italic prose-blockquote:text-stone-800
-            prose-img:rounded-sm prose-img:shadow-2xl"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
-        </motion.div>
-
-        {/* Tags Footer */}
-        <div className="mt-20 pt-10 border-t border-stone-100">
-           <div className="flex flex-wrap gap-3">
-              {post.tags?.map(tag => (
-                <span key={tag} className="text-[10px] uppercase tracking-widest font-bold px-4 py-1 bg-stone-50 text-stone-400 rounded-full">
-                  #{tag}
-                </span>
-              ))}
-           </div>
+      {/* Featured Image */}
+      <section className="px-6 mb-20 md:mb-32">
+        <div className="container mx-auto max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative aspect-[21/9] overflow-hidden bg-pearl luxury-shadow"
+          >
+            <Image
+              src={post.image}
+              alt={post.title}
+              fill
+              priority
+              className="object-cover"
+            />
+          </motion.div>
         </div>
       </section>
 
-      {/* 3. RELATED ARTICLES */}
-      {related.length > 0 && (
-        <section className="bg-stone-50 py-24 px-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-12">
-               <h2 className="text-3xl font-serif text-stone-900">More From <span className="italic">The Muse</span></h2>
-               <Link href="/blog" className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-400 hover:text-stone-900 transition-colors">View All Archive</Link>
+      {/* Content Section */}
+      <section className="px-6 pb-32">
+        <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-12 gap-16">
+          
+          {/* Sidebar / Tools */}
+          <aside className="hidden lg:block lg:col-span-1">
+            <div className="sticky top-40 flex flex-col items-center space-y-8">
+              <button className="p-3 rounded-full border border-foreground/5 hover:border-champagne hover:text-champagne transition-all group">
+                <Share2 className="w-5 h-5" />
+              </button>
+              <button className="p-3 rounded-full border border-foreground/5 hover:border-champagne hover:text-champagne transition-all group">
+                <Bookmark className="w-5 h-5" />
+              </button>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-              {related.map((rel) => (
-                <article key={rel._id} className="group flex flex-col">
-                  <Link href={`/blog/${rel.slug}`} className="relative aspect-[4/3] overflow-hidden rounded-sm mb-6">
-                    <Image
-                      src={rel.coverImage ? mediaSrc(rel.coverImage) : "/images/banner2.jpg"}
-                      alt={rel.title}
-                      fill
-                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-                  </Link>
-                  <h3 className="text-xl font-serif text-stone-900 group-hover:text-stone-500 transition-colors">
-                    <Link href={`/blog/${rel.slug}`}>{rel.title}</Link>
-                  </h3>
-                </article>
-              ))}
+          </aside>
+
+          {/* Main Content */}
+          <div className="lg:col-span-8 lg:col-start-3">
+            <article className="prose prose-stone max-w-none prose-headings:font-serif prose-headings:font-normal prose-blockquote:font-serif prose-blockquote:italic prose-blockquote:text-champagne prose-p:text-text-muted prose-p:leading-loose prose-p:text-lg">
+              <div 
+                className="blog-content"
+                dangerouslySetInnerHTML={{ __html: post.content }} 
+              />
+            </article>
+
+            {/* Author / Footer */}
+            <div className="mt-20 pt-12 border-t border-foreground/5">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-champagne/20 flex items-center justify-center text-champagne font-serif text-xl">
+                    A
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-foreground">Written By</p>
+                    <p className="text-sm font-serif italic text-text-muted">Amayra Editorial Team</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted">Share This Story</span>
+                  <div className="flex gap-3">
+                    {['FB', 'TW', 'IG', 'LI'].map((social) => (
+                      <button key={social} className="w-8 h-8 flex items-center justify-center border border-foreground/5 text-[9px] font-bold hover:bg-foreground hover:text-white transition-all">
+                        {social}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
-      )}
+        </div>
+      </section>
+
+      {/* Recommended Posts (Optional but good) */}
+      <section className="px-6 py-24 bg-pearl/50 border-t border-foreground/5">
+        <div className="container mx-auto max-w-7xl">
+          <div className="flex flex-col items-center text-center mb-16">
+            <span className="text-champagne uppercase text-[10px] font-bold tracking-[0.5em] mb-4">Discover More</span>
+            <h2 className="text-3xl md:text-4xl font-serif">Continue Your Journey</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {BLOG_POSTS.filter(p => p.slug !== slug).slice(0, 3).map((recommendedPost) => (
+              <Link key={recommendedPost.id} href={`/blog/${recommendedPost.slug}`} className="group block">
+                <div className="relative aspect-video overflow-hidden mb-6">
+                  <Image
+                    src={recommendedPost.image}
+                    alt={recommendedPost.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                </div>
+                <h3 className="text-lg font-serif group-hover:text-champagne transition-colors line-clamp-2">
+                  {recommendedPost.title}
+                </h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
+
+      {/* Global CSS for Blog Content */}
+      <style jsx global>{`
+        .blog-content h3 {
+          margin-top: 2.5rem;
+          margin-bottom: 1.25rem;
+          font-size: 1.75rem;
+          color: #2C2A28;
+        }
+        .blog-content p {
+          margin-bottom: 1.5rem;
+        }
+        .blog-content blockquote {
+          border-left: 2px solid #E6D3A3;
+          padding-left: 2rem;
+          margin: 3rem 0;
+          font-size: 1.5rem;
+          line-height: 1.6;
+        }
+      `}</style>
     </main>
   );
-}
+};
 
-export default function BlogPostPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#FDFCF9]"><div className="w-12 h-12 border-2 border-stone-200 border-t-stone-900 rounded-full animate-spin" /></div>}>
-      <BlogPostContent />
-    </Suspense>
-  );
-}
+export default BlogDetailsPage;
