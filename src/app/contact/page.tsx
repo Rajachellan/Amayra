@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import { 
   Phone, 
   Mail, 
@@ -87,10 +89,11 @@ export default function ContactPage() {
 
   return (
     <main className="bg-white selection:bg-champagne/30">
+      <Navbar/>
       {/* 1. Hero Experience */}
       <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
         <Image
-          src="/images/banner3.jpg" // Using existing luxury banner
+          src="/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg"
           alt="Contact Amayra"
           fill
           priority
@@ -376,6 +379,7 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+      <Footer/>
     </main>
   );
 }

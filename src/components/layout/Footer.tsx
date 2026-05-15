@@ -238,6 +238,7 @@ export const Footer = () => {
               {[
                 { name: "Our Story", href: "/our-story" },
                 { name: "Blogs", href: "/blog" },
+                { name: "Contact", href: "/contact" },
                 { name: "Shipping & Returns", href: "/shipping-returns" },
                 { name: "Privacy Policy", href: "/privacy-policy" },
                 { name: "Terms of Service", href: "/terms-of-service" },
