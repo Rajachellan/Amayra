@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   // ✅ FIX 1: Allow access from other devices
-  allowedDevOrigins: ["192.168.6.85"],
+  allowedDevOrigins: ["192.168.7.9"],
 
   // ✅ FIX 2: Allow external images
   images: {

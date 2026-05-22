@@ -233,6 +233,44 @@ function ProductDetail() {
         </div>
       </section>
 
+      {product.lookbooks && product.lookbooks.length > 0 && (
+        <section className="py-24 border-t border-gray-100 bg-white overflow-hidden">
+          <div className="container mx-auto px-6">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+              <div>
+                <span className="text-brand-gold font-bold tracking-[0.4em] uppercase text-[10px] block mb-2">Shop the look</span>
+                <h3 className="font-serif text-4xl text-brand-emerald tracking-wide">
+                  {product.lookbooks[0].title}
+                </h3>
+              </div>
+              <p className="text-gray-400 text-sm max-w-sm tracking-widest leading-relaxed">
+                Explore how to style this masterpiece with our curated lookbook gallery.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {product.lookbooks[0].images?.slice(0, 4).map((src, idx) => (
+                <div 
+                  key={idx} 
+                  className={`relative aspect-[3/4] overflow-hidden rounded-2xl group ${
+                    idx % 2 === 1 ? "md:mt-8" : ""
+                  }`}
+                >
+                  <Image 
+                    src={src} 
+                    alt={`Lookbook image ${idx + 1}`} 
+                    fill 
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-brand-emerald/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {relatedProducts.length > 0 && (
         <section className="py-24 bg-gray-50">
           <div className="container mx-auto px-6">

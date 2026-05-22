@@ -62,6 +62,7 @@ export type LookbookDoc = {
   coverImage?: string;
   description?: string;
   featured: boolean;
+  images?: string[];
 };
 
 export type ProductListItem = {
@@ -91,7 +92,7 @@ export type ProductListItem = {
 export type ProductDetail = ProductListItem & {
   collections?: { name: string; slug: string }[];
   occasions?: { name: string; slug: string }[];
-  lookbooks?: { title: string; slug: string }[];
+  lookbooks?: { title: string; slug: string; images?: string[]; coverImage?: string }[];
   variants?: { name: string; sku?: string; stock: number; price?: number; salePrice?: number; attributes?: Record<string, string> }[];
   seoTitle?: string;
   seoDescription?: string;

@@ -26,6 +26,13 @@ export interface Product {
   sizes?: string[];
   tags?: string[];
   stock: number;
+  lookbooks?: {
+    id: string;
+    title: string;
+    slug: string;
+    images?: string[];
+    coverImage?: string;
+  }[];
 }
 
 export interface CartItem extends Product {

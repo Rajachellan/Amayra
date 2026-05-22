@@ -1,15 +1,46 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { BLOG_POSTS } from "@/data/blogs";
-import { ArrowRight, Calendar, Clock, Tag } from "lucide-react";
+import { api, mediaSrc } from "@/lib/api";
+import { ArrowRight, Calendar, Tag, Clock } from "lucide-react";
+
+interface BlogPost {
+  _id: string;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  coverImage?: string;
+  publishedAt?: string;
+  tags: string[];
+}
 
 const BlogPage = () => {
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        setLoading(true);
+        const data = await api<{ items: BlogPost[] }>("/blogs?limit=50");
+        setBlogs(data.items);
+      } catch (err) {
+        console.error("Failed to fetch blogs:", err);
+        setError("Unable to load the journal at this time. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   return (
     <main className="min-h-screen bg-background selection:bg-champagne/30 overflow-x-hidden">
       <Navbar />
@@ -59,63 +90,86 @@ const BlogPage = () => {
 
       {/* Blog Listing Grid */}
       <section className="container mx-auto px-6 py-20 md:py-32">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-12">
-          {BLOG_POSTS.map((post, index) => (
-            <motion.article
-              key={post.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: index * 0.1 }}
-              className="group cursor-pointer"
-            >
-              <Link href={`/blog/${post.slug}`} className="block">
-                {/* Image Container */}
-                <div className="relative aspect-[4/5] overflow-hidden mb-8 bg-pearl">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    fill
-                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
-                  />
-                  <div className="absolute top-4 left-4 z-20">
-                    <span className="px-4 py-1.5 bg-white/90 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] font-bold text-foreground">
-                      {post.category}
-                    </span>
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-12">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-[4/5] bg-pearl mb-8" />
+                <div className="h-4 bg-pearl w-1/4 mb-4" />
+                <div className="h-6 bg-pearl w-3/4 mb-4" />
+                <div className="h-4 bg-pearl w-full" />
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-20">
+            <p className="text-foreground/60 font-serif italic">{error}</p>
+          </div>
+        ) : blogs.length === 0 ? (
+          <div className="text-center py-20">
+            <p className="text-foreground/60 font-serif italic text-xl">The journal is currently empty. Check back soon for new stories.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-12">
+            {blogs.map((post, index) => (
+              <motion.article
+                key={post._id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: index * 0.1 }}
+                className="group cursor-pointer"
+              >
+                <Link href={`/blog/${post.slug}`} className="block">
+                  {/* Image Container */}
+                  <div className="relative aspect-[4/5] overflow-hidden mb-8 bg-pearl">
+                    <Image
+                      src={mediaSrc(post.coverImage)}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                    />
+                    {post.tags?.[0] && (
+                      <div className="absolute top-4 left-4 z-20">
+                        <span className="px-4 py-1.5 bg-white/90 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] font-bold text-foreground">
+                          {post.tags[0]}
+                        </span>
+                      </div>
+                    )}
+                    {/* Subtle overlay */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500 z-10" />
                   </div>
-                  {/* Subtle overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500 z-10" />
-                </div>
 
-                {/* Content */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-4 text-[8px] uppercase tracking-[0.15em] text-text-muted">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="w-2.5 h-2.5" />
-                      {post.date}
-                    </span>
+                  {/* Content */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-4 text-[8px] uppercase tracking-[0.15em] text-text-muted">
+                      <span className="flex items-center gap-1.5">
+                        <Calendar className="w-2.5 h-2.5" />
+                        {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "Recently"}
+                      </span>
+                    </div>
+
+                    <h3 className="text-lg md:text-xl font-serif text-foreground group-hover:text-champagne transition-colors duration-300 leading-snug line-clamp-2">
+                      {post.title}
+                    </h3>
+
+                    <p className="text-xs text-text-muted font-light leading-relaxed line-clamp-2">
+                      {post.excerpt}
+                    </p>
+
+                    <div className="pt-2">
+                      <span className="relative inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-foreground group-hover:text-champagne transition-all duration-300">
+                        Read More
+                        <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
+                        <span className="absolute bottom-[-4px] left-0 w-8 h-[1px] bg-champagne transition-all duration-300 group-hover:w-full" />
+                      </span>
+                    </div>
                   </div>
-
-                  <h3 className="text-lg md:text-xl font-serif text-foreground group-hover:text-champagne transition-colors duration-300 leading-snug line-clamp-2">
-                    {post.title}
-                  </h3>
-
-                  <p className="text-xs text-text-muted font-light leading-relaxed line-clamp-2">
-                    {post.excerpt}
-                  </p>
-
-                  <div className="pt-2">
-                    <span className="relative inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] font-bold text-foreground group-hover:text-champagne transition-all duration-300">
-                      Read More
-                      <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
-                      <span className="absolute bottom-[-4px] left-0 w-8 h-[1px] bg-champagne transition-all duration-300 group-hover:w-full" />
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </motion.article>
-          ))}
-        </div>
+                </Link>
+              </motion.article>
+            ))}
+          </div>
+        )}
 
         {/* Newsletter / CTA Section */}
         <motion.div

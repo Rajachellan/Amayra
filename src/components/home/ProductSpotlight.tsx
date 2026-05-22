@@ -18,9 +18,9 @@ export const ProductSpotlight = () => {
     let cancelled = false;
     (async () => {
       try {
-        let res = await shopApi.products({ section: "atelier", limit: 1, page: 1 });
+        let res = await shopApi.products({ masterpiece: "true", limit: 1, page: 1 });
         if (!res.items[0]) {
-          res = await shopApi.products({ masterpiece: "true", limit: 1, page: 1 });
+          res = await shopApi.products({ section: "atelier", limit: 1, page: 1 });
         }
         if (cancelled || !res.items[0]) return;
         setProduct(mapListItemToProduct(res.items[0]));

@@ -72,5 +72,14 @@ export function mapDetailToProduct(p: ProductDetail): Product {
     ...mapListItemToProduct(p),
     description: p.description || p.shortDescription || "",
     sizes: sizesFromVariants(p.variants),
+    lookbooks: Array.isArray(p.lookbooks)
+      ? p.lookbooks.map((lb: any) => ({
+          id: lb._id,
+          title: lb.title || lb.name || "Lookbook",
+          slug: lb.slug,
+          images: Array.isArray(lb.images) ? lb.images.map((u: string) => resolveMediaUrl(u)) : undefined,
+          coverImage: resolveMediaUrl(lb.coverImage),
+        }))
+      : undefined,
   };
 }
