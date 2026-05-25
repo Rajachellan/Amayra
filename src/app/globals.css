@@ -75,8 +75,66 @@ h1, h2, h3, h4, h5, h6 {
   scrollbar-width: none;
 }
 
+/** Optional: thin horizontal scrollbar in brand gold (cart “You may also like” strip). */
+.scrollbar-gold-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--champagne) rgba(61, 57, 52, 0.06);
+}
+
+.scrollbar-gold-slim::-webkit-scrollbar {
+  height: 3px;
+}
+
+.scrollbar-gold-slim::-webkit-scrollbar-track {
+  background: rgba(61, 57, 52, 0.06);
+  border-radius: 9999px;
+}
+
+.scrollbar-gold-slim::-webkit-scrollbar-thumb {
+  background: var(--champagne);
+  border-radius: 9999px;
+}
+
+.scrollbar-gold-slim::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--champagne) 85%, #7a5a14);
+}
+
+/** Slim vertical scrollbar — cart drawer (matches `gold-gradient` CTA tones). */
+.scrollbar-gold-slim-vertical {
+  scrollbar-width: thin;
+  /* Firefox: solid thumb approximates gold strip */
+  scrollbar-color: #c49a29 rgba(61, 57, 52, 0.07);
+}
+
+.scrollbar-gold-slim-vertical::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-gold-slim-vertical::-webkit-scrollbar-track {
+  background: rgba(61, 57, 52, 0.06);
+  border-radius: 9999px;
+}
+
+.scrollbar-gold-slim-vertical::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: linear-gradient(180deg, #7a5a14 0%, #c49a29 52%, #5c4510 100%);
+}
+
+.scrollbar-gold-slim-vertical::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8f6f18 0%, #d4af37 50%, #6b5312 100%);
+}
+
 .luxury-shadow {
   box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+/**
+ * Metallic gold fill for CTAs (`Button` variant "gold") and accent rules.
+ * Must stay dark enough that `text-white` stays readable at WCAG-ish contrast.
+ */
+.gold-gradient {
+  background: linear-gradient(135deg, #7a5a14 0%, #c49a29 42%, #5c4510 100%);
+  color: #ffffff;
 }
 
 .gold-hover {

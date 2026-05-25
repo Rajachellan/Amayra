@@ -2,6 +2,7 @@ import { StaticImageData } from "next/image";
 
 export interface Product {
   id: string;
+  slug: string;
   name: string;
   price: number;
   oldPrice?: number;

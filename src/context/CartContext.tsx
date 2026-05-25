@@ -1,11 +1,16 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { Product, CartItem } from "../types";
 import { toast } from "react-hot-toast";
 
 interface CartContextType {
   cart: CartItem[];
+  /** Right-side cart drawer visibility */
+  isCartOpen: boolean;
+  openCart: () => void;
+  closeCart: () => void;
+  toggleCart: () => void;
   addToCart: (product: Product) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
@@ -17,6 +22,11 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setCartOpen] = useState(false);
+
+  const openCart = useCallback(() => setCartOpen(true), []);
+  const closeCart = useCallback(() => setCartOpen(false), []);
+  const toggleCart = useCallback(() => setCartOpen((o) => !o), []);
 
   // Load cart from local storage
   useEffect(() => {
@@ -24,7 +34,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (savedCart) {
       setCart(JSON.parse(savedCart));
     }
-  }, [setCart]);
+  }, []);
 
   // Save cart to local storage
   useEffect(() => {
@@ -69,19 +79,29 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  return (
-    <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, subtotal }}
-    >
-      {children}
-    </CartContext.Provider>
+  const value = useMemo(
+    () => ({
+      cart,
+      isCartOpen,
+      openCart,
+      closeCart,
+      toggleCart,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      subtotal,
+    }),
+    [cart, isCartOpen, openCart, closeCart, toggleCart, subtotal]
   );
+
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
-export const useCart = () => {
+export function useCart(): CartContextType {
   const context = useContext(CartContext);
   if (context === undefined) {
     throw new Error("useCart must be used within a CartProvider");
   }
   return context;
-};
+}

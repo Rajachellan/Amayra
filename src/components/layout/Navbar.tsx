@@ -2,16 +2,18 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { Search, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, Heart, ShoppingBag, Menu, X, User, LogIn } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import { navigationData } from "@/data/navigation";
 import { CompactDropdown } from "./CompactDropdown";
 
 export const Navbar = () => {
-  const { cart } = useCart();
+  const { cart, openCart } = useCart();
   const { wishlist } = useWishlist();
+  const { user } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const { scrollY } = useScroll();
@@ -151,7 +153,12 @@ const navTextColor = useTransform(
 
     {/* Cart */}
     <motion.div style={{ color: navTextColor }}>
-      <Link href="/cart" className="relative">
+      <button
+        type="button"
+        onClick={() => openCart()}
+        className="relative inline-flex bg-transparent border-0 p-0 cursor-pointer"
+        aria-label="Open cart"
+      >
         <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
 
         {cart.length > 0 && (
@@ -159,6 +166,13 @@ const navTextColor = useTransform(
             {cart.length}
           </span>
         )}
+      </button>
+    </motion.div>
+
+    {/* Account */}
+    <motion.div style={{ color: navTextColor }}>
+      <Link href={user ? "/profile" : "/auth/login"} className="relative" aria-label={user ? "Your profile" : "Sign in"}>
+        {user ? <User className="w-[17px] h-[17px] stroke-[1.5]" /> : <LogIn className="w-[17px] h-[17px] stroke-[1.5]" />}
       </Link>
     </motion.div>
 
@@ -211,6 +225,30 @@ const navTextColor = useTransform(
                     {item.name}
                   </Link>
                 ))}
+                <button
+                  type="button"
+                  onClick={() => {
+                    openCart();
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="w-full text-left text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors bg-transparent"
+                >
+                  Cart ({cart.length})
+                </button>
+                <Link
+                  href="/wishlist"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors"
+                >
+                  Wishlist
+                </Link>
+                <Link
+                  href={user ? "/profile" : "/auth/login"}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors"
+                >
+                  {user ? "My account" : "Sign in"}
+                </Link>
               </div>
             </motion.div>
           </>

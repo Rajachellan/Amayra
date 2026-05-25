@@ -3,6 +3,7 @@ import neckles from "../assets/neckles.jpg"
 export const products: Product[] = [
   {
     id: "1",
+    slug: "classic-diamond-solitaire-ring",
     name: "Classic Diamond Solitaire Ring",
     price: 85000,
     oldPrice: 105000,
@@ -23,6 +24,7 @@ export const products: Product[] = [
   },
   {
     id: "2",
+    slug: "emerald-diamond-princess-necklace",
     name: "Emerald & Diamond Princess Necklace",
     price: 245000,
     oldPrice: 285000,
@@ -41,6 +43,7 @@ export const products: Product[] = [
   },
   {
     id: "3",
+    slug: "pure-gold-temple-bangle",
     name: "Pure Gold Temple Bangle",
     price: 120000,
     oldPrice: 135000,
@@ -59,9 +62,10 @@ export const products: Product[] = [
   },
   {
     id: "4",
+    slug: "rose-gold-floral-earrings",
     name: "Rose Gold Floral Earrings",
     price: 35000,
-    image: "https://images.unsplash.com/photo-1535633302704-b02923cc5c37?q=80&w=2070&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?q=80&w=1200&auto=format&fit=crop",
     category: "Earrings",
     subCategory: "Daily Wear",
     color: "Rose Gold",
@@ -75,6 +79,7 @@ export const products: Product[] = [
   },
   {
     id: "5",
+    slug: "kundan-statement-rani-haar",
     name: "Kundan Statement Rani Haar",
     price: 350000,
     oldPrice: 420000,
@@ -93,6 +98,7 @@ export const products: Product[] = [
   },
   {
     id: "6",
+    slug: "victorian-sapphire-earrings",
     name: "Victorian Sapphire Earrings",
     price: 68000,
     oldPrice: 85000,
@@ -111,6 +117,7 @@ export const products: Product[] = [
   },
   {
     id: "7",
+    slug: "heritage-south-indian-hasli",
     name: "Heritage South Indian Hasli",
     price: 185000,
     image: "https://images.unsplash.com/photo-1626784215021-2e39ccf971cd?q=80&w=2070&auto=format&fit=crop",
@@ -127,6 +134,7 @@ export const products: Product[] = [
   },
   {
     id: "8",
+    slug: "antique-peacock-brooch",
     name: "Antique Peacock Brooch",
     price: 42000,
     image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?q=80&w=1974&auto=format&fit=crop",
@@ -144,6 +152,7 @@ export const products: Product[] = [
   },
   {
     id: "9",
+    slug: "ruby-temple-jhumkas",
     name: "Ruby Temple Jhumkas",
     price: 55000,
     image: "https://images.unsplash.com/photo-1598560912005-597659b7524b?q=80&w=1974&auto=format&fit=crop",
@@ -160,6 +169,7 @@ export const products: Product[] = [
   },
   {
     id: "10",
+    slug: "minimalist-gold-leaf-brooch",
     name: "Minimalist Gold Leaf Brooch",
     price: 18000,
     image: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=1974&auto=format&fit=crop",
@@ -176,6 +186,7 @@ export const products: Product[] = [
   },
   {
     id: "11",
+    slug: "bridal-emerald-mathapatti",
     name: "Bridal Emerald Mathapatti",
     price: 125000,
     image: "https://images.unsplash.com/photo-1620914107106-25ed75f10f88?q=80&w=1974&auto=format&fit=crop",
@@ -193,6 +204,7 @@ export const products: Product[] = [
   },
   {
     id: "12",
+    slug: "american-diamond-hoop-earrings",
     name: "American Diamond Hoop Earrings",
     price: 12000,
     oldPrice: 15000,
@@ -210,6 +222,7 @@ export const products: Product[] = [
   },
   {
     id: "13",
+    slug: "heritage-kundan-necklace-set",
     name: "Heritage Kundan Necklace Set",
     price: 245000,
     image: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?q=80&w=2070&auto=format&fit=crop",
@@ -227,6 +240,7 @@ export const products: Product[] = [
   },
   {
     id: "15",
+    slug: "victorian-sapphire-choker",
     name: "Victorian Sapphire Choker",
     price: 95000,
     oldPrice: 125000,
@@ -244,6 +258,7 @@ export const products: Product[] = [
   },
   {
     id: "16",
+    slug: "south-indian-temple-belt-oddiyanam",
     name: "South Indian Temple Belt (Oddiyanam)",
     price: 450000,
     image: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop",
@@ -260,6 +275,7 @@ export const products: Product[] = [
   },
   {
     id: "17",
+    slug: "daily-wear-gold-studs",
     name: "Daily Wear Gold Studs",
     price: 15000,
     image: "https://images.unsplash.com/photo-1635767798638-3e2827e84a2b?q=80&w=1964&auto=format&fit=crop",
@@ -276,6 +292,7 @@ export const products: Product[] = [
   },
   {
     id: "18",
+    slug: "victorian-diamond-bracelet",
     name: "Victorian Diamond Bracelet",
     price: 75000,
     image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=2070&auto=format&fit=crop",

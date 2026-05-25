@@ -1,12 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import neckles from "../../../public/images/neckles.jpg"
+import { useCart } from "@/context/CartContext";
+import { products } from "@/data/products";
 
 export const ProductSpotlight = () => {
+  const { addToCart, openCart } = useCart();
+  /** Matches displayed market value ₹2,45,000 */
+  const spotlightProduct = useMemo(() => products.find((p) => p.id === "2") ?? products[0], []);
+
+  function handleAddToCollection() {
+    addToCart(spotlightProduct);
+    openCart();
+  }
+
   return (
     <section className="py-32 bg-pearl relative overflow-hidden">
       {/* Decorative vertical lettering */}
@@ -49,18 +59,19 @@ export const ProductSpotlight = () => {
                 </div>
 
                 <div className="flex items-center gap-10">
-                  <Link 
-                    href="/product/1"
+                  <Link
+                    href={`/product/${spotlightProduct.id}`}
                     className="px-12 py-5 rounded-full bg-foreground text-background text-[10px] uppercase tracking-[0.3em] font-medium transition-all duration-500 hover:bg-champagne hover:scale-105"
                   >
                     View Details
                   </Link>
-                  <Link 
-                    href="/cart"
-                    className="text-[10px] uppercase tracking-[0.4em] font-semibold text-foreground border-b border-champagne pb-1 hover:text-champagne transition-colors"
+                  <button
+                    type="button"
+                    onClick={handleAddToCollection}
+                    className="border-0 border-b border-champagne bg-transparent pb-1 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground underline-offset-4 hover:text-champagne cursor-pointer transition-colors"
                   >
                     Add to Collection
-                  </Link>
+                  </button>
                 </div>
               </div>
             </motion.div>

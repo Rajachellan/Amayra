@@ -1,9 +1,7 @@
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "react-hot-toast";
-import { CartProvider } from "@/context/CartContext";
-import { WishlistProvider } from "@/context/WishlistContext";
 import { Metadata } from "next";
+import { AppProviders } from "@/components/AppProviders";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -34,12 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`}>
-        <CartProvider>
-          <WishlistProvider>
-            <Toaster position="top-right" />
-            {children}
-          </WishlistProvider>
-        </CartProvider>
+        <AppProviders>
+          {children}
+        </AppProviders>
       </body>
     </html>
   );
