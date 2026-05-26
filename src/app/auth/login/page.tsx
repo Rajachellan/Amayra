@@ -120,6 +120,7 @@ function LoginForm() {
   );
 }
 
+
 export default function LoginPage() {
   return (
     <main className="min-h-screen flex flex-col bg-[#FAF9F6]">
