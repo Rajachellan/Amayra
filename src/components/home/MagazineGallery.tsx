@@ -91,9 +91,9 @@ const MagazineCard = ({
           src={src}
           alt={title}
           fill
-          className={`object-cover transition-transform duration-[2400ms] ease-out ${
-            hovered ? "scale-110" : "scale-100"
-          } brightness-90 ${imageClassName}`}
+          sizes="(max-width: 1024px) 100vw, 33vw"
+          className={`object-cover transition-transform duration-[2400ms] ease-out ${hovered ? "scale-110" : "scale-100"
+            } brightness-90 ${imageClassName}`}
         />
       </div>
 
@@ -102,16 +102,14 @@ const MagazineCard = ({
 
       {/* Hover dark wash */}
       <div
-        className={`absolute inset-0 bg-stone-950/25 transition-opacity duration-700 ${
-          hovered ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute inset-0 bg-stone-950/25 transition-opacity duration-700 ${hovered ? "opacity-100" : "opacity-0"
+          }`}
       />
 
       {/* Left accent bar */}
       <div
-        className={`absolute left-0 top-[25%] bottom-[25%] w-px bg-gradient-to-b from-transparent via-amber-300/70 to-transparent transition-opacity duration-700 ${
-          hovered ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute left-0 top-[25%] bottom-[25%] w-px bg-gradient-to-b from-transparent via-amber-300/70 to-transparent transition-opacity duration-700 ${hovered ? "opacity-100" : "opacity-0"
+          }`}
       />
 
       {/* Issue number */}
@@ -123,14 +121,12 @@ const MagazineCard = ({
 
       {/* Card text */}
       <div
-        className={`absolute bottom-0 left-0 right-0 px-5 pb-5 z-10 transition-transform duration-700 ease-out ${
-          hovered ? "translate-y-0" : "translate-y-1.5"
-        }`}
+        className={`absolute bottom-0 left-0 right-0 px-5 pb-5 z-10 transition-transform duration-700 ease-out ${hovered ? "translate-y-0" : "translate-y-1.5"
+          }`}
       >
         <span
-          className={`block text-[8px] font-light tracking-[0.45em] uppercase text-amber-300 mb-2 transition-all duration-500 ${
-            hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
-          }`}
+          className={`block text-[8px] font-light tracking-[0.45em] uppercase text-amber-300 mb-2 transition-all duration-500 ${hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            }`}
         >
           {subtitle}
         </span>
@@ -142,28 +138,27 @@ const MagazineCard = ({
 
 export const MagazineGallery = () => {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-10 overflow-hidden">
       {/* Vertical center line */}
       <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-amber-300/8 to-transparent -translate-x-1/2 pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10">
 
         {/* Header */}
-        <div className="flex items-center gap-8 mb-20">
+        <div className="flex items-center gap-6 mb-8">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-300/20" />
           <div className="text-center shrink-0">
-            <span className="block text-[10px] font-bold tracking-[0.55em] uppercase text-amber-300 mb-4">
+            <span className="block text-[9px] font-bold tracking-[0.5em] uppercase text-amber-300 mb-2">
               Visual Storytelling · Vol. IV
             </span>
-            <h2 className="font-serif text-5xl md:text-6xl font-bold text-stone-950 ">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-stone-950">
               The{" "}
-              <em className=" text-amber-300/90 not-italic font-serif">
+              <em className="text-amber-300/90 not-italic font-serif">
                 Magazine
               </em>
-              <br />
-              Gallery
+              {" "}Gallery
             </h2>
-            <p className="mt-4 text-[11px] font-bold tracking-[0.25em] uppercase text-stone-500">
+            <p className="mt-2 text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
               An editorial journey through iconic creations
             </p>
           </div>
@@ -182,10 +177,10 @@ export const MagazineGallery = () => {
         */}
 
         {/* Mobile: simple stack | Desktop: magazine grid */}
-        <div className="flex flex-col gap-4 lg:grid lg:gap-4"
+        <div className="flex flex-col gap-3 lg:grid lg:gap-3"
           style={{
             gridTemplateColumns: "1.6fr 1fr 1.1fr",
-            gridTemplateRows: "260px 260px",
+            gridTemplateRows: "190px 190px",
           }}
         >
           {/* Card 1 — Hero, left col, full height */}
@@ -247,13 +242,14 @@ export const MagazineGallery = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.0, delay: 0.6 }}
-          className="mt-4 h-48 lg:h-56 relative overflow-hidden rounded-sm group cursor-pointer"
+          className="mt-3 h-28 lg:h-32 relative overflow-hidden rounded-sm group cursor-pointer"
           style={{}}
         >
           <Image
             src={IMAGES[4].src}
             alt={IMAGES[4].title}
             fill
+            sizes="100vw"
             className="object-cover object-center transition-transform duration-[2400ms] ease-out group-hover:scale-105 brightness-90"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950/70 via-stone-950/20 to-transparent" />
@@ -278,7 +274,7 @@ export const MagazineGallery = () => {
         </motion.div>
 
         {/* Footer */}
-        <div className="mt-16 flex justify-between items-end border-t border-amber-300/80 pt-8">
+        <div className="mt-6 flex justify-between items-end border-t border-amber-300/80 pt-4">
           <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-stone-600">
             © Atelier Collection · 2026
           </span>

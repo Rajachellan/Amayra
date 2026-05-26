@@ -10,6 +10,7 @@ interface CartContextType {
   isCartOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
+  setIsCartOpen: (isOpen: boolean) => void;
   toggleCart: () => void;
   addToCart: (product: Product) => void;
   removeFromCart: (id: string) => void;
@@ -24,6 +25,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setCartOpen] = useState(false);
 
+  const setIsCartOpen = useCallback((isOpen: boolean) => setCartOpen(isOpen), []);
   const openCart = useCallback(() => setCartOpen(true), []);
   const closeCart = useCallback(() => setCartOpen(false), []);
   const toggleCart = useCallback(() => setCartOpen((o) => !o), []);
@@ -42,17 +44,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [cart]);
 
   const addToCart = (product: Product) => {
+    let message = `Added ${product.name} to cart`;
+
     setCart((prev) => {
       const existingItem = prev.find((item) => item.id === product.id);
       if (existingItem) {
-        toast.success(`Increased ${product.name} quantity`);
+        message = `Increased ${product.name} quantity`;
         return prev.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      toast.success(`Added ${product.name} to cart`);
       return [...prev, { ...product, quantity: 1 }];
     });
+
+    toast.success(message);
+    openCart();
   };
 
   const removeFromCart = (id: string) => {
@@ -85,6 +91,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       isCartOpen,
       openCart,
       closeCart,
+      setIsCartOpen,
       toggleCart,
       addToCart,
       removeFromCart,
@@ -92,7 +99,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       clearCart,
       subtotal,
     }),
-    [cart, isCartOpen, openCart, closeCart, toggleCart, subtotal]
+    [cart, isCartOpen, openCart, closeCart, setIsCartOpen, toggleCart, subtotal]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

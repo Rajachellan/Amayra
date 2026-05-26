@@ -11,6 +11,12 @@ import { Heart } from "lucide-react";
 
 export default function WishlistPage() {
   const { wishlist } = useWishlist();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
 
   return (
     <main className="min-h-screen bg-white">
@@ -24,7 +30,7 @@ export default function WishlistPage() {
               Your Favorites <Heart className="ml-6 w-10 h-10 text-brand-gold fill-brand-gold" />
             </h1>
             <p className="text-gray-300 font-sans tracking-[0.2em] uppercase text-xs">
-              Saved treasures from Gems of Shree Aarna
+              Saved treasures from Amayra
             </p>
           </div>
         </div>
@@ -33,7 +39,7 @@ export default function WishlistPage() {
       {/* Content */}
       <section className="py-24">
         <div className="container mx-auto px-6">
-          {wishlist.length > 0 ? (
+          {mounted && wishlist.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {wishlist.map((product) => (
                 <ProductCard key={product.id} product={product} />

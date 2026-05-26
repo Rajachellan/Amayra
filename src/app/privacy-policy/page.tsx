@@ -1,101 +1,100 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Lock, Eye, FileText, Database, ShieldCheck, UserCheck } from "lucide-react";
+import { motion } from "framer-motion";
+import { PageBanner } from "@/components/layout/PageBanner";
 
-const policies = [
-  {
-    icon: <Database className="w-6 h-6 stroke-[1]" />,
-    title: "Information We Collect",
-    content: "We collect personal information such as your name, contact details, and shipping address when you make a purchase or register an account. We also collect browsing data to improve your experience."
-  },
-  {
-    icon: <Eye className="w-6 h-6 stroke-[1]" />,
-    title: "How We Use Information",
-    content: "Your data is used solely for order processing, customer support, and, with your consent, sending exclusive collection previews. We never sell your data to third-party markters."
-  },
-  {
-    icon: <ShieldCheck className="w-6 h-6 stroke-[1]" />,
-    title: "Data Protection & Security",
-    content: "We employ industry-standard SSL encryption and secure payment gateways (PCI DSS compliant) to ensure your sensitive financial information remains protected."
-  },
-  {
-    icon: <FileText className="w-6 h-6 stroke-[1]" />,
-    title: "Cookies Policy",
-    content: "Our website uses cookies to remember your preferences (like your wishlist) and provide a personalized experience. You can manage cookie settings in your browser at any time."
-  },
-  {
-    icon: <Lock className="w-6 h-6 stroke-[1]" />,
-    title: "Third-Party Services",
-    content: "We may share data with trusted logistics partners (like BlueDart or FedEx) solely for delivery purposes. These partners are bound by strict confidentiality agreements."
-  },
-  {
-    icon: <UserCheck className="w-6 h-6 stroke-[1]" />,
-    title: "User Rights",
-    content: "You have the right to access, correct, or delete your personal data. To exercise these rights, please contact our Data Protection Officer at privacy@shreeaarna.com."
-  }
-];
-
-export default function PrivacyPage() {
+const PrivacyPolicy = () => {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-white">
       <Navbar />
 
-      <section className="pt-40 pb-24">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center mb-24"
-            >
-              <div className="w-16 h-16 bg-champagne/10 rounded-full flex items-center justify-center mx-auto mb-8">
-                <Lock className="w-8 h-8 text-champagne stroke-[1]" />
-              </div>
-              <h1 className="text-5xl font-serif mb-6">Privacy Policy</h1>
-              <p className="text-foreground/40 text-[10px] uppercase tracking-[0.5em]">LAST UPDATED: APRIL 2026</p>
-            </motion.div>
+      <PageBanner 
+        title="Privacy Policy"
+        subtitle="Legal"
+        image="/images/luxury/pexels-ankunijjar-31772511.jpg"
+        height="h-[65vh]"
+      />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {policies.map((item, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                  className="p-10 bg-pearl/30 border border-white hover:border-champagne/30 transition-all duration-700"
-                >
-                  <div className="text-champagne mb-8">{item.icon}</div>
-                  <h3 className="text-xl font-serif mb-4 italic">{item.title}</h3>
-                  <p className="text-sm font-light text-foreground/50 leading-loose">
-                    {item.content}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+      <section className="pb-24 container mx-auto px-6 max-w-4xl pt-20">
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="mt-20 p-12 bg-champagne/5 border-l border-champagne text-center"
-            >
-              <p className="text-foreground/60 font-light italic mb-6">
-                {"“Your trust is the most precious jewel we hold.”"}
-              </p>
-              <button className="text-[10px] uppercase tracking-widest font-semibold text-champagne border-b border-champagne pb-1">
-                Contact Data Officer
-              </button>
-            </motion.div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="prose prose-stone max-w-none space-y-12 text-foreground/80 leading-relaxed"
+        >
+          <section>
+            <h2 className="text-2xl font-serif text-foreground mb-6">1. Introduction</h2>
+            <p>
+              Welcome to Amayra. We respect your privacy and are committed to protecting 
+              your personal data. This privacy policy will inform you as to how we look 
+              after your personal data when you visit our website (regardless of where 
+              you visit it from) and tell you about your privacy rights and how the 
+              law protects you.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-serif text-foreground mb-6">2. Data We Collect</h2>
+            <p>
+              Personal data, or personal information, means any information about an 
+              individual from which that person can be identified. It does not include 
+              data where the identity has been removed (anonymous data).
+            </p>
+            <ul className="list-disc pl-6 space-y-3 mt-4">
+              <li>Identity Data includes first name, last name, and username.</li>
+              <li>Contact Data includes billing address, delivery address, email address, and telephone numbers.</li>
+              <li>Financial Data includes payment card details.</li>
+              <li>Transaction Data includes details about payments to and from you and other details of products you have purchased from us.</li>
+              <li>Technical Data includes internet protocol (IP) address, your login data, browser type and version, and time zone setting.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-serif text-foreground mb-6">3. How We Use Your Data</h2>
+            <p>
+              We will only use your personal data when the law allows us to. Most commonly, 
+              we will use your personal data in the following circumstances:
+            </p>
+            <ul className="list-disc pl-6 space-y-3 mt-4">
+              <li>Where we need to perform the contract we are about to enter into or have entered into with you.</li>
+              <li>Where it is necessary for our legitimate interests and your interests and fundamental rights do not override those interests.</li>
+              <li>Where we need to comply with a legal or regulatory obligation.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-serif text-foreground mb-6">4. Data Security</h2>
+            <p>
+              We have put in place appropriate security measures to prevent your personal 
+              data from being accidentally lost, used or accessed in an unauthorized 
+              way, altered or disclosed. In addition, we limit access to your personal 
+              data to those employees, agents, contractors and other third parties who 
+              have a business need to know.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-serif text-foreground mb-6">5. Your Legal Rights</h2>
+            <p>
+              Under certain circumstances, you have rights under data protection laws 
+              in relation to your personal data, including the right to request access, 
+              correction, erasure, restriction, transfer, or to object to processing.
+            </p>
+          </section>
+
+          <div className="pt-12 border-t border-foreground/10 text-sm italic">
+            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:privacy@amayra.com" className="text-champagne underline">privacy@amayra.com</a>.
           </div>
-        </div>
+        </motion.div>
       </section>
 
       <Footer />
     </main>
   );
-}
+};
+
+export default PrivacyPolicy;

@@ -19,8 +19,8 @@ export const BrandStory = () => {
               className="relative z-10"
             >
               <div className="relative aspect-[4/5] w-full">
-                <Image 
-                  src="/images/pexels-dandu-16612609.jpg" 
+                <Image
+                  src="/images/pexels-dandu-16612609.jpg"
                   alt="Our Heritage"
                   fill
                   className="object-cover rounded-sm shadow-2xl"
@@ -29,7 +29,7 @@ export const BrandStory = () => {
               {/* Gold Accent Frame */}
               <div className="absolute -top-6 -left-6 w-full h-full border border-champagne/30 -z-10" />
             </motion.div>
-            
+
             {/* Decals */}
             <div className="absolute -bottom-10 -right-10 w-40 h-40 border-r border-b border-champagne/20 pointer-events-none" />
           </div>
@@ -47,18 +47,18 @@ export const BrandStory = () => {
                 A Journey Through <br />
                 <span className="italic">Generations of Craft</span>
               </h2>
-              
+
               <div className="space-y-6 text-foreground/70 font-light leading-loose text-editorial">
                 <p>
-                  Founded in the heart of heritage, Gems of Shree Aarna began as a modest atelier 
-                  at a time when jewellery was not just an accessory, but a sacred heirloom. 
-                  Our founder, inspired by the intricate temple architecture and the celestial 
-                  grace of traditional Indian art, envisioned a brand that would preserve the 
+                  Founded in the heart of heritage, Amayra began as a modest atelier
+                  at a time when jewellery was not just an accessory, but a sacred heirloom.
+                  Our founder, inspired by the intricate temple architecture and the celestial
+                  grace of traditional Indian art, envisioned a brand that would preserve the
                   dying arts of handcrafted jewellery.
                 </p>
                 <p>
-                  Today, we occupy a unique space where ancient techniques meet contemporary 
-                  sensibilities. Every piece we create is a bridge between the regal past and 
+                  Today, we occupy a unique space where ancient techniques meet contemporary
+                  sensibilities. Every piece we create is a bridge between the regal past and
                   the sophisticated present.
                 </p>
               </div>
@@ -68,7 +68,7 @@ export const BrandStory = () => {
                 <p className="font-serif italic text-lg text-foreground/80 mb-4">
                   {"“Jewellery is the silent poet of a woman's soul. We don't just set stones; we set memories into gold.”"}
                 </p>
-                <p className="text-[10px] uppercase tracking-widest text-champagne font-semibold">{"— Shree Aarna, Founder"}</p>
+                <p className="text-[10px] uppercase tracking-widest text-champagne font-semibold">{"— Amayra, Founder"}</p>
               </div>
             </motion.div>
           </div>

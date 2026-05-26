@@ -194,7 +194,7 @@ export default function CheckoutPage() {
       const checkoutRes = await api<CheckoutBody>("/orders/checkout", {
         method: "POST",
         body: JSON.stringify({
-          items: validCart.map((c) => ({ slug: c.slug.trim(), quantity: c.quantity })),
+          items: validCart.map((c) => ({ slug: c.slug!.trim(), quantity: c.quantity })),
           shippingAddress: {
             fullName: fullName.trim(),
             phone: phone.trim(),

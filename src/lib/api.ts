@@ -1,5 +1,7 @@
 const TOKEN_KEY = "amayra_customer_token";
 
+export { resolveMediaUrl as mediaSrc } from "./apiBase";
+
 function getBase(): string {
   const raw = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
   return raw.replace(/\/$/, "");

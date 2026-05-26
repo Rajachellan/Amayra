@@ -22,6 +22,7 @@ export const Craftsmanship = () => {
               src={craftImg}
               alt="Craftsmanship"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition duration-700"
             />
 
@@ -83,7 +84,7 @@ export const Craftsmanship = () => {
                 }
               ].map((item, i) => (
                 <div key={i} className="flex gap-6 group items-start">
-                  
+
                   {/* Number with gold glow */}
                   <div className="relative">
                     <span className="text-2xl font-serif text-yellow-600 opacity-70 group-hover:opacity-100 transition">
@@ -109,7 +110,7 @@ export const Craftsmanship = () => {
             {/* Button */}
             <div>
               <button className="relative px-6 py-3 text-xs uppercase tracking-widest font-semibold text-gray-900 overflow-hidden group">
-                
+
                 <span className="relative z-10">Explore Our Process</span>
 
                 {/* Animated gold underline */}

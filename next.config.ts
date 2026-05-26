@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   // ✅ FIX 1: Allow access from other devices
-  allowedDevOrigins: ["192.168.6.85"],
+  allowedDevOrigins: ["192.168.7.9"],
 
   redirects: async () => [
     { source: "/cart", destination: "/?openCart=1", permanent: false },
@@ -18,6 +22,47 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.pexels.com",
+      },
+      {
+        protocol: "https",
+        hostname: "imagedelivery.net",
+        pathname: "/**",
+      },
+      /* Cloudflare R2 public bucket (pub-*.r2.dev and custom hostnames) */
+      {
+        protocol: "https",
+        hostname: "*.r2.dev",
+        pathname: "/**",
+      },
+      /* Legacy Cloudflare Pages–hosted assets */
+      {
+        protocol: "https",
+        hostname: "*.pages.dev",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "4000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "4000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "5000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "127.0.0.1",
+        port: "5000",
+        pathname: "/uploads/**",
       },
     ],
   },
