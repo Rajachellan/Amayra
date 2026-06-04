@@ -15,6 +15,28 @@ import { Heart, ShoppingBag, Truck, RotateCcw, ShieldCheck, ChevronRight, Star }
 import { ProductCard } from "@/components/products/ProductCard";
 import type { Product } from "@/types";
 
+function collectDetailImages(detail: any): string[] {
+  const out: string[] = [];
+  const push = (v: unknown) => {
+    if (typeof v !== "string") return;
+    const s = v.trim();
+    if (!s) return;
+    out.push(resolveMediaUrl(s));
+  };
+
+  if (Array.isArray(detail?.images)) detail.images.forEach(push);
+  if (Array.isArray(detail?.occasions)) detail.occasions.forEach((o: any) => push(o?.image));
+  if (Array.isArray(detail?.collections)) detail.collections.forEach((c: any) => push(c?.image));
+  if (Array.isArray(detail?.lookbooks)) {
+    detail.lookbooks.forEach((lb: any) => {
+      push(lb?.coverImage);
+      if (Array.isArray(lb?.images)) lb.images.forEach(push);
+    });
+  }
+
+  return [...new Set(out)];
+}
+
 function ProductDetail() {
   const params = useParams();
   const slug = params.id as string;
@@ -35,7 +57,7 @@ function ProductDetail() {
       .productBySlug(slug)
       .then(async (detail) => {
         if (cancelled) return;
-        const imgs = (detail.images || []).map((u) => resolveMediaUrl(u));
+        const imgs = collectDetailImages(detail);
         setImages(imgs.length ? imgs : [resolveMediaUrl(undefined)]);
         setActiveImg(0);
         setProduct(mapDetailToProduct(detail));

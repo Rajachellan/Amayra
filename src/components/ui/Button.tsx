@@ -1,8 +1,7 @@
 import React from "react";
-import type { HTMLMotionProps } from "framer-motion";
+import { motion, type HTMLMotionProps } from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import * as motion from "motion/react-client";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

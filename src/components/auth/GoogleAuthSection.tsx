@@ -1,6 +1,6 @@
 "use client";
 
-import { GoogleLogin } from "@react-oauth/google";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import toast from "react-hot-toast";
 
@@ -14,6 +14,11 @@ type Props = {
 export function isGoogleOAuthConfigured(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID?.trim());
 }
+
+const GoogleLoginButton = dynamic(
+  () => import("@/components/auth/GoogleLoginButton").then((m) => m.GoogleLoginButton),
+  { ssr: false, loading: () => <div className="h-11 w-[min(100%,320px)] animate-pulse rounded-md bg-gray-100" /> }
+);
 
 export function GoogleAuthSection({ useSignupCopy, onCredential }: Props) {
   const googleEnabled = isGoogleOAuthConfigured();
@@ -32,13 +37,10 @@ export function GoogleAuthSection({ useSignupCopy, onCredential }: Props) {
       {/* Center Razorpay / GIS iframe wrappers */}
       <div className="flex min-h-[44px] w-full justify-center [&_iframe]:rounded-md">
         {googleEnabled ? (
-          <GoogleLogin
-            onSuccess={(cred) => void handleSuccess(cred.credential)}
+          <GoogleLoginButton
+            useSignupCopy={useSignupCopy}
+            onSuccess={(credential) => void handleSuccess(credential)}
             onError={() => toast.error("Google sign-in was cancelled")}
-            text={useSignupCopy ? "signup_with" : "continue_with"}
-            size="large"
-            width={320}
-            theme="filled_blue"
           />
         ) : (
           <button

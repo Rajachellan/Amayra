@@ -32,7 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
-      <body className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`}>
+      <body
+        className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`}
+        suppressHydrationWarning
+      >
         <AppProviders>
           {children}
         </AppProviders>
