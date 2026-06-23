@@ -1,11 +1,8 @@
+import { getPublicApiUrl, resolveMediaUrl } from "./apiBase";
+
 const TOKEN_KEY = "amayra_customer_token";
 
-export { resolveMediaUrl as mediaSrc } from "./apiBase";
-
-function getBase(): string {
-  const raw = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-  return raw.replace(/\/$/, "");
-}
+export { resolveMediaUrl as mediaSrc };
 
 export function getCustomerToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -21,7 +18,7 @@ export function clearCustomerToken(): void {
 }
 
 export function apiUrl(path: string): string {
-  return `${getBase()}${path.startsWith("/") ? path : `/${path}`}`;
+  return `${getPublicApiUrl()}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
 export type ApiInit = RequestInit & { skipAuthRedirect?: boolean };

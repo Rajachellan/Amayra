@@ -12,31 +12,41 @@ import { CompactDropdown } from "./CompactDropdown";
 import { shopApi } from "@/lib/api/shop";
 
 const MarqueeBanner = () => {
-  const announcements = [
-    "✦ COMPLIMENTARY INTERNATIONAL SHIPPING ON ORDERS OVER $5,000 ✦",
-    "✦ NEW BRIDAL COLLECTION 'ETEREA' IS NOW LIVE ✦",
-    "✦ VISIT OUR ATELIER FOR A BESPOKE CONSULTATION ✦",
-    "✦ DISCOVER THE ART OF HAND-CRAFTED EXCELLENCE ✦",
-  ];
+  const [announcements, setAnnouncements] = useState<{ text: string; link?: string }[]>([]);
+
+  useEffect(() => {
+    shopApi
+      .announcements()
+      .then((rows) => {
+        if (rows.length) setAnnouncements(rows.map((r) => ({ text: r.text, link: r.link })));
+      })
+      .catch(() => {});
+  }, []);
+
+  const items =
+    announcements.length > 0
+      ? announcements
+      : [{ text: "FREE SHIPPING on all prepaid orders PAN India" }];
 
   return (
-    <div className="w-full bg-[#1A1A1A] py-2 overflow-hidden border-b border-white/5 cursor-pointer group"
-      onClick={() => {
-        const nextBtn = document.querySelector('.hero-next-button') as HTMLButtonElement;
-        if (nextBtn) nextBtn.click();
-      }}
-    >
+    <div className="w-full bg-[#1A1A1A] py-2 overflow-hidden border-b border-white/5">
       <div className="flex animate-marquee whitespace-nowrap">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex shrink-0 items-center">
-            {announcements.map((text, idx) => (
-              <span
-                key={idx}
-                className="text-[9px] text-white/80 font-medium tracking-[0.3em] uppercase mx-12 group-hover:text-champagne transition-colors"
-              >
-                {text}
-              </span>
-            ))}
+            {items.map((item, idx) => {
+              const content = (
+                <span className="text-[9px] text-white/80 font-medium tracking-[0.3em] uppercase mx-12 hover:text-champagne transition-colors">
+                  {item.text}
+                </span>
+              );
+              return item.link ? (
+                <Link key={idx} href={item.link}>
+                  {content}
+                </Link>
+              ) : (
+                <span key={idx}>{content}</span>
+              );
+            })}
           </div>
         ))}
       </div>

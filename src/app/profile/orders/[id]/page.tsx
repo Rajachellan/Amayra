@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import { OrderTrackingSection } from "@/components/orders/OrderTrackingSection";
 
 type OrderDetail = {
   _id: string;
@@ -103,6 +104,8 @@ export default function OrderDetailPage() {
             <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-8">
               Placed {new Date(order.createdAt).toLocaleString()} · Status {order.status.replace(/_/g, " ")}
             </p>
+
+            <OrderTrackingSection orderId={order._id} orderStatus={order.status} />
 
             <div className="border-b pb-8 mb-8">
               <h2 className="text-sm font-bold uppercase tracking-widest text-gray-500 mb-4">Items</h2>

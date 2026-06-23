@@ -1,7 +1,16 @@
+const DEFAULT_API_PORT = 4000;
+
 /** Base URL for the Node API (no trailing slash). */
 export function getPublicApiUrl(): string {
-  const url = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
-  return url || "http://localhost:4000";
+  const fromEnv = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
+  if (fromEnv) return fromEnv;
+
+  // In the browser, match the page host so LAN dev (e.g. 192.168.x.x:3000 → :4000) works.
+  if (typeof window !== "undefined") {
+    return `${window.location.protocol}//${window.location.hostname}:${DEFAULT_API_PORT}`;
+  }
+
+  return `http://localhost:${DEFAULT_API_PORT}`;
 }
 
 /** Turn API image path or absolute URL into a usable `next/image` src. */

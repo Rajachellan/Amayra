@@ -20,7 +20,18 @@ type OrderRow = {
   total: number;
   createdAt: string;
   items?: Array<{ image?: string; name: string }>;
+  shiprocket?: { awbCode?: string; trackingUrl?: string };
 };
+
+function shippingHint(order: OrderRow) {
+  if (order.shiprocket?.awbCode || order.status === "shipped" || order.status === "delivered") {
+    return "Track delivery";
+  }
+  if (order.status === "paid" || order.status === "processing") {
+    return "Preparing to ship";
+  }
+  return null;
+}
 
 type ProfileDetail = {
   name: string;
@@ -228,6 +239,11 @@ export default function ProfilePage() {
                                         year: "numeric",
                                       })}
                                     </p>
+                                    {shippingHint(order) && (
+                                      <p className="text-[10px] text-brand-gold tracking-widest uppercase mt-1 font-bold">
+                                        {shippingHint(order)}
+                                      </p>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="text-right flex items-center space-x-10 shrink-0">

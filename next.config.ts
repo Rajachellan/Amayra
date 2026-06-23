@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   // ✅ FIX 1: Allow access from other devices
-  allowedDevOrigins: ["192.168.7.9"],
+  allowedDevOrigins: ["192.168.4.64", "192.168.7.9"],
 
   redirects: async () => [
     { source: "/cart", destination: "/?openCart=1", permanent: false },
@@ -49,6 +49,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "127.0.0.1",
+        port: "4000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "192.168.4.64",
         port: "4000",
         pathname: "/uploads/**",
       },

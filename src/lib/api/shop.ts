@@ -40,9 +40,35 @@ export type BannerDoc = {
   title: string;
   subtitle?: string;
   image: string;
+  mobileImageUrl?: string;
   link?: string;
+  redirectLink?: string;
+  buttonText?: string;
   ctaLabel?: string;
   order: number;
+};
+
+export type PromotionalBannerDoc = {
+  _id: string;
+  image: string;
+  mobileImage?: string;
+  link: string;
+  order: number;
+};
+
+export type AnnouncementDoc = {
+  _id: string;
+  text: string;
+  link?: string;
+  order: number;
+};
+
+export type HomepageSettingsDoc = {
+  showBanner: boolean;
+  showCollections: boolean;
+  showCategories: boolean;
+  showLookbooks: boolean;
+  showBlogSection: boolean;
 };
 
 export type CollectionDoc = {
@@ -117,6 +143,9 @@ export type HomepageSectionPublic = {
 
 export const shopApi = {
   banners: () => fetchJson<BannerDoc[]>("/banners"),
+  promotionalBanners: () => fetchJson<PromotionalBannerDoc[]>("/promotional-banners"),
+  announcements: () => fetchJson<AnnouncementDoc[]>("/announcements"),
+  homepageSettings: () => fetchJson<HomepageSettingsDoc>("/homepage-settings"),
   categoriesTree: () => fetchJson<CategoryTreeNode[]>("/categories/tree"),
   categories: (q?: { featured?: boolean }) => {
     const sp = new URLSearchParams();
