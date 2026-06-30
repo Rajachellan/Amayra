@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -13,7 +13,7 @@ const features = [
   {
     icon: <RefreshCcw className="w-5 h-5" strokeWidth={1.25} />,
     title: "LIFETIME MAINTENANCE",
-    desc: "Complimentary polishing and stone checking for all Amayra pieces.",
+    desc: "Complimentary polishing and stone checking for all Mairii pieces.",
   },
   {
     icon: <ScrollText className="w-5 h-5" strokeWidth={1.25} />,
@@ -69,7 +69,7 @@ export const WhyChooseUs = () => {
             >
               Why
               <span className="italic" style={{ color: "#C4A064" }}>
-                Amayra?
+                Mairii?
               </span>
             </h2>
 

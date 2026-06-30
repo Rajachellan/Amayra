@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -47,7 +47,7 @@ export const InstagramReels = () => {
             </h2>
           </div>
           <button className="text-brand-emerald font-sans font-bold text-sm tracking-widest border-b-2 border-brand-gold pb-1 hover:text-brand-gold transition-colors">
-            FOLLOW US @amayra
+            FOLLOW US @Mairii
           </button>
         </div>
 

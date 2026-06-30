@@ -1,6 +1,6 @@
-import { getPublicApiUrl, resolveMediaUrl } from "./apiBase";
+﻿import { getPublicApiUrl, resolveMediaUrl } from "./apiBase";
 
-const TOKEN_KEY = "amayra_customer_token";
+const TOKEN_KEY = "Mairii_customer_token";
 
 export { resolveMediaUrl as mediaSrc };
 

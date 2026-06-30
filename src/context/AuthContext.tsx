@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, {
   createContext,
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const refreshMe = useCallback(async () => {
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("amayra_customer_token") : null;
+      const token = typeof window !== "undefined" ? localStorage.getItem("Mairii_customer_token") : null;
       if (!token) {
         setUser(null);
         return;

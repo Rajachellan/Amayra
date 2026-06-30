@@ -1,4 +1,4 @@
-import { getPublicApiUrl, resolveMediaUrl } from "../apiBase";
+﻿import { getPublicApiUrl, resolveMediaUrl } from "../apiBase";
 
 /**
  * Utility to resolve media URLs (alias for resolveMediaUrl)
@@ -6,7 +6,7 @@ import { getPublicApiUrl, resolveMediaUrl } from "../apiBase";
 export const mediaSrc = resolveMediaUrl;
 
 /**
- * Generic fetch wrapper for Amayra API
+ * Generic fetch wrapper for Mairii API
  */
 export async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const baseUrl = getPublicApiUrl();

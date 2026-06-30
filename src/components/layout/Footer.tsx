@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -98,13 +98,13 @@ export const Footer = () => {
                 className="text-xl tracking-[0.25em] block"
                 style={{ color: "#2C2A28" }}
               >
-              Amayra
+              Mairii
               </span> */}
               <span
                 className="text-xl uppercase tracking-[0.5em] block mt-[-3px]"
                 style={{ color: "#C4A064" }}
               >
-                Amayra
+                Mairii
               </span>
             </div>
 
@@ -285,7 +285,7 @@ export const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4" color="#C4A064" />
                 <span className="text-sm text-[#6B645D]">
-                  concierge@amayra.com
+                  concierge@Mairii.com
                 </span>
               </li>
             </ul>
@@ -295,7 +295,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between py-7 gap-4">
           <p className="text-[10px]" style={{ color: "#8A837B" }}>
-            © 2026 Amayra. All Rights Reserved.
+            © 2026 Mairii. All Rights Reserved.
           </p>
 
           <div className="flex items-center gap-6">

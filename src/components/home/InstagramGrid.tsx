@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -36,7 +36,7 @@ export const InstagramGrid = () => {
 
           <button className="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-gray-800 hover:text-yellow-600 transition border-b border-gray-300 pb-1">
             <Camera className="w-4 h-4" />
-            @GemsOfamayra
+            @GemsOfMairii
           </button>
         </div>
 

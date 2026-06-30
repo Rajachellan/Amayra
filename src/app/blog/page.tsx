@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
@@ -50,7 +50,7 @@ const BlogPage = () => {
         <div className="absolute inset-0 z-0">
           <Image
             src="https://images.unsplash.com/photo-1573408302185-9127ff5f6133?q=80&w=2000&auto=format&fit=crop"
-            alt="Amayra Blog Hero"
+            alt="Mairii Blog Hero"
             fill
             priority
             className="object-cover brightness-50 scale-105"
@@ -65,7 +65,7 @@ const BlogPage = () => {
             transition={{ duration: 0.6 }}
             className="text-champagne uppercase text-[10px] md:text-xs font-bold tracking-[0.5em] block mb-4"
           >
-            The Amayra Journal
+            The Mairii Journal
           </motion.span>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}

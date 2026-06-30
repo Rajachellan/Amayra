@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -21,7 +21,7 @@ import { api } from "@/lib/api/index";
 const STORES = [
   {
     name: "DLF Promenade",
-    address: "Amayra, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
+    address: "Mairii, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
     contact: "+91 9110 540 540"
   },
   {
@@ -31,12 +31,12 @@ const STORES = [
   },
   {
     name: "Palladium Mall",
-    address: "Amayra Jewels - Shop No. 11-B, First Floor, Palladium Mall, Sarkhej-Gandhinagar Highway, Thaltej, Ahmedabad, Gujarat 380054",
+    address: "Mairii Jewels - Shop No. 11-B, First Floor, Palladium Mall, Sarkhej-Gandhinagar Highway, Thaltej, Ahmedabad, Gujarat 380054",
     contact: "+91 79 12345678"
   },
   {
     name: "Phoenix Marketcity",
-    address: "Amayra Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
+    address: "Mairii Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
     contact: "+91 22 12345678"
   }
 ];
@@ -94,7 +94,7 @@ export default function ContactPage() {
       <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
         <Image
           src="/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg"
-          alt="Contact Amayra"
+          alt="Contact Mairii"
           fill
           priority
           sizes="100vw"
@@ -132,7 +132,7 @@ export default function ContactPage() {
             >
               <Image
                 src="/images/hand_work.jpg" // Using existing craftsmanship image
-                alt="Amayra Craftsmanship"
+                alt="Mairii Craftsmanship"
                 fill
                 className="object-cover"
               />
@@ -161,7 +161,7 @@ export default function ContactPage() {
                   <div className="w-10 h-10 rounded-full bg-champagne/10 flex items-center justify-center">
                     <Mail className="w-5 h-5 text-champagne" />
                   </div>
-                  <span className="text-sm font-medium tracking-wide">concierge@amayrajewels.com</span>
+                  <span className="text-sm font-medium tracking-wide">concierge@Mairiijewels.com</span>
                 </div>
                 <div className="flex items-center gap-4 text-stone-800">
                   <div className="w-10 h-10 rounded-full bg-champagne/10 flex items-center justify-center">
@@ -282,7 +282,7 @@ export default function ContactPage() {
                   </div>
                   <h3 className="text-2xl font-serif">Inquiry Received</h3>
                   <p className="text-white/60 max-w-md mx-auto text-sm leading-relaxed uppercase tracking-widest">
-                    Your interest in Amayra has been recorded. Our team is reviewing your message and will reach out shortly.
+                    Your interest in Mairii has been recorded. Our team is reviewing your message and will reach out shortly.
                   </p>
                   <button
                     onClick={() => setStatus("idle")}

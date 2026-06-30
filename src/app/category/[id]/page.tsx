@@ -257,12 +257,12 @@ function CategoryContent() {
           >
             <div className="flex items-center justify-center space-x-4 mb-8">
               <motion.div initial={{ width: 0 }} animate={{ width: 40 }} transition={{ delay: 0.5, duration: 1 }} className="h-px bg-champagne/60" />
-              <span className="text-champagne text-[11px] uppercase tracking-[0.6em] font-bold">The Amayra Boutique</span>
+              <span className="text-champagne text-[11px] uppercase tracking-[0.6em] font-bold">The Mairii Boutique</span>
               <motion.div initial={{ width: 0 }} animate={{ width: 40 }} transition={{ delay: 0.5, duration: 1 }} className="h-px bg-champagne/60" />
             </div>
 
             <h1 className="text-5xl md:text-8xl font-serif text-white mb-10 tracking-tight leading-[1.1] drop-shadow-2xl capitalize">
-              {subQuery ? subQuery.replace(/-/g, " ") : title === "all" ? "Amayra" : title}
+              {subQuery ? subQuery.replace(/-/g, " ") : title === "all" ? "Mairii" : title}
             </h1>
 
             <motion.div

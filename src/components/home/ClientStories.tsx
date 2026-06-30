@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -46,11 +46,11 @@ export const ClientStories = () => {
 
               <div className="space-y-4">
                 <p className="text-foreground/50 text-sm font-light leading-relaxed">
-                  Choosing Amayra wasn&apos;t just a purchase; it was a journey into my own heritage. The team didn&apos;t just show me jewelry; they showed me a reflection of my family&apos;s history. Every diamond feels like a legacy in the making.
+                  Choosing Mairii wasn&apos;t just a purchase; it was a journey into my own heritage. The team didn&apos;t just show me jewelry; they showed me a reflection of my family&apos;s history. Every diamond feels like a legacy in the making.
                 </p>
                 <div className="flex flex-col">
                   <span className="text-foreground text-[11px] uppercase tracking-[0.2em] font-bold">Ananya Verma</span>
-                  <span className="text-champagne text-[10px] uppercase tracking-[0.1em] font-medium">Amayra Bride, 2026</span>
+                  <span className="text-champagne text-[10px] uppercase tracking-[0.1em] font-medium">Mairii Bride, 2026</span>
                 </div>
               </div>
 

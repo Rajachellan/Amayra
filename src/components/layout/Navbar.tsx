@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -219,7 +219,7 @@ export const Navbar = () => {
               <Link href="/" className="relative group block">
               <Image
                 src="/logo3.png"
-                alt="Amayra Logo"
+                alt="Mairii Logo"
                 width={140}
                 height={70}
                 style={{ width: "auto", height: "auto" }}

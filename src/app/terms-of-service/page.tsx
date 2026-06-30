@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -27,7 +27,7 @@ const TermsOfService = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">1. Agreement to Terms</h2>
             <p>
-              By accessing or using the Amayra website, you agree to be bound by these 
+              By accessing or using the Mairii website, you agree to be bound by these 
               Terms of Service and all applicable laws and regulations. If you do 
               not agree with any of these terms, you are prohibited from using or 
               accessing this site.
@@ -38,10 +38,10 @@ const TermsOfService = () => {
             <h2 className="text-2xl font-serif text-foreground mb-6">2. Use License</h2>
             <p>
               Permission is granted to temporarily download one copy of the materials 
-              (information or software) on Amayra's website for personal, non-commercial 
+              (information or software) on Mairii's website for personal, non-commercial 
               transitory viewing only.
             </p>
-            <p className="mt-4">This license shall automatically terminate if you violate any of these restrictions and may be terminated by Amayra at any time.</p>
+            <p className="mt-4">This license shall automatically terminate if you violate any of these restrictions and may be terminated by Mairii at any time.</p>
           </section>
 
           <section>
@@ -67,10 +67,10 @@ const TermsOfService = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">5. Limitations</h2>
             <p>
-              In no event shall Amayra or its suppliers be liable for any damages 
+              In no event shall Mairii or its suppliers be liable for any damages 
               (including, without limitation, damages for loss of data or profit, 
               or due to business interruption) arising out of the use or inability 
-              to use the materials on Amayra's website.
+              to use the materials on Mairii's website.
             </p>
           </section>
 
@@ -84,7 +84,7 @@ const TermsOfService = () => {
           </section>
 
           <div className="pt-12 border-t border-foreground/10 text-sm italic">
-            If you have any questions about these Terms, please contact us at <a href="mailto:legal@amayra.com" className="text-champagne underline">legal@amayra.com</a>.
+            If you have any questions about these Terms, please contact us at <a href="mailto:legal@Mairii.com" className="text-champagne underline">legal@Mairii.com</a>.
           </div>
         </motion.div>
       </section>

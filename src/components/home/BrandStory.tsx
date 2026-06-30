@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -29,7 +29,7 @@ export const BrandStory = () => {
           <div className="flex flex-col md:flex-row items-start justify-center gap-12 md:gap-24 text-left">
             <div className="flex-1 space-y-8">
               <p className="text-foreground/70 text-base md:text-lg font-light leading-relaxed font-serif-alt">
-                For over three decades, Amayra has been a custodian of India&apos;s rich jewelry heritage. What began as a small boutique of handcrafted wonders has evolved into a hallmark of luxury, trusted by families across generations.
+                For over three decades, Mairii has been a custodian of India&apos;s rich jewelry heritage. What began as a small boutique of handcrafted wonders has evolved into a hallmark of luxury, trusted by families across generations.
               </p>
             </div>
             <div className="flex-1 space-y-8">
@@ -51,7 +51,7 @@ export const BrandStory = () => {
                 &quot;Luxury is not an indulgence, but an appreciation of the finest details.&quot;
               </p>
               <span className="text-champagne text-[10px] uppercase tracking-[0.4em] relative z-10">
-                — The Amayra Ethos
+                — The Mairii Ethos
               </span>
 
               {/* Subtle highlight effect */}

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -45,7 +45,7 @@ const OurStory = () => {
             transition={{ delay: 0.7, duration: 1 }}
             className="text-5xl md:text-7xl lg:text-8xl font-serif text-white tracking-wider mb-8"
           >
-            The Soul of <br /> <span className="italic">Amayra</span>
+            The Soul of <br /> <span className="italic">Mairii</span>
           </motion.h1>
           <motion.div
             initial={{ scaleX: 0 }}
@@ -97,7 +97,7 @@ const OurStory = () => {
             </h2>
             <div className="space-y-6 text-foreground/70 leading-relaxed font-light">
               <p>
-                The story of Amayra began three decades ago in a small atelier, 
+                The story of Mairii began three decades ago in a small atelier, 
                 where the clinking of metal and the sparkle of diamonds formed 
                 a symphony of dedication. What started as a passion project for 
                 breathtaking craftsmanship has evolved into a hallmark of 
@@ -110,7 +110,7 @@ const OurStory = () => {
                 the essence of the wearer.
               </p>
               <p>
-                Today, Amayra stands as a testament to that original vision, 
+                Today, Mairii stands as a testament to that original vision, 
                 blending traditional artistry with modern design to create 
                 masterpieces that are as enduring as the bonds they celebrate.
               </p>
@@ -204,7 +204,7 @@ const OurStory = () => {
               className="h-px w-24 bg-champagne mx-auto mb-12"
             />
             <p className="text-sm uppercase tracking-[0.3em] text-foreground/50 font-bold">
-              The Amayra Vision
+              The Mairii Vision
             </p>
           </div>
         </div>

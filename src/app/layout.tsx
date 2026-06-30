@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
@@ -21,8 +21,8 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Amayra | High-End Luxury Jewellery",
-  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience high-end luxury with Amayra.",
+  title: "Mairii | High-End Luxury Jewellery",
+  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience high-end luxury with Mairii.",
 };
 
 export default function RootLayout({

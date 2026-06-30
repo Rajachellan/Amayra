@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -95,7 +95,7 @@ export const CollectionStory = () => {
                 style={{ color: "#6B5E51" }}
               >
                 <p>
-                  At  Amayra, we believe every piece of jewellery is a vessel of
+                  At  Mairii, we believe every piece of jewellery is a vessel of
                   memories. For over three decades, our master craftsmen have dedicated their
                   lives to the art of working with precious stones and pure gold.
                 </p>

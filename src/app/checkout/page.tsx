@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -56,7 +56,7 @@ function loadRazorpay(): Promise<boolean> {
   });
 }
 
-const CHECKOUT_SHIPPING_PREFIX = "amayra_checkout_shipping_v1_";
+const CHECKOUT_SHIPPING_PREFIX = "Mairii_checkout_shipping_v1_";
 
 /** Razorpay Standard Checkout accent (nearest solid hex to storefront `gold-gradient` CTA). */
 const RAZORPAY_CHECKOUT_THEME = {
@@ -220,7 +220,7 @@ export default function CheckoutPage() {
           amount: checkoutRes.amount,
           currency: checkoutRes.currency ?? "INR",
           order_id: checkoutRes.razorpayOrderId,
-          name: "Shree Aarna",
+          name: "Mairii",
           description: `Order ${checkoutRes.orderNumber}`,
           prefill: {
             email: user.email,

@@ -7,7 +7,11 @@ export function getPublicApiUrl(): string {
 
   // In the browser, match the page host so LAN dev (e.g. 192.168.x.x:3000 → :4000) works.
   if (typeof window !== "undefined") {
-    return `${window.location.protocol}//${window.location.hostname}:${DEFAULT_API_PORT}`;
+    const { protocol, hostname } = window.location;
+    if (hostname === "mairiijewels.com" || hostname === "www.mairiijewels.com" || hostname.endsWith(".mairiijewels.com")) {
+      return "https://api.mairiijewels.com";
+    }
+    return `${protocol}//${hostname}:${DEFAULT_API_PORT}`;
   }
 
   return `http://localhost:${DEFAULT_API_PORT}`;

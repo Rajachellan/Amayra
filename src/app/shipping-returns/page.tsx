@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -63,7 +63,7 @@ const ShippingReturns = () => {
                 <h2 className="text-2xl font-serif tracking-wide">International Delivery</h2>
               </div>
               <p className="text-sm text-foreground/70 leading-loose mb-4">
-                Amayra ships to select countries worldwide. International shipping 
+                Mairii ships to select countries worldwide. International shipping 
                 fees and delivery times vary by destination. Please note that customs 
                 duties and taxes are the responsibility of the recipient.
               </p>
@@ -116,7 +116,7 @@ const ShippingReturns = () => {
                 <h2 className="text-2xl font-serif tracking-wide">Security & Insurance</h2>
               </div>
               <p className="text-sm text-foreground/70 leading-loose">
-                Every shipment from Amayra is fully insured against loss or damage 
+                Every shipment from Mairii is fully insured against loss or damage 
                 during transit. Your signature is required upon delivery for all 
                 orders, ensuring your treasure reaches only your hands.
               </p>
@@ -135,7 +135,7 @@ const ShippingReturns = () => {
             regarding your shipment or return request.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="mailto:concierge@amayra.com" className="px-8 py-3 bg-champagne text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
+            <a href="mailto:concierge@Mairii.com" className="px-8 py-3 bg-champagne text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
               Email Support
             </a>
             <a href="tel:+919876543210" className="px-8 py-3 border border-white/20 text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
