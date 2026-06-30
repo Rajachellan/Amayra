@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     root: path.resolve(__dirname),
   },
   // ✅ FIX 1: Allow access from other devices
-  allowedDevOrigins: ["192.168.4.64", "192.168.4.82", "192.168.7.9"],
+  allowedDevOrigins: ["192.168.4.64", "192.168.4.82", "192.168.4.89", "192.168.7.9"],
 
   redirects: async () => [
     { source: "/cart", destination: "/?openCart=1", permanent: false },
@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
 
   // ✅ FIX 2: Allow external images
   images: {
+    qualities: [75, 95],
     remotePatterns: [
       {
         protocol: "https",
@@ -61,6 +62,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "http",
         hostname: "192.168.4.82",
+        port: "4000",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "http",
+        hostname: "192.168.4.89",
         port: "4000",
         pathname: "/uploads/**",
       },

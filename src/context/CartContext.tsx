@@ -13,9 +13,15 @@ interface CartContextType {
   setIsCartOpen: (isOpen: boolean) => void;
   toggleCart: () => void;
   addToCart: (product: Product) => void;
+  addToCartWithQuantity: (
+    product: Product,
+    quantity: number,
+    options?: { openDrawer?: boolean }
+  ) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
-  clearCart: () => void;
+  clearCart: (options?: { silent?: boolean }) => void;
+  buyNow: (product: Product, quantity: number) => void;
   subtotal: number;
 }
 
@@ -43,23 +49,34 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  const addToCart = (product: Product) => {
-    let message = `Added ${product.name} to cart`;
+  const addToCartWithQuantity = useCallback(
+    (product: Product, quantity: number, options?: { openDrawer?: boolean }) => {
+      const q = Math.max(1, Math.floor(quantity));
+      let message = `Added ${product.name} to cart`;
 
-    setCart((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
-      if (existingItem) {
-        message = `Increased ${product.name} quantity`;
-        return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
+      setCart((prev) => {
+        const existingItem = prev.find((item) => item.id === product.id);
+        if (existingItem) {
+          message = `Updated ${product.name} in cart`;
+          return prev.map((item) =>
+            item.id === product.id ? { ...item, quantity: q } : item
+          );
+        }
+        return [...prev, { ...product, quantity: q }];
+      });
 
-    toast.success(message);
-    openCart();
-  };
+      toast.success(message);
+      if (options?.openDrawer !== false) openCart();
+    },
+    [openCart]
+  );
+
+  const addToCart = useCallback(
+    (product: Product) => {
+      addToCartWithQuantity(product, 1, { openDrawer: true });
+    },
+    [addToCartWithQuantity]
+  );
 
   const removeFromCart = (id: string) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
@@ -78,10 +95,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   };
 
-  const clearCart = () => {
+  const clearCart = useCallback((options?: { silent?: boolean }) => {
     setCart([]);
-    toast.success("Cart cleared");
-  };
+    if (!options?.silent) toast.success("Cart cleared");
+  }, []);
+
+  const buyNow = useCallback((product: Product, quantity: number) => {
+    const q = Math.max(1, Math.floor(quantity));
+    setCart([{ ...product, quantity: q }]);
+    toast.success(`Proceeding to checkout`);
+  }, []);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
@@ -94,12 +117,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsCartOpen,
       toggleCart,
       addToCart,
+      addToCartWithQuantity,
       removeFromCart,
       updateQuantity,
       clearCart,
+      buyNow,
       subtotal,
     }),
-    [cart, isCartOpen, openCart, closeCart, setIsCartOpen, toggleCart, subtotal]
+    [cart, isCartOpen, openCart, closeCart, setIsCartOpen, toggleCart, addToCart, addToCartWithQuantity, clearCart, buyNow, subtotal]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

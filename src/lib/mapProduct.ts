@@ -2,6 +2,13 @@ import type { Product } from "@/types";
 import { resolveMediaUrl } from "./apiBase";
 import type { ProductDetail, ProductListItem } from "./api/shop";
 
+function effectiveStock(p: { stock?: number; variants?: { stock?: number }[] }): number {
+  const base = typeof p.stock === "number" && !Number.isNaN(p.stock) ? p.stock : 0;
+  if (base > 0) return base;
+  if (!p.variants?.length) return base;
+  return p.variants.reduce((sum, v) => sum + (typeof v.stock === "number" ? v.stock : 0), 0);
+}
+
 function sizesFromVariants(
   v: ProductDetail["variants"]
 ): string[] | undefined {
@@ -60,7 +67,7 @@ export function mapListItemToProduct(p: ProductListItem): Product {
     color: p.color,
     material: p.material,
     weight: p.weight,
-    stock: p.stock,
+    stock: effectiveStock(p),
     isNewArrival,
     isBestSeller: (p.soldCount ?? 0) >= 40,
     tags: p.tags,
