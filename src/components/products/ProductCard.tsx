@@ -162,7 +162,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 </h2>
                 <div className="w-12 h-0.5 bg-champagne mb-8" />
                 <p className="text-sm text-gray-500 leading-relaxed mb-8 font-light italic">
-                  {product.description || "An exquisite masterpiece handcrafted with precision and passion, embodying the timeless heritage of Amayra. Each detail tells a story of luxury and elegance."}
+                  {product.description || "An exquisite masterpiece handcrafted with precision and passion, embodying the timeless heritage of mairii. Each detail tells a story of luxury and elegance."}
                 </p>
                 <div className="flex items-center space-x-4 mb-10">
                   <span className="text-2xl font-serif font-bold text-foreground">₹{product.price.toLocaleString()}</span>

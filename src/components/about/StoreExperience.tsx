@@ -37,7 +37,7 @@ export const StoreExperience = () => {
                 {"A World of Elevated Hospitality"}
               </h2>
               <p className="text-white font-light leading-loose text-editorial mb-10 text-lg">
-                {"Whether you visit our flagship boutique in Mumbai or experience our Virtual Concierge from London, the essence of Amayra remains the same: a sanctuary of calm, where time slows down to match the pace of true craftsmanship."}
+                {"Whether you visit our flagship boutique in Mumbai or experience our Virtual Concierge from London, the essence of mairii remains the same: a sanctuary of calm, where time slows down to match the pace of true craftsmanship."}
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <button className="px-12 py-5 bg-white text-foreground rounded-full text-[10px] uppercase tracking-widest hover:bg-champagne hover:text-white transition-all">

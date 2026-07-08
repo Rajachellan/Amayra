@@ -119,7 +119,7 @@ const BlogDetailsPage = ({ params }: PageProps) => {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-foreground">Written By</p>
-                    <p className="text-sm font-serif italic text-text-muted">Amayra Editorial Team</p>
+                    <p className="text-sm font-serif italic text-text-muted">mairii Editorial Team</p>
                   </div>
                 </div>
 

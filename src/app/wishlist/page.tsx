@@ -30,7 +30,7 @@ export default function WishlistPage() {
               Your Favorites <Heart className="ml-6 w-10 h-10 text-brand-gold fill-brand-gold" />
             </h1>
             <p className="text-gray-300 font-sans tracking-[0.2em] uppercase text-xs">
-              Saved treasures from Amayra
+              Saved treasures from mairii
             </p>
           </div>
         </div>

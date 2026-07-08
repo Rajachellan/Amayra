@@ -59,7 +59,7 @@ export default function LoginPage() {
           </form>
 
           <div className="mt-10 text-center">
-            <p className="text-xs text-gray-400 tracking-widest uppercase mb-4">New to Amayra?</p>
+            <p className="text-xs text-gray-400 tracking-widest uppercase mb-4">New to mairii?</p>
             <Link href="/auth/signup">
               <Button variant="outline" className="w-full">CREATE AN ACCOUNT</Button>
             </Link>

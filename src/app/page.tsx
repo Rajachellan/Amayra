@@ -35,9 +35,9 @@ export default function Home() {
        <CategorySection />
        <SignatureBlocks/>
        
-       <CelebritySpotlight/>
+       {/* <CelebritySpotlight/> */}
         {/* 6. Instagram Reels Section - 3x2 Video Grid (Hover Play) */}
-      <InstagramGrid />
+      {/* <InstagramGrid /> */}
       {/* 2. Shop by Mood - Aesthetic Entry Points */}
       <MoodCategories />
 

@@ -17,6 +17,7 @@
   /* Darker muted text for clarity */
   --gold-glow: rgba(230, 211, 163, 0.2);
   /* Reduced opacity for sharpness */
+  --dark-green: #0B2B1B;
 }
 
 @theme inline {
@@ -28,6 +29,7 @@
   --color-sage: var(--sage);
   --color-emerald: var(--emerald-soft);
   --color-maroon: var(--maroon-blush);
+  --color-dark-green: var(--dark-green);
 
   --font-serif: "Playfair Display", serif;
   --font-serif-alt: "Cormorant Garamond", serif;

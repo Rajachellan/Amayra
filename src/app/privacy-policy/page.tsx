@@ -29,7 +29,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">1. Introduction</h2>
             <p>
-              Welcome to Amayra. We respect your privacy and are committed to protecting 
+              Welcome to mairii. We respect your privacy and are committed to protecting 
               your personal data. This privacy policy will inform you as to how we look 
               after your personal data when you visit our website (regardless of where 
               you visit it from) and tell you about your privacy rights and how the 
@@ -87,7 +87,7 @@ const PrivacyPolicy = () => {
           </section>
 
           <div className="pt-12 border-t border-foreground/10 text-sm italic">
-            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:privacy@amayra.com" className="text-champagne underline">privacy@amayra.com</a>.
+            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:privacy@mairii.com" className="text-champagne underline">privacy@mairii.com</a>.
           </div>
         </motion.div>
       </section>

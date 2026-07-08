@@ -21,7 +21,7 @@ import { api } from "@/lib/api/index";
 const STORES = [
   {
     name: "DLF Promenade",
-    address: "Amayra, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
+    address: "mairii, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
     contact: "+91 9110 540 540"
   },
   {
@@ -31,12 +31,12 @@ const STORES = [
   },
   {
     name: "Palladium Mall",
-    address: "Amayra Jewels - Shop No. 11-B, First Floor, Palladium Mall, Sarkhej-Gandhinagar Highway, Thaltej, Ahmedabad, Gujarat 380054",
+    address: "mairii Jewels - Shop No. 11-B, First Floor, Palladium Mall, Sarkhej-Gandhinagar Highway, Thaltej, Ahmedabad, Gujarat 380054",
     contact: "+91 79 12345678"
   },
   {
     name: "Phoenix Marketcity",
-    address: "Amayra Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
+    address: "mairii Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
     contact: "+91 22 12345678"
   }
 ];
@@ -93,14 +93,14 @@ export default function ContactPage() {
       {/* 1. Hero Experience */}
       <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
         <Image
-          src="/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg"
-          alt="Contact Amayra"
+          src="/images/contact-banner.png"
+          alt="Contact mairii"
           fill
           priority
           sizes="100vw"
           className="object-cover brightness-75 scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" /> */}
         
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <motion.div
@@ -109,13 +109,13 @@ export default function ContactPage() {
             transition={{ duration: 1, ease: "easeOut" }}
             className="space-y-4"
           >
-            <span className="text-champagne uppercase tracking-[0.6em] text-[10px] md:text-xs font-bold block mb-4">
+            {/* <span className="text-champagne uppercase tracking-[0.6em] text-[10px] md:text-xs font-bold block mb-4">
               Connect with Excellence
             </span>
             <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-serif leading-tight">
               Hello.... <br />
               <span className="italic font-light opacity-90">Sunte Ho??</span>
-            </h1>
+            </h1> */}
           </motion.div>
         </div>
       </section>
@@ -132,7 +132,7 @@ export default function ContactPage() {
             >
               <Image
                 src="/images/hand_work.jpg" // Using existing craftsmanship image
-                alt="Amayra Craftsmanship"
+                alt="mairii Craftsmanship"
                 fill
                 className="object-cover"
               />
@@ -161,7 +161,7 @@ export default function ContactPage() {
                   <div className="w-10 h-10 rounded-full bg-champagne/10 flex items-center justify-center">
                     <Mail className="w-5 h-5 text-champagne" />
                   </div>
-                  <span className="text-sm font-medium tracking-wide">concierge@amayrajewels.com</span>
+                  <span className="text-sm font-medium tracking-wide">concierge@mairiijewels.com</span>
                 </div>
                 <div className="flex items-center gap-4 text-stone-800">
                   <div className="w-10 h-10 rounded-full bg-champagne/10 flex items-center justify-center">
@@ -282,7 +282,7 @@ export default function ContactPage() {
                   </div>
                   <h3 className="text-2xl font-serif">Inquiry Received</h3>
                   <p className="text-white/60 max-w-md mx-auto text-sm leading-relaxed uppercase tracking-widest">
-                    Your interest in Amayra has been recorded. Our team is reviewing your message and will reach out shortly.
+                    Your interest in mairii has been recorded. Our team is reviewing your message and will reach out shortly.
                   </p>
                   <button
                     onClick={() => setStatus("idle")}

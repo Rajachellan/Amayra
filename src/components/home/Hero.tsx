@@ -19,7 +19,15 @@ type Slide = {
 const FALLBACK_SLIDES: Slide[] = [
   {
     id: "fallback-1",
-    image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?q=80&w=2000&auto=format&fit=crop",
+    image: "/images/banner4.jpg",
+    title: "Elegance Redefined",
+    tagline: "Discover curated masterpieces designed for those who appreciate heritage artistry.",
+    cta: "Explore Collection",
+    link: "/category/all",
+  },
+    {
+    id: "fallback-1",
+    image:"/images/banner3.jpg",
     title: "Elegance Redefined",
     tagline: "Discover curated masterpieces designed for those who appreciate heritage artistry.",
     cta: "Explore Collection",

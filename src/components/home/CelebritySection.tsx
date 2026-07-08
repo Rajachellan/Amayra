@@ -38,7 +38,7 @@ export const CelebritySection = () => {
               As Seen <br /> On Stars
             </h2>
             <p className="text-gray-600 font-sans text-lg mb-10 leading-relaxed italic">
-              "Amayra's jewellery is not just an accessory; it's a piece of art that makes every woman feel like a queen."
+              "mairii's jewellery is not just an accessory; it's a piece of art that makes every woman feel like a queen."
             </p>
             <div className="flex items-center gap-8 grayscale opacity-50">
               <span className="font-serif font-bold text-xl">VOGUE</span>

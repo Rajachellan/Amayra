@@ -29,7 +29,7 @@ const HIGHLIGHTS = [
 
 export const PremiumHighlights = () => {
   return (
-    <section className="py-32 bg-background border-y border-foreground/5 relative overflow-hidden">
+    <section className="py-32 bg-sage/40 border-y border-foreground/5 relative overflow-hidden">
       {/* Subtle accent glows */}
       <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-champagne/10 to-transparent" />
       <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-champagne/10 to-transparent" />

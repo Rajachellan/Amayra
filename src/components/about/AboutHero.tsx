@@ -40,7 +40,7 @@ export const AboutHero = () => {
               <span className="italic">Timeless Elegance</span>
             </h1>
             <p className="text-lg md:text-xl font-light text-[#3D3934] leading-relaxed mb-12 text-editorial">
-              For over three decades, Amayra has been the custodian of heritage,
+              For over three decades, mairii has been the custodian of heritage,
               weaving stories of gold and precious stones into masterpieces that transcend time.
             </p>
             <div className="flex flex-wrap gap-6">

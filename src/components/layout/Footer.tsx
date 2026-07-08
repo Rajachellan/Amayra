@@ -98,13 +98,13 @@ export const Footer = () => {
                 className="text-xl tracking-[0.25em] block"
                 style={{ color: "#2C2A28" }}
               >
-              Amayra
+              mairii
               </span> */}
               <span
                 className="text-xl uppercase tracking-[0.5em] block mt-[-3px]"
                 style={{ color: "#C4A064" }}
               >
-                Amayra
+                mairii
               </span>
             </div>
 
@@ -285,7 +285,7 @@ export const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4" color="#C4A064" />
                 <span className="text-sm text-[#6B645D]">
-                  concierge@amayra.com
+                  concierge@mairii.com
                 </span>
               </li>
             </ul>
@@ -295,7 +295,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between py-7 gap-4">
           <p className="text-[10px]" style={{ color: "#8A837B" }}>
-            © 2026 Amayra. All Rights Reserved.
+            © 2026 Mairii Developed by RankRaze
           </p>
 
           <div className="flex items-center gap-6">
@@ -303,7 +303,7 @@ export const Footer = () => {
               Developed by <Link target="_blank" href="https://rankraze.com">Rankraze</Link>
             </span>
 
-            <div className="flex gap-2">
+            {/* <div className="flex gap-2">
               {["VISA", "MC", "AMEX"].map((card) => (
                 <div
                   key={card}
@@ -316,7 +316,7 @@ export const Footer = () => {
                   {card}
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

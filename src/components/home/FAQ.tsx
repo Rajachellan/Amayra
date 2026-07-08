@@ -230,7 +230,7 @@ export default function FAQ() {
         }
       `}</style>
 
-      <section className="min-h-screen bg-[#FAFAF7] flex items-center justify-center px-4 py-16 sm:px-8">
+      <section className="min-h-screen bg-[#EDF3EF] flex items-center justify-center px-4 py-16 sm:px-8">
         <div className="w-full max-w-5xl">
 
           {/* ── Header ── */}
