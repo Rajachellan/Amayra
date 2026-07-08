@@ -1,5 +1,5 @@
-﻿"use client";
-import React, { useState, useEffect, useRef, useMemo } from "react";
+"use client";
+import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Heart, ShoppingBag, Menu, X, User, LogIn } from "lucide-react";
@@ -20,7 +20,7 @@ const MarqueeBanner = () => {
       .then((rows) => {
         if (rows.length) setAnnouncements(rows.map((r) => ({ text: r.text, link: r.link })));
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const items =
@@ -29,7 +29,7 @@ const MarqueeBanner = () => {
       : [{ text: "FREE SHIPPING on all prepaid orders PAN India" }];
 
   return (
-    <div className="w-full bg-[#1A1A1A] py-2 overflow-hidden border-b border-white/5">
+    <div className="w-full bg-[#0B2516] py-2 overflow-hidden border-b border-white/5">
       <div className="flex animate-marquee whitespace-nowrap">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex shrink-0 items-center">
@@ -63,12 +63,9 @@ export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     setMounted(true);
@@ -115,20 +112,7 @@ export const Navbar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      // Determine if page is scrolled
       setIsScrolled(currentScrollY > 20);
-
-      // Determine visibility for show/hide behavior
-      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
-        // Scrolling down and past threshold
-        setIsVisible(false);
-      } else {
-        // Scrolling up or at the top
-        setIsVisible(true);
-      }
-
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -137,14 +121,11 @@ export const Navbar = () => {
 
   const isWhite = isScrolled || isHovered || isMobileMenuOpen || isSearchOpen;
 
-  const leftMenu = navItems.slice(0, 3);
-  const rightMenu = navItems.slice(3);
-
   return (
     <motion.header
       initial={{ y: 0 }}
       animate={{
-        y: isVisible ? 0 : -150,
+        y: 0,
         backgroundColor: isWhite ? "rgba(255, 255, 255, 1)" : "rgba(255, 255, 255, 0)",
       }}
       transition={{ duration: 0.4, ease: "easeInOut" }}
@@ -160,7 +141,7 @@ export const Navbar = () => {
     >
       <MarqueeBanner />
 
-      <nav className={`w-full flex items-center transition-all duration-300 ${isScrolled ? "h-20" : "h-24"
+      <nav className={`w-full flex items-center transition-all duration-300 ${isScrolled ? "h-14" : "h-14"
         }`}>
         <div className="container mx-auto px-6 h-full flex items-center justify-between relative">
 
@@ -189,49 +170,24 @@ export const Navbar = () => {
             )}
           </AnimatePresence>
 
-          {/* Left Side Menu */}
-          <div className="hidden lg:flex items-center space-x-12 flex-1">
-            {leftMenu.map((item) => (
-              <div
-                key={item.name}
-                onMouseEnter={() => setActiveMenu(item.name)}
-                className="relative py-2 flex items-center"
-              >
-                <Link
-                  href={item.href}
-                  className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${isWhite ? "text-foreground" : "text-white/90"
-                    } hover:text-champagne`}
-                >
-                  {item.name}
-                </Link>
-
-                <CompactDropdown
-                  item={item}
-                  isOpen={activeMenu === item.name}
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Center: Logo */}
-          <div className={`flex justify-center flex-shrink-0 px-10 transition-transform duration-500 ${isScrolled ? "scale-90" : "scale-100"
+          {/* Left: Logo */}
+          <div className={`flex justify-start flex-shrink-0 pr-8 transition-transform duration-500 ${isScrolled ? "scale-90" : "scale-100"
             }`}>
-              <Link href="/" className="relative group block">
+            <Link href="/" className="relative group block">
               <Image
-                src="/logo3.png"
+                src="/images/image (7).png"
                 alt="Mairii Logo"
                 width={140}
                 height={70}
-                style={{ width: "auto", height: "auto" }}
-                className={`object-contain transition-all duration-500 `}
+                className={`object-contain transition-all rounded-full duration-500 `}
                 priority
               />
             </Link>
           </div>
 
-          {/* Right Side Menu + Icons */}
-          <div className="hidden lg:flex items-center justify-end space-x-12 flex-1">
-            {rightMenu.map((item) => (
+          {/* Center: Navigation Menu */}
+          <div className="hidden lg:flex items-center justify-center space-x-10 flex-1 px-8">
+            {navItems.map((item) => (
               <div
                 key={item.name}
                 onMouseEnter={() => setActiveMenu(item.name)}
@@ -253,8 +209,10 @@ export const Navbar = () => {
                 )}
               </div>
             ))}
+          </div>
 
-            {/* Icons */}
+          {/* Right Side Icons */}
+          <div className="hidden lg:flex items-center justify-end space-x-12">
             <div className={`flex items-center space-x-7 pl-8 border-l transition-colors duration-300 ml-4 ${isWhite ? "border-foreground/10" : "border-white/20"
               }`}>
               {/* Search */}

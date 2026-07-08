@@ -193,7 +193,7 @@ export function SmallNavigationMenu() {
             </div>
 
             {/* Product Grid */}
-           <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex-1 overflow-y-auto">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 flex-1 overflow-y-auto">
                 <div
                     className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 transition-all duration-300 ${animating ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"
                         }`}
@@ -223,7 +223,7 @@ export function SmallNavigationMenu() {
                                 }}
                             >
                                 {/* Image */}
-                               <div className="relative w-full h-full">
+                                <div className="relative w-full h-full">
                                     <Image
                                         src={product.image}
                                         alt={product.name}
@@ -315,66 +315,66 @@ export function SmallNavigationMenu() {
                             </div>
 
                             {/* Product Info */}
-                        <div className="px-1">
-    <Link href={`/product/${product.slug}`}>
-    <h3
-        className="text-sm sm:text-base leading-snug mb-1 transition-colors duration-300"
-        style={{
-            color: hoveredId === product.idStr ? "#c9a84c" : "#3a2a1a",
-            fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-            fontWeight: 500,
-            letterSpacing: "0.01em",
-        }}
-    >
-        {product.name}
-    </h3>
-    </Link>
+                            <div className="px-1">
+                                <Link href={`/product/${product.slug}`}>
+                                    <h3
+                                        className="text-sm sm:text-base leading-snug mb-1 transition-colors duration-300"
+                                        style={{
+                                            color: hoveredId === product.idStr ? "#c9a84c" : "#3a2a1a",
+                                            fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+                                            fontWeight: 500,
+                                            letterSpacing: "0.01em",
+                                        }}
+                                    >
+                                        {product.name}
+                                    </h3>
+                                </Link>
 
-    <div className="flex items-center justify-between">
-        
-        {/* Price Section */}
-        <div className="flex items-center gap-2">
-            
-            {/* Old Price */}
-            <p
-                className="text-xs sm:text-sm font-semibold line-through"
-                style={{
-                    color: "#9c9c9c",
-                    fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-                }}
-            >
-                {product.oldPrice}
-            </p>
+                                <div className="flex items-center justify-between">
 
-            {/* Discount Price */}
-            <p
-                className="text-xl font-semibold"
-                style={{
-                    color: "#c9a84c",
-                    fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-                    letterSpacing: "0.02em",
-                }}
-            >
-                {product.price}
-            </p>
-        </div>
+                                    {/* Price Section */}
+                                    <div className="flex items-center gap-2">
 
-        {/* Small star accent */}
-        <div className="flex gap-0.5">
-            {[...Array(5)].map((_, i) => (
-                <svg
-                    key={i}
-                    width="8"
-                    height="8"
-                    viewBox="0 0 20 20"
-                    fill={i < 4 ? "#c9a84c" : "#e8d5b0"}
-                >
-                    <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
-                </svg>
-            ))}
-        </div>
-    </div>
-</div>
+                                        {/* Old Price */}
+                                        <p
+                                            className="text-xs sm:text-sm font-semibold line-through"
+                                            style={{
+                                                color: "#9c9c9c",
+                                                fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+                                            }}
+                                        >
+                                            {product.oldPrice}
+                                        </p>
+
+                                        {/* Discount Price */}
+                                        <p
+                                            className="text-xl font-semibold"
+                                            style={{
+                                                color: "#c9a84c",
+                                                fontFamily: "'Cormorant Garamond', 'Georgia', serif",
+                                                letterSpacing: "0.02em",
+                                            }}
+                                        >
+                                            {product.price}
+                                        </p>
+                                    </div>
+
+                                    {/* Small star accent */}
+                                    <div className="flex gap-0.5">
+                                        {[...Array(5)].map((_, i) => (
+                                            <svg
+                                                key={i}
+                                                width="8"
+                                                height="8"
+                                                viewBox="0 0 20 20"
+                                                fill={i < 4 ? "#c9a84c" : "#e8d5b0"}
+                                            >
+                                                <polygon points="10,1 12,7 18,7 13,11 15,17 10,13 5,17 7,11 2,7 8,7" />
+                                            </svg>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -30,7 +30,7 @@ const features = [
 export const WhyChooseUs = () => {
   return (
     <section
-      className="relative overflow-hidden min-h-screen flex items-center"
+      className="relative overflow-hidden min-h-screen flex items-center bg-[#F4F8F5]"
 
     >
       {/* Decorative background circle */}
@@ -38,14 +38,14 @@ export const WhyChooseUs = () => {
         className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(196,160,100,0.08) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(46,125,50,0.08) 0%, transparent 70%)",
         }}
       />
       <div
         className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(196,160,100,0.06) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(46,125,50,0.06) 0%, transparent 70%)",
         }}
       />
 
@@ -130,19 +130,19 @@ export const WhyChooseUs = () => {
                 transition={{ delay: idx * 0.1, duration: 0.7 }}
                 className="group relative p-6 transition-all duration-500 hover:-translate-y-1"
                 style={{
-                  background: "rgba(255,255,255,0.7)",
-                  border: "1px solid rgba(196,160,100,0.2)",
+                  background: "rgba(255,255,255,0.85)",
+                  border: "1px solid rgba(46,125,50,0.15)",
                   boxShadow: "0 4px 20px -8px rgba(28,21,16,0.06)",
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.border =
-                    "1px solid rgba(196,160,100,0.55)";
+                    "1px solid rgba(46,125,50,0.4)";
                   (e.currentTarget as HTMLElement).style.boxShadow =
-                    "0 16px 40px -12px rgba(196,160,100,0.18)";
+                    "0 16px 40px -12px rgba(46,125,50,0.12)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.border =
-                    "1px solid rgba(196,160,100,0.2)";
+                    "1px solid rgba(46,125,50,0.15)";
                   (e.currentTarget as HTMLElement).style.boxShadow =
                     "0 4px 24px -8px rgba(28,21,16,0.06)";
                 }}
@@ -151,8 +151,8 @@ export const WhyChooseUs = () => {
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center mb-6 transition-colors duration-500"
                   style={{
-                    background: "rgba(196,160,100,0.12)",
-                    color: "#C4A064",
+                    background: "rgba(46,125,50,0.1)",
+                    color: "#2E5A44",
                   }}
                 >
                   {item.icon}

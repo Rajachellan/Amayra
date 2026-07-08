@@ -64,7 +64,7 @@ export const Hero = () => {
           setCurrentIndex(0);
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   const goTo = useCallback((index: number) => {
@@ -211,11 +211,10 @@ export const Hero = () => {
                   e.stopPropagation();
                   goTo(index);
                 }}
-                className={`h-[2px] rounded-full transition-all duration-500 ${
-                  currentIndex === index
+                className={`h-[2px] rounded-full transition-all duration-500 ${currentIndex === index
                     ? "w-10 bg-champagne"
                     : "w-4 bg-white/50 hover:w-6 hover:bg-white/80"
-                }`}
+                  }`}
               />
             ))}
           </div>

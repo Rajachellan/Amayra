@@ -31,8 +31,8 @@ export const PremiumHighlights = () => {
   return (
     <section className="py-32 bg-background border-y border-foreground/5 relative overflow-hidden">
       {/* Subtle accent glows */}
-      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-champagne/10 to-transparent" />
-      <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-champagne/10 to-transparent" />
+      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
+      <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
 
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 text-center">
@@ -45,7 +45,7 @@ export const PremiumHighlights = () => {
               transition={{ delay: index * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col items-center group"
             >
-              <div className="text-champagne mb-5 transition-transform duration-700 group-hover:scale-120">
+              <div className="text-[#2E5A44] mb-5 transition-all duration-700 group-hover:scale-120 group-hover:text-champagne">
                 {item.icon}
               </div>
               <h3 className="text-foreground text-[15px] uppercase tracking-[0.5em] font-bold mb-5 leading-tight font-serif">
