@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
 
   // ✅ FIX 2: Allow external images
   images: {
+    unoptimized: true,
     qualities: [75, 95],
     remotePatterns: [
       {
