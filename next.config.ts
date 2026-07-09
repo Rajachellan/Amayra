@@ -32,6 +32,11 @@ const nextConfig: NextConfig = {
       /* Cloudflare R2 public bucket (pub-*.r2.dev and custom hostnames) */
       {
         protocol: "https",
+        hostname: "assets.mairiijewels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "*.r2.dev",
         pathname: "/**",
       },
