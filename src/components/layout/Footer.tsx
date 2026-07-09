@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Link from "next/link";
@@ -7,27 +7,23 @@ import { Mail, Phone, MapPin } from "lucide-react";
 export const Footer = () => {
   return (
     <footer
-      className="relative overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(135deg, #fdf8f2 0%, #fef0e6 50%, #fdf5fb 100%)",
-      }}
+      className="relative overflow-hidden bg-emerald-dark text-white"
     >
       {/* Top border */}
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
           background:
-            "linear-gradient(90deg, transparent, #C4A064, transparent)",
+            "linear-gradient(90deg, transparent, var(--brand-gold), transparent)",
         }}
       />
 
-      {/* Soft glow */}
+      {/* Soft gold glow */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 50% 0%, rgba(196,160,100,0.08) 0%, transparent 70%)",
+            "radial-gradient(ellipse at 50% 0%, rgba(196, 160, 100, 0.15) 0%, transparent 70%)",
         }}
       />
 
@@ -35,26 +31,23 @@ export const Footer = () => {
         {/* Newsletter */}
         <div
           className="flex flex-col lg:flex-row items-start lg:items-center justify-between py-14"
-          style={{ borderBottom: "1px solid rgba(196,160,100,0.2)" }}
+          style={{ borderBottom: "1px solid rgba(196, 160, 100, 0.2)" }}
         >
           <div className="mb-8 lg:mb-0">
             <span
-              className="text-[10px] uppercase tracking-[0.45em] font-bold block mb-3"
-              style={{ color: "#C4A064" }}
+              className="text-[10px] uppercase tracking-[0.45em] font-bold block mb-3 text-brand-gold"
             >
               Exclusive Access
             </span>
 
             <h3
-              className="text-2xl md:text-3xl font-light tracking-wider mb-2"
-              style={{ color: "#2C2A28" }} // dark text
+              className="text-2xl md:text-3xl font-light tracking-wider mb-2 text-white"
             >
               Join the Elite Circle
             </h3>
 
             <p
-              className="text-xs leading-relaxed max-w-sm"
-              style={{ color: "#6B645D" }} // readable muted text
+              className="text-xs leading-relaxed max-w-sm text-white/60"
             >
               Subscribe to receive updates on new collections, exclusive offers,
               and jewellery care tips.
@@ -67,17 +60,17 @@ export const Footer = () => {
               placeholder="YOUR EMAIL ADDRESS"
               className="flex-grow lg:w-72 px-5 py-3.5 text-xs tracking-[0.2em] focus:outline-none"
               style={{
-                border: "1px solid rgba(196,160,100,0.3)",
+                border: "1px solid rgba(196, 160, 100, 0.3)",
                 borderRight: "none",
-                color: "#2C2A28",
+                color: "#fff",
                 background: "transparent",
               }}
             />
 
             <button
-              className="px-6 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em]"
+              className="px-6 py-3.5 text-[10px] font-bold uppercase tracking-[0.3em] transition-all hover:bg-brand-gold-dark"
               style={{
-                background: "#C4A064",
+                background: "var(--brand-gold)",
                 color: "#fff",
               }}
             >
@@ -89,28 +82,20 @@ export const Footer = () => {
         {/* Links */}
         <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 py-14"
-          style={{ borderBottom: "1px solid rgba(196,160,100,0.15)" }}
+          style={{ borderBottom: "1px solid rgba(196, 160, 100, 0.15)" }}
         >
           {/* Brand */}
           <div>
             <div className="mb-7">
-              {/* <span
-                className="text-xl tracking-[0.25em] block"
-                style={{ color: "#2C2A28" }}
-              >
-              Mairii
-              </span> */}
               <span
-                className="text-xl uppercase tracking-[0.5em] block mt-[-3px]"
-                style={{ color: "#C4A064" }}
+                className="text-xl uppercase tracking-[0.5em] block mt-[-3px] text-brand-gold font-serif"
               >
                 Mairii
               </span>
             </div>
 
             <p
-              className="text-xs leading-[1.9] mb-8"
-              style={{ color: "#6B645D" }}
+              className="text-xs leading-[1.9] mb-8 text-white/70"
             >
               Crafting stories of elegance since 1990. We specialize in
               handcrafted diamond and gold jewellery that speaks to the soul.
@@ -180,14 +165,7 @@ export const Footer = () => {
                 <Link
                   key={index}
                   href="#"
-                  className="transition-all duration-300"
-                  style={{ color: "#7A746D" }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "#C4A064")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "#7A746D")
-                  }
+                  className="transition-all duration-300 text-white/60 hover:text-brand-gold"
                 >
                   {item.svg}
                 </Link>
@@ -198,13 +176,12 @@ export const Footer = () => {
           {/* Collections */}
           <div>
             <h4
-              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7"
-              style={{ color: "#C4A064" }}
+              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7 text-brand-gold"
             >
               Collections
             </h4>
 
-            <ul className="space-y-4 font-semibold">
+            <ul className="space-y-4 font-medium">
               {[
                 "Gold Jewellery",
                 "Diamond Collection",
@@ -215,8 +192,7 @@ export const Footer = () => {
                 <li key={item}>
                   <Link
                     href="#"
-                    className="text-xs uppercase tracking-widest"
-                    style={{ color: "#6B645D" }}
+                    className="text-xs uppercase tracking-widest text-white/70 hover:text-brand-gold transition-colors"
                   >
                     {item}
                   </Link>
@@ -228,13 +204,12 @@ export const Footer = () => {
           {/* Company */}
           <div>
             <h4
-              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7"
-              style={{ color: "#C4A064" }}
+              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7 text-brand-gold"
             >
               Company
             </h4>
 
-            <ul className="space-y-4 font-semibold">
+            <ul className="space-y-4 font-medium">
               {[
                 { name: "Our Story", href: "/our-story" },
                 { name: "Blogs", href: "/blog" },
@@ -247,8 +222,7 @@ export const Footer = () => {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-xs uppercase tracking-widest hover:text-champagne transition-colors"
-                    style={{ color: "#6B645D" }}
+                    className="text-xs uppercase tracking-widest text-white/70 hover:text-brand-gold transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -260,31 +234,30 @@ export const Footer = () => {
           {/* Contact */}
           <div>
             <h4
-              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7"
-              style={{ color: "#C4A064" }}
+              className="text-[13px] font-bold tracking-[0.4em] uppercase mb-7 text-brand-gold"
             >
               Contact
             </h4>
 
             <ul className="space-y-5">
               <li className="flex items-start space-x-3">
-                <MapPin className="w-4 h-4 mt-0.5" color="#C4A064" />
-                <span className="text-sm text-[#6B645D]">
+                <MapPin className="w-4 h-4 mt-0.5 text-brand-gold" />
+                <span className="text-sm text-white/70">
                   123 Diamond Avenue, Jewellery Park,
                   <br /> Mumbai, MH – 400001
                 </span>
               </li>
 
               <li className="flex items-center space-x-3">
-                <Phone className="w-4 h-4" color="#C4A064" />
-                <span className="text-sm text-[#6B645D]">
+                <Phone className="w-4 h-4 text-brand-gold" />
+                <span className="text-sm text-white/70">
                   +91 98765 43210
                 </span>
               </li>
 
               <li className="flex items-center space-x-3">
-                <Mail className="w-4 h-4" color="#C4A064" />
-                <span className="text-sm text-[#6B645D]">
+                <Mail className="w-4 h-4 text-brand-gold" />
+                <span className="text-sm text-white/70">
                   concierge@Mairii.com
                 </span>
               </li>
@@ -294,13 +267,13 @@ export const Footer = () => {
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between py-7 gap-4">
-          <p className="text-[10px]" style={{ color: "#8A837B" }}>
+          <p className="text-[10px] text-white/50">
             © 2026 Mairii. All Rights Reserved.
           </p>
 
           <div className="flex items-center gap-6">
-            <span className="text-[10px]" style={{ color: "#A39B92" }}>
-              Developed by <Link target="_blank" href="https://rankraze.com">Rankraze</Link>
+            <span className="text-[10px] text-white/50">
+              Developed by <Link target="_blank" href="https://rankraze.com" className="hover:text-brand-gold transition-colors">Rankraze</Link>
             </span>
 
             <div className="flex gap-2">
@@ -309,8 +282,8 @@ export const Footer = () => {
                   key={card}
                   className="px-2 py-1 text-[9px] rounded"
                   style={{
-                    background: "rgba(196,160,100,0.15)",
-                    color: "#8B7355",
+                    background: "rgba(196, 160, 100, 0.25)",
+                    color: "var(--brand-gold-light)",
                   }}
                 >
                   {card}

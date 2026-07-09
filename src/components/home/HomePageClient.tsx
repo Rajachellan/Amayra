@@ -49,8 +49,8 @@ export function HomePageClient() {
       <PromotionalBannersStrip />
       {settings.showCategories ? <CategorySection /> : null}
       {settings.showCollections ? <SignatureBlocks /> : null}
-      <CelebritySpotlight />
-      <InstagramGrid />
+      {/* <CelebritySpotlight /> */}
+      {/* <InstagramGrid /> */}
       <MoodCategories />
       <ProductSpotlight />
       <Craftsmanship />

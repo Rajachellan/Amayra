@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
@@ -7,7 +7,7 @@ export const BrandStory = () => {
   return (
     <section className="py-32 bg-background relative overflow-hidden">
       {/* Decorative center line */}
-      <div className="absolute left-1/2 top-0 w-px h-1/4 bg-gradient-to-b from-champagne to-transparent -translate-x-1/2" />
+      <div className="absolute left-1/2 top-0 w-px h-1/4 bg-gradient-to-b from-brand-gold to-transparent -translate-x-1/2" />
 
       <div className="container mx-auto px-6 text-center">
         <motion.div
@@ -17,7 +17,7 @@ export const BrandStory = () => {
           transition={{ duration: 1.5 }}
           className="max-w-4xl mx-auto"
         >
-          <span className="text-champagne uppercase tracking-[0.5em] text-[10px] font-medium mb-10 block">
+          <span className="text-brand-gold uppercase tracking-[0.5em] text-[10px] font-medium mb-10 block">
             Our Legacy
           </span>
 
@@ -46,11 +46,11 @@ export const BrandStory = () => {
             transition={{ duration: 1, delay: 0.5 }}
             className="mt-20"
           >
-            <div className="inline-block px-12 py-10 border border-foreground/5 bg-pearl relative group overflow-hidden">
+            <div className="inline-block px-12 py-10 border border-emerald-medium/10 bg-emerald-soft relative group overflow-hidden">
               <p className="text-foreground text-xl md:text-2xl font-serif italic mb-6 relative z-10">
                 &quot;Luxury is not an indulgence, but an appreciation of the finest details.&quot;
               </p>
-              <span className="text-champagne text-[10px] uppercase tracking-[0.4em] relative z-10">
+              <span className="text-brand-gold text-[10px] uppercase tracking-[0.4em] relative z-10">
                 — The Mairii Ethos
               </span>
 
@@ -62,7 +62,7 @@ export const BrandStory = () => {
       </div>
 
       {/* Decorative bottom line */}
-      <div className="absolute left-1/2 bottom-0 w-px h-1/4 bg-gradient-to-t from-champagne to-transparent -translate-x-1/2" />
+      <div className="absolute left-1/2 bottom-0 w-px h-1/4 bg-gradient-to-t from-brand-gold to-transparent -translate-x-1/2" />
     </section>
   );
 };

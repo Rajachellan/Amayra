@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -27,14 +27,14 @@ const celebrities = [
 
 export const CelebritySection = () => {
   return (
-    <section className="py-24 bg-[#FCFAEE]">
+    <section className="py-24 bg-emerald-soft">
       <div className="container mx-auto px-6">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <div className="lg:w-1/3">
             <h3 className="text-brand-gold font-serif italic tracking-[0.3em] text-lg md:text-xl mb-4">
               Our Presence
             </h3>
-            <h2 className="text-brand-emerald font-serif text-5xl md:text-6xl mb-8 leading-tight">
+            <h2 className="text-emerald-dark font-serif text-5xl md:text-6xl mb-8 leading-tight">
               As Seen <br /> On Stars
             </h2>
             <p className="text-gray-600 font-sans text-lg mb-10 leading-relaxed italic">

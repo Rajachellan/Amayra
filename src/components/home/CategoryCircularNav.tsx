@@ -64,7 +64,7 @@ const categories = [
 
 export const CategoryCircularNav = () => {
   return (
-    <div className="w-full bg-[#FCFAEE] py-12 border-b border-brand-gold/10 overflow-hidden">
+    <div className="w-full bg-emerald-soft py-12 border-b border-brand-gold/10 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="flex items-center gap-8 md:gap-14 overflow-x-auto no-scrollbar pb-6 scroll-smooth">
           {categories.map((cat, idx) => (

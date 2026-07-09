@@ -19,13 +19,13 @@ export const SignatureBlocks = () => {
   }, []);
 
   return (
-    <section className="py-10 bg-[#FCFAEE]">
+    <section className="py-10 bg-emerald-soft">
       <div className="container mx-auto px-6">
         <div className="text-center mb-10">
           <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-lg md:text-xl mb-4">
             Our Legacy
           </h2>
-          <h3 className="text-brand-emerald font-serif text-4xl md:text-5xl lg:text-6xl mb-8">
+          <h3 className="text-emerald-dark font-serif text-4xl md:text-5xl lg:text-6xl mb-8">
             The Signature Collections
           </h3>
           <div className="w-32 h-[1px] bg-brand-gold/30 mx-auto" />

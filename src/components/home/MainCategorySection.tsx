@@ -62,7 +62,7 @@ export const CategorySection = () => {
   };
 
   return (
-    <section className="py-16 bg-[#d7f7e4] overflow-hidden">
+    <section className="py-16 bg-[#f8fff7] overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="max-w-2xl">

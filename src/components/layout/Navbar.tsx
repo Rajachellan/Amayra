@@ -29,13 +29,13 @@ const MarqueeBanner = () => {
       : [{ text: "FREE SHIPPING on all prepaid orders PAN India" }];
 
   return (
-    <div className="w-full bg-[#0B2516] py-2 overflow-hidden border-b border-white/5">
+    <div className="w-full bg-emerald-dark py-2 overflow-hidden border-b border-white/5">
       <div className="flex animate-marquee whitespace-nowrap">
         {[...Array(2)].map((_, i) => (
           <div key={i} className="flex shrink-0 items-center">
             {items.map((item, idx) => {
               const content = (
-                <span className="text-[9px] text-white/80 font-medium tracking-[0.3em] uppercase mx-12 hover:text-champagne transition-colors">
+                <span className="text-[9px] text-white/80 font-medium tracking-[0.3em] uppercase mx-12 hover:text-brand-gold transition-colors">
                   {item.text}
                 </span>
               );
@@ -196,7 +196,7 @@ export const Navbar = () => {
                 <Link
                   href={item.href}
                   className={`text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 ${isWhite ? "text-foreground" : "text-white/90"
-                    } hover:text-champagne`}
+                    } hover:text-brand-gold`}
                 >
                   {item.name}
                 </Link>
@@ -218,13 +218,13 @@ export const Navbar = () => {
               {/* Search */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className={`${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}
+                className={`${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-brand-gold`}
               >
                 <Search className="w-[17px] h-[17px] stroke-[1.5]" />
               </button>
 
               {/* Wishlist */}
-              <Link href="/wishlist" className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}>
+              <Link href="/wishlist" className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-brand-gold`}>
                 <Heart className="w-[17px] h-[17px] stroke-[1.5]" />
                 {mounted && wishlist.length > 0 && (
                   <span className="absolute -top-1.5 -right-1.5 bg-champagne text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
@@ -237,7 +237,7 @@ export const Navbar = () => {
               <button
                 type="button"
                 onClick={() => openCart()}
-                className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}
+                className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-brand-gold`}
                 aria-label="Open cart"
               >
                 <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
@@ -251,7 +251,7 @@ export const Navbar = () => {
               {/* Account */}
               <Link
                 href={user ? "/profile" : "/auth/login"}
-                className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-champagne`}
+                className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-brand-gold`}
                 aria-label={user ? "Your profile" : "Sign in"}
               >
                 {user ? <User className="w-[17px] h-[17px] stroke-[1.5]" /> : <LogIn className="w-[17px] h-[17px] stroke-[1.5]" />}
@@ -282,7 +282,7 @@ export const Navbar = () => {
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className={`${isWhite ? "text-foreground" : "text-white"} hover:text-champagne transition-colors p-2 -mr-2`}
+              className={`${isWhite ? "text-foreground" : "text-white"} hover:text-brand-gold transition-colors p-2 -mr-2`}
             >
               <Menu className="w-6 h-6 stroke-[1.3]" />
             </button>
@@ -320,7 +320,7 @@ export const Navbar = () => {
                     key={item.name}
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors"
+                    className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-brand-gold transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -331,21 +331,21 @@ export const Navbar = () => {
                     openCart();
                     setIsMobileMenuOpen(false);
                   }}
-                  className="w-full text-left text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors bg-transparent"
+                  className="w-full text-left text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-brand-gold transition-colors bg-transparent"
                 >
                   Cart ({cart.length})
                 </button>
                 <Link
                   href="/wishlist"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors"
+                  className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-brand-gold transition-colors"
                 >
                   Wishlist
                 </Link>
                 <Link
                   href={user ? "/profile" : "/auth/login"}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-champagne transition-colors"
+                  className="text-lg uppercase tracking-[0.2em] font-serif border-b border-foreground/5 pb-2 hover:text-brand-gold transition-colors"
                 >
                   {user ? "My account" : "Sign in"}
                 </Link>

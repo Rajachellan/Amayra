@@ -123,8 +123,8 @@ export function SmallNavigationMenu() {
             {/* Header */}
             <header className="text-center mt-10  px-4 shrink-0">
                 <p
-                    className="text-[10px] tracking-[0.3em] uppercase mb-1"
-                    style={{ color: "#c9a84c", letterSpacing: "0.3em" }}
+                    className="text-[12px] tracking-[0.3em] font-bold uppercase mb-1"
+                    style={{ color: "#2b743e", letterSpacing: "0.3em" }}
                 >
                     Handcrafted Luxury
                 </p>
@@ -400,7 +400,7 @@ export function SmallNavigationMenu() {
                         }}
                     >
                         <span
-                            className="absolute inset-0 rounded-full transition-transform duration-500 origin-left"
+                            className="absolute inset-0 rounded-full transition-transform duration-500  origin-left"
                             style={{
                                 background: "linear-gradient(135deg, #c9a84c, #e8c87a)",
                                 transform: "scaleX(0)",
