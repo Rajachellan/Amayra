@@ -282,6 +282,8 @@ export const Footer = () => {
       @Rankraze
     </Link>
   </p>
+
+  
 </div>
       </div>
     </footer>
