@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
-
+import Image from "next/image";
 export const Footer = () => {
   return (
     <footer
@@ -86,12 +86,17 @@ export const Footer = () => {
         >
           {/* Brand */}
           <div>
-            <div className="mb-7">
-              <span
-                className="text-xl uppercase tracking-[0.5em] block mt-[-3px] text-brand-gold font-serif"
-              >
-                Mairii
-              </span>
+            <div className="">
+           <Link href="/" className="relative group block">
+              <Image
+                src="/images/mairii final-without bg.png"
+                alt="Mairii Logo"
+                width={140}
+                height={70}
+                className={`object-contain transition-all rounded-full duration-500 `}
+                priority
+              />
+            </Link>
             </div>
 
             <p
@@ -266,32 +271,18 @@ export const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col md:flex-row items-center justify-between py-7 gap-4">
-          <p className="text-[10px] text-white/50">
-            © 2026 Mairii. All Rights Reserved.
-          </p>
-
-          <div className="flex items-center gap-6">
-            <span className="text-[10px] text-white/50">
-              Developed by <Link target="_blank" href="https://rankraze.com" className="hover:text-brand-gold transition-colors">Rankraze</Link>
-            </span>
-
-            <div className="flex gap-2">
-              {["VISA", "MC", "AMEX"].map((card) => (
-                <div
-                  key={card}
-                  className="px-2 py-1 text-[9px] rounded"
-                  style={{
-                    background: "rgba(196, 160, 100, 0.25)",
-                    color: "var(--brand-gold-light)",
-                  }}
-                >
-                  {card}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <div className="flex items-center justify-center py-7">
+  <p className="w-full text-center text-[10px] text-white/50">
+    © 2026 Mairii. All Rights Reserved. Designed by{" "}
+    <Link
+      target="_blank"
+      href="https://rankraze.com"
+      className="hover:text-brand-gold transition-colors"
+    >
+      @Rankraze
+    </Link>
+  </p>
+</div>
       </div>
     </footer>
   );

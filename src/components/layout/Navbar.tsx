@@ -175,7 +175,7 @@ export const Navbar = () => {
             }`}>
             <Link href="/" className="relative group block">
               <Image
-                src="/images/image (7).png"
+                src="/images/mairii final-without bg.png"
                 alt="Mairii Logo"
                 width={140}
                 height={70}
