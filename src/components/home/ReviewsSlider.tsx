@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 const REVIEWS = [
   {
@@ -51,8 +52,9 @@ export const ReviewsSlider = () => {
   return (
     <section
       className="relative overflow-hidden min-h-screen flex items-center"
-
+      style={{ backgroundColor: 'var(--bg-mint-soft)' }}
     >
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       {/* Gold ambient top glow */}
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none"

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { Tag, ArrowRight, Zap, Gift, Star } from "lucide-react";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 const TICKER_ITEMS = [
   "Limited time wedding sale — flat 20% off bridal sets",
@@ -11,8 +12,9 @@ const TICKER_ITEMS = [
 
 export const OffersSection = () => {
   return (
-    <section className="py-16   overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6 space-y-6">
+    <section className="py-16 overflow-hidden relative" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-4 md:px-6 space-y-6">
         {/* Ticker Bar */}
         <TickerBar items={TICKER_ITEMS} />
 

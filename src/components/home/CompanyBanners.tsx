@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 const bannerData = [
   {
@@ -35,8 +36,9 @@ const bannerData = [
 
 export const CompanyBanners = () => {
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-6">
+    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-pearl-green)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {bannerData.map((banner, index) => (
             <motion.div

@@ -4,11 +4,13 @@ import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import craftImg from "../../assets/jewelry-on-female-body-in-indian-dress-2026-01-11-10-57-02-utc.jpg";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const Craftsmanship = () => {
   return (
-    <section className="py-28 bg-gradient-to-b from-[#faf9f6] to-[#f3f2ee] relative overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section className="py-28 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-pearl-green)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-6">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* IMAGE SECTION */}

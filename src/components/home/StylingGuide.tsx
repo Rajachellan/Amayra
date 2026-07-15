@@ -1,9 +1,10 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Plus } from "lucide-react";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import silver1 from "../../assets/silver_collection (1).jpg";
 import silver2 from "../../assets/silver_collection (2).jpg";
 import silver from "../../assets/silver.jpg";
@@ -36,8 +37,9 @@ export const StylingGuide = () => {
   return (
     <section
       className="relative overflow-hidden min-h-screen flex items-center"
-      style={{ background: "#f5f5f5ff" }}
+      style={{ backgroundColor: 'var(--bg-sage-light)' }}
     >
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       {/* Ambient radial glow */}
       <div
         className="absolute inset-0 pointer-events-none"

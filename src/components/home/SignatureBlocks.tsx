@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
 import { shopApi, type CollectionDoc } from "@/lib/api/shop";
 import { resolveMediaUrl } from "@/lib/apiBase";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const SignatureBlocks = () => {
   const [collections, setCollections] = useState<CollectionDoc[]>([]);
@@ -19,8 +20,9 @@ export const SignatureBlocks = () => {
   }, []);
 
   return (
-    <section className="py-10 bg-emerald-soft">
-      <div className="container mx-auto px-6">
+    <section className="py-10 overflow-hidden relative" style={{ backgroundColor: 'var(--bg-sage-light)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-6">
         <div className="text-center mb-10">
           <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-lg md:text-xl mb-4">
             Our Legacy

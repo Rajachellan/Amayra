@@ -1,15 +1,17 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const CollectionStory = () => {
   return (
     <section
       className="relative overflow-hidden min-h-screen flex items-center"
-      style={{ background: "linear-gradient(135deg, #FFFDF8 0%, #F9F4E8 50%, #FFFDF8 100%)" }}
+      style={{ backgroundColor: 'var(--bg-mint-soft)' }}
     >
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       {/* Ambient gold glow */}
       <div
         className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none"

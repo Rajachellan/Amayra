@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { api, mediaSrc } from "@/lib/api";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 interface Occasion {
   _id: string;
@@ -33,8 +34,9 @@ export const MoodCategories = () => {
   }, []);
 
   return (
-    <section className="py-24 bg-background">
-      <div className="container mx-auto px-6">
+    <section className="py-24 overflow-hidden relative" style={{ backgroundColor: 'var(--bg-ivory)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-4 sm:px-6">
         <div className="max-w-xl mb-16">
           <span className="text-champagne uppercase tracking-[0.6em] text-[10px] font-bold block mb-4">
             Curated Experiences

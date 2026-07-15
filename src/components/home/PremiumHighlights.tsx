@@ -3,6 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Award, Gem, Sparkles } from "lucide-react";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 const HIGHLIGHTS = [
   {
@@ -29,12 +30,13 @@ const HIGHLIGHTS = [
 
 export const PremiumHighlights = () => {
   return (
-    <section className="py-32 bg-background border-y border-foreground/5 relative overflow-hidden">
-      {/* Subtle accent glows */}
-      <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
-      <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
+    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-sage-light)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-6">
+        {/* Subtle accent glows */}
+        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
+        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
 
-      <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 text-center">
           {HIGHLIGHTS.map((item, index) => (
             <motion.div

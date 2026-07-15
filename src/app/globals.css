@@ -10,6 +10,10 @@
   --blush: #F3E8E6;
   --sage: #EAF1EC;
   --emerald-soft: #F4F8F5;
+  --bg-ivory: #FAF8F3;
+  --bg-mint-soft: #F4F8F5;
+  --bg-sage-light: #DCE5D7;
+  --bg-pearl-green: #F6F8F2;
   /* Soft Minty Background Green */
   --emerald-medium: #2E5A44;
   /* Middle Artisan Green */
@@ -40,6 +44,10 @@
   --color-emerald-soft: var(--emerald-soft);
   --color-emerald-medium: var(--emerald-medium);
   --color-emerald-dark: var(--emerald-dark);
+  --color-bg-ivory: var(--bg-ivory);
+  --color-bg-mint-soft: var(--bg-mint-soft);
+  --color-bg-sage-light: var(--bg-sage-light);
+  --color-bg-pearl-green: var(--bg-pearl-green);
   --color-brand-gold: var(--brand-gold);
   --color-brand-gold-light: var(--brand-gold-light);
   --color-brand-gold-dark: var(--brand-gold-dark);

@@ -9,6 +9,7 @@ import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import type { Product } from "@/types";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const ProductSpotlight = () => {
   const { addToCart, openCart } = useCart();
@@ -42,8 +43,9 @@ export const ProductSpotlight = () => {
 
   if (!product) {
     return (
-      <section className="py-32 bg-pearl relative overflow-hidden">
-        <div className="container mx-auto px-6 text-center text-gray-400 font-serif">
+      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
+        <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+        <div className="container relative z-10 mx-auto px-6 text-center text-gray-400 font-serif">
           Loading atelier spotlight…
         </div>
       </section>
@@ -60,14 +62,15 @@ export const ProductSpotlight = () => {
   }
 
   return (
-    <section className="py-32 bg-pearl relative overflow-hidden">
-      <div className="absolute right-10 top-1/2 -translate-y-1/2 hidden xl:block">
-        <span className="text-[120px] font-serif italic text-foreground/[0.01] rotate-90 origin-center select-none">
-          Signature
-        </span>
-      </div>
+    <section className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="absolute right-10 top-1/2 -translate-y-1/2 hidden xl:block">
+          <span className="text-[120px] font-serif italic text-foreground/[0.01] rotate-90 origin-center select-none">
+            Signature
+          </span>
+        </div>
 
-      <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
           <div className="lg:col-span-5 order-2 lg:order-1">
             <motion.div

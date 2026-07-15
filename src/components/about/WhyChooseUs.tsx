@@ -1,184 +1,86 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Heart, RefreshCcw, ScrollText, Users } from "lucide-react";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import { Gift, Sparkles, BadgeCheck, Lock, Globe, RefreshCcw } from "lucide-react";
 
 const features = [
   {
-    icon: <Users className="w-5 h-5" strokeWidth={1.25} />,
-    title: "VIRTUAL CONCIERGE",
-    desc: "Experience personal consulting with our master designers from the comfort of your home.",
+    icon: Gift,
+    title: "PREMIUM PACKAGING",
+    desc: "Luxury packaging for every order.",
   },
   {
-    icon: <RefreshCcw className="w-5 h-5" strokeWidth={1.25} />,
-    title: "LIFETIME MAINTENANCE",
-    desc: "Complimentary polishing and stone checking for all Mairii pieces.",
+    icon: Sparkles,
+    title: "HANDCRAFTED JEWELLERY",
+    desc: "Crafted by skilled artisans.",
   },
   {
-    icon: <ScrollText className="w-5 h-5" strokeWidth={1.25} />,
-    title: "AUTHENTICITY GUILD",
-    desc: "Every purchase is accompanied by a blockchain-verified digital certificate of origin.",
+    icon: BadgeCheck,
+    title: "CERTIFIED QUALITY",
+    desc: "Authentic and quality assured.",
   },
   {
-    icon: <Heart className="w-5 h-5" strokeWidth={1.25} />,
-    title: "CUSTOM ATELIER",
-    desc: "Co-create your dream piece with our craftsmen. Your vision, our hands.",
+    icon: Lock,
+    title: "SECURE PAYMENTS",
+    desc: "100% safe and encrypted checkout.",
+  },
+  {
+    icon: Globe,
+    title: "WORLDWIDE SHIPPING",
+    desc: "Fast international delivery.",
+  },
+  {
+    icon: RefreshCcw,
+    title: "EASY RETURNS",
+    desc: "Simple and hassle-free returns.",
   },
 ];
 
 export const WhyChooseUs = () => {
   return (
-    <section
-      className="relative overflow-hidden min-h-screen flex items-center bg-emerald-soft"
-
+    <section 
+      className="relative overflow-hidden py-[100px] border-y border-black/5" 
+      style={{ backgroundColor: '#FAF8F3' }}
     >
-      {/* Decorative background circle */}
-      <div
-        className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(46,90,68,0.08) 0%, transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(46,90,68,0.06) 0%, transparent 70%)",
-        }}
-      />
+      {/* <BotanicalDecoration className="text-emerald-900"  position="top-left" /> */}
 
-      <div className="relative container mx-auto px-6 py-10">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
-          {/* Left — heading column */}
-          <div className="lg:w-[38%]">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-px" style={{ background: "rgba(196,160,100,0.7)" }} />
-              <span
-                className="text-[10px] uppercase tracking-[0.45em] font-bold"
-                style={{ color: "var(--brand-gold)" }}
+      <div className="container relative z-10 mx-auto px-6 max-w-[1400px]">
+        <div className="text-center mb-20">
+          <h2 className="font-serif text-3xl md:text-4xl text-[#2B2B2B]">
+            Why Choose Mairii
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-16">
+          {features.map((item, idx) => {
+            const Icon = item.icon;
+            return (
+              <div 
+                key={idx} 
+                className="group flex flex-col items-center text-center cursor-default"
               >
-                The Advantage
-              </span>
-            </div>
-
-            <h2
-              className="font-serif text-3xl md:text-4xl mb-5 leading-snug"
-              style={{ color: "#1C1510" }}
-            >
-              Why
-              <span className="italic" style={{ color: "var(--brand-gold)" }}>
-                Mairii?
-              </span>
-            </h2>
-
-            <div
-              className="w-10 h-px mb-6"
-              style={{ background: "rgba(196,160,100,0.5)" }}
-            />
-
-            <p
-              className="text-md font-light leading-[1.8] tracking-wide"
-              style={{ color: "rgba(28,21,16,0.65)" }}
-            >
-              Beyond the gold and gemstones, we provide a service that is as enduring as our
-              jewellery. We are committed to a lifetime of luxury for every client.
-            </p>
-
-            {/* Stat strip */}
-            <div className="mt-8 flex gap-8">
-              <div>
-                <div
-                  className="font-serif text-2xl mb-1"
-                  style={{ color: "var(--brand-gold)" }}
+                {/* Icon wrapper with hover scale and color change */}
+                <div 
+                  className="mb-[20px] text-[#2B2B2B] transition-all duration-300 ease-out group-hover:scale-[1.08] group-hover:text-[#C4A064]"
                 >
-                  35+
+                  <Icon strokeWidth={1} className="w-10 h-10" />
                 </div>
-                <div
-                  className="text-[10px] uppercase tracking-[0.1em]"
-                  style={{ color: "rgba(28,21,16,0.45)" }}
-                >
-                  Years of Legacy
-                </div>
-              </div>
-              <div>
-                <div
-                  className="font-serif text-2xl mb-1"
-                  style={{ color: "var(--brand-gold)" }}
-                >
-                  12K+
-                </div>
-                <div
-                  className="text-[10px] uppercase tracking-[0.2em]"
-                  style={{ color: "rgba(28,21,16,0.45)" }}
-                >
-                  Happy Clients
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right — cards grid */}
-          <div className="lg:w-[62%] grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {features.map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1, duration: 0.7 }}
-                className="group relative p-6 transition-all duration-500 hover:-translate-y-1"
-                style={{
-                  background: "rgba(255,255,255,0.9)",
-                  border: "1px solid rgba(46,90,68,0.15)",
-                  boxShadow: "0 4px 20px -8px rgba(28,21,16,0.06)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.border =
-                    "1px solid rgba(46,90,68,0.4)";
-                  (e.currentTarget as HTMLElement).style.boxShadow =
-                    "0 16px 40px -12px rgba(46,90,68,0.12)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.border =
-                    "1px solid rgba(46,90,68,0.15)";
-                  (e.currentTarget as HTMLElement).style.boxShadow =
-                    "0 4px 24px -8px rgba(28,21,16,0.06)";
-                }}
-              >
-                {/* Icon */}
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center mb-6 transition-colors duration-500"
-                  style={{
-                    background: "rgba(46,90,68,0.1)",
-                    color: "var(--emerald-medium)",
-                  }}
-                >
-                  {item.icon}
-                </div>
-
-                <h4
-                  className="text-[13px] uppercase tracking-[0.35em] font-bold mb-3"
-                  style={{ color: "#1C1510" }}
+                
+                {/* Title */}
+                <h4 
+                  className="text-[11px] uppercase tracking-[0.2em] font-semibold mb-[10px] text-[#2B2B2B] transition-colors duration-300 group-hover:text-[#C4A064]"
                 >
                   {item.title}
                 </h4>
-                <p
-                  className="text-sm font-light leading-[1.85]"
-                  style={{ color: "rgba(28,21,16,0.55)" }}
-                >
+                
+                {/* Description */}
+                <p className="text-sm font-light text-[#555555] leading-relaxed max-w-[180px]">
                   {item.desc}
                 </p>
-
-                {/* Bottom gold line on hover */}
-                <div
-                  className="absolute bottom-0 left-0 h-[2px] w-0 group-hover:w-full transition-all duration-500"
-                  style={{ background: "linear-gradient(90deg, #C4A064, rgba(196,160,100,0.3))" }}
-                />
-              </motion.div>
-            ))}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

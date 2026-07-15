@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import localFont from "next/font/local";
 import { Playfair_Display, DM_Sans } from "next/font/google";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -230,8 +231,9 @@ export default function FAQ() {
         }
       `}</style>
 
-      <section className="min-h-screen bg-[#FAFAF7] flex items-center justify-center px-4 py-16 sm:px-8">
-        <div className="w-full max-w-5xl">
+      <section className="min-h-screen flex items-center justify-center px-4 py-16 sm:px-8 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-ivory)' }}>
+        <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+        <div className="w-full relative z-10 max-w-5xl">
 
           {/* ── Header ── */}
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">

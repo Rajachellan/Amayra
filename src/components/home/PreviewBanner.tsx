@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 interface Product {
   name: string;
@@ -96,8 +97,8 @@ export const PreviewBanner = () => {
   };
 
   return (
-    <section className="w-full min-h-screen bg-stone-50 flex flex-col items-center justify-center py-16 px-4">
-
+    <section className="w-full min-h-screen relative flex flex-col items-center justify-center py-16 px-4" style={{ backgroundColor: 'var(--bg-ivory)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       {/* Header */}
       <div className="text-center mb-10">
         <p className="text-[10px] tracking-[0.3em] text-stone-400 uppercase mb-2 font-sans">
@@ -150,8 +151,8 @@ export const PreviewBanner = () => {
                 />
                 <span
                   className={`relative block w-4 h-4 rounded-full border-2 shadow-md transition-all duration-200 ${activeDot === dot.id
-                      ? "bg-amber-400 border-amber-500 scale-125"
-                      : "bg-white border-white/90 hover:scale-110"
+                    ? "bg-amber-400 border-amber-500 scale-125"
+                    : "bg-white border-white/90 hover:scale-110"
                     }`}
                 />
               </button>
@@ -270,8 +271,8 @@ export const PreviewBanner = () => {
             key={i}
             onClick={() => goTo(i)}
             className={`rounded-full transition-all duration-300 cursor-pointer ${i === current
-                ? "w-6 h-1.5 bg-stone-700"
-                : "w-1.5 h-1.5 bg-stone-300 hover:bg-stone-400"
+              ? "w-6 h-1.5 bg-stone-700"
+              : "w-1.5 h-1.5 bg-stone-300 hover:bg-stone-400"
               }`}
             style={{ outline: "none", border: "none" }}
           />

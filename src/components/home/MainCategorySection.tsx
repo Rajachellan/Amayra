@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { shopApi } from "@/lib/api/shop";
 import { resolveMediaUrl } from "@/lib/apiBase";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const CategorySection = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -62,8 +63,9 @@ export const CategorySection = () => {
   };
 
   return (
-    <section className="py-16 bg-[#f8fff7] overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section className="py-16 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-pearl-green)' }}>
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="max-w-2xl">
             <motion.h3
