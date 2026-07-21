@@ -138,7 +138,7 @@ export const Navbar = () => {
     >
       <MarqueeBanner />
 
-      <nav className={`w-full flex items-center transition-all duration-300 ${isScrolled ? "h-14" : "h-14"
+      <nav className={`w-full flex items-center transition-all duration-300 ${isScrolled ? "h-16" : "h-20"
         }`}>
         <div className="container mx-auto px-6 h-full flex items-center justify-between relative">
 
@@ -168,11 +168,11 @@ export const Navbar = () => {
           </AnimatePresence>
 
           {/* Left: Logo */}
-          <div className={`flex justify-start flex-shrink-0 pr-8 transition-transform duration-500 ${isScrolled ? "scale-90" : "scale-100"
+          <div className={`flex justify-start flex-shrink-0 pr-8 transition-transform duration-500 ${isScrolled ? "scale-160" : "scale-150"
             }`}>
             <Link href="/" className="relative group block">
               <Image
-                src="/images/mairii final-without bg.png"
+                src="/images/Media__5_-removebg-preview.png"
                 alt="Mairii Logo"
                 width={140}
                 height={70}
@@ -192,7 +192,7 @@ export const Navbar = () => {
               >
                 <Link
                   href={item.href}
-                  className="text-[10px] uppercase tracking-[0.25em] font-semibold transition-colors duration-300 text-white/90 hover:text-brand-gold"
+                  className="text-xs tracking-[0.22em] font-semibold uppercase transition-colors duration-300 text-white/95 hover:text-brand-gold"
                 >
                   {item.name}
                 </Link>
@@ -213,16 +213,16 @@ export const Navbar = () => {
               {/* Search */}
               <button
                 onClick={() => setIsSearchOpen(true)}
-                className="text-white/90 transition-colors hover:text-brand-gold"
+                className="text-white/95 transition-colors hover:text-brand-gold"
               >
-                <Search className="w-[17px] h-[17px] stroke-[1.5]" />
+                <Search className="w-[19px] h-[19px] stroke-[1.6]" />
               </button>
 
               {/* Wishlist */}
-              <Link href="/wishlist" className="relative text-white/90 transition-colors hover:text-brand-gold">
-                <Heart className="w-[17px] h-[17px] stroke-[1.5]" />
+              <Link href="/wishlist" className="relative text-white/95 transition-colors hover:text-brand-gold">
+                <Heart className="w-[19px] h-[19px] stroke-[1.6]" />
                 {mounted && wishlist.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-champagne text-white text-[8px] w-4 h-4 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-1.5 -right-1.5 bg-champagne text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
                     {wishlist.length}
                   </span>
                 )}
@@ -232,12 +232,12 @@ export const Navbar = () => {
               <button
                 type="button"
                 onClick={() => openCart()}
-                className="relative text-white/90 transition-colors hover:text-brand-gold"
+                className="relative text-white/95 transition-colors hover:text-brand-gold"
                 aria-label="Open cart"
               >
-                <ShoppingBag className="w-[17px] h-[17px] stroke-[1.5]" />
+                <ShoppingBag className="w-[19px] h-[19px] stroke-[1.6]" />
                 {mounted && cart.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-white text-[#0B2516] text-[8px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-1.5 -right-1.5 bg-white text-[#0B2516] text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
                     {cart.length}
                   </span>
                 )}
@@ -246,10 +246,10 @@ export const Navbar = () => {
               {/* Account */}
               <Link
                 href={user ? "/profile" : "/auth/login"}
-                className={`relative ${isWhite ? "text-foreground" : "text-white/90"} transition-colors hover:text-white`}
+                className="relative text-white/95 transition-colors hover:text-white"
                 aria-label={user ? "Your profile" : "Sign in"}
               >
-                {user ? <User className="w-[17px] h-[17px] stroke-[1.5]" /> : <LogIn className="w-[17px] h-[17px] stroke-[1.5]" />}
+                {user ? <User className="w-[19px] h-[19px] stroke-[1.6]" /> : <LogIn className="w-[19px] h-[19px] stroke-[1.6]" />}
               </Link>
             </div>
           </div>

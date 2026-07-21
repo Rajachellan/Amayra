@@ -25,13 +25,13 @@ export const CompactDropdown: React.FC<CompactDropdownProps> = ({ item, isOpen }
         >
           {/* Top accent line */}
           <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-champagne/40 to-transparent" />
-          
+
           <div className="flex flex-col">
             {item.subItems.slice(0, 5).map((sub) => (
               <Link
                 key={sub.name}
                 href={sub.href}
-                className="px-8 py-2.5 text-[10px] uppercase tracking-[0.2em] font-medium text-foreground/60 hover:text-foreground hover:bg-blush/30 transition-all duration-300"
+                className="px-8 py-2.5 text-[11px] uppercase tracking-[0.2em] font-medium text-foreground/60 hover:text-foreground hover:bg-blush/30 transition-all duration-300"
               >
                 {sub.name}
               </Link>
