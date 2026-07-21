@@ -239,7 +239,7 @@ export default function FAQ() {
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-7">
             <div>
               {/* Eyebrow */}
-              <div className="flex items-center gap-3 mb-3">
+              {/* <div className="flex items-center gap-3 mb-3">
                 <div className="h-px w-10 bg-amber-400/60" />
                 <GemIcon size={9} className="text-amber-500" />
                 <span
@@ -248,7 +248,7 @@ export default function FAQ() {
                 >
                   Maison Lumière
                 </span>
-              </div>
+              </div> */}
 
               {/* Heading */}
               <h1

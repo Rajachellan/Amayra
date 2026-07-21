@@ -47,14 +47,14 @@ export default function WishlistPage() {
           >
             <div className="flex items-center justify-center gap-3">
               <div className="w-10 h-px bg-amber-400/60" />
-              <span className="font-sans font-bold tracking-[0.45em] uppercase text-xs text-amber-400">
+              <span className="font-sans font-bold tracking-[0.45em] uppercase text-xs shimmer-gold">
                 Curated Favorites
               </span>
               <div className="w-10 h-px bg-amber-400/60" />
             </div>
 
             <h1 className="text-4xl md:text-6xl font-serif leading-tight">
-              Your Saved <span className="italic text-yellow-600 font-serif">Treasures</span>
+              Your Saved <span className="shimmer-gold italic font-serif">Treasures</span>
             </h1>
 
             <p className="text-white/60 font-sans text-xs md:text-sm tracking-widest uppercase max-w-md mx-auto leading-relaxed">
@@ -72,7 +72,7 @@ export default function WishlistPage() {
               {/* Top counter bar */}
               <div className="flex items-center justify-between pb-6 border-b border-black/5 text-xs uppercase tracking-widest text-stone-500">
                 <span>Total Saved: <strong className="text-stone-900 font-semibold">{wishlist.length} {wishlist.length === 1 ? 'Item' : 'Items'}</strong></span>
-                <Link href="/category/all" className="hover:text-amber-600 transition-colors flex items-center gap-1 font-semibold">
+                <Link href="/category/all" className="hover:text-[#c9a84c] transition-colors flex items-center gap-1 font-semibold">
                   <span>Explore More</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
@@ -116,7 +116,7 @@ export default function WishlistPage() {
                       {/* Product details */}
                       <div className="p-5 flex flex-col flex-grow text-center">
                         <Link href={`/product/${product.slug ?? product.id}`}>
-                          <h3 className="font-serif text-sm sm:text-base font-medium text-stone-900 mb-2 line-clamp-1 group-hover:text-amber-600 transition-colors">
+                          <h3 className="font-serif text-sm sm:text-base font-medium text-stone-900 mb-2 line-clamp-1 group-hover:text-[#c9a84c] transition-colors">
                             {product.name}
                           </h3>
                         </Link>
@@ -153,8 +153,8 @@ export default function WishlistPage() {
               transition={{ duration: 0.6 }}
               className="py-20 md:py-28 text-center max-w-lg mx-auto bg-white rounded-3xl p-8 sm:p-12 border border-stone-100 shadow-xl"
             >
-              <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto mb-6 text-amber-600">
-                <Heart className="w-9 h-9" />
+              <div className="w-20 h-20 bg-[#c9a84c]/10 rounded-full flex items-center justify-center mx-auto mb-6 text-[#c9a84c]">
+                <Heart className="w-9 h-9 fill-[#c9a84c]" />
               </div>
               <h2 className="font-serif text-2xl sm:text-3xl text-stone-900 mb-3">
                 Your Wishlist is Empty
@@ -163,7 +163,7 @@ export default function WishlistPage() {
                 Explore our fine jewellery collections and save the pieces that speak to your heart.
               </p>
               <Link href="/category/all">
-                <button className="px-8 py-3.5 rounded-full bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-amber-600 transition-colors shadow-md">
+                <button className="px-8 py-3.5 rounded-full bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a84c] transition-colors shadow-md">
                   Explore Collections
                 </button>
               </Link>

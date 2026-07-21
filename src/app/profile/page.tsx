@@ -120,7 +120,7 @@ export default function ProfilePage() {
         <BotanicalDecoration className="text-white" opacity={0.04} />
         <div className="container relative z-10 mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
-            <div className="w-24 h-24 rounded-full bg-amber-500/20 border-2 border-amber-400/40 flex items-center justify-center text-amber-300 text-2xl font-serif shadow-2xl overflow-hidden shrink-0">
+            <div className="w-24 h-24 rounded-full bg-[#c9a84c]/20 border-2 border-[#c9a84c]/40 flex items-center justify-center text-[#c9a84c] text-2xl font-serif shadow-2xl overflow-hidden shrink-0">
               {user.avatarUrl ? (
                 <Image src={user.avatarUrl} alt="" width={96} height={96} className="object-cover w-full h-full" />
               ) : (
@@ -130,13 +130,13 @@ export default function ProfilePage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-center md:justify-start gap-2">
-                <span className="text-amber-400 text-[10px] font-bold tracking-[0.3em] uppercase">
+                <span className="shimmer-gold text-[10px] font-bold tracking-[0.3em] uppercase">
                   Mairii Member Concierge
                 </span>
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
+                <ShieldCheck className="w-4 h-4 text-[#c9a84c]" />
               </div>
               <h1 className="text-3xl md:text-5xl font-serif leading-tight">
-                Welcome, <span className="italic text-yellow-600 font-serif">{user.name}</span>
+                Welcome, <span className="shimmer-gold italic font-serif">{user.name}</span>
               </h1>
               <p className="text-white/60 font-sans text-xs tracking-widest uppercase">
                 {user.email}
@@ -168,14 +168,14 @@ export default function ProfilePage() {
                     className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-semibold ${
                       activeTab === "wishlist"
                         ? "bg-stone-900 text-white shadow-md"
-                        : "text-stone-600 hover:bg-stone-50 hover:text-amber-600"
+                        : "text-stone-600 hover:bg-stone-50 hover:text-[#c9a84c]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
                       <Heart className="w-4 h-4" />
                       <span>My Wishlist</span>
                     </div>
-                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${activeTab === 'wishlist' ? 'bg-amber-500 text-stone-900' : 'bg-stone-100 text-stone-600'}`}>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${activeTab === 'wishlist' ? 'bg-[#c9a84c] text-stone-900 font-bold' : 'bg-stone-100 text-stone-600'}`}>
                       {wishlist.length}
                     </span>
                   </button>
@@ -186,7 +186,7 @@ export default function ProfilePage() {
                     className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-semibold ${
                       activeTab === "orders"
                         ? "bg-stone-900 text-white shadow-md"
-                        : "text-stone-600 hover:bg-stone-50 hover:text-amber-600"
+                        : "text-stone-600 hover:bg-stone-50 hover:text-[#c9a84c]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -202,7 +202,7 @@ export default function ProfilePage() {
                     className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-semibold ${
                       activeTab === "profile"
                         ? "bg-stone-900 text-white shadow-md"
-                        : "text-stone-600 hover:bg-stone-50 hover:text-amber-600"
+                        : "text-stone-600 hover:bg-stone-50 hover:text-[#c9a84c]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -238,7 +238,7 @@ export default function ProfilePage() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-100">
                       <div>
-                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-amber-600 block mb-1">
+                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#c9a84c] block mb-1">
                           Saved Items
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-serif text-stone-900">
@@ -258,11 +258,11 @@ export default function ProfilePage() {
                       </div>
                     ) : (
                       <div className="py-20 text-center">
-                        <Heart className="w-16 h-16 text-amber-500/20 mx-auto mb-4" />
+                        <Heart className="w-16 h-16 text-[#c9a84c]/20 mx-auto mb-4" />
                         <h3 className="font-serif text-xl text-stone-900 mb-2">Your wishlist is empty</h3>
                         <p className="text-stone-500 text-xs tracking-wider uppercase mb-6">Discover pieces to add to your collection</p>
                         <Link href="/category/all">
-                          <button className="px-6 py-3 rounded-full bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-amber-600 transition-colors shadow-md">
+                          <button className="px-6 py-3 rounded-full bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a84c] transition-colors shadow-md">
                             Explore Jewellery
                           </button>
                         </Link>
@@ -276,7 +276,7 @@ export default function ProfilePage() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-100">
                       <div>
-                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-amber-600 block mb-1">
+                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#c9a84c] block mb-1">
                           Purchase History
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-serif text-stone-900">
@@ -287,7 +287,7 @@ export default function ProfilePage() {
 
                     {ordersLoading ? (
                       <div className="flex flex-col items-center justify-center py-20 space-y-3">
-                        <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+                        <Loader2 className="w-8 h-8 animate-spin text-[#c9a84c]" />
                         <span className="text-xs uppercase tracking-widest text-stone-400">Loading order history…</span>
                       </div>
                     ) : ordersErr ? (
@@ -300,7 +300,7 @@ export default function ProfilePage() {
                         <h3 className="font-serif text-xl text-stone-900 mb-2">No Orders Placed Yet</h3>
                         <p className="text-stone-500 text-xs tracking-wider uppercase mb-6">Explore our curated collections and place your first order.</p>
                         <Link href="/category/all">
-                          <button className="px-6 py-3 rounded-full bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-amber-600 transition-colors shadow-md">
+                          <button className="px-6 py-3 rounded-full bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold hover:bg-[#c9a84c] transition-colors shadow-md">
                             Shop Collections
                           </button>
                         </Link>
@@ -313,7 +313,7 @@ export default function ProfilePage() {
                             <Link
                               key={order._id}
                               href={`/profile/orders/${order._id}`}
-                              className="block p-5 rounded-xl border border-stone-200/80 hover:border-amber-500/50 hover:shadow-md transition-all duration-300 group bg-stone-50/50"
+                              className="block p-5 rounded-xl border border-stone-200/80 hover:border-[#c9a84c]/50 hover:shadow-md transition-all duration-300 group bg-stone-50/50"
                             >
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div className="flex items-center gap-4 min-w-0">
@@ -337,7 +337,7 @@ export default function ProfilePage() {
                                       })}
                                     </p>
                                     {shippingHint(order) && (
-                                      <span className="inline-block text-[10px] text-amber-700 font-bold uppercase tracking-wider">
+                                      <span className="inline-block text-[10px] text-[#c9a84c] font-bold uppercase tracking-wider">
                                         {shippingHint(order)}
                                       </span>
                                     )}
@@ -346,12 +346,12 @@ export default function ProfilePage() {
 
                                 <div className="flex items-center justify-between sm:justify-end gap-6 shrink-0 pt-3 sm:pt-0 border-t sm:border-0 border-stone-200/60">
                                   <div className="text-left sm:text-right">
-                                    <span className="text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-700 block mb-1">
+                                    <span className="text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded-full bg-[#c9a84c]/10 text-[#c9a84c] block mb-1">
                                       {statusLabel(order.status)}
                                     </span>
                                     <p className="font-semibold text-stone-900 text-base">₹{order.total.toLocaleString()}</p>
                                   </div>
-                                  <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-amber-600 group-hover:translate-x-1 transition-all" />
+                                  <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-[#c9a84c] group-hover:translate-x-1 transition-all" />
                                 </div>
                               </div>
                             </Link>
@@ -367,7 +367,7 @@ export default function ProfilePage() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-100">
                       <div>
-                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-amber-600 block mb-1">
+                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#c9a84c] block mb-1">
                           Account Profile
                         </span>
                         <h2 className="text-2xl sm:text-3xl font-serif text-stone-900">
@@ -378,7 +378,7 @@ export default function ProfilePage() {
 
                     {profileLoading || !displayProfile ? (
                       <div className="flex flex-col items-center justify-center py-20 space-y-3">
-                        <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+                        <Loader2 className="w-8 h-8 animate-spin text-[#c9a84c]" />
                         <span className="text-xs uppercase tracking-widest text-stone-400">Loading details…</span>
                       </div>
                     ) : (
@@ -400,7 +400,7 @@ export default function ProfilePage() {
 
                         {/* Saved addresses */}
                         <div className="space-y-4 pt-4 border-t border-stone-100">
-                          <div className="flex items-center gap-2 text-amber-600">
+                          <div className="flex items-center gap-2 text-[#c9a84c]">
                             <MapPin className="w-4 h-4" />
                             <h4 className="font-serif text-lg text-stone-900">Saved Addresses</h4>
                           </div>
@@ -410,7 +410,7 @@ export default function ProfilePage() {
                               {displayProfile.addresses.map((a, i) => (
                                 <div key={`${a.line1}-${i}`} className="p-5 rounded-xl border border-stone-200 bg-stone-50/50 relative">
                                   {i === 0 && (
-                                    <span className="absolute top-4 right-4 text-[9px] font-bold bg-amber-500/20 text-amber-700 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                                    <span className="absolute top-4 right-4 text-[9px] font-bold bg-[#c9a84c]/20 text-[#c9a84c] px-2 py-0.5 rounded-full uppercase tracking-wider">
                                       Default
                                     </span>
                                   )}
