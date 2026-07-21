@@ -12,6 +12,7 @@ import { useCart } from "@/context/CartContext";
 import { api } from "@/lib/api";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
+import { addressFormSchema } from "@/lib/validation/customerProfile";
 
 type RazorpaySuccess = {
   razorpay_payment_id: string;
@@ -31,11 +32,17 @@ type CheckoutBody = {
 };
 
 type CustomerAddress = {
+  id?: string;
+  label?: string;
+  fullName?: string;
+  phone?: string;
   line1?: string;
+  line2?: string;
   city?: string;
   state?: string;
   pincode?: string;
   country?: string;
+  isDefault?: boolean;
 };
 
 declare global {
@@ -118,6 +125,8 @@ export default function CheckoutPage() {
   const [pincode, setPincode] = useState("");
   const [country, setCountry] = useState("IN");
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [saveAddressToProfile, setSaveAddressToProfile] = useState(true);
+  const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
 
   const [paying, setPaying] = useState(false);
 
@@ -135,8 +144,14 @@ export default function CheckoutPage() {
       .then((me) => {
         setFullName(me.name ?? "");
         setPhone(me.phone ?? "");
-        const a = me.addresses?.[0];
+        const list = me.addresses ?? [];
+        setSavedAddresses(list);
+        const a = list.find((x) => x.isDefault) ?? list[0];
         if (a) {
+          if (a.fullName) setFullName(a.fullName);
+          else if (me.name) setFullName(me.name);
+          if (a.phone) setPhone(a.phone);
+          else if (me.phone) setPhone(me.phone);
           if (a.line1) setLine1(a.line1);
           if (a.city) setCity(a.city);
           if (a.state) setStateVal(a.state);
@@ -180,29 +195,59 @@ export default function CheckoutPage() {
 
   const validCart = useMemo(() => cart.filter((i) => i.slug?.trim()), [cart]);
 
+  function applySavedAddress(a: CustomerAddress) {
+    if (a.fullName) setFullName(a.fullName);
+    if (a.phone) setPhone(a.phone);
+    if (a.line1) setLine1(a.line1);
+    if (a.city) setCity(a.city);
+    if (a.state) setStateVal(a.state);
+    if (a.pincode) setPincode(a.pincode);
+    if (a.country) setCountry(a.country);
+  }
+
   async function handlePay(e: React.FormEvent) {
     e.preventDefault();
     if (!user || validCart.length === 0) {
       toast.error("Your cart is empty or invalid for checkout.");
       return;
     }
+
+    const validated = addressFormSchema.safeParse({
+      label: "Checkout",
+      fullName,
+      phone,
+      line1,
+      line2: "",
+      city,
+      state: stateVal,
+      pincode,
+      country: country || "IN",
+      isDefault: false,
+    });
+    if (!validated.success) {
+      const msg = validated.error.issues[0]?.message ?? "Check your shipping details";
+      toast.error(msg);
+      return;
+    }
+
     setPaying(true);
     try {
       const missingSlug = cart.some((i) => !i.slug?.trim());
       if (missingSlug) throw new Error("Some items are missing a product reference. Empty your cart and re-add from the catalogue.");
 
+      const ship = validated.data;
       const checkoutRes = await api<CheckoutBody>("/orders/checkout", {
         method: "POST",
         body: JSON.stringify({
           items: validCart.map((c) => ({ slug: c.slug!.trim(), quantity: c.quantity })),
           shippingAddress: {
-            fullName: fullName.trim(),
-            phone: phone.trim(),
-            line1: line1.trim(),
-            city: city.trim(),
-            state: stateVal.trim(),
-            pincode: pincode.trim(),
-            country: country.trim() || "IN",
+            fullName: ship.fullName,
+            phone: ship.phone,
+            line1: ship.line1,
+            city: ship.city,
+            state: ship.state,
+            pincode: ship.pincode,
+            country: ship.country || "IN",
           },
         }),
       });
@@ -239,6 +284,20 @@ export default function CheckoutPage() {
                     razorpay_signature: response.razorpay_signature,
                   }),
                 });
+                if (saveAddressToProfile) {
+                  try {
+                    await api("/auth/customer/me/addresses", {
+                      method: "POST",
+                      body: JSON.stringify({
+                        ...ship,
+                        label: "Home",
+                        isDefault: savedAddresses.length === 0,
+                      }),
+                    });
+                  } catch {
+                    /* non-blocking — order already paid */
+                  }
+                }
                 clearCart();
                 clearCheckoutShippingDraft(user.id);
                 toast.success("Payment successful");
@@ -303,6 +362,27 @@ export default function CheckoutPage() {
             <form className="w-full lg:w-2/3 space-y-6 bg-white p-8 shadow-sm" onSubmit={handlePay}>
               <h2 className="font-serif text-xl tracking-widest uppercase pb-4 border-b">Shipping</h2>
 
+              {savedAddresses.length > 0 ? (
+                <div className="space-y-2">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    Use a saved address
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {savedAddresses.map((a, i) => (
+                      <button
+                        key={a.id ?? `${a.line1}-${i}`}
+                        type="button"
+                        onClick={() => applySavedAddress(a)}
+                        className="px-3 py-2 rounded-full border border-stone-200 text-[11px] uppercase tracking-wider text-stone-700 hover:border-[#c9a84c] hover:text-[#c9a84c] transition"
+                      >
+                        {a.label || `Address ${i + 1}`}
+                        {a.isDefault ? " · Default" : ""}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Full name</label>
@@ -349,6 +429,16 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
+              <label className="flex items-center gap-2 text-sm text-stone-600 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={saveAddressToProfile}
+                  onChange={(e) => setSaveAddressToProfile(e.target.checked)}
+                  className="rounded border-stone-300 text-[#c9a84c] focus:ring-[#c9a84c]"
+                />
+                Save this address to my account for next time
+              </label>
+
               <Button type="submit" variant="gold" size="lg" className="w-full mt-4" disabled={validCart.length === 0 || paying}>
                 {paying ? (
                   <>
@@ -373,7 +463,14 @@ export default function CheckoutPage() {
                     {validCart.map((item) => (
                       <li key={item.id} className="flex gap-4">
                         <div className="relative w-16 h-20 shrink-0 overflow-hidden">
-                          <Image src={item.image} alt={item.name} fill className="object-cover" />
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            sizes="64px"
+                            quality={70}
+                            className="object-cover"
+                          />
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="text-sm font-serif text-brand-emerald truncate">{item.name}</p>

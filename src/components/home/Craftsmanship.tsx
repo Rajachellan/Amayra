@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import craftImg from "../../assets/jewelry-on-female-body-in-indian-dress-2026-01-11-10-57-02-utc.jpg";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const Craftsmanship = () => {
@@ -17,13 +16,16 @@ export const Craftsmanship = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, margin: "100px" }}
             transition={{ duration: 1 }}
             className="relative h-[600px] rounded-[32px] overflow-hidden group"
           >
             <Image
-              src={craftImg}
+              src="/images/optimized/craftsmanship.webp"
               alt="Craftsmanship"
               fill
+              loading="lazy"
+              quality={75}
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover group-hover:scale-105 transition duration-700"
             />

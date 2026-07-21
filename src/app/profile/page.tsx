@@ -4,15 +4,16 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAuth } from "@/context/AuthContext";
 import { ProductCard } from "@/components/products/ProductCard";
-import { User, Package, Heart, LogOut, ChevronRight, MapPin, Loader2, ShieldCheck, Mail, Phone } from "lucide-react";
+import { User, Package, Heart, LogOut, ChevronRight, Loader2, ShieldCheck } from "lucide-react";
 import { api } from "@/lib/api";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import { PersonalDetailsPanel } from "@/components/profile/PersonalDetailsPanel";
 
 type OrderRow = {
   _id: string;
@@ -34,13 +35,6 @@ function shippingHint(order: OrderRow) {
   return null;
 }
 
-type ProfileDetail = {
-  name: string;
-  email: string;
-  phone?: string;
-  addresses?: Array<{ line1: string; city: string; state: string; pincode: string; country?: string }>;
-};
-
 function statusLabel(status: string) {
   return status.replace(/_/g, " ");
 }
@@ -51,11 +45,9 @@ export default function ProfilePage() {
   const { user, loading: authLoading, logout } = useAuth();
   const [activeTab, setActiveTab] = useState("wishlist");
 
-  const [profile, setProfile] = useState<ProfileDetail | null>(null);
   const [orders, setOrders] = useState<OrderRow[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [ordersErr, setOrdersErr] = useState("");
-  const [profileLoading, setProfileLoading] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -63,16 +55,6 @@ export default function ProfilePage() {
       router.replace("/auth/login?next=/profile");
     }
   }, [authLoading, user, router]);
-
-  useEffect(() => {
-    if (!user) return;
-    if (activeTab !== "profile") return;
-    setProfileLoading(true);
-    api<ProfileDetail>("/auth/customer/me")
-      .then((p) => setProfile({ name: p.name, email: p.email, phone: p.phone, addresses: p.addresses }))
-      .catch(() => setProfile(user ? { name: user.name, email: user.email, phone: user.phone } : null))
-      .finally(() => setProfileLoading(false));
-  }, [activeTab, user?.id]);
 
   useEffect(() => {
     if (!user) return;
@@ -95,8 +77,6 @@ export default function ProfilePage() {
         .map((s) => s[0]?.toUpperCase())
         .join("")
     : "";
-
-  const displayProfile = profile ?? (user ? { name: user.name, email: user.email, phone: user.phone } : null);
 
   if (authLoading || !user) {
     return (
@@ -122,7 +102,14 @@ export default function ProfilePage() {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
             <div className="w-24 h-24 rounded-full bg-[#c9a84c]/20 border-2 border-[#c9a84c]/40 flex items-center justify-center text-[#c9a84c] text-2xl font-serif shadow-2xl overflow-hidden shrink-0">
               {user.avatarUrl ? (
-                <Image src={user.avatarUrl} alt="" width={96} height={96} className="object-cover w-full h-full" />
+                <Image
+                  src={user.avatarUrl}
+                  alt=""
+                  width={96}
+                  height={96}
+                  sizes="96px"
+                  className="object-cover w-full h-full"
+                />
               ) : (
                 <span>{initials}</span>
               )}
@@ -365,71 +352,7 @@ export default function ProfilePage() {
                 {/* TAB 3: Profile Details */}
                 {activeTab === "profile" && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
-                    <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-100">
-                      <div>
-                        <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#c9a84c] block mb-1">
-                          Account Profile
-                        </span>
-                        <h2 className="text-2xl sm:text-3xl font-serif text-stone-900">
-                          Personal Details
-                        </h2>
-                      </div>
-                    </div>
-
-                    {profileLoading || !displayProfile ? (
-                      <div className="flex flex-col items-center justify-center py-20 space-y-3">
-                        <Loader2 className="w-8 h-8 animate-spin text-[#c9a84c]" />
-                        <span className="text-xs uppercase tracking-widest text-stone-400">Loading details…</span>
-                      </div>
-                    ) : (
-                      <div className="space-y-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div className="p-4 rounded-xl bg-stone-50 border border-stone-200/80 space-y-1">
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-stone-400 block">Full Name</span>
-                            <p className="text-sm font-semibold text-stone-900 tracking-wide">{displayProfile.name}</p>
-                          </div>
-                          <div className="p-4 rounded-xl bg-stone-50 border border-stone-200/80 space-y-1">
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-stone-400 block">Email Address</span>
-                            <p className="text-sm font-semibold text-stone-900 tracking-wide break-all">{displayProfile.email}</p>
-                          </div>
-                          <div className="p-4 rounded-xl bg-stone-50 border border-stone-200/80 space-y-1 md:col-span-2">
-                            <span className="text-[10px] font-bold tracking-widest uppercase text-stone-400 block">Contact Phone</span>
-                            <p className="text-sm font-semibold text-stone-900 tracking-wide">{displayProfile.phone || "Not provided"}</p>
-                          </div>
-                        </div>
-
-                        {/* Saved addresses */}
-                        <div className="space-y-4 pt-4 border-t border-stone-100">
-                          <div className="flex items-center gap-2 text-[#c9a84c]">
-                            <MapPin className="w-4 h-4" />
-                            <h4 className="font-serif text-lg text-stone-900">Saved Addresses</h4>
-                          </div>
-
-                          {displayProfile.addresses?.length ? (
-                            <div className="grid grid-cols-1 gap-4">
-                              {displayProfile.addresses.map((a, i) => (
-                                <div key={`${a.line1}-${i}`} className="p-5 rounded-xl border border-stone-200 bg-stone-50/50 relative">
-                                  {i === 0 && (
-                                    <span className="absolute top-4 right-4 text-[9px] font-bold bg-[#c9a84c]/20 text-[#c9a84c] px-2 py-0.5 rounded-full uppercase tracking-wider">
-                                      Default
-                                    </span>
-                                  )}
-                                  <p className="text-xs text-stone-600 leading-relaxed uppercase tracking-wider">
-                                    {a.line1}<br />
-                                    {a.city}, {a.state} — {a.pincode}<br />
-                                    {a.country ?? "IN"}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="p-5 rounded-xl bg-stone-50 border border-stone-200 text-xs text-stone-500 leading-relaxed uppercase tracking-wider">
-                              Your shipping addresses entered during checkout are automatically linked to your account orders.
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
+                    <PersonalDetailsPanel />
                   </motion.div>
                 )}
 

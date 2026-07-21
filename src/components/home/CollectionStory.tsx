@@ -38,9 +38,12 @@ export const CollectionStory = () => {
                 style={{ border: "1px solid rgba(196,160,100,0.25)" }}
               />
               <Image
-                src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2070&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1200&auto=format&fit=crop"
                 alt="Our Heritage"
                 fill
+                loading="lazy"
+                quality={75}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
                 style={{ boxShadow: "0 30px 60px -15px rgba(196,160,100,0.15)" }}
               />

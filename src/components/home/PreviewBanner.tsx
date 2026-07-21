@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 interface Product {
@@ -31,10 +32,10 @@ const sliders: Slider[] = [
     id: 1,
     title: "Bridal Royale",
     subtitle: "Opulence redefined for the modern bride",
-    mainImage: "/images/bridal_collections/bridal_collections (2).jpg",
+    mainImage: "/images/optimized/bridal_1.webp",
     dots: [
       { id: "d1a", x: 18, y: 77, product: { name: "Kundan Maang Tikka", collection: "Bridal Royale", price: "$124.00", image: "/images/luxury/bangles_1.jpg", desc: "Hand-crafted kundan setting with pearl drops" } },
-      { id: "d1b", x: 40, y: 43, product: { name: "Polki Choker Necklace", collection: "Bridal Royale", price: "$219.00", image: "images/luxury/neckles.jpg", desc: "Layered polki choker with emerald accents" } },
+      { id: "d1b", x: 40, y: 43, product: { name: "Polki Choker Necklace", collection: "Bridal Royale", price: "$219.00", image: "/images/optimized/neckles.webp", desc: "Layered polki choker with emerald accents" } },
       { id: "d1c", x: 65, y: 36, product: { name: "Gold Bangle Set", collection: "Bridal Royale", price: "$89.00", image: "/images/luxury/jumka.jpg", desc: "Set of 6 intricately carved gold-tone bangles" } },
     ],
   },
@@ -42,7 +43,7 @@ const sliders: Slider[] = [
     id: 2,
     title: "Basraa Wedding",
     subtitle: "Timeless elegance for every ceremony",
-    mainImage: "/images/bride_2.jpg",
+    mainImage: "/images/optimized/bride_2.webp",
     dots: [
       { id: "d2a", x: 53, y: 44, product: { name: "Basra Trellis Choker", collection: "Basraa Wedding", price: "$59.34", image: "/images/ring.jpg", desc: "Geometric trellis pattern with gold finish" } },
       { id: "d2b", x: 34, y: 53, product: { name: "Pearl Drop Earrings", collection: "Basraa Wedding", price: "$44.00", image: "https://images.unsplash.com/photo-1590548784585-643d2b9f2925?w=400&q=80", desc: "Freshwater pearl drops in antique gold" } },
@@ -53,7 +54,7 @@ const sliders: Slider[] = [
     id: 3,
     title: "Regal Heritage",
     subtitle: "Heirlooms reimagined for today",
-    mainImage: "/images/bride5.jpg",
+    mainImage: "/images/optimized/bride_5.webp",
     dots: [
       { id: "d3a", x: 79, y: 48, product: { name: "Jadau Matha Patti", collection: "Regal Heritage", price: "$178.00", image: "/images/ring5.jpg", desc: "Traditional jadau headpiece with ruby inlay" } },
       { id: "d3b", x: 45, y: 70, product: { name: "Temple Necklace", collection: "Regal Heritage", price: "$245.00", image: "/images/pendant.jpg", desc: "South Indian temple motif gold necklace" } },
@@ -131,10 +132,13 @@ export const PreviewBanner = () => {
 
           {/* Large Image with Dots */}
           <div className="relative w-full md:w-[45%] aspect-[3/4] rounded-sm overflow-hidden shadow-lg shrink-0">
-            <img
+            <Image
               src={slide.mainImage}
               alt={slide.title}
-              className="w-full h-full object-cover object-top transition-all duration-700"
+              fill
+              sizes="(max-width: 768px) 100vw, 45vw"
+              quality={75}
+              className="object-cover object-top transition-all duration-700"
             />
 
             {/* Interactive Dots */}
@@ -178,10 +182,13 @@ export const PreviewBanner = () => {
                 >
                   {/* Product Image — fixed 55% of panel height */}
                   <div className="relative w-full shrink-0" style={{ height: "55%" }}>
-                    <img
+                    <Image
                       src={activeProduct.image}
                       alt={activeProduct.name}
-                      className="w-full h-full object-cover object-center"
+                      fill
+                      sizes="(max-width: 768px) 100vw, 30vw"
+                      quality={70}
+                      className="object-cover object-center"
                     />
                     <button
                       onClick={() => { setActiveProduct(null); setActiveDot(null); }}
