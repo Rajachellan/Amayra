@@ -41,7 +41,7 @@ export const Collections = () => {
     <section className="py-24 bg-emerald-soft">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-lg md:text-xl mb-4">
+          <h2 className="text-yellow-600 font-serif italic tracking-[0.3em] text-lg md:text-xl mb-4">
             Our Legacy
           </h2>
           <h3 className="text-emerald-dark font-serif text-4xl md:text-5xl lg:text-6xl mb-8">

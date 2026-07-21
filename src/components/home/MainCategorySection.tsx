@@ -72,7 +72,7 @@ export const CategorySection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-champagne font-serif italic tracking-[0.3em] text-sm md:text-base mb-3"
+              className="text-yellow-600 font-serif italic tracking-[0.3em] text-md md:text-lg mb-3"
             >
               Curated Collections
             </motion.h3>
@@ -146,9 +146,9 @@ export const CategorySection = () => {
                 </div>
 
                 <div className="text-center mt-2">
-                  <span className="inline-block text-[10px] tracking-[0.3em] font-bold text-champagne uppercase opacity-100 transition-all duration-300">
-                    Explore More
-                  </span>
+                <span className="inline-flex items-center justify-center px-5 py-2 rounded-full border border-champagne text-yellow-600 text-[10px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-champagne hover:text-emerald-dark">
+  Explore More
+</span>
                 </div>
               </Link>
             </motion.div>
