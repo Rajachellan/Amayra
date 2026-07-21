@@ -371,7 +371,7 @@ export function SmallNavigationMenu() {
                                 }
                             }}
                         />
-                        <span className="relative z-10 font-medium">Explore Full Collection</span>
+                        <span className="relative z-10 font-medium text-base">Explore Full Collection</span>
                     </button>
                 </div>
             </main>

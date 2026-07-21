@@ -59,22 +59,10 @@ export const MoodCategories = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 1, delay: index * 0.1 }}
-                className="group relative overflow-hidden rounded-[24px] aspect-[4/5] bg-pearl border border-foreground/10 transition-all duration-700 hover:shadow-2xl hover:-translate-y-2"
+                className="group relative overflow-hidden flex flex-col rounded-[24px] aspect-[4/5] bg-pearl border border-foreground/10 transition-all duration-700 hover:shadow-2xl hover:-translate-y-2"
               >
-                <Link href={`/occasion/${occ.slug}`} className="block h-full relative">
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end z-10">
-                    <span className="text-champagne uppercase tracking-[0.3em] text-[9px] font-bold mb-3 block opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-4 group-hover:translate-y-0 transition-transform">
-                      Discover More
-                    </span>
-                    <h3 className="text-foreground text-2xl font-serif mb-2 group-hover:text-champagne transition-colors duration-500">
-                      {occ.name}
-                    </h3>
-                    <p className="text-[#6B6661] text-[11px] uppercase tracking-[0.15em] font-medium">
-                      {occ.description || "Curated collection"}
-                    </p>
-                  </div>
-
-                  <div className="absolute inset-x-8 top-8 bottom-32 overflow-hidden rounded-[16px]">
+                <Link href={`/occasion/${occ.slug}`} className="block h-full relative flex flex-col">
+                  <div className="absolute inset-[16px] bottom-[110px] overflow-hidden rounded-[16px]">
                     <Image
                       src={mediaSrc(occ.image)}
                       alt={occ.name}
@@ -83,6 +71,18 @@ export const MoodCategories = () => {
                       className="object-cover transition-transform duration-[2s] group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-foreground/5 group-hover:bg-foreground/5 transition-colors" />
+                  </div>
+
+                  <div className="absolute bottom-0 inset-x-0 p-5 pt-2 flex flex-col items-center text-center z-10 bg-pearl/90 backdrop-blur-sm">
+                    <h3 className="text-foreground text-xl font-serif mb-1 group-hover:text-champagne transition-colors duration-300">
+                      {occ.name}
+                    </h3>
+                    <p className="text-[#6B6661] text-[10px] uppercase tracking-[0.15em] font-medium mb-3 line-clamp-1">
+                      {occ.description || "Curated collection"}
+                    </p>
+                    <span className="w-full py-2 px-4 rounded-lg bg-champagne text-white text-[10px] uppercase tracking-[0.2em] font-bold shadow-sm transition-all duration-300 group-hover:bg-[#b08d38]">
+                      Explore More
+                    </span>
                   </div>
 
                   {/* Subtle border detail */}

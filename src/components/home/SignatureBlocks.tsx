@@ -68,7 +68,7 @@ export const SignatureBlocks = () => {
                     {col.name}
                   </h4>
                   <Link href={`/category/all?collection=${encodeURIComponent(col.slug)}`}>
-                    <Button variant="outline" className="opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                    <Button variant="outline" className="opacity-100 translate-y-0 transition-all duration-300">
                       VIEW ALL
                     </Button>
                   </Link>

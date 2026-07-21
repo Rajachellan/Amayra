@@ -17,7 +17,6 @@ export const OffersSection = () => {
       <div className="container relative z-10 mx-auto px-4 md:px-6 space-y-6">
         {/* Ticker Bar */}
         <TickerBar items={TICKER_ITEMS} />
-
         {/* Cards Grid */}
         <div className="flex flex-col lg:flex-row gap-5">
           {/* Main Banner */}
@@ -37,13 +36,14 @@ export const OffersSection = () => {
 /* ─── Ticker Bar ─────────────────────────────────────────────── */
 function TickerBar({ items }: { items: string[] }) {
   const doubled = [...items, ...items];
+
   return (
     <div className="bg-emerald-dark rounded-xl py-2 overflow-hidden">
-      <div className="flex whitespace-nowrap animate-ticker w-max">
+      <div className="flex w-max animate-marquee">
         {doubled.map((item, i) => (
           <span
             key={i}
-            className="inline-flex items-center gap-3 px-8 text-brand-gold text-[10px] font-medium tracking-[0.18em] uppercase"
+            className="inline-flex items-center gap-3 px-8 text-brand-gold text-[10px] font-medium tracking-[0.18em] uppercase whitespace-nowrap"
           >
             <span className="w-1 h-1 rounded-full bg-brand-gold flex-shrink-0" />
             {item}
@@ -53,7 +53,6 @@ function TickerBar({ items }: { items: string[] }) {
     </div>
   );
 }
-
 /* ─── Main Card ──────────────────────────────────────────────── */
 function MainCard() {
   return (

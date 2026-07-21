@@ -145,8 +145,8 @@ export const CategorySection = () => {
                   </div>
                 </div>
 
-                <div className="text-center">
-                  <span className="inline-block text-[9px] tracking-[0.4em] font-bold text-champagne uppercase opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 group-hover:translate-y-0">
+                <div className="text-center mt-2">
+                  <span className="inline-block text-[10px] tracking-[0.3em] font-bold text-champagne uppercase opacity-100 transition-all duration-300">
                     Explore More
                   </span>
                 </div>
