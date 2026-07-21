@@ -8,7 +8,7 @@ import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 export const CollectionStory = () => {
   return (
     <section
-      className="relative overflow-hidden min-h-screen flex items-center"
+      className="relative overflow-hidden  flex items-center"
       style={{ backgroundColor: 'var(--bg-mint-soft)' }}
     >
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
@@ -21,8 +21,8 @@ export const CollectionStory = () => {
         }}
       />
 
-      <div className="relative container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-center gap-16 md:gap-20">
+      <div className="relative container mx-auto px-6 py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:items-center gap-16 md:gap-10">
           {/* Image Column */}
           <div className="order-2 lg:order-1">
             <motion.div

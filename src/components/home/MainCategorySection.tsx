@@ -146,7 +146,7 @@ export const CategorySection = () => {
                 </div>
 
                 <div className="text-center mt-2">
-                <span className="inline-flex items-center justify-center px-5 py-2 rounded-full border border-champagne text-yellow-600 text-[10px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-champagne hover:text-emerald-dark">
+                <span className="inline-flex items-center justify-center px-5 py-2 rounded-full border border-champagne text-yellow-300 text-[10px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-champagne hover:text-emerald-dark">
   Explore More
 </span>
                 </div>

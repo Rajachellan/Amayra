@@ -81,7 +81,7 @@ export const ProductSpotlight = () => {
               className="space-y-8"
             >
               <div className="space-y-4">
-                <span className="text-champagne uppercase tracking-[0.6em] text-[10px] font-bold block">
+                <span className="text-yellow-600 uppercase tracking-[0.6em] text-[15px] font-bold block">
                   Couture Spotlight
                 </span>
                 <h2 className="text-foreground text-4xl md:text-6xl font-serif leading-[1.1]">
@@ -118,7 +118,7 @@ export const ProductSpotlight = () => {
                     onClick={handleAddToCollection}
                     className="border-0 border-b border-champagne bg-transparent pb-1 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground underline-offset-4 hover:text-champagne cursor-pointer transition-colors"
                   >
-                    Add to Collection
+                    Add to Cart
                   </button>
                 </div>
               </div>

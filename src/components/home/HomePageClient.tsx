@@ -17,7 +17,7 @@ import { MagazineGallery } from "@/components/home/MagazineGallery";
 import { PreviewBanner } from "@/components/home/PreviewBanner";
 import { CollectionStory } from "@/components/home/CollectionStory";
 import { WhyChooseUs } from "@/components/about/WhyChooseUs";
-import { StylingGuide } from "@/components/home/StylingGuide";
+import { SilverCollection } from "@/components/home/SilverCollection";
 import FAQ from "@/components/home/FAQ";
 import { ReviewsSlider } from "@/components/home/ReviewsSlider";
 import { CompanyBanners } from "@/components/home/CompanyBanners";
@@ -53,13 +53,13 @@ export function HomePageClient() {
       {/* <InstagramGrid /> */}
       <MoodCategories />
       <ProductSpotlight />
+      <PreviewBanner />
       <Craftsmanship />
       <PremiumHighlights />
       {settings.showBlogSection ? <MagazineGallery /> : null}
-      <PreviewBanner />
       {settings.showLookbooks ? <CollectionStory /> : null}
       <WhyChooseUs />
-      <StylingGuide />
+      <SilverCollection />
       <FAQ />
       <ReviewsSlider />
       <CompanyBanners />

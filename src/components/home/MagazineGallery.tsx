@@ -148,10 +148,10 @@ export const MagazineGallery = () => {
         <div className="flex items-center gap-6 mb-8">
           <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-300/20" />
           <div className="text-center shrink-0">
-            <span className="block text-[9px] font-bold tracking-[0.5em] uppercase text-amber-300 mb-2">
+            <span className="block text-[12px] font-bold tracking-[0.5em] uppercase text-amber-300 mb-2">
               Visual Storytelling · Vol. IV
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-stone-950">
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-950">
               The{" "}
               <em className="text-amber-300/90 not-italic font-serif">
                 Magazine
@@ -175,7 +175,6 @@ export const MagazineGallery = () => {
           col-3 row-1/3 → right (tall, offset)
           col-2 row-2   → bottom-center (square)
         */}
-
         {/* Mobile: simple stack | Desktop: magazine grid */}
         <div className="flex flex-col gap-3 lg:grid lg:gap-3"
           style={{
@@ -185,6 +184,7 @@ export const MagazineGallery = () => {
         >
           {/* Card 1 — Hero, left col, full height */}
           <div style={{ gridColumn: "1", gridRow: "1 / 3" }} className="h-80 lg:h-auto">
+          <Link href="/category/necklaces">
             <MagazineCard
               src={IMAGES[0].src}
               title={IMAGES[0].title}
@@ -194,10 +194,12 @@ export const MagazineGallery = () => {
               className="w-full h-full"
               imageClassName=""
             />
+            </Link>
           </div>
 
           {/* Card 2 — Top center */}
           <div style={{ gridColumn: "2", gridRow: "1" }} className="h-60 lg:h-auto">
+            <Link href="/category/earrings">
             <MagazineCard
               src={IMAGES[1].src}
               title={IMAGES[1].title}
@@ -206,6 +208,7 @@ export const MagazineGallery = () => {
               index={1}
               className="w-full h-full"
             />
+            </Link>
           </div>
 
           {/* Card 3 — Right col, full height, offset down */}
@@ -213,6 +216,7 @@ export const MagazineGallery = () => {
             style={{ gridColumn: "3", gridRow: "1 / 3", marginTop: "48px" }}
             className="h-80 lg:h-auto"
           >
+            <Link href="/category/chocker">
             <MagazineCard
               src={IMAGES[2].src}
               title={IMAGES[2].title}
@@ -221,10 +225,12 @@ export const MagazineGallery = () => {
               index={2}
               className="w-full h-full"
             />
+            </Link>
           </div>
 
           {/* Card 4 — Bottom center */}
           <div style={{ gridColumn: "2", gridRow: "2" }} className="h-60 lg:h-auto">
+            <Link href="/category/bangles">
             <MagazineCard
               src={IMAGES[3].src}
               title={IMAGES[3].title}
@@ -233,10 +239,12 @@ export const MagazineGallery = () => {
               index={3}
               className="w-full h-full"
             />
+            </Link>
           </div>
         </div>
 
         {/* 5th card — full width feature strip below grid */}
+        <Link href="/category/jewellery">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -272,20 +280,21 @@ export const MagazineGallery = () => {
             </h3>
           </div>
         </motion.div>
+        </Link>
 
         {/* Footer */}
         <div className="mt-6 flex justify-between items-end border-t border-amber-300/80 pt-4">
           <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-stone-600">
-            © Atelier Collection · 2026
+            © Mairii Collection · 2026
           </span>
           <Link
-            href="/gallery"
-            className="group inline-flex items-center gap-4 text-[9px] font-bold tracking-[0.4em] uppercase text-amber-500 hover:text-amber-200 transition-colors duration-300"
+            href="/category/new"
+            className="group inline-flex items-center gap-4 text-[12px] font-bold tracking-[0.4em] uppercase text-amber-400 hover:text-amber-300 transition-colors duration-300"
           >
             <span
               className="h-px bg-amber-300 transition-all duration-700 group-hover:w-16 w-8"
             />
-            Explore All Archives
+            Explore All Collections
           </Link>
         </div>
       </div>
