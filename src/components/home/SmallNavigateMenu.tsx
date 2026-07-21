@@ -107,7 +107,7 @@ export function SmallNavigationMenu() {
 
     return (
         <section
-            className="w-full flex flex-col relative overflow-hidden py-16 md:py-24"
+            className="w-full flex flex-col relative overflow-hidden py-16 md:py-10"
             style={{
                 backgroundColor: "var(--bg-ivory)",
                 fontFamily: "'Cormorant Garamond', 'Georgia', serif",
@@ -118,13 +118,13 @@ export function SmallNavigationMenu() {
             {/* Header */}
             <header className="relative text-center px-4 shrink-0 z-10">
                 <p
-                    className="text-[12px] tracking-[0.3em] font-bold uppercase mb-2"
+                    className="text-[15px] tracking-[0.3em] font-bold uppercase "
                     style={{ color: "#2b743e", letterSpacing: "0.3em" }}
                 >
                     Handcrafted Luxury
                 </p>
                 <h1
-                    className="text-3xl sm:text-4xl md:text-5xl font-light mb-2"
+                    className="text-3xl sm:text-4xl md:text-6xl font-light "
                     style={{
                         color: "#3a2a1a",
                         fontFamily: "'Cormorant Garamond', 'Georgia', serif",
@@ -134,7 +134,7 @@ export function SmallNavigationMenu() {
                     The Jewel Atelier
                 </h1>
                 {/* Ornamental divider */}
-                <div className="flex items-center justify-center gap-2 mt-4">
+                <div className="flex items-center justify-center gap-2 mt-2">
                     <div className="h-px w-12 sm:w-16" style={{ background: "linear-gradient(90deg, transparent, #c9a84c)" }} />
                     <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
                         <polygon points="10,1 12,8 19,8 13.5,12.5 15.5,19.5 10,15 4.5,19.5 6.5,12.5 1,8 8,8" fill="#c9a84c" opacity="0.9" />
@@ -144,7 +144,7 @@ export function SmallNavigationMenu() {
             </header>
 
             {/* Tab Navigation */}
-            <div className="relative flex justify-center px-4 mt-8 mb-10 shrink-0 z-10">
+            <div className="relative flex justify-center px-4 mt-5 mb-5 shrink-0 z-10">
                 <div className="relative flex gap-4 sm:gap-8 border-b border-black/5 pb-2">
                     {/* Sliding indicator */}
                     <div
@@ -161,7 +161,7 @@ export function SmallNavigationMenu() {
                             key={tab.key}
                             ref={(el) => { tabRefs.current[tab.key] = el; }}
                             onClick={() => handleTabChange(tab.key)}
-                            className="relative z-10 px-2 py-1.5 text-[11px] sm:text-xs tracking-widest uppercase transition-colors duration-300"
+                            className="relative z-10 px-2 py-1.5 text-[14px] sm:text-xs tracking-widest uppercase transition-colors duration-300"
                             style={{
                                 color: activeTab === tab.key ? "#c9a84c" : "#8a6a3a",
                                 fontFamily: "'Cormorant Garamond', 'Georgia', serif",
@@ -252,12 +252,12 @@ export function SmallNavigationMenu() {
                                         e.stopPropagation();
                                         toggleWishlist(product.global);
                                     }}
-                                    className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-300"
+                                    className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-300 z-10"
                                     style={{
                                         background: "rgba(255,255,255,0.9)",
                                         backdropFilter: "blur(4px)",
-                                        opacity: hoveredId === product.idStr ? 1 : 0,
-                                        transform: hoveredId === product.idStr ? "translateY(0)" : "translateY(-10px)",
+                                        opacity: 1,
+                                        transform: "translateY(0)",
                                         boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
                                     }}
                                 >
@@ -271,29 +271,6 @@ export function SmallNavigationMenu() {
                                     >
                                         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                                     </svg>
-                                </button>
-
-                                {/* Add to bag strip */}
-                                <button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        e.stopPropagation();
-                                        addToCart(product.global);
-                                    }}
-                                    className="absolute bottom-2 left-2 right-2 rounded flex items-center justify-center py-3 text-[10px] tracking-[0.2em] uppercase transition-all duration-400 border-none cursor-pointer overflow-hidden"
-                                    style={{
-                                        background: "#c9a84c",
-                                        color: "#fff",
-                                        transform: hoveredId === product.idStr ? "translateY(0)" : "translateY(calc(100% + 8px))",
-                                        transition: "transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                                    }}
-                                >
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
-                                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                                        <line x1="3" y1="6" x2="21" y2="6" />
-                                        <path d="M16 10a4 4 0 0 1-8 0" />
-                                    </svg>
-                                    Add to Bag
                                 </button>
                             </div>
 
@@ -313,7 +290,7 @@ export function SmallNavigationMenu() {
                                     </h3>
                                 </Link>
 
-                                <div className="flex flex-col items-center justify-center gap-1">
+                                <div className="flex flex-col items-center justify-center gap-2">
                                     {/* Price Section */}
                                     <div className="flex items-center gap-2">
                                         {product.oldPrice && (
@@ -331,6 +308,27 @@ export function SmallNavigationMenu() {
                                             {product.price}
                                         </p>
                                     </div>
+
+                                    {/* Add to Cart button permanently below price */}
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            addToCart(product.global);
+                                        }}
+                                        className="w-full mt-1 rounded flex items-center justify-center py-2.5 px-4 text-[10px] sm:text-xs tracking-[0.15em] uppercase transition-all duration-300 border-none cursor-pointer overflow-hidden shadow-sm hover:shadow-md"
+                                        style={{
+                                            background: "#c9a84c",
+                                            color: "#fff",
+                                        }}
+                                    >
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+                                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                            <line x1="3" y1="6" x2="21" y2="6" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" />
+                                        </svg>
+                                        Add to Cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
