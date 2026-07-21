@@ -132,12 +132,12 @@ const FAQItem = ({
     <button
       onClick={onToggle}
       aria-expanded={isOpen}
-      className="w-full flex items-start gap-5 py-7 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2"
+      className="w-full flex items-start gap-2 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-2"
     >
       {/* Number */}
       <span
         className="shrink-0 pt-0.5 text-[11px] tracking-widest text-amber-600"
-        style={{ fontFamily: "var(--font-playfair)", minWidth: "28px" }}
+        style={{ fontFamily: "var(--font-playfair)", minWidth: "20px" }}
       >
         {String(faq.id).padStart(2, "0")}
       </span>
@@ -179,7 +179,7 @@ const FAQItem = ({
           />
           <line
             x1="1" y1="5.5" x2="10" y2="5.5"
-            stroke={isOpen ? "#fff" : "#78716c"}
+            stroke={isOpen ? "#fff" : "#703308ff"}
             strokeWidth="1.3"
             strokeLinecap="round"
           />
@@ -189,7 +189,7 @@ const FAQItem = ({
 
     {/* Answer */}
     <AnimatedPanel isOpen={isOpen}>
-      <div className="pb-7 pl-[52px] pr-4">
+      <div className="pb-2 pl-[52px] pr-4">
         <div className="border-l border-amber-300/60 pl-5">
           <p
             className="text-sm sm:text-[15px] text-stone-500 leading-[1.85]"
@@ -231,19 +231,19 @@ export default function FAQ() {
         }
       `}</style>
 
-      <section className="min-h-screen flex items-center justify-center px-4 py-16 sm:px-8 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-ivory)' }}>
+      <section className=" flex items-center justify-center px-4 py-10 sm:px-8 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-ivory)' }}>
         <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
         <div className="w-full relative z-10 max-w-5xl">
 
           {/* ── Header ── */}
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-7">
             <div>
               {/* Eyebrow */}
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-3">
                 <div className="h-px w-10 bg-amber-400/60" />
                 <GemIcon size={9} className="text-amber-500" />
                 <span
-                  className="text-[10px] tracking-[0.3em] uppercase text-amber-600"
+                  className="text-[14px] tracking-[0.3em] uppercase text-yellow-600"
                   style={{ fontFamily: "var(--font-dm)", fontWeight: 500 }}
                 >
                   Maison Lumière
@@ -263,64 +263,11 @@ export default function FAQ() {
               </h1>
             </div>
 
-            {/* Right meta block */}
-            <div className="flex items-end gap-8 lg:pb-1">
-              <div className="text-right">
-                <p
-                  className="text-6xl text-stone-200 leading-none tracking-tighter select-none"
-                  style={{ fontFamily: "var(--font-playfair)" }}
-                >
-                  07
-                </p>
-                <p
-                  className="text-[10px] tracking-[0.2em] uppercase text-stone-400 mt-1"
-                  style={{ fontFamily: "var(--font-dm)", fontWeight: 500 }}
-                >
-                  Curated answers
-                </p>
-              </div>
-              <div className="flex flex-col gap-1.5 mb-2">
-                {[0, 1, 2].map((i) => (
-                  <div
-                    key={i}
-                    className="h-px bg-stone-300"
-                    style={{ width: `${24 + i * 12}px`, opacity: 1 - i * 0.25 }}
-                  />
-                ))}
-              </div>
-            </div>
+          
           </div>
 
           {/* ── Two-column layout on large screens ── */}
-          <div className="lg:grid lg:grid-cols-[1fr_2fr] lg:gap-16">
-
-            {/* Left sticky label */}
-            <div className="hidden lg:block">
-              <div className="sticky top-16 space-y-6">
-                <div className="w-px h-32 bg-gradient-to-b from-amber-300 to-transparent ml-0" />
-                <p
-                  className="text-[11px] tracking-[0.25em] uppercase text-stone-400 [writing-mode:vertical-lr] rotate-180"
-                  style={{ fontFamily: "var(--font-dm)", fontWeight: 500 }}
-                >
-                  Fine Jewellery 
-                </p>
-                <div className="flex flex-col gap-2 mt-4">
-                  {faqs.map((f) => (
-                    <button
-                      key={f.id}
-                      onClick={() => toggle(f.id)}
-                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                        openId === f.id
-                          ? "bg-amber-500 scale-125"
-                          : "bg-stone-300 hover:bg-amber-300"
-                      }`}
-                      aria-label={`Jump to question ${f.id}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
+          <div className="">
             {/* FAQ list */}
             <div>
               {/* Top rule */}

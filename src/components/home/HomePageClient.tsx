@@ -54,15 +54,15 @@ export function HomePageClient() {
       <MoodCategories />
       <ProductSpotlight />
       <PreviewBanner />
+      <SilverCollection />
       <Craftsmanship />
       <PremiumHighlights />
       {settings.showBlogSection ? <MagazineGallery /> : null}
       {settings.showLookbooks ? <CollectionStory /> : null}
       <WhyChooseUs />
-      <SilverCollection />
       <FAQ />
       <ReviewsSlider />
-      <CompanyBanners />
+      {/* <CompanyBanners /> */}
     </>
   );
 }

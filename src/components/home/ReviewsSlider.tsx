@@ -51,7 +51,7 @@ export const ReviewsSlider = () => {
 
   return (
     <section
-      className="relative overflow-hidden min-h-screen flex items-center"
+      className="relative overflow-hidden  flex items-center"
       style={{ backgroundColor: 'var(--bg-mint-soft)' }}
     >
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
@@ -74,11 +74,11 @@ export const ReviewsSlider = () => {
 
       <div className="relative container mx-auto px-6 py-8">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-14 mt-10">
           <div className="flex items-center justify-center gap-3 mb-5">
             <div className="w-10 h-px" style={{ background: "rgba(196,160,100,0.5)" }} />
             <span
-              className="font-sans font-bold tracking-[0.45em] uppercase text-[10px]"
+              className="font-sans font-bold tracking-[0.45em] uppercase text-[13px]"
               style={{ color: "#C4A064" }}
             >
               Client Testimonials

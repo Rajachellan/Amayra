@@ -80,7 +80,7 @@ export const MoodCategories = () => {
                     <p className="text-[#6B6661] text-[10px] uppercase tracking-[0.15em] font-medium mb-3 line-clamp-1">
                       {occ.description || "Curated collection"}
                     </p>
-                    <span className="w-full py-2 px-4 rounded-lg bg-yellow-600 text-white text-[10px] uppercase tracking-[0.2em] font-bold shadow-sm transition-all duration-300 group-hover:bg-[#b08d38]">
+                    <span className="w-full py-2 px-4 rounded-lg bg-yellow-300 text-white text-[10px] uppercase tracking-[0.2em] font-bold shadow-sm transition-all duration-300 group-hover:bg-[#b08d38]">
                       Explore More
                     </span>
                   </div>

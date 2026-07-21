@@ -24,13 +24,20 @@ export const SilverCollection = () => {
     let isMounted = true;
     (async () => {
       try {
-        let res = await shopApi.products({ category: "silver", limit: 24, page: 1 });
+        // Find category ID/slug for Silver category dynamically or query directly by category: "silver"
+        let categories = await shopApi.categories();
+        let silverCat = categories.find(
+          (c) => c.slug.toLowerCase() === "silver" || c.name.toLowerCase().includes("silver")
+        );
+        let categoryParam = silverCat ? silverCat.slug : "silver";
+
+        let res = await shopApi.products({ category: categoryParam, limit: 32, page: 1 });
+
+        // If category parameter didn't match via slug, try searching by silver category slug or ID
         if (!res.items.length) {
-          res = await shopApi.products({ search: "silver", limit: 24, page: 1 });
+          res = await shopApi.products({ category: "silver-collection", limit: 32, page: 1 });
         }
-        if (!res.items.length) {
-          res = await shopApi.products({ limit: 24, page: 1 });
-        }
+
         if (isMounted) {
           setProducts(res.items.map(mapListItemToProduct));
         }
@@ -73,7 +80,7 @@ export const SilverCollection = () => {
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="w-10 h-px bg-amber-400/60" />
-            <span className="font-sans font-bold tracking-[0.45em] uppercase text-[12px] text-amber-500">
+            <span className="font-sans font-bold tracking-[0.45em] uppercase text-[14px] text-yellow-600">
               Timeless Sterling
             </span>
             <div className="w-10 h-px bg-amber-400/60" />
@@ -83,7 +90,7 @@ export const SilverCollection = () => {
             The Silver <span className="italic text-yellow-600 font-serif">Collection</span>
           </h2>
 
-          <p className="font-sans text-xs sm:text-sm tracking-wider leading-relaxed max-w-lg mx-auto text-[#1C1510]/60">
+          <p className="font-sans text-md sm:text-md tracking-wider leading-relaxed max-w-lg mx-auto text-[#1C1510]/60">
             Handcrafted 925 sterling silver jewelry designed for refined grace and everyday luxury.
           </p>
         </div>
@@ -92,7 +99,7 @@ export const SilverCollection = () => {
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-[3/4] bg-pearl animate-pulse rounded-xl" />
+              <div key={i} className="aspect-[1/1] bg-pearl animate-pulse rounded-xl" />
             ))}
           </div>
         ) : (
@@ -106,7 +113,7 @@ export const SilverCollection = () => {
                   transition={{ duration: 0.5, delay: (idx % 4) * 0.1 }}
                   className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500"
                 >
-                  <div className="relative aspect-[3/4] w-full overflow-hidden bg-pearl">
+                  <div className="relative aspect-[1/1] w-full overflow-hidden bg-pearl">
                     <Link href={`/product/${product.slug ?? product.id}`} className="block w-full h-full">
                       <Image
                         src={product.image}
