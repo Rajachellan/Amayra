@@ -12,7 +12,7 @@ const TICKER_ITEMS = [
 
 export const OffersSection = () => {
   return (
-    <section className="py-16 overflow-hidden relative" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
+    <section className="py-16 overflow-hidden relative "style={{ backgroundColor: 'var(--bg-sage-light)' }} >
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       <div className="container relative z-10 mx-auto px-4 md:px-6 space-y-6">
         {/* Ticker Bar */}
@@ -56,7 +56,7 @@ function TickerBar({ items }: { items: string[] }) {
 /* ─── Main Card ──────────────────────────────────────────────── */
 function MainCard() {
   return (
-    <div className="flex-1 relative overflow-hidden rounded-3xl bg-emerald-soft/30 border border-emerald-dark/10 min-h-[380px] flex flex-col justify-center p-10 md:p-14 animate-fade-right group">
+    <div className="flex-1 relative overflow-hidden rounded-3xl bg-white border border-emerald-dark/10 min-h-[380px] flex flex-col justify-center p-10 md:p-14 animate-fade-right group">
       {/* Radial gold glow */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_80%_20%,rgba(196,160,100,0.09)_0%,transparent_65%)]" />
 

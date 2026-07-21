@@ -231,7 +231,7 @@ export default function FAQ() {
         }
       `}</style>
 
-      <section className=" flex items-center justify-center px-4 py-10 sm:px-8 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-ivory)' }}>
+      <section className=" flex items-center justify-center px-4 py-10 sm:px-8 relative overflow-hidden" >
         <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
         <div className="w-full relative z-10 max-w-5xl">
 

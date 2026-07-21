@@ -11,7 +11,7 @@ const TICKER_ITEMS = [
 
 export const OffersSection = () => {
   return (
-    <section className="py-16 bg-emerald-soft overflow-hidden">
+    <section className="py-16 bg-[#c9ffe3] overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 space-y-6">
         {/* Ticker Bar */}
         <TickerBar items={TICKER_ITEMS} />

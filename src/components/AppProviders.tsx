@@ -8,6 +8,9 @@ import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { OpenCartFromSearchParams } from "@/components/cart/OpenCartFromSearchParams";
+import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import { AuthModal } from "@/components/auth/AuthModal";
+import { MasterpieceModal } from "@/components/home/MasterpieceModal";
 
 const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID?.trim() ?? "";
 
@@ -18,6 +21,8 @@ const GoogleOAuthProviderWrapper = dynamic(
 );
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
+  const [isMasterpieceOpen, setIsMasterpieceOpen] = React.useState(false);
+
   const inner = (
     <CartProvider>
       <WishlistProvider>
@@ -28,6 +33,12 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           <CartDrawer />
           <Toaster position="top-right" />
           {children}
+          <WhatsAppButton />
+          <AuthModal onCloseMasterpiece={() => setIsMasterpieceOpen(true)} />
+          <MasterpieceModal
+            isOpen={isMasterpieceOpen}
+            onClose={() => setIsMasterpieceOpen(false)}
+          />
         </AuthProvider>
       </WishlistProvider>
     </CartProvider>
