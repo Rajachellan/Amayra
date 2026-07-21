@@ -95,35 +95,35 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden z-10 border border-amber-100 p-6 sm:p-8"
+          className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden z-10 border border-stone-200 p-6 sm:p-8"
         >
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-20 p-2 rounded-full text-gray-400 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+            className="absolute top-4 right-4 z-20 p-2.5 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
 
           {/* Subheading Badge */}
-          <div className="flex items-center justify-center gap-2 mb-4 text-amber-600">
+          <div className="flex items-center justify-center gap-2 mb-3 text-amber-600">
             <Sparkles className="w-4 h-4 fill-amber-500/20" />
-            <span className="text-[11px] font-bold tracking-[0.3em] uppercase">
+            <span className="text-[10px] font-bold tracking-[0.35em] uppercase">
               Masterpiece Spotlight
             </span>
           </div>
 
           {loading || !product ? (
             <div className="py-12 flex flex-col items-center justify-center space-y-4">
-              <div className="w-24 h-24 bg-stone-100 animate-pulse rounded-xl" />
+              <div className="w-24 h-24 bg-stone-100 animate-pulse rounded-2xl" />
               <div className="w-48 h-4 bg-stone-100 animate-pulse rounded" />
               <div className="w-24 h-4 bg-stone-100 animate-pulse rounded" />
             </div>
           ) : (
             <div className="flex flex-col items-center text-center">
               {/* Product Image Container */}
-              <div className="relative w-full aspect-square max-h-64 sm:max-h-72 rounded-xl overflow-hidden bg-pearl mb-5 border border-stone-100 shadow-inner group">
+              <div className="relative w-full aspect-square max-h-64 sm:max-h-72 rounded-2xl overflow-hidden bg-pearl mb-5 border border-stone-100 shadow-inner group">
                 <Link
                   href={`/product/${product.slug ?? product.id}`}
                   onClick={onClose}
@@ -174,7 +174,7 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
                   ₹{product.price.toLocaleString()}
                 </span>
                 {product.oldPrice && product.oldPrice > product.price && (
-                  <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
                     {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
                   </span>
                 )}
@@ -183,10 +183,10 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
               {/* Action Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full py-3.5 px-6 rounded-xl bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2 hover:bg-amber-600 transition-colors shadow-lg group"
+                className="w-full py-3.5 px-6 rounded-xl bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 hover:bg-[#c9a84c] transition-colors shadow-lg group"
               >
                 <ShoppingBag className="w-4 h-4 transition-transform group-hover:scale-110" />
-                <span>Add to Cart</span>
+                <span>Add to Bag</span>
               </button>
             </div>
           )}

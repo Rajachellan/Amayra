@@ -96,29 +96,35 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
           transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden z-10 border border-amber-100 p-8 sm:p-10"
+          className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden z-10 border border-stone-200 p-8 sm:p-10"
         >
           {/* Close button */}
           <button
             onClick={handleClose}
-            className="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-stone-900 hover:bg-stone-100 transition-colors"
+            className="absolute top-4 right-4 p-2.5 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors z-20"
             aria-label="Close"
           >
             <X className="w-5 h-5" />
           </button>
 
+          {/* Luxury top ornament bar */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-8 h-px bg-amber-400/60" />
+            <span className="text-amber-600 uppercase tracking-[0.4em] text-[10px] font-bold">
+              Mairii Atelier
+            </span>
+            <div className="w-8 h-px bg-amber-400/60" />
+          </div>
+
           {/* Header */}
           <div className="text-center mb-6">
-            <span className="text-amber-600 uppercase tracking-[0.3em] text-[10px] font-bold block mb-2">
-              Exclusive Privilege
-            </span>
             <h2 className="text-2xl sm:text-3xl font-serif text-stone-900">
-              {mode === "login" ? "Welcome to Mairii" : "Create Your Account"}
+              {mode === "login" ? "Welcome Back" : "Begin Your Journey"}
             </h2>
-            <p className="text-stone-500 text-xs tracking-wider uppercase mt-1">
+            <p className="text-stone-500 text-xs tracking-wider uppercase mt-1 leading-relaxed">
               {mode === "login"
-                ? "Sign in to access your luxury wishlist & orders"
-                : "Join Mairii for personalized recommendations & updates"}
+                ? "Sign in to access your saved treasures & bespoke orders"
+                : "Create an account for personalized recommendations & updates"}
             </p>
           </div>
 
@@ -145,7 +151,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
               <span className="w-full border-t border-stone-200" />
             </div>
             <div className="relative flex justify-center text-[10px] uppercase tracking-widest text-stone-400">
-              <span className="bg-white px-3">Or continue with email</span>
+              <span className="bg-white px-3">Or email authentication</span>
             </div>
           </div>
 
@@ -163,8 +169,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Jane Doe"
-                    className="w-full bg-stone-50 border border-stone-200 pl-10 pr-4 py-2.5 text-xs rounded-lg focus:outline-none focus:border-amber-500 text-stone-800 tracking-wider"
+                    placeholder="Your Name"
+                    className="w-full bg-stone-50 border border-stone-200/90 pl-10 pr-4 py-3 text-xs rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white text-stone-900 tracking-wider transition-all"
                   />
                 </div>
               </div>
@@ -182,7 +188,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@example.com"
-                  className="w-full bg-stone-50 border border-stone-200 pl-10 pr-4 py-2.5 text-xs rounded-lg focus:outline-none focus:border-amber-500 text-stone-800 tracking-wider"
+                  className="w-full bg-stone-50 border border-stone-200/90 pl-10 pr-4 py-3 text-xs rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white text-stone-900 tracking-wider transition-all"
                 />
               </div>
             </div>
@@ -200,7 +206,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 border border-stone-200 pl-10 pr-4 py-2.5 text-xs rounded-lg focus:outline-none focus:border-amber-500 text-stone-800 tracking-wider"
+                  className="w-full bg-stone-50 border border-stone-200/90 pl-10 pr-4 py-3 text-xs rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white text-stone-900 tracking-wider transition-all"
                 />
               </div>
             </div>
@@ -208,7 +214,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-3 mt-2 bg-stone-900 text-white rounded-lg text-xs uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2 hover:bg-amber-600 transition-colors shadow-md disabled:opacity-50"
+              className="w-full py-3.5 mt-2 bg-stone-900 text-white rounded-xl text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 hover:bg-[#c9a84c] transition-colors shadow-lg disabled:opacity-50"
             >
               <span>{submitting ? "Processing..." : mode === "login" ? "Sign In" : "Create Account"}</span>
               <ArrowRight className="w-4 h-4" />
@@ -218,13 +224,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
           {/* Footer toggle */}
           <div className="mt-6 pt-4 border-t border-stone-100 text-center">
             <p className="text-xs text-stone-500 tracking-wide">
-              {mode === "login" ? "Don't have an account?" : "Already have an account?"}{" "}
+              {mode === "login" ? "New to Mairii?" : "Already a member?"}{" "}
               <button
                 type="button"
                 onClick={() => setMode(mode === "login" ? "signup" : "login")}
-                className="font-bold text-amber-600 hover:underline ml-1"
+                className="font-bold text-amber-600 hover:underline ml-1 uppercase text-[11px] tracking-wider"
               >
-                {mode === "login" ? "Sign up now" : "Sign in"}
+                {mode === "login" ? "Create an Account" : "Sign In"}
               </button>
             </p>
           </div>
