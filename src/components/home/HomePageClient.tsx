@@ -10,8 +10,6 @@ import { CategorySection } from "@/components/home/MainCategorySection";
 import { SignatureBlocks } from "@/components/home/SignatureBlocks";
 import { MoodCategories } from "@/components/home/MoodCategories";
 import { ProductSpotlight } from "@/components/home/ProductSpotlight";
-import { PromotionalBannersStrip } from "@/components/home/PromotionalBannersStrip";
-
 /** Below-fold: load only when needed so heavy assets stay out of the initial bundle */
 const PreviewBanner = dynamic(
   () => import("@/components/home/PreviewBanner").then((m) => m.PreviewBanner),
@@ -70,7 +68,6 @@ export function HomePageClient() {
       {settings.showBanner ? <Hero /> : null}
       <SmallNavigationMenu />
       <OffersSection />
-      <PromotionalBannersStrip />
       {settings.showCategories ? <CategorySection /> : null}
       {settings.showCollections ? <SignatureBlocks /> : null}
       <MoodCategories />
