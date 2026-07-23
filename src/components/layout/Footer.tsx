@@ -98,7 +98,6 @@ export const Footer = () => {
               />
             </Link>
             </div>
-
             <p
               className="text-xs leading-[1.9] mb-8 text-white/70"
             >
