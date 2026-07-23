@@ -12,7 +12,7 @@ const REVIEWS = [
     name: "Aisha Sharma",
     location: "Mumbai, India",
     image:
-      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=1976&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=160&auto=format&fit=crop",
     rating: 5,
     text: "The craftsmanship is unparalleled. I've never seen such intricate gold work that still feels modern and wearable. A true masterpiece.",
   },
@@ -21,7 +21,7 @@ const REVIEWS = [
     name: "Elena Rodriguez",
     location: "Dubai, UAE",
     image:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=1974&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=160&auto=format&fit=crop",
     rating: 5,
     text: "Pure luxury. From the packaging to the jewelry itself, every detail exudes elegance. My bridal set received so many compliments!",
   },
@@ -30,7 +30,7 @@ const REVIEWS = [
     name: "Sarah Jenkins",
     location: "London, UK",
     image:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=160&auto=format&fit=crop",
     rating: 5,
     text: "Exceptional service and exquisite designs. Mairii truly understands what high-end jewelry should feel like.",
   },
@@ -122,6 +122,8 @@ export const ReviewsSlider = () => {
                     src={REVIEWS[index].image}
                     alt={REVIEWS[index].name}
                     fill
+                    sizes="80px"
+                    quality={70}
                     className="object-cover"
                   />
                 </div>

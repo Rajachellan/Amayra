@@ -216,6 +216,8 @@ export function SmallNavigationMenu() {
                                             src={product.image}
                                             alt={product.name}
                                             fill
+                                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                            quality={75}
                                             className="object-cover transition-transform duration-700 group-hover:scale-105"
                                         />
                                     </div>
@@ -377,8 +379,6 @@ export function SmallNavigationMenu() {
             </main>
 
             <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap');
-
         @keyframes fadeSlideUp {
           from {
             opacity: 0;

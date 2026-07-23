@@ -31,11 +31,11 @@ export const SilverCollection = () => {
         );
         let categoryParam = silverCat ? silverCat.slug : "silver";
 
-        let res = await shopApi.products({ category: categoryParam, limit: 32, page: 1 });
+        let res = await shopApi.products({ category: categoryParam, limit: 8, page: 1 });
 
         // If category parameter didn't match via slug, try searching by silver category slug or ID
         if (!res.items.length) {
-          res = await shopApi.products({ category: "silver-collection", limit: 32, page: 1 });
+          res = await shopApi.products({ category: "silver-collection", limit: 8, page: 1 });
         }
 
         if (isMounted) {

@@ -12,10 +12,13 @@ const nextConfig: NextConfig = {
     { source: "/cart", destination: "/?openCart=1", permanent: false },
   ],
 
-  // ✅ FIX 2: Allow external images
+  // Resize/WebP via Next image optimizer (was unoptimized — full multi‑MB originals)
   images: {
-    unoptimized: true,
-    qualities: [75, 95],
+    formats: ["image/avif", "image/webp"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [64, 96, 128, 256, 384],
+    qualities: [60, 75, 80],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       {
         protocol: "https",
@@ -27,10 +30,19 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.googleusercontent.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "imagedelivery.net",
         pathname: "/**",
       },
-      /* Cloudflare R2 public bucket (pub-*.r2.dev and custom hostnames) */
       {
         protocol: "https",
         hostname: "assets.mairiijewels.com",
@@ -38,13 +50,17 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "*.r2.dev",
+        hostname: "api.mairiijewels.com",
         pathname: "/**",
       },
-      /* Legacy Cloudflare Pages–hosted assets */
       {
         protocol: "https",
-        hostname: "*.pages.dev",
+        hostname: "**.r2.dev",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.pages.dev",
         pathname: "/**",
       },
       {
