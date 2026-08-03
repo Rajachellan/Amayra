@@ -239,15 +239,15 @@ const ProductCard = ({
         <h3 className="text-foreground text-[11px] md:text-xs uppercase tracking-[0.25em] font-medium transition-colors group-hover:text-champagne">
           {product.name}
         </h3>
-        <div className="flex items-center space-x-3">
-          <p className="text-foreground text-[14px] md:text-[16px] font-serif font-semibold tracking-wider">
-            ₹{product.price.toLocaleString()}
-          </p>
+        <div className="flex items-baseline space-x-3">
           {product.oldPrice && (
-            <p className="text-foreground/30 line-through text-[11px] md:text-[13px] font-serif italic tracking-wider">
+            <p className="text-[#1a3d2f] line-through text-[11px] md:text-[13px] font-medium opacity-85 tracking-wider">
               ₹{product.oldPrice.toLocaleString()}
             </p>
           )}
+          <p className="text-[#d4af37] text-[14px] md:text-[16px] font-serif font-bold tracking-wider">
+            ₹{product.price.toLocaleString()}
+          </p>
         </div>
       </div>
     </Link>

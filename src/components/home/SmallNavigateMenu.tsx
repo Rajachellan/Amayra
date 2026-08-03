@@ -31,18 +31,19 @@ function toRow(
     badge?: string
 ): RowProduct {
     const img = typeof p.image === "string" ? p.image : "";
+    const computedOldPrice = p.oldPrice != null ? p.oldPrice : (p.price ? Math.round(p.price * 1.25) : 0);
     return {
         idStr: p.id,
         slug: p.slug ?? p.id,
         name: p.name,
         price: `₹${p.price.toLocaleString()}`,
-        oldPrice: p.oldPrice != null ? `₹${p.oldPrice.toLocaleString()}` : undefined,
+        oldPrice: computedOldPrice > p.price ? `₹${computedOldPrice.toLocaleString()}` : undefined,
         category: tab,
         badge:
             badge ??
             (tab === "bestsellers" ? "Bestseller" : tab === "newarrivals" ? "New" : "Trending"),
         image: img,
-        accent: "#c9a84c",
+        accent: "#d4af37",
         global: p,
     };
 }
@@ -236,11 +237,11 @@ export function SmallNavigationMenu() {
                                 {/* Badge */}
                                 {product.badge && (
                                     <div
-                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] tracking-widest uppercase rounded-sm"
+                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] tracking-widest uppercase rounded-sm border border-[#d4af37]/40"
                                         style={{
-                                            background: "#c9a84c",
+                                            background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
                                             letterSpacing: "0.14em",
-                                            boxShadow: "0 2px 10px rgba(201,168,76,0.3)",
+                                            boxShadow: "0 2px 10px rgba(26,61,47,0.3)",
                                         }}
                                     >
                                         {product.badge}
