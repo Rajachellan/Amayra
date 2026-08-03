@@ -181,10 +181,10 @@ export const SilverCollection = () => {
           <div className="flex justify-center mt-12">
             <button
               onClick={handleExploreMore}
-              className="group relative px-8 py-3 rounded-full text-[11px] tracking-[0.2em] uppercase overflow-hidden border border-amber-400 text-yellow-600 hover:text-white transition-colors duration-300"
+              className="relative group/btn rounded-full px-8 py-3.5 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white"
             >
-              <span className="absolute inset-0 bg-yellow-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 font-bold">Explore More</span>
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
+              <span className="relative z-10 font-bold text-white">Explore More</span>
             </button>
           </div>
         )}

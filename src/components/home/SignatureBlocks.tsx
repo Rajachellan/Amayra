@@ -24,7 +24,7 @@ export const SignatureBlocks = () => {
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       <div className="container relative z-10 mx-auto px-6">
         <div className="text-center mb-10">
-          <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-lg md:text-xl mb-4">
+          <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-lg md:text-2xl mb-4">
             Our Legacy
           </h2>
           <h3 className="text-emerald-dark font-serif text-4xl md:text-5xl lg:text-6xl mb-8">

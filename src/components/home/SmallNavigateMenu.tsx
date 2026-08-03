@@ -119,8 +119,8 @@ export function SmallNavigationMenu() {
             {/* Header */}
             <header className="relative text-center px-4 shrink-0 z-10">
                 <p
-                    className="text-[15px] tracking-[0.3em] font-bold uppercase "
-                    style={{ color: "#2b743e", letterSpacing: "0.3em" }}
+                    className="text-[20px] tracking-[0.2em] font-bold uppercase "
+                    style={{ color: "#2b743e", letterSpacing: "0.2em" }}
                 >
                     Handcrafted Luxury
                 </p>
@@ -162,12 +162,12 @@ export function SmallNavigationMenu() {
                             key={tab.key}
                             ref={(el) => { tabRefs.current[tab.key] = el; }}
                             onClick={() => handleTabChange(tab.key)}
-                            className="relative z-10 px-2 py-1.5 text-[14px] sm:text-xs tracking-widest uppercase transition-colors duration-300"
+                            className="relative z-10 px-2  text-[18px] sm:text-lg tracking-widest font-bold uppercase transition-colors duration-300"
                             style={{
                                 color: activeTab === tab.key ? "#c9a84c" : "#8a6a3a",
                                 fontFamily: "'Cormorant Garamond', 'Georgia', serif",
                                 fontWeight: activeTab === tab.key ? 600 : 400,
-                                letterSpacing: "0.15em",
+                                letterSpacing: "0.1em",
                                 background: "transparent",
                                 border: "none",
                                 cursor: "pointer",
@@ -353,7 +353,8 @@ export function SmallNavigationMenu() {
 
                 {/* View All CTA */}
                 <div className="flex justify-center mt-12">
-                    <button
+                    <Link href="/category/necklaces">
+                        <button
                         className="group relative px-8 py-3 text-[11px] tracking-[0.2em] uppercase overflow-hidden"
                         style={{
                             border: "1px solid #c9a84c",
@@ -388,7 +389,8 @@ export function SmallNavigationMenu() {
                             }}
                         />
                         <span className="relative z-10 font-medium text-base">Explore Full Collection</span>
-                    </button>
+                        </button>
+                    </Link>
                 </div>
             </main>
 

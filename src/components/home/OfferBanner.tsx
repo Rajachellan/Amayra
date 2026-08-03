@@ -163,7 +163,7 @@ function TickerBar({ items }: { items: string[] }) {
         {doubled.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="inline-flex items-center gap-3 whitespace-nowrap px-8 text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold"
+            className="inline-flex items-center gap-3 whitespace-nowrap px-8 text-[14px] font-medium uppercase tracking-[0.18em] text-brand-gold"
           >
             <span className="h-1 w-1 flex-shrink-0 rounded-full bg-brand-gold" />
             {item}
@@ -201,7 +201,7 @@ function MainOfferCard({ card }: { card: OfferCard }) {
       ) : null}
 
       {card.badge ? (
-        <div className="mb-5 inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-4 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-brand-gold">
+        <div className="mb-5 inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-brand-gold">
           <span className="h-1.5 w-1.5 flex-shrink-0 animate-pulse-ring rounded-full bg-brand-gold" />
           {card.badge}
         </div>
@@ -223,7 +223,7 @@ function MainOfferCard({ card }: { card: OfferCard }) {
         </span>
       ) : null}
 
-      <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-7 py-3.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-gold transition-all duration-200 group-hover:translate-x-1 group-hover:bg-emerald-medium [animation-delay:0.3s]">
+      <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-gold transition-all duration-200 group-hover:translate-x-1 group-hover:bg-emerald-medium [animation-delay:0.3s]">
         {card.buttonText || "Shop now"}
         <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
       </span>
