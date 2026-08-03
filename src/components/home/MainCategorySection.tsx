@@ -139,7 +139,7 @@ export const CategorySection = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
 
                     <div className="absolute bottom-6 left-0 w-full text-center px-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                      <p className="text-white/80 text-[7px] uppercase tracking-[0.4em] mb-1.5 line-clamp-2">{cat.desc}</p>
+                      {/* <p className="text-white/80 text-[7px] uppercase tracking-[0.4em] mb-1.5 line-clamp-2">{cat.desc}</p> */}
                       <h4 className="text-white font-serif text-xl tracking-wide">{cat.name}</h4>
                     </div>
                   </div>
