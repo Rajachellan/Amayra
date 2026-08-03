@@ -164,13 +164,13 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
               </Link>
 
               {/* Price section */}
-              <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="flex items-baseline justify-center gap-3 mb-6">
                 {product.oldPrice && (
-                  <span className="text-xs sm:text-sm text-gray-400 line-through">
+                  <span className="text-xs sm:text-sm text-[#1a3d2f] line-through font-medium opacity-85">
                     ₹{product.oldPrice.toLocaleString()}
                   </span>
                 )}
-                <span className="text-lg sm:text-xl font-semibold text-[#c9a84c]">
+                <span className="text-lg sm:text-xl font-bold text-[#d4af37]">
                   ₹{product.price.toLocaleString()}
                 </span>
                 {product.oldPrice && product.oldPrice > product.price && (
@@ -183,10 +183,10 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
               {/* Action Button */}
               <button
                 onClick={handleAddToCart}
-                className="w-full py-3.5 px-6 rounded-xl bg-stone-900 text-white text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 hover:bg-[#c9a84c] transition-colors shadow-lg group"
+                className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] transition-all cursor-pointer shadow-lg group"
               >
                 <ShoppingBag className="w-4 h-4 transition-transform group-hover:scale-110" />
-                <span>Add to Bag</span>
+                <span className="text-white font-bold">Add to Bag</span>
               </button>
             </div>
           )}

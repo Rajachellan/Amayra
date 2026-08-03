@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Image from "next/image";
@@ -53,7 +53,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           >
             <Heart className={`w-[14px] h-[14px] ${isFavorite ? "fill-current" : ""}`} />
           </button>
-          <button 
+          <button
             onClick={() => setIsLightboxOpen(true)}
             className="p-2.5 bg-white text-foreground rounded-full shadow-lg hover:bg-champagne hover:text-white transition-all duration-300"
           >
@@ -63,15 +63,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
         {/* Image Container */}
         <div className="relative overflow-hidden aspect-[4/5] cursor-pointer" onClick={() => setIsLightboxOpen(true)}>
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              quality={75}
-              className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
-            />
-          
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            quality={75}
+            className="object-cover transition-transform duration-[1.5s] ease-out group-hover:scale-110"
+          />
+
           {/* Quick Add Overlay */}
           <div className="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-out bg-gradient-to-t from-black/60 to-transparent flex justify-center">
             <button
@@ -80,10 +80,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 e.stopPropagation();
                 addToCart(product);
               }}
-              className="bg-white text-foreground px-6 py-2.5 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold hover:bg-champagne hover:text-white transition-all duration-500 flex items-center space-x-2 shadow-xl"
+              className="relative overflow-hidden bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white px-6 py-2.5 rounded-full text-[9px] uppercase tracking-[0.3em] font-bold shadow-xl hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 transition-all duration-300 flex items-center space-x-2 group/btn cursor-pointer"
             >
-              <ShoppingBag className="w-3 h-3" />
-              <span>Add to Bag</span>
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
+              <ShoppingBag className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:scale-110" />
+              <span className="relative z-10 font-bold text-white">Add to Bag</span>
             </button>
           </div>
         </div>
@@ -91,29 +92,29 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         {/* Product Info */}
         <div className="p-6">
           <div className="flex flex-col items-center text-center">
-            <span className="text-champagne text-[9px] uppercase tracking-[0.4em] block mb-2 font-bold">
+            <span className="text-[#d4af37] text-[9px] uppercase tracking-[0.4em] block mb-2 font-bold">
               {product.category}
             </span>
             <Link href={`/product/${product.slug ?? product.id}`} className="block group/title w-full">
-              <h3 className="font-serif text-base text-foreground mb-2 transition-colors duration-500 group-hover/title:text-champagne truncate">
+              <h3 className="font-serif text-base text-foreground mb-2 transition-colors duration-500 group-hover/title:text-[#d4af37] truncate">
                 {product.name}
               </h3>
             </Link>
-            
+
             {/* Description - clearly visible on listing page as requested */}
             <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-4 line-clamp-1 h-4">
               {product.description || "Handcrafted Luxury Jewellery"}
             </p>
 
-            <div className="flex items-center justify-center space-x-3 border-t border-gray-50 pt-4 w-full">
-              <span className="text-foreground font-serif text-lg font-bold">
-                ₹{product.price.toLocaleString()}
-              </span>
+            <div className="flex items-baseline justify-center space-x-3 border-t border-gray-100/60 pt-4 w-full">
               {product.oldPrice && (
-                <span className="text-gray-300 line-through text-xs font-light">
+                <span className="text-[#1a3d2f] line-through text-xs sm:text-sm font-medium opacity-85">
                   ₹{product.oldPrice.toLocaleString()}
                 </span>
               )}
+              <span className="text-[#d4af37] font-serif text-lg font-bold">
+                ₹{product.price.toLocaleString()}
+              </span>
             </div>
           </div>
         </div>
@@ -129,14 +130,14 @@ export const ProductCard = ({ product }: ProductCardProps) => {
             className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-10"
           >
             <div className="absolute inset-0 bg-black/95 backdrop-blur-md" onClick={() => setIsLightboxOpen(false)} />
-            
+
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               className="relative w-full max-w-5xl aspect-[4/5] md:aspect-video bg-white overflow-hidden shadow-2xl flex flex-col md:flex-row"
             >
-              <button 
+              <button
                 onClick={() => setIsLightboxOpen(false)}
                 className="absolute top-6 right-6 z-10 p-2 bg-black/20 text-white hover:bg-black/40 rounded-full backdrop-blur-md transition-colors"
               >
@@ -155,28 +156,28 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               </div>
 
               <div className="w-full md:w-[400px] bg-white p-10 flex flex-col justify-center">
-                <span className="text-champagne text-[10px] uppercase tracking-[0.5em] block mb-4 font-bold">
+                <span className="text-[#d4af37] text-[10px] uppercase tracking-[0.5em] block mb-4 font-bold">
                   {product.category}
                 </span>
                 <h2 className="text-3xl font-serif text-foreground mb-6 leading-tight">
                   {product.name}
                 </h2>
-                <div className="w-12 h-0.5 bg-champagne mb-8" />
+                <div className="w-12 h-0.5 bg-[#d4af37] mb-8" />
                 <p className="text-sm text-gray-500 leading-relaxed mb-8 font-light italic">
                   {product.description || "An exquisite masterpiece handcrafted with precision and passion, embodying the timeless heritage of Mairii. Each detail tells a story of luxury and elegance."}
                 </p>
-                <div className="flex items-center space-x-4 mb-10">
-                  <span className="text-2xl font-serif font-bold text-foreground">₹{product.price.toLocaleString()}</span>
+                <div className="flex items-baseline space-x-4 mb-10">
                   {product.oldPrice && (
-                    <span className="text-gray-300 line-through text-base">₹{product.oldPrice.toLocaleString()}</span>
+                    <span className="text-[#1a3d2f] line-through text-base font-medium opacity-85">₹{product.oldPrice.toLocaleString()}</span>
                   )}
+                  <span className="text-2xl font-serif font-bold text-[#d4af37]">₹{product.price.toLocaleString()}</span>
                 </div>
                 <button
                   onClick={() => {
                     addToCart(product);
                     setIsLightboxOpen(false);
                   }}
-                  className="w-full bg-foreground text-white py-4 rounded-full text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-champagne transition-all duration-500 shadow-xl"
+                  className="w-full bg-[#1a3d2f] hover:bg-[#255240] text-white py-4 rounded-full text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-500 shadow-xl"
                 >
                   Add to Shopping Bag
                 </button>
@@ -188,4 +189,3 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     </>
   );
 };
-

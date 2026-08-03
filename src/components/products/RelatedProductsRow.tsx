@@ -46,11 +46,18 @@ function RelatedCard({ product }: { product: Product }) {
             {product.name}
           </h3>
         </Link>
-        <p className="mb-5 text-lg font-bold text-neutral-900">₹ {product.price.toLocaleString()}</p>
+        <div className="mb-5 flex items-baseline gap-2">
+          {product.oldPrice && (
+            <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
+              ₹{product.oldPrice.toLocaleString()}
+            </span>
+          )}
+          <span className="text-lg font-bold text-[#d4af37]">₹{product.price.toLocaleString()}</span>
+        </div>
         <button
           type="button"
           onClick={() => addToCartWithQuantity(product, 1)}
-          className="mt-auto w-full rounded-lg bg-neutral-900 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-neutral-800"
+          className="mt-auto w-full rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer"
         >
           Add to Cart
         </button>
