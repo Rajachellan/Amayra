@@ -62,7 +62,7 @@ export const SignatureBlocks = () => {
         {/* Header with Title and Navigation Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
           <div className="text-center md:text-left">
-            <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-base md:text-xl mb-2">
+            <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-xl md:text-2xl mb-2">
               Our Legacy
             </h2>
             <h3 className="text-emerald-dark font-serif text-3xl md:text-5xl lg:text-6xl">
