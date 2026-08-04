@@ -71,7 +71,7 @@ export function HomePageClient() {
       <OffersSection />
       <PremiumHighlights />
       <NecklacesSection />
-      {/* {settings.showCategories ? <CategorySection /> : null} */}
+      {settings.showCategories ? <CategorySection /> : null}
       {settings.showCollections ? <SignatureBlocks /> : null}
       <MoodCategories />
       <ProductSpotlight />
