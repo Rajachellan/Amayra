@@ -69,15 +69,15 @@ export function HomePageClient() {
       {settings.showBanner ? <Hero /> : null}
       <SmallNavigationMenu />
       <OffersSection />
+      <PremiumHighlights />
       <NecklacesSection />
-      {settings.showCategories ? <CategorySection /> : null}
+      {/* {settings.showCategories ? <CategorySection /> : null} */}
       {settings.showCollections ? <SignatureBlocks /> : null}
       <MoodCategories />
       <ProductSpotlight />
       <PreviewBanner />
       <SilverCollection />
       <Craftsmanship />
-      <PremiumHighlights />
       {settings.showBlogSection ? <MagazineGallery /> : null}
       {settings.showLookbooks ? <CollectionStory /> : null}
       <WhyChooseUs />
