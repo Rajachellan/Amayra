@@ -272,6 +272,7 @@ export const shopApi = {
     const qs = sp.toString();
     return fetchJson<LookbookDoc[]>(`/lookbooks${qs ? `?${qs}` : ""}`);
   },
+  occasions: () => fetchJson<{ _id: string; name: string; slug: string }[]>("/occasions"),
   homepageSections: () => fetchJson<HomepageSectionPublic[]>("/homepage-sections"),
   products: (q: Record<string, string | number | undefined>) => {
     const sp = new URLSearchParams();

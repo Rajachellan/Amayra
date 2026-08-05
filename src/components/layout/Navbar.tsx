@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, Heart, ShoppingBag, Menu, X, User, LogIn } from "lucide-react";
 import { useCart } from "@/context/CartContext";
@@ -65,7 +66,9 @@ export const Navbar = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -152,14 +155,43 @@ export const Navbar = () => {
                 className="absolute inset-0 z-50 bg-[#0B2516] text-white flex items-center px-6"
               >
                 <div className="w-full max-w-4xl mx-auto flex items-center">
-                  <Search className="w-5 h-5 text-gray-300 mr-4" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (searchQuery.trim()) {
+                        router.push(`/category/all?q=${encodeURIComponent(searchQuery.trim())}`);
+                        setIsSearchOpen(false);
+                        setSearchQuery("");
+                      }
+                    }}
+                    className="p-1 hover:text-brand-gold transition-colors mr-4"
+                    aria-label="Submit search"
+                  >
+                    <Search className="w-5 h-5 text-gray-300" />
+                  </button>
                   <input
                     autoFocus
                     type="text"
-                    placeholder="Search our collections..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && searchQuery.trim()) {
+                        router.push(`/category/all?q=${encodeURIComponent(searchQuery.trim())}`);
+                        setIsSearchOpen(false);
+                        setSearchQuery("");
+                      }
+                      if (e.key === "Escape") {
+                        setIsSearchOpen(false);
+                        setSearchQuery("");
+                      }
+                    }}
+                    placeholder="Search products or categories…"
                     className="flex-1 bg-transparent border-none focus:outline-none text-lg font-serif tracking-widest uppercase text-white placeholder-gray-400"
                   />
-                  <button onClick={() => setIsSearchOpen(false)} className="p-2 hover:bg-emerald-800 rounded-full ml-4">
+                  <button
+                    onClick={() => { setIsSearchOpen(false); setSearchQuery(""); }}
+                    className="p-2 hover:bg-emerald-800 rounded-full ml-4"
+                  >
                     <X className="w-6 h-6 text-gray-300" />
                   </button>
                 </div>

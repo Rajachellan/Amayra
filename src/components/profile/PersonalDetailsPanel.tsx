@@ -451,15 +451,34 @@ export function PersonalDetailsPanel() {
 
             <form onSubmit={saveAddress} className="space-y-4" noValidate>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field
-                  label="Label"
-                  name="label"
-                  value={addressForm.label}
-                  onChange={(v) => setAddressForm((f) => ({ ...f, label: v }))}
-                  error={addressErrors.label}
-                  placeholder="Home / Office / Other"
-                  maxLength={40}
-                />
+                <div className="sm:col-span-2 space-y-1">
+                  <label className="text-xs font-semibold text-stone-700">Address Label / Tag</label>
+                  <div className="flex flex-wrap gap-2 pb-1">
+                    {["Home", "Work", "Office", "Parents", "Other"].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => setAddressForm((f) => ({ ...f, label: tag }))}
+                        className={`px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider transition border ${
+                          addressForm.label === tag
+                            ? "bg-stone-900 text-white border-stone-900"
+                            : "bg-stone-50 text-stone-600 border-stone-200 hover:border-brand-gold"
+                        }`}
+                      >
+                        {tag === "Home" ? "🏠 Home" : tag === "Work" || tag === "Office" ? "💼 " + tag : "📍 " + tag}
+                      </button>
+                    ))}
+                  </div>
+                  <Field
+                    label=""
+                    name="label"
+                    value={addressForm.label}
+                    onChange={(v) => setAddressForm((f) => ({ ...f, label: v }))}
+                    error={addressErrors.label}
+                    placeholder="Home / Office / Other"
+                    maxLength={40}
+                  />
+                </div>
                 <Field
                   label="Full name"
                   name="fullName"

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -12,10 +12,9 @@ import { Button } from "@/components/ui/Button";
 import { products } from "@/data/products";
 
 const SUGGESTION_COUNT = 10;
-const PRICING_BREAKDOWN_ID = "cart-drawer-pricing-breakdown";
+
 
 export function CartDrawer() {
-  const [pricingDetailsOpen, setPricingDetailsOpen] = useState(false);
   const router = useRouter();
   const { user } = useAuth();
   const {
@@ -29,8 +28,8 @@ export function CartDrawer() {
   } = useCart();
 
   const shipping = 0;
-  const tax = Math.round(subtotal * 0.03 * 100) / 100;
-  const total = subtotal + shipping + tax;
+  const tax = 0;
+  const total = subtotal + shipping;
 
   const cartIds = useMemo(() => new Set(cart.map((i) => i.id)), [cart]);
 
@@ -158,13 +157,19 @@ export function CartDrawer() {
                             </span>
                             <button
                               type="button"
+                              disabled={typeof item.stock === "number" && item.stock > 0 ? item.quantity >= item.stock : false}
                               onClick={() => updateQuantity(item.id, 1)}
-                              className="p-1.5 hover:bg-gray-50"
+                              className="p-1.5 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
                               aria-label="Increase quantity"
                             >
                               <Plus className="h-3.5 w-3.5 text-gray-500" />
                             </button>
                           </div>
+                          {typeof item.stock === "number" && item.stock > 0 && item.quantity >= item.stock && (
+                            <span className="text-[9px] text-amber-700 font-bold uppercase tracking-wider">
+                              Max stock reached ({item.stock})
+                            </span>
+                          )}
                           <button
                             type="button"
                             onClick={() => removeFromCart(item.id)}
@@ -223,47 +228,18 @@ export function CartDrawer() {
               )}
             </div>
 
-            <div className="shrink-0 border-t border-gray-100 bg-white px-10 py-5 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.12)]">
-              <div
-                id={PRICING_BREAKDOWN_ID}
-                hidden={!pricingDetailsOpen}
-                className="space-y-1 text-sm text-gray-600 uppercase tracking-widest"
-              >
-                <div className="flex justify-between">
-                  <span className="text-[10px]">Subtotal</span>
-                  <span>₹{subtotal.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[10px]">Shipping</span>
-                  <span className="text-green-700">FREE</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[10px]">Tax (GST 3%)</span>
-                  <span>₹{tax.toLocaleString()}</span>
-                </div>
+            <div className="shrink-0 border-t border-gray-100 bg-white px-10 py-5 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.12)] space-y-2">
+              <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
+                <span>Subtotal ({cart.reduce((acc, i) => acc + i.quantity, 0)} items)</span>
+                <span className="font-semibold text-gray-800">₹{subtotal.toLocaleString()}</span>
               </div>
-
-              <div
-                className={
-                  pricingDetailsOpen
-                    ? "mt-2 flex items-center justify-between border-t border-gray-100 pt-3 font-serif uppercase"
-                    : "flex items-center justify-between font-serif uppercase"
-                }
-              >
-                <span className="text-sm tracking-[0.2em] text-brand-emerald">Total</span>
+              <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
+                <span>Delivery / Shipping</span>
+                <span className="font-bold text-emerald-700">FREE</span>
+              </div>
+              <div className="flex items-center justify-between font-serif uppercase border-t border-gray-100 pt-2">
+                <span className="text-sm tracking-[0.2em] text-brand-emerald">Estimated Total</span>
                 <span className="text-xl font-bold text-brand-emerald">₹{total.toLocaleString()}</span>
-              </div>
-
-              <div className="mt-2 flex justify-center">
-                <button
-                  type="button"
-                  aria-expanded={pricingDetailsOpen}
-                  aria-controls={PRICING_BREAKDOWN_ID}
-                  onClick={() => setPricingDetailsOpen((open) => !open)}
-                  className="rounded-sm border border-brand-gold/60 bg-transparent px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.2em] text-brand-gold transition-colors hover:bg-black/75 hover:text-white"
-                >
-                  {pricingDetailsOpen ? "Hide detail" : "View detail"}
-                </button>
               </div>
 
               <Button

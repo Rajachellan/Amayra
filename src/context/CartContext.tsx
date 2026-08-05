@@ -51,21 +51,43 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addToCartWithQuantity = useCallback(
     (product: Product, quantity: number, options?: { openDrawer?: boolean }) => {
-      const q = Math.max(1, Math.floor(quantity));
-      let message = `Added ${product.name} to cart`;
+      const requestedQty = Math.max(1, Math.floor(quantity));
+      const maxStock = typeof product.stock === "number" && product.stock > 0 ? product.stock : 999;
+      let isCapped = false;
+      let finalMessage = `Added ${product.name} to cart`;
 
       setCart((prev) => {
         const existingItem = prev.find((item) => item.id === product.id);
+        const existingQty = existingItem ? existingItem.quantity : 0;
+        const desiredTotal = existingItem ? existingQty + requestedQty : requestedQty;
+        
+        if (desiredTotal > maxStock) {
+          isCapped = true;
+          const allowedQty = Math.max(1, maxStock);
+          finalMessage = `Only ${maxStock} in stock. Set bag quantity to ${allowedQty}.`;
+          if (existingItem) {
+            return prev.map((item) =>
+              item.id === product.id ? { ...item, ...product, quantity: allowedQty, stock: maxStock } : item
+            );
+          }
+          return [...prev, { ...product, quantity: allowedQty, stock: maxStock }];
+        }
+
         if (existingItem) {
-          message = `Updated ${product.name} in cart`;
+          finalMessage = `Updated ${product.name} in cart (${desiredTotal} in bag)`;
           return prev.map((item) =>
-            item.id === product.id ? { ...item, quantity: q } : item
+            item.id === product.id ? { ...item, ...product, quantity: desiredTotal, stock: maxStock } : item
           );
         }
-        return [...prev, { ...product, quantity: q }];
+
+        return [...prev, { ...product, quantity: requestedQty, stock: maxStock }];
       });
 
-      toast.success(message);
+      if (isCapped) {
+        toast.error(`Only ${maxStock} items available in stock.`);
+      } else {
+        toast.success(finalMessage);
+      }
       if (options?.openDrawer !== false) openCart();
     },
     [openCart]
@@ -87,8 +109,14 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart((prev) =>
       prev.map((item) => {
         if (item.id === id) {
-          const newQty = Math.max(1, item.quantity + delta);
-          return { ...item, quantity: newQty };
+          const maxStock = typeof item.stock === "number" && item.stock > 0 ? item.stock : 999;
+          const nextQty = item.quantity + delta;
+          if (nextQty > maxStock) {
+            toast.error(`Cannot add more. Only ${maxStock} available in stock.`);
+            return { ...item, quantity: maxStock, stock: maxStock };
+          }
+          if (nextQty < 1) return item;
+          return { ...item, quantity: nextQty, stock: maxStock };
         }
         return item;
       })
