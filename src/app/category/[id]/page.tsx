@@ -680,7 +680,7 @@ function CategoryContent() {
           <div className="flex gap-10 items-start">
             {/* Desktop Left Sidebar */}
             {showFilter && (
-              <aside className="hidden lg:block w-64 shrink-0 pr-6 border-r border-stone-200">
+              <aside className="hidden lg:block w-64 shrink-0 pr-6 border-r border-stone-200 sticky top-32 self-start">
                 <AmamaSidebar />
               </aside>
             )}

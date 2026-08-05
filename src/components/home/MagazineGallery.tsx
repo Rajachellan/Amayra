@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { shopApi } from "@/lib/api/shop";
+import { resolveMediaUrl } from "@/lib/apiBase";
 
 /** Pre-compressed WebP (~40–300 KB) — avoids shipping multi‑MB JPGs in the bundle */
 const IMAGES = [
@@ -13,6 +15,7 @@ const IMAGES = [
     title: "The Heritage Edit",
     subtitle: "A legacy of brilliance",
     issue: "01",
+    link: "/category/necklaces"
   },
   {
     id: 2,
@@ -20,6 +23,7 @@ const IMAGES = [
     title: "Modern Minimal",
     subtitle: "Refined simplicity",
     issue: "02",
+    link: "/category/earrings"
   },
   {
     id: 3,
@@ -27,6 +31,7 @@ const IMAGES = [
     title: "Royal Kundan",
     subtitle: "Majestic details",
     issue: "03",
+    link: "/category/chocker"
   },
   {
     id: 4,
@@ -34,6 +39,7 @@ const IMAGES = [
     title: "Bridal Essence",
     subtitle: "Timeless vows",
     issue: "04",
+    link: "/category/bangles"
   },
   {
     id: 5,
@@ -41,6 +47,7 @@ const IMAGES = [
     title: "Hip Chain",
     subtitle: "Crafted for eternity",
     issue: "05",
+    link: "/category/jewellery"
   },
 ];
 
@@ -52,6 +59,7 @@ type CardProps = {
   className?: string;
   imageClassName?: string;
   index: number;
+  pdfUrl?: string;
 };
 
 const MagazineCard = ({
@@ -62,6 +70,7 @@ const MagazineCard = ({
   className = "",
   imageClassName = "",
   index,
+  pdfUrl,
 }: CardProps) => {
   const [hovered, setHovered] = useState(false);
 
@@ -100,6 +109,16 @@ const MagazineCard = ({
           hovered ? "opacity-100" : "opacity-0"
         }`}
       />
+      {pdfUrl && (
+        <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 rounded-full bg-amber-300 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-wider text-stone-950 shadow-md">
+          <svg className="h-2.5 w-2.5 text-stone-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          PDF
+        </div>
+      )}
       <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-amber-300/30 bg-stone-950/50 backdrop-blur-sm flex items-center justify-center z-10">
         <span className="font-serif text-[10px] italic text-amber-300/90">{issue}</span>
       </div>
@@ -122,6 +141,67 @@ const MagazineCard = ({
 };
 
 export const MagazineGallery = () => {
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    shopApi.blogs({ limit: 5 })
+      .then((res) => {
+        setArticles(res.items || []);
+      })
+      .catch((err) => {
+        console.error("Failed to load magazine articles", err);
+      });
+  }, []);
+
+  const mergedArticles = useMemo(() => {
+    const list = [...articles];
+    for (let i = list.length; i < 5; i++) {
+      const fallback = IMAGES[i];
+      list.push({
+        _id: `fallback-${fallback.id}`,
+        title: fallback.title,
+        excerpt: fallback.subtitle,
+        coverImage: fallback.src,
+        issue: fallback.issue,
+        isFallback: true,
+        fallbackLink: fallback.link,
+      });
+    }
+    return list.slice(0, 5);
+  }, [articles]);
+
+  const ArticleLinkWrapper = ({ article, children, className = "" }: { article: any; children: React.ReactNode; className?: string }) => {
+    const isPdf = !!article.pdfUrl;
+    const href = article.isFallback 
+      ? article.fallbackLink 
+      : article.pdfUrl 
+        ? resolveMediaUrl(article.pdfUrl)
+        : article.linkType === "category" && article.category
+          ? `/category/${typeof article.category === "object" ? article.category.slug : article.category}`
+          : article.linkType === "product" && article.product
+            ? `/product/${typeof article.product === "object" ? article.product.slug : article.product}`
+            : `/blog/${article.slug}`;
+
+    if (isPdf) {
+      return (
+        <a 
+          href={href} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className={`block h-full w-full ${className}`}
+        >
+          {children}
+        </a>
+      );
+    }
+
+    return (
+      <Link href={href} className={`block h-full w-full ${className}`}>
+        {children}
+      </Link>
+    );
+  };
+
   return (
     <section className="relative py-10 overflow-hidden">
       <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-amber-300/8 to-transparent -translate-x-1/2 pointer-events-none" />
@@ -151,63 +231,72 @@ export const MagazineGallery = () => {
             gridTemplateRows: "190px 190px",
           }}
         >
+          {/* Card 1 */}
           <div style={{ gridColumn: "1", gridRow: "1 / 3" }} className="h-80 lg:h-auto">
-            <Link href="/category/necklaces">
+            <ArticleLinkWrapper article={mergedArticles[0]}>
               <MagazineCard
-                src={IMAGES[0].src}
-                title={IMAGES[0].title}
-                subtitle={IMAGES[0].subtitle}
-                issue={IMAGES[0].issue}
+                src={mergedArticles[0].isFallback ? mergedArticles[0].coverImage : resolveMediaUrl(mergedArticles[0].coverImage)}
+                title={mergedArticles[0].title}
+                subtitle={mergedArticles[0].excerpt || ""}
+                issue={mergedArticles[0].isFallback ? mergedArticles[0].issue : "01"}
+                pdfUrl={mergedArticles[0].pdfUrl}
                 index={0}
                 className="w-full h-full"
               />
-            </Link>
+            </ArticleLinkWrapper>
           </div>
 
+          {/* Card 2 */}
           <div style={{ gridColumn: "2", gridRow: "1" }} className="h-60 lg:h-auto">
-            <Link href="/category/earrings">
+            <ArticleLinkWrapper article={mergedArticles[1]}>
               <MagazineCard
-                src={IMAGES[1].src}
-                title={IMAGES[1].title}
-                subtitle={IMAGES[1].subtitle}
-                issue={IMAGES[1].issue}
+                src={mergedArticles[1].isFallback ? mergedArticles[1].coverImage : resolveMediaUrl(mergedArticles[1].coverImage)}
+                title={mergedArticles[1].title}
+                subtitle={mergedArticles[1].excerpt || ""}
+                issue={mergedArticles[1].isFallback ? mergedArticles[1].issue : "02"}
+                pdfUrl={mergedArticles[1].pdfUrl}
                 index={1}
                 className="w-full h-full"
               />
-            </Link>
+            </ArticleLinkWrapper>
           </div>
 
+          {/* Card 3 */}
           <div
             style={{ gridColumn: "3", gridRow: "1 / 3", marginTop: "48px" }}
             className="h-80 lg:h-auto"
           >
-            <Link href="/category/chocker">
+            <ArticleLinkWrapper article={mergedArticles[2]}>
               <MagazineCard
-                src={IMAGES[2].src}
-                title={IMAGES[2].title}
-                subtitle={IMAGES[2].subtitle}
-                issue={IMAGES[2].issue}
+                src={mergedArticles[2].isFallback ? mergedArticles[2].coverImage : resolveMediaUrl(mergedArticles[2].coverImage)}
+                title={mergedArticles[2].title}
+                subtitle={mergedArticles[2].excerpt || ""}
+                issue={mergedArticles[2].isFallback ? mergedArticles[2].issue : "03"}
+                pdfUrl={mergedArticles[2].pdfUrl}
                 index={2}
                 className="w-full h-full"
               />
-            </Link>
+            </ArticleLinkWrapper>
           </div>
 
+          {/* Card 4 */}
           <div style={{ gridColumn: "2", gridRow: "2" }} className="h-60 lg:h-auto">
-            <Link href="/category/bangles">
+            <ArticleLinkWrapper article={mergedArticles[3]}>
               <MagazineCard
-                src={IMAGES[3].src}
-                title={IMAGES[3].title}
-                subtitle={IMAGES[3].subtitle}
-                issue={IMAGES[3].issue}
+                src={mergedArticles[3].isFallback ? mergedArticles[3].coverImage : resolveMediaUrl(mergedArticles[3].coverImage)}
+                title={mergedArticles[3].title}
+                subtitle={mergedArticles[3].excerpt || ""}
+                issue={mergedArticles[3].isFallback ? mergedArticles[3].issue : "04"}
+                pdfUrl={mergedArticles[3].pdfUrl}
                 index={3}
                 className="w-full h-full"
               />
-            </Link>
+            </ArticleLinkWrapper>
           </div>
         </div>
 
-        <Link href="/category/jewellery">
+        {/* Card 5 */}
+        <ArticleLinkWrapper article={mergedArticles[4]}>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -216,8 +305,8 @@ export const MagazineGallery = () => {
             className="mt-3 h-28 lg:h-32 relative overflow-hidden rounded-sm group cursor-pointer"
           >
             <Image
-              src={IMAGES[4].src}
-              alt={IMAGES[4].title}
+              src={mergedArticles[4].isFallback ? mergedArticles[4].coverImage : resolveMediaUrl(mergedArticles[4].coverImage)}
+              alt={mergedArticles[4].title}
               fill
               loading="lazy"
               quality={75}
@@ -226,20 +315,34 @@ export const MagazineGallery = () => {
             />
             <div className="absolute inset-0 bg-gradient-to-r from-stone-950/70 via-stone-950/20 to-transparent" />
             <div className="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            
+            {mergedArticles[4].pdfUrl && (
+              <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 rounded-full bg-amber-300 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-wider text-stone-950 shadow-md">
+                <svg className="h-2.5 w-2.5 text-stone-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                PDF
+              </div>
+            )}
+
             <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-amber-300/30 bg-stone-950/50 flex items-center justify-center">
-              <span className="font-serif text-[10px] italic text-amber-300/90">05</span>
+              <span className="font-serif text-[10px] italic text-amber-300/90">
+                {mergedArticles[4].isFallback ? mergedArticles[4].issue : "05"}
+              </span>
             </div>
             <div className="absolute left-0 top-[20%] bottom-[20%] w-px bg-gradient-to-b from-transparent via-amber-300/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="absolute left-8 bottom-0 top-0 flex flex-col justify-center">
               <span className="block text-[8px] font-light tracking-[0.45em] uppercase text-amber-300 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
-                {IMAGES[4].subtitle}
+                {mergedArticles[4].excerpt || ""}
               </span>
               <h3 className="font-serif text-2xl md:text-3xl text-stone-100 font-light">
-                {IMAGES[4].title}
+                {mergedArticles[4].title}
               </h3>
             </div>
           </motion.div>
-        </Link>
+        </ArticleLinkWrapper>
 
         <div className="mt-6 flex justify-between items-end border-t border-amber-300/80 pt-4">
           <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-stone-600">

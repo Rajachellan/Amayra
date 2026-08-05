@@ -282,4 +282,11 @@ export const shopApi = {
     return fetchJson<ProductListResponse>(`/products?${sp.toString()}`);
   },
   productBySlug: (slug: string) => fetchJson<ProductDetail>(`/products/${encodeURIComponent(slug)}`),
+  blogs: (q?: { page?: number; limit?: number }) => {
+    const sp = new URLSearchParams();
+    if (q?.page) sp.set("page", String(q.page));
+    if (q?.limit) sp.set("limit", String(q.limit));
+    const qs = sp.toString();
+    return fetchJson<{ items: any[]; total: number }>(`/blogs${qs ? `?${qs}` : ""}`);
+  },
 };
