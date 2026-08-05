@@ -129,6 +129,7 @@ export default function CheckoutPage() {
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [saveAddressToProfile, setSaveAddressToProfile] = useState(true);
   const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
+  const [savingNewAddress, setSavingNewAddress] = useState(false);
 
   const [paying, setPaying] = useState(false);
 
@@ -174,13 +175,13 @@ export default function CheckoutPage() {
     if (!user?.id || !profileLoaded) return;
     const draft = readShippingDraft(user.id);
     if (!draft) return;
-    if (draft.fullName !== undefined) setFullName(draft.fullName);
-    if (draft.phone !== undefined) setPhone(draft.phone);
-    if (draft.line1 !== undefined) setLine1(draft.line1);
-    if (draft.city !== undefined) setCity(draft.city);
-    if (draft.state !== undefined) setStateVal(draft.state);
-    if (draft.pincode !== undefined) setPincode(draft.pincode);
-    if (draft.country !== undefined) setCountry(draft.country);
+    if (draft.fullName) setFullName(draft.fullName);
+    if (draft.phone) setPhone(draft.phone);
+    if (draft.line1) setLine1(draft.line1);
+    if (draft.city) setCity(draft.city);
+    if (draft.state) setStateVal(draft.state);
+    if (draft.pincode) setPincode(draft.pincode);
+    if (draft.country) setCountry(draft.country);
   }, [user?.id, profileLoaded]);
 
   /** Persist shipping while editing. */
@@ -504,6 +505,59 @@ export default function CheckoutPage() {
                 />
                 Save this address to my account for next time
               </label>
+
+              {selectedAddressId === null && (
+                <button
+                  type="button"
+                  disabled={savingNewAddress}
+                  onClick={async () => {
+                    const validated = addressFormSchema.safeParse({
+                      label: addressLabel.trim() || "Home",
+                      fullName,
+                      phone,
+                      line1,
+                      line2: "",
+                      city,
+                      state: stateVal,
+                      pincode,
+                      country: country || "IN",
+                      isDefault: savedAddresses.length === 0,
+                    });
+                    if (!validated.success) {
+                      const msg = validated.error.issues[0]?.message ?? "Check your shipping details";
+                      toast.error(msg);
+                      return;
+                    }
+                    setSavingNewAddress(true);
+                    try {
+                      const updated = await api<{ name?: string; phone?: string; addresses?: CustomerAddress[] }>("/auth/customer/me/addresses", {
+                        method: "POST",
+                        body: JSON.stringify(validated.data),
+                      });
+                      const list = updated.addresses ?? [];
+                      setSavedAddresses(list);
+                      const newAddr = list.find((a) => a.line1 === line1 && a.pincode === pincode) ?? list[list.length - 1];
+                      if (newAddr && newAddr.id) {
+                        setSelectedAddressId(newAddr.id);
+                      }
+                      toast.success("Address saved to profile!");
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : "Failed to save address");
+                    } finally {
+                      setSavingNewAddress(false);
+                    }
+                  }}
+                  className="w-full mt-2 border border-brand-emerald text-brand-emerald hover:bg-brand-emerald hover:text-white transition font-bold py-2.5 rounded text-xs uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {savingNewAddress ? (
+                    <>
+                      <Loader2 className="animate-spin w-4 h-4" /> Saving…
+                    </>
+                  ) : (
+                    "Save Address to Profile"
+                  )}
+                </button>
+              )}
 
               <Button type="submit" variant="gold" size="lg" className="w-full mt-4" disabled={validCart.length === 0 || paying}>
                 {paying ? (
