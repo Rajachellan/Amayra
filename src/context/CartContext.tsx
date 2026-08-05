@@ -52,7 +52,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const addToCartWithQuantity = useCallback(
     (product: Product, quantity: number, options?: { openDrawer?: boolean }) => {
       const requestedQty = Math.max(1, Math.floor(quantity));
-      const maxStock = typeof product.stock === "number" && product.stock > 0 ? product.stock : 999;
+      const maxStock = typeof product.stock === "number" ? product.stock : 0;
+      if (maxStock <= 0) {
+        toast.error("This item is out of stock.");
+        return;
+      }
       let isCapped = false;
       let finalMessage = `Added ${product.name} to cart`;
 
@@ -109,11 +113,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart((prev) =>
       prev.map((item) => {
         if (item.id === id) {
-          const maxStock = typeof item.stock === "number" && item.stock > 0 ? item.stock : 999;
+          const maxStock = typeof item.stock === "number" ? item.stock : 0;
           const nextQty = item.quantity + delta;
           if (nextQty > maxStock) {
             toast.error(`Cannot add more. Only ${maxStock} available in stock.`);
-            return { ...item, quantity: maxStock, stock: maxStock };
+            return { ...item, quantity: Math.max(0, maxStock), stock: maxStock };
           }
           if (nextQty < 1) return item;
           return { ...item, quantity: nextQty, stock: maxStock };

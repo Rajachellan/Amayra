@@ -68,6 +68,10 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
 
   const handleAddToCart = () => {
     if (!product) return;
+    if (typeof product.stock === "number" && product.stock <= 0) {
+      toast.error("This masterpiece is currently out of stock!");
+      return;
+    }
     addToCart(product);
     toast.success(`${product.name} added to cart!`);
     onClose();
@@ -181,13 +185,23 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
               </div>
 
               {/* Action Button */}
-              <button
-                onClick={handleAddToCart}
-                className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] transition-all cursor-pointer shadow-lg group"
-              >
-                <ShoppingBag className="w-4 h-4 transition-transform group-hover:scale-110" />
-                <span className="text-white font-bold">Add to Bag</span>
-              </button>
+              {typeof product.stock === "number" && product.stock <= 0 ? (
+                <button
+                  type="button"
+                  disabled
+                  className="w-full py-3.5 px-6 rounded-xl bg-stone-200 text-stone-500 text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 cursor-not-allowed opacity-50 shadow-none border-none"
+                >
+                  <span className="text-stone-500 font-bold">Out of Stock</span>
+                </button>
+              ) : (
+                <button
+                  onClick={handleAddToCart}
+                  className="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] transition-all cursor-pointer shadow-lg group"
+                >
+                  <ShoppingBag className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  <span className="text-white font-bold">Add to Bag</span>
+                </button>
+              )}
             </div>
           )}
         </motion.div>

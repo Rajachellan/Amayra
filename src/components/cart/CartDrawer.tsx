@@ -37,6 +37,10 @@ export function CartDrawer() {
     return products.filter((p) => !cartIds.has(p.id)).slice(0, SUGGESTION_COUNT);
   }, [cartIds]);
 
+  const hasInsufficientStock = useMemo(() => {
+    return cart.some((i) => typeof i.stock === "number" && (i.stock <= 0 || i.quantity > i.stock));
+  }, [cart]);
+
   useEffect(() => {
     if (!isCartOpen) return;
     const prev = document.body.style.overflow;
@@ -157,7 +161,7 @@ export function CartDrawer() {
                             </span>
                             <button
                               type="button"
-                              disabled={typeof item.stock === "number" && item.stock > 0 ? item.quantity >= item.stock : false}
+                              disabled={typeof item.stock === "number" ? item.quantity >= item.stock : false}
                               onClick={() => updateQuantity(item.id, 1)}
                               className="p-1.5 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed"
                               aria-label="Increase quantity"
@@ -165,6 +169,11 @@ export function CartDrawer() {
                               <Plus className="h-3.5 w-3.5 text-gray-500" />
                             </button>
                           </div>
+                          {typeof item.stock === "number" && item.stock <= 0 && (
+                            <span className="text-[9px] text-red-600 font-bold uppercase tracking-wider">
+                              Out of Stock
+                            </span>
+                          )}
                           {typeof item.stock === "number" && item.stock > 0 && item.quantity >= item.stock && (
                             <span className="text-[9px] text-amber-700 font-bold uppercase tracking-wider">
                               Max stock reached ({item.stock})
@@ -242,11 +251,17 @@ export function CartDrawer() {
                 <span className="text-xl font-bold text-brand-emerald">₹{total.toLocaleString()}</span>
               </div>
 
+              {hasInsufficientStock && (
+                <p className="text-[10.5px] text-red-600 font-bold uppercase tracking-wider text-center mt-3 bg-red-50 py-2 border border-red-100 rounded-md">
+                  ⚠️ Some items have insufficient stock. Please adjust quantities.
+                </p>
+              )}
+
               <Button
                 variant="gold"
                 size="lg"
-                className="mt-6 w-full"
-                disabled={cart.length === 0}
+                className="mt-4 w-full"
+                disabled={cart.length === 0 || hasInsufficientStock}
                 type="button"
                 onClick={handleCheckout}
               >
