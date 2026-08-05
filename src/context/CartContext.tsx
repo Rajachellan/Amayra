@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { Product, CartItem } from "../types";
 import { toast } from "react-hot-toast";
+import { shopApi } from "@/lib/api/shop";
 
 interface CartContextType {
   cart: CartItem[];
@@ -36,11 +37,47 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const closeCart = useCallback(() => setCartOpen(false), []);
   const toggleCart = useCallback(() => setCartOpen((o) => !o), []);
 
-  // Load cart from local storage
+  // Load cart from local storage and sync with database stock/price on mount
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      try {
+        const parsedCart = JSON.parse(savedCart) as CartItem[];
+        setCart(parsedCart);
+        if (parsedCart.length > 0) {
+          Promise.all(
+            parsedCart
+              .filter((item) => !!item.slug)
+              .map((item) =>
+                shopApi.productBySlug(item.slug!)
+                  .then((p: any) => ({
+                    id: item.id,
+                    stock: typeof p.stock === "number" ? p.stock : 0,
+                    price: typeof p.price === "number" ? p.price : item.price,
+                  }))
+                  .catch(() => null)
+              )
+          ).then((results) => {
+            setCart((prev) =>
+              prev.map((item) => {
+                const updated = results.find((r) => r && r.id === item.id);
+                if (updated) {
+                  const newQty = Math.min(item.quantity, updated.stock);
+                  return {
+                    ...item,
+                    stock: updated.stock,
+                    price: updated.price,
+                    quantity: updated.stock <= 0 ? 0 : Math.max(1, newQty),
+                  };
+                }
+                return item;
+              })
+            );
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load / sync cart:", err);
+      }
     }
   }, []);
 
