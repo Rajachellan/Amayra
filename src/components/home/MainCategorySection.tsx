@@ -72,7 +72,7 @@ export const CategorySection = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-yellow-600 font-serif italic tracking-[0.3em] text-md md:text-lg mb-3"
+              className="text-yellow-600 italic tracking-[0.3em] text-xl md:text-2xl mb-3"
             >
               Curated Collections
             </motion.h3>
@@ -139,16 +139,17 @@ export const CategorySection = () => {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500" />
 
                     <div className="absolute bottom-6 left-0 w-full text-center px-4 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                      <p className="text-white/80 text-[7px] uppercase tracking-[0.4em] mb-1.5 line-clamp-2">{cat.desc}</p>
+                      {/* <p className="text-white/80 text-[7px] uppercase tracking-[0.4em] mb-1.5 line-clamp-2">{cat.desc}</p> */}
                       <h4 className="text-white font-serif text-xl tracking-wide">{cat.name}</h4>
                     </div>
                   </div>
                 </div>
 
                 <div className="text-center mt-2">
-                <span className="inline-flex items-center justify-center px-5 py-2 rounded-full border border-champagne text-yellow-600 text-[10px] font-semibold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-champagne hover:text-emerald-dark">
-  Explore More
-</span>
+                <span className="relative group/btn overflow-hidden inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] font-bold tracking-[0.2em] uppercase shadow-md transition-all duration-300 hover:shadow-[0_6px_20px_rgba(26,61,47,0.4)] hover:-translate-y-0.5">
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover:translate-x-full" />
+                  <span className="relative z-10 font-bold text-white">Explore More</span>
+                </span>
                 </div>
               </Link>
             </motion.div>

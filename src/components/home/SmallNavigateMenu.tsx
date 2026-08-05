@@ -31,18 +31,19 @@ function toRow(
     badge?: string
 ): RowProduct {
     const img = typeof p.image === "string" ? p.image : "";
+    const computedOldPrice = p.oldPrice != null ? p.oldPrice : (p.price ? Math.round(p.price * 1.25) : 0);
     return {
         idStr: p.id,
         slug: p.slug ?? p.id,
         name: p.name,
         price: `₹${p.price.toLocaleString()}`,
-        oldPrice: p.oldPrice != null ? `₹${p.oldPrice.toLocaleString()}` : undefined,
+        oldPrice: computedOldPrice > p.price ? `₹${computedOldPrice.toLocaleString()}` : undefined,
         category: tab,
         badge:
             badge ??
             (tab === "bestsellers" ? "Bestseller" : tab === "newarrivals" ? "New" : "Trending"),
         image: img,
-        accent: "#c9a84c",
+        accent: "#d4af37",
         global: p,
     };
 }
@@ -118,8 +119,8 @@ export function SmallNavigationMenu() {
             {/* Header */}
             <header className="relative text-center px-4 shrink-0 z-10">
                 <p
-                    className="text-[15px] tracking-[0.3em] font-bold uppercase "
-                    style={{ color: "#2b743e", letterSpacing: "0.3em" }}
+                    className="text-[20px] tracking-[0.2em] font-bold uppercase "
+                    style={{ color: "#2b743e", letterSpacing: "0.2em" }}
                 >
                     Handcrafted Luxury
                 </p>
@@ -161,12 +162,12 @@ export function SmallNavigationMenu() {
                             key={tab.key}
                             ref={(el) => { tabRefs.current[tab.key] = el; }}
                             onClick={() => handleTabChange(tab.key)}
-                            className="relative z-10 px-2 py-1.5 text-[14px] sm:text-xs tracking-widest uppercase transition-colors duration-300"
+                            className="relative z-10 px-2  text-[18px] sm:text-lg tracking-widest font-bold uppercase transition-colors duration-300"
                             style={{
                                 color: activeTab === tab.key ? "#c9a84c" : "#8a6a3a",
                                 fontFamily: "'Cormorant Garamond', 'Georgia', serif",
                                 fontWeight: activeTab === tab.key ? 600 : 400,
-                                letterSpacing: "0.15em",
+                                letterSpacing: "0.1em",
                                 background: "transparent",
                                 border: "none",
                                 cursor: "pointer",
@@ -236,11 +237,11 @@ export function SmallNavigationMenu() {
                                 {/* Badge */}
                                 {product.badge && (
                                     <div
-                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] tracking-widest uppercase rounded-sm"
+                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] tracking-widest uppercase rounded-sm border border-[#d4af37]/40"
                                         style={{
-                                            background: "#c9a84c",
+                                            background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
                                             letterSpacing: "0.14em",
-                                            boxShadow: "0 2px 10px rgba(201,168,76,0.3)",
+                                            boxShadow: "0 2px 10px rgba(26,61,47,0.3)",
                                         }}
                                     >
                                         {product.badge}
@@ -293,43 +294,56 @@ export function SmallNavigationMenu() {
                                 </Link>
 
                                 <div className="flex flex-col items-center justify-center gap-2">
-                                    {/* Price Section */}
-                                    <div className="flex items-center gap-2">
+                                    {/* Price Hierarchy Section */}
+                                    <div className="flex items-baseline justify-center gap-2 mb-1">
                                         {product.oldPrice && (
-                                            <p
-                                                className="text-xs sm:text-sm font-light line-through"
-                                                style={{ color: "#9c9c9c" }}
+                                            <span
+                                                className="text-xs sm:text-sm font-medium line-through"
+                                                style={{ color: "#1a3d2f", opacity: 0.85 }}
                                             >
                                                 {product.oldPrice}
-                                            </p>
+                                            </span>
                                         )}
-                                        <p
-                                            className="text-base sm:text-lg font-medium"
-                                            style={{ color: "#c9a84c" }}
+                                        <span
+                                            className="text-base sm:text-lg font-bold tracking-tight"
+                                            style={{ color: "#d4af37" }}
                                         >
                                             {product.price}
-                                        </p>
+                                        </span>
                                     </div>
 
-                                    {/* Add to Cart button permanently below price */}
+                                    {/* Dark Green Add to Cart Button with White Text and Modern Hover Effect */}
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();
                                             addToCart(product.global);
                                         }}
-                                        className="w-full mt-1 rounded flex items-center justify-center py-2.5 px-4 text-[10px] sm:text-xs tracking-[0.15em] uppercase transition-all duration-300 border-none cursor-pointer overflow-hidden shadow-sm hover:shadow-md"
+                                        className="relative w-full group/btn rounded-xl flex items-center justify-center py-2.5 px-4 text-[11px] sm:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0"
                                         style={{
-                                            background: "#c9a84c",
-                                            color: "#fff",
+                                            background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
+                                            color: "#ffffff",
                                         }}
                                     >
-                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+                                        {/* Shimmer sweep effect */}
+                                        <span
+                                            className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full"
+                                        />
+
+                                        <svg
+                                            width="14"
+                                            height="14"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2.2"
+                                            className="mr-2 transition-transform duration-300 group-hover/btn:scale-110 group-hover/btn:-rotate-6"
+                                        >
                                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                                             <line x1="3" y1="6" x2="21" y2="6" />
                                             <path d="M16 10a4 4 0 0 1-8 0" />
                                         </svg>
-                                        Add to Cart
+                                        <span className="relative z-10 font-bold text-white">Add to Cart</span>
                                     </button>
                                 </div>
                             </div>
@@ -339,7 +353,8 @@ export function SmallNavigationMenu() {
 
                 {/* View All CTA */}
                 <div className="flex justify-center mt-12">
-                    <button
+                    <Link href="/category/necklaces">
+                        <button
                         className="group relative px-8 py-3 text-[11px] tracking-[0.2em] uppercase overflow-hidden"
                         style={{
                             border: "1px solid #c9a84c",
@@ -374,7 +389,8 @@ export function SmallNavigationMenu() {
                             }}
                         />
                         <span className="relative z-10 font-medium text-base">Explore Full Collection</span>
-                    </button>
+                        </button>
+                    </Link>
                 </div>
             </main>
 

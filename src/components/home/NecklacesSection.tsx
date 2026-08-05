@@ -1,0 +1,105 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { shopApi } from "@/lib/api/shop";
+import { mapListItemToProduct } from "@/lib/mapProduct";
+import { ProductCard } from "@/components/products/ProductCard";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import { Button } from "@/components/ui/Button";
+import type { Product } from "@/types";
+
+export const NecklacesSection = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        // Query backend for products under 'necklaces' category
+        let res = await shopApi.products({ category: "necklaces", limit: 100, page: 1 });
+        if (!res.items || res.items.length === 0) {
+          // Fallback check for singular 'necklace'
+          res = await shopApi.products({ category: "necklace", limit: 100, page: 1 });
+        }
+        if (!res.items || res.items.length === 0) {
+          // Additional fallback: search term 'necklace'
+          res = await shopApi.products({ search: "necklace", limit: 100, page: 1 });
+        }
+        if (!cancelled) {
+          setProducts(res.items.map(mapListItemToProduct));
+        }
+      } catch {
+        if (!cancelled) setProducts([]);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!loading && products.length === 0) {
+    return null;
+  }
+
+  return (
+    <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-white via-[#FAF8F5] to-white">
+      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div className="max-w-2xl text-center md:text-left">
+            <motion.h3
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-[#c9a84c] font-serif italic tracking-[0.3em] text-xl md:text-2xl mb-2"
+            >
+              Timeless Elegance & Royal Grace
+            </motion.h3>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-[#0B2516] font-serif text-3xl md:text-5xl lg:text-6xl"
+            >
+              Necklaces
+            </motion.h2>
+            <div className="w-24 h-[1px] bg-[#c9a84c]/40 mt-4 mx-auto md:mx-0" />
+          </div>
+
+          <div className="text-center md:text-right">
+            <Link href="/category/necklaces">
+              <Button variant="outline" className="text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#0B2516] hover:text-[#c9a84c] transition-colors">
+                View All Necklaces
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Product Grid: 4 per row on desktop, 2 on tablet, 1 on mobile */}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[1, 2, 3, 4].map((n) => (
+              <div key={n} className="h-96 rounded-2xl bg-stone-100 animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+
+      </div>
+    </section>
+  );
+};

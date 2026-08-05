@@ -285,14 +285,14 @@ function ProductDetail() {
               )}
 
               <div className="mb-8 flex flex-wrap items-baseline gap-3">
-                <span className="text-3xl font-bold text-neutral-900 md:text-4xl">
-                  ₹ {product.price.toLocaleString()}
-                </span>
                 {product.oldPrice != null && (
-                  <span className="text-lg text-neutral-400 line-through">
+                  <span className="text-lg font-medium text-[#1a3d2f] line-through opacity-85">
                     ₹ {product.oldPrice.toLocaleString()}
                   </span>
                 )}
+                <span className="text-3xl font-bold text-[#d4af37] md:text-4xl">
+                  ₹ {product.price.toLocaleString()}
+                </span>
                 <span className="w-full text-xs text-neutral-500">Incl. of all taxes</span>
               </div>
 
@@ -362,7 +362,7 @@ function ProductDetail() {
                     type="button"
                     onClick={handleAddToCart}
                     disabled={!inStock}
-                    className="flex-1 border border-neutral-900 bg-white py-4 text-[11px] font-bold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:border-neutral-300 disabled:text-neutral-400"
+                    className="flex-1 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-4 text-[11px] font-bold uppercase tracking-[0.25em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400"
                   >
                     Add to Cart
                   </button>
@@ -370,7 +370,7 @@ function ProductDetail() {
                     type="button"
                     onClick={handleBuyNow}
                     disabled={!inStock}
-                    className="flex-1 bg-neutral-900 py-4 text-[11px] font-bold uppercase tracking-[0.25em] text-white transition hover:bg-neutral-800 disabled:cursor-not-allowed disabled:bg-neutral-400"
+                    className="flex-1 rounded-xl bg-[#d4af37] py-4 text-[11px] font-bold uppercase tracking-[0.25em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400"
                   >
                     Buy It Now
                   </button>

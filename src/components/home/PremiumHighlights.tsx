@@ -30,7 +30,7 @@ const HIGHLIGHTS = [
 
 export const PremiumHighlights = () => {
   return (
-    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-sage-light)' }}>
+    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-ivory)' }}>
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       <div className="container relative z-10 mx-auto px-6">
         {/* Subtle accent glows */}

@@ -231,7 +231,7 @@ h6 {
 }
 
 .btn-luxury {
-  @apply px-10 py-4 rounded-full border border-champagne text-foreground transition-all duration-500 hover:bg-champagne hover:text-white uppercase tracking-[0.3em] text-[10px] font-medium;
+  @apply relative overflow-hidden px-8 py-3.5 rounded-full bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white uppercase tracking-[0.2em] text-[11px] font-bold shadow-md transition-all duration-300 hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 border-none cursor-pointer;
 }
 
 .card-luxury {

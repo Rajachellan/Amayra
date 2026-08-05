@@ -97,26 +97,26 @@ export const ProductSpotlight = () => {
                 <div className="space-y-1">
                   <span className="text-[10px] uppercase tracking-widest text-[#6B6661]">From</span>
                   <div className="flex items-baseline gap-3">
-                    <p className="text-3xl font-serif text-foreground">₹{product.price.toLocaleString()}</p>
                     {product.oldPrice != null && (
-                      <p className="text-lg font-serif text-foreground/30 line-through">
+                      <p className="text-lg font-serif text-[#1a3d2f] line-through font-medium opacity-85">
                         ₹{product.oldPrice.toLocaleString()}
                       </p>
                     )}
+                    <p className="text-3xl font-serif font-bold text-[#d4af37]">₹{product.price.toLocaleString()}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-10">
+                <div className="flex items-center gap-6">
                   <Link
                     href={href}
-                    className="px-12 py-5 rounded-full bg-foreground text-background text-[10px] uppercase tracking-[0.3em] font-medium transition-all duration-500 hover:bg-champagne hover:scale-105"
+                    className="px-8 py-4 rounded-full bg-[#d4af37] text-[#1a2e22] text-[10px] uppercase tracking-[0.3em] font-bold transition-all duration-500 hover:shadow-lg hover:scale-105"
                   >
                     View Details
                   </Link>
                   <button
                     type="button"
                     onClick={handleAddToCollection}
-                    className="border-0 border-b border-champagne bg-transparent pb-1 text-[10px] font-semibold uppercase tracking-[0.4em] text-foreground underline-offset-4 hover:text-champagne cursor-pointer transition-colors"
+                    className="px-8 py-4 rounded-full bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:scale-105 cursor-pointer transition-all duration-300"
                   >
                     Add to Cart
                   </button>

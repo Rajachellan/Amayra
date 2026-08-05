@@ -148,13 +148,13 @@ export const SilverCollection = () => {
                       </h3>
                     </Link>
 
-                    <div className="flex items-center justify-center gap-2 mb-3">
+                    <div className="flex items-baseline justify-center gap-2 mb-3">
                       {product.oldPrice && (
-                        <span className="text-xs text-gray-400 line-through">
+                        <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
                           ₹{product.oldPrice.toLocaleString()}
                         </span>
                       )}
-                      <span className="text-sm sm:text-base font-semibold text-[#c9a84c]">
+                      <span className="text-sm sm:text-base font-bold text-[#d4af37]">
                         ₹{product.price.toLocaleString()}
                       </span>
                     </div>
@@ -164,10 +164,10 @@ export const SilverCollection = () => {
                         addToCart(product);
                         toast.success("Added to cart");
                       }}
-                      className="mt-auto w-full py-2.5 px-4 rounded-lg bg-[#c9a84c] text-white text-[10px] sm:text-xs uppercase tracking-[0.15em] font-medium flex items-center justify-center gap-2 transition-all duration-300 hover:bg-[#b08d38] shadow-sm"
+                      className="mt-auto w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] sm:text-xs uppercase tracking-[0.15em] font-bold flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer"
                     >
                       <ShoppingBag className="w-3.5 h-3.5" />
-                      Add to Cart
+                      <span className="text-white font-bold">Add to Cart</span>
                     </button>
                   </div>
                 </motion.div>
@@ -181,10 +181,10 @@ export const SilverCollection = () => {
           <div className="flex justify-center mt-12">
             <button
               onClick={handleExploreMore}
-              className="group relative px-8 py-3 rounded-full text-[11px] tracking-[0.2em] uppercase overflow-hidden border border-amber-400 text-yellow-600 hover:text-white transition-colors duration-300"
+              className="relative group/btn rounded-full px-8 py-3.5 text-xs font-bold tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white"
             >
-              <span className="absolute inset-0 bg-yellow-600 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-              <span className="relative z-10 font-bold">Explore More</span>
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
+              <span className="relative z-10 font-bold text-white">Explore More</span>
             </button>
           </div>
         )}

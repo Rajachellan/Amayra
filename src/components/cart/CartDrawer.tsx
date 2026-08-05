@@ -217,7 +217,7 @@ export function CartDrawer() {
                         <button
                           type="button"
                           onClick={() => addToCart(p)}
-                          className="mt-2 w-full bg-brand-emerald px-2 py-2 text-[9px] font-bold uppercase tracking-widest text-white transition-colors hover:bg-emerald-900"
+                          className="mt-2 w-full bg-brand-emerald px-2 py-2 text-[9px] font-bold uppercase bg-yellow-600 tracking-widest text-white transition-colors hover:bg-emerald-900"
                         >
                           Add
                         </button>

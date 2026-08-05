@@ -6,6 +6,7 @@ import { shopApi, type HomepageSettingsDoc } from "@/lib/api/shop";
 import { Hero } from "@/components/home/Hero";
 import { SmallNavigationMenu } from "@/components/home/SmallNavigateMenu";
 import { OffersSection } from "@/components/home/OfferBanner";
+import { NecklacesSection } from "@/components/home/NecklacesSection";
 import { CategorySection } from "@/components/home/MainCategorySection";
 import { SignatureBlocks } from "@/components/home/SignatureBlocks";
 import { MoodCategories } from "@/components/home/MoodCategories";
@@ -68,6 +69,8 @@ export function HomePageClient() {
       {settings.showBanner ? <Hero /> : null}
       <SmallNavigationMenu />
       <OffersSection />
+      <PremiumHighlights />
+      <NecklacesSection />
       {settings.showCategories ? <CategorySection /> : null}
       {settings.showCollections ? <SignatureBlocks /> : null}
       <MoodCategories />
@@ -75,7 +78,6 @@ export function HomePageClient() {
       <PreviewBanner />
       <SilverCollection />
       <Craftsmanship />
-      <PremiumHighlights />
       {settings.showBlogSection ? <MagazineGallery /> : null}
       {settings.showLookbooks ? <CollectionStory /> : null}
       <WhyChooseUs />

@@ -15,12 +15,12 @@ export interface ButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", ...props }, ref) => {
     const variants = {
-      primary: "bg-brand-emerald text-white hover:bg-emerald-900",
-      secondary: "bg-white text-brand-emerald hover:bg-gray-100",
-      outline: "border border-brand-gold text-brand-gold hover:bg-black/75 hover:text-white rounded-sm ",
-      ghost: "text-brand-emerald hover:bg-emerald-50",
+      primary: "bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white font-bold shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 rounded-full transition-all duration-300",
+      secondary: "bg-[#1a3d2f] text-white hover:bg-[#255240] font-bold shadow-md rounded-full transition-all duration-300",
+      outline: "bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white font-bold shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 rounded-full transition-all duration-300",
+      ghost: "text-[#1a3d2f] hover:bg-emerald-50 font-bold",
       gold:
-        "gold-gradient text-white shadow-md rounded-sm hover:brightness-110 hover:shadow-lg active:brightness-95 disabled:border-gray-300 disabled:!bg-neutral-300 disabled:!bg-none disabled:!text-neutral-900",
+        "bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white font-bold shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 rounded-full transition-all duration-300 disabled:border-gray-300 disabled:!bg-neutral-300 disabled:!bg-none disabled:!text-neutral-900",
     };
 
     const sizes = {

@@ -121,13 +121,13 @@ export default function WishlistPage() {
                           </h3>
                         </Link>
 
-                        <div className="flex items-center justify-center gap-2 mb-4">
+                        <div className="flex items-baseline justify-center gap-2 mb-4">
                           {product.oldPrice && (
-                            <span className="text-xs text-gray-400 line-through">
+                            <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
                               ₹{product.oldPrice.toLocaleString()}
                             </span>
                           )}
-                          <span className="text-sm sm:text-base font-semibold text-[#c9a84c]">
+                          <span className="text-sm sm:text-base font-bold text-[#d4af37]">
                             ₹{product.price.toLocaleString()}
                           </span>
                         </div>
@@ -135,10 +135,10 @@ export default function WishlistPage() {
                         {/* Action */}
                         <button
                           onClick={() => handleMoveToCart(product)}
-                          className="mt-auto w-full py-2.5 px-4 rounded-xl bg-stone-900 text-white text-[10px] sm:text-xs uppercase tracking-[0.15em] font-semibold flex items-center justify-center gap-2 transition-all duration-300 hover:bg-[#c9a84c] shadow-sm"
+                          className="mt-auto w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] sm:text-xs uppercase tracking-[0.15em] font-bold flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer"
                         >
                           <ShoppingBag className="w-3.5 h-3.5" />
-                          Move to Bag
+                          <span className="text-white font-bold">Move to Bag</span>
                         </button>
                       </div>
                     </motion.div>

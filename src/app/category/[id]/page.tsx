@@ -15,15 +15,33 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
-const COLORS = ["Gold", "Silver", "Rose Gold", "Antique", "Kundan"];
+import silverBanner from "@/assets/silver.jpg";
+import bridalBanner from "@/assets/bridal_banner.jpg";
+import necklaceBanner from "@/assets/neckles.jpg";
+import banglesBanner from "@/assets/bangles_7.jpg";
+import earringsBanner from "@/assets/kammal_6.jpg";
+import bannerImage from "@/assets/banner_image.png";
+import ringsImg from "@/assets/pexels-the-glorious-studio-3584518-10361481 (1).jpg";
+import nosePinImg from "@/assets/pexels-ankunijjar-31772512.jpg";
+import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.jpg";
+import chainImg from "@/assets/pexels-thisisjooh-36160928.jpg";
+import pendantImg from "@/assets/pexels-arif-13595746.jpg";
 
-const OCCASIONS = [
-  { name: "Daily", slug: "daily" },
-  { name: "Festive", slug: "festive" },
-  { name: "Party", slug: "party" },
-  { name: "Wedding", slug: "wedding" },
-];
+const CATEGORY_BANNERS: Record<string, any> = {
+  silver: silverBanner,
+  earrings: earringsBanner,
+  necklaces: necklaceBanner,
+  bangles: banglesBanner,
+  rings: ringsImg,
+  bridal: bridalBanner,
+  "nose-pins": nosePinImg,
+  mangalsutras: mangalsutraImg,
+  chains: chainImg,
+  pendants: pendantImg,
+  all: bannerImage,
+};
 
+const COLORS = ["Gold", "Silver", "Rose Gold", "Antique"];
 const PRICE_RANGES = [
   { label: "Under ₹5,000", min: 0, max: 5000 },
   { label: "₹5,000 - ₹10,000", min: 5000, max: 10000 },
@@ -82,12 +100,23 @@ function CategoryContent() {
 
   const [tree, setTree] = useState<CategoryTreeNode[]>([]);
   const [collectionsList, setCollectionsList] = useState<{ name: string; slug: string }[]>([]);
+  const [occasionsList, setOccasionsList] = useState<{ name: string; slug: string }[]>([]);
   const [rawProducts, setRawProducts] = useState<ReturnType<typeof mapListItemToProduct>[]>([]);
   const [loading, setLoading] = useState(true);
-  const [heroImage, setHeroImage] = useState<string>(
-    "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000&auto=format&fit=crop"
-  );
+  const [heroImage, setHeroImage] = useState<any>(silverBanner);
   const [title, setTitle] = useState(categorySlug);
+
+  const occasionsToUse = useMemo(() => {
+    return occasionsList.length > 0
+      ? occasionsList
+      : [
+          { name: "Wedding", slug: "wedding" },
+          { name: "Cocktail", slug: "cocktail" },
+          { name: "Daily Wear", slug: "daily-wear" },
+          { name: "Festive", slug: "festival" },
+          { name: "Gifting", slug: "gifting" },
+        ];
+  }, [occasionsList]);
 
   const toggleSection = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -101,17 +130,29 @@ function CategoryContent() {
         setCollectionsList(cols.map((c) => ({ name: c.name, slug: c.slug })));
       })
       .catch(() => setCollectionsList([]));
+    shopApi
+      .occasions()
+      .then((occs) => {
+        setOccasionsList(occs.map((o) => ({ name: o.name, slug: o.slug })));
+      })
+      .catch(() => setOccasionsList([]));
   }, []);
 
   useEffect(() => {
-    const ctx = findInTree(tree, categorySlug);
-    if (ctx?.node.image) setHeroImage(resolveMediaUrl(ctx.node.image));
-    if (ctx?.node.name) setTitle(ctx.node.name);
-    else setTitle(categorySlug);
+    const currentKey = (subQuery || categorySlug || "all").toLowerCase();
+    const matchedBanner = CATEGORY_BANNERS[currentKey] || CATEGORY_BANNERS[categorySlug.toLowerCase()] || silverBanner;
 
-    if (subQuery) {
-      const subCtx = findInTree(tree, subQuery);
-      if (subCtx?.node.image) setHeroImage(resolveMediaUrl(subCtx.node.image));
+    const ctx = findInTree(tree, categorySlug);
+    if (ctx?.node.image && typeof ctx.node.image === "string") {
+      setHeroImage(resolveMediaUrl(ctx.node.image));
+    } else {
+      setHeroImage(matchedBanner);
+    }
+
+    if (ctx?.node.name) {
+      setTitle(ctx.node.name);
+    } else {
+      setTitle(categorySlug);
     }
   }, [tree, categorySlug, subQuery]);
 
@@ -172,7 +213,7 @@ function CategoryContent() {
     const priceCounts: Record<number, number> = {};
 
     rawProducts.forEach((p) => {
-      OCCASIONS.forEach((o) => {
+      occasionsToUse.forEach((o) => {
         if (
           p.tags?.some((t) => t.toLowerCase() === o.slug) ||
           p.description.toLowerCase().includes(o.slug)
@@ -195,7 +236,7 @@ function CategoryContent() {
     });
 
     return { occCounts, colCounts, colorCounts, priceCounts };
-  }, [rawProducts]);
+  }, [rawProducts, occasionsToUse]);
 
   // Apply active sidebar filters locally
   const filteredProducts = useMemo(() => {
@@ -299,7 +340,7 @@ function CategoryContent() {
                 </button>
               )}
             </div>
-            {OCCASIONS.map((occ) => {
+            {occasionsToUse.map((occ) => {
               const cnt = counts.occCounts[occ.name] || Math.floor(Math.random() * 15) + 3;
               const isChecked = selectedOccasions.includes(occ.name);
               return (
@@ -586,9 +627,7 @@ function CategoryContent() {
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white via-white/40 to-transparent z-20" />
       </section>
 
-      {subCategoryItems.length > 0 && (
-        <CategorySlider currentCategory={categorySlug} subCategories={subCategoryItems} />
-      )}
+      <CategorySlider currentCategory={categorySlug} />
 
       <section className="py-10 bg-white">
         <div className="container mx-auto px-6">
