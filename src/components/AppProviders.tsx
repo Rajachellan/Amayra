@@ -11,6 +11,7 @@ import { OpenCartFromSearchParams } from "@/components/cart/OpenCartFromSearchPa
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { MasterpieceModal } from "@/components/home/MasterpieceModal";
+import { SyncManager } from "@/components/SyncManager";
 
 const googleClientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID?.trim() ?? "";
 
@@ -27,6 +28,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     <CartProvider>
       <WishlistProvider>
         <AuthProvider>
+          <SyncManager />
           <Suspense fallback={null}>
             <OpenCartFromSearchParams />
           </Suspense>

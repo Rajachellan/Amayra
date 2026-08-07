@@ -43,7 +43,7 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
           src={src}
           alt={alt}
           fill
-          sizes="(max-width: 1024px) 100vw, 55vw"
+          unoptimized
           priority
           className="object-cover transition-transform duration-300 ease-out will-change-transform"
           style={{

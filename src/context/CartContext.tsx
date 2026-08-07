@@ -24,13 +24,88 @@ interface CartContextType {
   clearCart: (options?: { silent?: boolean }) => void;
   buyNow: (product: Product, quantity: number) => void;
   subtotal: number;
+  couponCode: string | null;
+  discountAmount: number;
+  applyCoupon: (code: string) => Promise<boolean>;
+  removeCoupon: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const [isCartOpen, setCartOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState<string | null>(null);
+  const [discountAmount, setDiscountAmount] = useState<number>(0);
+
+  const applyCoupon = useCallback(
+    async (code: string) => {
+      const trimmed = code.trim().toUpperCase();
+      if (!trimmed) return false;
+
+      if (trimmed === "WELCOME5") {
+        const discount = Math.round(subtotal * 0.05 * 100) / 100;
+        setCouponCode("WELCOME5");
+        setDiscountAmount(discount);
+        toast.success("Coupon WELCOME5 applied: 5% off!");
+        return true;
+      }
+
+      try {
+        const banners = await shopApi.promotionalBanners();
+        const cards = banners.cards || [];
+        const found = cards.find(
+          (c) => c.couponCode && c.couponCode.trim().toUpperCase() === trimmed
+        );
+
+        if (found) {
+          let pct = 0.05;
+          const match = trimmed.match(/\d+/);
+          if (match) {
+            const val = parseInt(match[0], 10);
+            if (val > 0 && val <= 100) pct = val / 100;
+          }
+          const discount = Math.round(subtotal * pct * 100) / 100;
+          setCouponCode(trimmed);
+          setDiscountAmount(discount);
+          toast.success(`Coupon ${trimmed} applied: ${pct * 100}% off!`);
+          return true;
+        }
+      } catch (err) {
+        console.error("Failed to validate coupon from banners:", err);
+      }
+
+      toast.error("Invalid coupon code.");
+      return false;
+    },
+    [subtotal]
+  );
+
+  const removeCoupon = useCallback(() => {
+    setCouponCode(null);
+    setDiscountAmount(0);
+    toast.success("Coupon removed.");
+  }, []);
+
+  useEffect(() => {
+    if (!couponCode) {
+      setDiscountAmount(0);
+      return;
+    }
+    let pct = 0.05;
+    if (couponCode === "WELCOME5") {
+      pct = 0.05;
+    } else {
+      const match = couponCode.match(/\d+/);
+      if (match) {
+        const val = parseInt(match[0], 10);
+        if (val > 0 && val <= 100) pct = val / 100;
+      }
+    }
+    const discount = Math.round(subtotal * pct * 100) / 100;
+    setDiscountAmount(discount);
+  }, [subtotal, couponCode]);
 
   const setIsCartOpen = useCallback((isOpen: boolean) => setCartOpen(isOpen), []);
   const openCart = useCallback(() => setCartOpen(true), []);
@@ -166,6 +241,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = useCallback((options?: { silent?: boolean }) => {
     setCart([]);
+    setCouponCode(null);
+    setDiscountAmount(0);
     if (!options?.silent) toast.success("Cart cleared");
   }, []);
 
@@ -175,7 +252,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     toast.success(`Proceeding to checkout`);
   }, []);
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const value = useMemo(
     () => ({
@@ -192,8 +268,30 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       clearCart,
       buyNow,
       subtotal,
+      couponCode,
+      discountAmount,
+      applyCoupon,
+      removeCoupon,
     }),
-    [cart, isCartOpen, openCart, closeCart, setIsCartOpen, toggleCart, addToCart, addToCartWithQuantity, clearCart, buyNow, subtotal]
+    [
+      cart,
+      isCartOpen,
+      openCart,
+      closeCart,
+      setIsCartOpen,
+      toggleCart,
+      addToCart,
+      addToCartWithQuantity,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      buyNow,
+      subtotal,
+      couponCode,
+      discountAmount,
+      applyCoupon,
+      removeCoupon,
+    ]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

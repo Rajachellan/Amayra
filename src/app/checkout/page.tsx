@@ -115,7 +115,7 @@ export function clearCheckoutShippingDraft(customerId: string) {
 export default function CheckoutPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const { cart, subtotal, clearCart, openCart } = useCart();
+  const { cart, subtotal, clearCart, openCart, couponCode, discountAmount } = useCart();
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -135,7 +135,7 @@ export default function CheckoutPage() {
 
   const shipping = 0;
   const tax = 0;
-  const displayTotal = subtotal + shipping;
+  const displayTotal = Math.max(0, subtotal - discountAmount + shipping);
 
   useEffect(() => {
     if (authLoading) return;
@@ -256,6 +256,7 @@ export default function CheckoutPage() {
             pincode: ship.pincode,
             country: ship.country || "IN",
           },
+          couponCode: couponCode || undefined,
         }),
       });
 
@@ -621,6 +622,12 @@ export default function CheckoutPage() {
                     <span>Delivery / Shipping</span>
                     <span className="font-bold text-emerald-700">FREE</span>
                   </div>
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-[#c4a064] font-semibold">
+                      <span>Discount ({couponCode})</span>
+                      <span>- ₹{discountAmount.toLocaleString()}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between text-gray-400 text-[10px]">
                     <span>Taxes & Duties</span>
                     <span>Included</span>

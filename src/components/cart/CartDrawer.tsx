@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight, Tag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
-import { products } from "@/data/products";
+import { shopApi } from "@/lib/api/shop";
+import { mapListItemToProduct } from "@/lib/mapProduct";
+import type { Product } from "@/types";
 
 const SUGGESTION_COUNT = 10;
 
@@ -25,17 +27,51 @@ export function CartDrawer() {
     updateQuantity,
     addToCart,
     subtotal,
+    couponCode,
+    discountAmount,
+    applyCoupon,
+    removeCoupon,
   } = useCart();
+
+  const [realProducts, setRealProducts] = useState<Product[]>([]);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
+  const [availableCoupons, setAvailableCoupons] = useState<string[]>(["WELCOME5"]);
+  const [couponInput, setCouponInput] = useState("");
+
+  useEffect(() => {
+    if (!isCartOpen) return;
+
+    // Fetch real products for suggestions
+    setLoadingSuggestions(true);
+    shopApi.products({ limit: 12, page: 1 })
+      .then((res) => {
+        const mapped = res.items.map(mapListItemToProduct);
+        setRealProducts(mapped);
+      })
+      .catch((err) => console.error("Failed to load suggestions:", err))
+      .finally(() => setLoadingSuggestions(false));
+
+    // Fetch dynamic coupon codes from promotional banners
+    shopApi.promotionalBanners()
+      .then((res) => {
+        const cards = res.cards || [];
+        const codes = cards
+          .map((c) => c.couponCode?.trim())
+          .filter((code): code is string => !!code);
+        setAvailableCoupons([...new Set(["WELCOME5", ...codes])]);
+      })
+      .catch((err) => console.error("Failed to load promotional banners for coupons:", err));
+  }, [isCartOpen]);
 
   const shipping = 0;
   const tax = 0;
-  const total = subtotal + shipping;
+  const total = Math.max(0, subtotal - discountAmount + shipping);
 
   const cartIds = useMemo(() => new Set(cart.map((i) => i.id)), [cart]);
 
   const suggestions = useMemo(() => {
-    return products.filter((p) => !cartIds.has(p.id)).slice(0, SUGGESTION_COUNT);
-  }, [cartIds]);
+    return realProducts.filter((p) => !cartIds.has(p.id)).slice(0, SUGGESTION_COUNT);
+  }, [realProducts, cartIds]);
 
   const hasInsufficientStock = useMemo(() => {
     return cart.some((i) => typeof i.stock === "number" && (i.stock <= 0 || i.quantity > i.stock));
@@ -199,6 +235,94 @@ export function CartDrawer() {
                 </ul>
               )}
 
+              {/* Coupon Code Section */}
+              {cart.length > 0 && (
+                <div className="mt-8 border-t border-gray-100 pt-6 px-5">
+                  <h3 className="font-serif text-xs tracking-[0.25em] text-[#0b2516] uppercase mb-4 flex items-center gap-1.5 font-bold">
+                    <Tag className="h-4 w-4 text-[#c4a064]" /> Apply Promo / Coupon Code
+                  </h3>
+                  
+                  <div className="flex gap-2 mb-4">
+                    <input
+                      type="text"
+                      placeholder="ENTER COUPON CODE"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      className="flex-grow border border-gray-200 px-4 py-2.5 text-xs uppercase tracking-widest focus:border-[#c4a064] focus:outline-none bg-neutral-50 rounded"
+                    />
+                    {couponCode ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          removeCoupon();
+                          setCouponInput("");
+                        }}
+                        className="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors rounded cursor-pointer"
+                      >
+                        Remove
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          if (couponInput.trim()) {
+                            const ok = await applyCoupon(couponInput);
+                            if (ok) setCouponInput("");
+                          }
+                        }}
+                        className="bg-[#1a3d2f] hover:bg-emerald-950 text-white px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors rounded cursor-pointer"
+                      >
+                        Apply
+                      </button>
+                    )}
+                  </div>
+
+                  {couponCode && (
+                    <div className="mb-4 flex items-center justify-between bg-emerald-50 border border-emerald-200 px-4 py-2.5 rounded-lg text-[#1a3d2f] text-xs font-semibold">
+                      <span className="flex items-center gap-1.5">
+                        <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
+                        Code <strong className="text-emerald-950 font-bold uppercase">{couponCode}</strong> applied
+                      </span>
+                      <span className="font-bold">-₹{discountAmount.toLocaleString()}</span>
+                    </div>
+                  )}
+
+                  {/* Available Coupons list */}
+                  {availableCoupons.length > 0 && (
+                    <div className="mt-3">
+                      <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">Available Coupons (Click to apply)</p>
+                      <div className="flex flex-wrap gap-2">
+                        {availableCoupons.map((code) => {
+                          const isApplied = couponCode === code;
+                          return (
+                            <button
+                              key={code}
+                              type="button"
+                              onClick={() => {
+                                if (isApplied) {
+                                  removeCoupon();
+                                } else {
+                                  applyCoupon(code);
+                                }
+                              }}
+                              className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer ${
+                                isApplied
+                                  ? "border-emerald-600 bg-emerald-50 text-emerald-700 font-extrabold shadow-sm"
+                                  : "border-gray-200 bg-white text-gray-600 hover:border-[#c4a064] hover:text-[#c4a064]"
+                              }`}
+                            >
+                              <span className={`h-1.5 w-1.5 rounded-full ${isApplied ? "bg-emerald-600" : "bg-yellow-500"}`} />
+                              {code}
+                              {code === "WELCOME5" && <span className="text-[9px] font-normal text-gray-400 lowercase">(5% off)</span>}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               {suggestions.length > 0 && (
                 <div className="mt-6 border-t border-gray-100 pt-6 pb-4">
                   <div className="mb-4 flex items-center gap-4 px-5">
@@ -246,6 +370,12 @@ export function CartDrawer() {
                 <span>Delivery / Shipping</span>
                 <span className="font-bold text-emerald-700">FREE</span>
               </div>
+              {discountAmount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
+                  <span>Discount ({couponCode})</span>
+                  <span>- ₹{discountAmount.toLocaleString()}</span>
+                </div>
+              )}
               <div className="flex items-center justify-between font-serif uppercase border-t border-gray-100 pt-2">
                 <span className="text-sm tracking-[0.2em] text-brand-emerald">Estimated Total</span>
                 <span className="text-xl font-bold text-brand-emerald">₹{total.toLocaleString()}</span>
