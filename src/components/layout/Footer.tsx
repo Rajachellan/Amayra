@@ -221,7 +221,7 @@ export const Footer = () => {
                 { name: "Shipping & Returns", href: "/shipping-returns" },
                 { name: "Privacy Policy", href: "/privacy-policy" },
                 { name: "Terms of Service", href: "/terms-of-service" },
-                { name: "Store Locator", href: "/store-locator" },
+                // { name: "Store Locator", href: "/store-locator" },
               ].map((item) => (
                 <li key={item.name}>
                   <Link

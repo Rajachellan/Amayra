@@ -69,13 +69,13 @@ export const WhyChooseUs = () => {
                 
                 {/* Title */}
                 <h4 
-                  className="text-[11px] uppercase tracking-[0.2em] font-semibold mb-[10px] text-[#2B2B2B] transition-colors duration-300 group-hover:text-[#C4A064]"
+                  className="text-[16px] uppercase tracking-[0.1em] font-bold mb-[10px] text-[#2B2B2B] transition-colors duration-300 group-hover:text-[#C4A064]"
                 >
                   {item.title}
                 </h4>
                 
                 {/* Description */}
-                <p className="text-sm font-light text-[#555555] leading-relaxed max-w-[180px]">
+                <p className="text-md font-light text-[#555555] leading-relaxed max-w-[180px]">
                   {item.desc}
                 </p>
               </div>
