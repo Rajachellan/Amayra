@@ -113,13 +113,23 @@ export const ProductSpotlight = () => {
                   >
                     View Details
                   </Link>
-                  <button
-                    type="button"
-                    onClick={handleAddToCollection}
-                    className="px-8 py-4 rounded-full bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:scale-105 cursor-pointer transition-all duration-300"
-                  >
-                    Add to Cart
-                  </button>
+                  {product.stock <= 0 ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="px-8 py-4 rounded-full bg-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-[0.3em] cursor-not-allowed opacity-50"
+                    >
+                      Out of Stock
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleAddToCollection}
+                      className="px-8 py-4 rounded-full bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] font-bold uppercase tracking-[0.3em] hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:scale-105 cursor-pointer transition-all duration-300"
+                    >
+                      Add to Cart
+                    </button>
+                  )}
                 </div>
               </div>
             </motion.div>

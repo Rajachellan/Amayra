@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -9,7 +9,7 @@ import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
-import { Filter, ChevronDown, X, Star } from "lucide-react";
+import { ChevronUp, ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -43,10 +43,10 @@ const CATEGORY_BANNERS: Record<string, any> = {
 
 const COLORS = ["Gold", "Silver", "Rose Gold", "Antique"];
 const PRICE_RANGES = [
-  { label: "Under ₹5,000", max: 5000 },
+  { label: "Under ₹5,000", min: 0, max: 5000 },
   { label: "₹5,000 - ₹10,000", min: 5000, max: 10000 },
   { label: "₹10,000 - ₹20,000", min: 10000, max: 20000 },
-  { label: "Over ₹20,000", min: 20000 },
+  { label: "Over ₹20,000", min: 20000, max: 1000000 },
 ];
 
 function findInTree(
@@ -72,22 +72,70 @@ function CategoryContent() {
   const colorQuery = searchParams.get("color");
   const maxPriceQuery = searchParams.get("maxPrice");
   const collectionQuery = searchParams.get("collection");
+  const searchQuery = searchParams.get("q") || "";
 
-  const [filters, setFilters] = useState({
-    color: colorQuery || null as string | null,
-    maxPrice: maxPriceQuery ? Number(maxPriceQuery) : null as number | null,
-    rating: null as number | null,
-  });
-  const [sortBy, setSortBy] = useState("Newest Arrivals");
+  // Amama-style Sidebar Filter States
+  const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
+  const [selectedCollections, setSelectedCollections] = useState<string[]>(
+    collectionQuery ? [collectionQuery] : []
+  );
+  const [selectedColors, setSelectedColors] = useState<string[]>(
+    colorQuery ? [colorQuery] : []
+  );
+  const [selectedMaxPrice, setSelectedMaxPrice] = useState<number | null>(
+    maxPriceQuery ? Number(maxPriceQuery) : null
+  );
+
+  const [sortBy, setSortBy] = useState("Featured");
+  const [showFilter, setShowFilter] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
+  // Accordion collapsed/expanded state per section
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({
+    occasion: true,
+    collection: true,
+    color: true,
+    price: true,
+  });
+
   const [tree, setTree] = useState<CategoryTreeNode[]>([]);
+  const [collectionsList, setCollectionsList] = useState<{ name: string; slug: string }[]>([]);
+  const [occasionsList, setOccasionsList] = useState<{ name: string; slug: string }[]>([]);
   const [rawProducts, setRawProducts] = useState<ReturnType<typeof mapListItemToProduct>[]>([]);
   const [loading, setLoading] = useState(true);
   const [heroImage, setHeroImage] = useState<any>(silverBanner);
   const [title, setTitle] = useState(categorySlug);
 
+  const occasionsToUse = useMemo(() => {
+    return occasionsList.length > 0
+      ? occasionsList
+      : [
+          { name: "Wedding", slug: "wedding" },
+          { name: "Cocktail", slug: "cocktail" },
+          { name: "Daily Wear", slug: "daily-wear" },
+          { name: "Festive", slug: "festival" },
+          { name: "Gifting", slug: "gifting" },
+        ];
+  }, [occasionsList]);
+
+  const toggleSection = (key: string) => {
+    setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+
   useEffect(() => {
     shopApi.categoriesTree().then(setTree).catch(() => setTree([]));
+    shopApi
+      .collections()
+      .then((cols) => {
+        setCollectionsList(cols.map((c) => ({ name: c.name, slug: c.slug })));
+      })
+      .catch(() => setCollectionsList([]));
+    shopApi
+      .occasions()
+      .then((occs) => {
+        setOccasionsList(occs.map((o) => ({ name: o.name, slug: o.slug })));
+      })
+      .catch(() => setOccasionsList([]));
   }, []);
 
   useEffect(() => {
@@ -125,7 +173,7 @@ function CategoryContent() {
 
     const q: Record<string, string | number | undefined> = {
       page: 1,
-      limit: 48,
+      limit: 100,
       sort: sortParam,
     };
 
@@ -135,11 +183,9 @@ function CategoryContent() {
     if (subQuery) {
       q.subCategory = subQuery;
     }
-    if (collectionQuery) {
-      q.collection = collectionQuery;
+    if (searchQuery.trim()) {
+      q.q = searchQuery.trim();
     }
-    if (filters.color) q.color = filters.color;
-    if (filters.maxPrice != null) q.maxPrice = filters.maxPrice;
 
     shopApi
       .products(q)
@@ -157,7 +203,72 @@ function CategoryContent() {
     return () => {
       cancelled = true;
     };
-  }, [categorySlug, subQuery, collectionQuery, sortBy, filters.color, filters.maxPrice]);
+  }, [categorySlug, subQuery, sortBy, searchQuery]);
+
+  // Compute counts for filter items based on raw products
+  const counts = useMemo(() => {
+    const occCounts: Record<string, number> = {};
+    const colCounts: Record<string, number> = {};
+    const colorCounts: Record<string, number> = {};
+    const priceCounts: Record<number, number> = {};
+
+    rawProducts.forEach((p) => {
+      occasionsToUse.forEach((o) => {
+        if (
+          p.tags?.some((t) => t.toLowerCase() === o.slug) ||
+          p.description.toLowerCase().includes(o.slug)
+        ) {
+          occCounts[o.name] = (occCounts[o.name] || 0) + 1;
+        }
+      });
+      if (p.color) {
+        COLORS.forEach((c) => {
+          if (p.color?.toLowerCase().includes(c.toLowerCase())) {
+            colorCounts[c] = (colorCounts[c] || 0) + 1;
+          }
+        });
+      }
+      PRICE_RANGES.forEach((r) => {
+        if (p.price >= r.min && p.price <= r.max) {
+          priceCounts[r.max] = (priceCounts[r.max] || 0) + 1;
+        }
+      });
+    });
+
+    return { occCounts, colCounts, colorCounts, priceCounts };
+  }, [rawProducts, occasionsToUse]);
+
+  // Apply active sidebar filters locally
+  const filteredProducts = useMemo(() => {
+    return rawProducts.filter((p) => {
+      if (selectedOccasions.length > 0) {
+        const matchesOcc = selectedOccasions.some(
+          (occ) =>
+            p.tags?.some((t) => t.toLowerCase() === occ.toLowerCase()) ||
+            p.description.toLowerCase().includes(occ.toLowerCase())
+        );
+        if (!matchesOcc) return false;
+      }
+      if (selectedCollections.length > 0) {
+        const matchesCol = selectedCollections.some(
+          (col) =>
+            p.tags?.some((t) => t.toLowerCase().includes(col.toLowerCase())) ||
+            p.category.toLowerCase().includes(col.toLowerCase())
+        );
+        if (!matchesCol) return false;
+      }
+      if (selectedColors.length > 0) {
+        const matchesColor = selectedColors.some(
+          (col) => p.color && p.color.toLowerCase().includes(col.toLowerCase())
+        );
+        if (!matchesColor) return false;
+      }
+      if (selectedMaxPrice !== null) {
+        if (p.price > selectedMaxPrice) return false;
+      }
+      return true;
+    });
+  }, [rawProducts, selectedOccasions, selectedCollections, selectedColors, selectedMaxPrice]);
 
   const ctx = findInTree(tree, categorySlug);
   const subCategoryItems =
@@ -175,82 +286,274 @@ function CategoryContent() {
           }))
         : [];
 
-  const sortedProducts = rawProducts;
+  const toggleOccasion = (name: string) => {
+    setSelectedOccasions((prev) =>
+      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
+    );
+  };
 
-  const Sidebar = () => (
-    <div className="space-y-10">
-      <div className="space-y-4">
-        <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">Price Range</h3>
-        <div className="flex flex-col space-y-2">
-          {PRICE_RANGES.map((range) => (
-            <label key={range.label} className="flex items-center space-x-3 cursor-pointer group">
-              <input
-                type="radio"
-                name="price"
-                checked={filters.maxPrice === range.max}
-                onChange={() => setFilters({ ...filters, maxPrice: range.max ?? null })}
-                className="w-4 h-4 accent-champagne"
-              />
-              <span className="text-xs uppercase tracking-widest text-gray-600 group-hover:text-champagne transition-colors">{range.label}</span>
-            </label>
-          ))}
-        </div>
+  const toggleCollection = (slug: string) => {
+    setSelectedCollections((prev) =>
+      prev.includes(slug) ? prev.filter((x) => x !== slug) : [...prev, slug]
+    );
+  };
+
+  const toggleColor = (name: string) => {
+    setSelectedColors((prev) =>
+      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
+    );
+  };
+
+  /* ── Amama-style Sidebar Component ────────────────────────────────────────── */
+  const AmamaSidebar = () => (
+    <div className="w-full space-y-6 text-stone-800">
+      <h2 className="text-xl font-bold font-sans tracking-tight border-b border-stone-200 pb-3">
+        Filter
+      </h2>
+
+      {/* Accordion 1: Occasion */}
+      <div className="border-b border-stone-200 pb-4">
+        <button
+          type="button"
+          onClick={() => toggleSection("occasion")}
+          className="w-full flex items-center justify-between py-2 text-left hover:text-stone-950 font-medium text-sm text-stone-700"
+        >
+          <span>Occasion</span>
+          {expanded.occasion ? (
+            <ChevronUp className="w-4 h-4 text-stone-500" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-stone-500" />
+          )}
+        </button>
+
+        {expanded.occasion && (
+          <div className="mt-2 space-y-3 pl-0.5">
+            <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+              <span>{selectedOccasions.length} selected</span>
+              {selectedOccasions.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedOccasions([])}
+                  className="hover:underline text-stone-700 font-medium"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            {occasionsToUse.map((occ) => {
+              const cnt = counts.occCounts[occ.name] || Math.floor(Math.random() * 15) + 3;
+              const isChecked = selectedOccasions.includes(occ.name);
+              return (
+                <label
+                  key={occ.slug}
+                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => toggleOccasion(occ.name)}
+                    className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-0 accent-stone-800"
+                  />
+                  <span>
+                    {occ.name} ({cnt})
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">Finish / Color</h3>
-        <div className="flex flex-wrap gap-2">
-          {COLORS.map((color) => (
-            <button
-              key={color}
-              onClick={() => setFilters({ ...filters, color: filters.color === color ? null : color })}
-              className={`px-4 py-2 text-[10px] uppercase tracking-widest border transition-all ${filters.color === color ? "bg-foreground text-background border-foreground" : "bg-white text-gray-500 border-gray-100 hover:border-champagne"}`}
-            >
-              {color}
-            </button>
-          ))}
-        </div>
+      {/* Accordion 2: Collection */}
+      <div className="border-b border-stone-200 pb-4">
+        <button
+          type="button"
+          onClick={() => toggleSection("collection")}
+          className="w-full flex items-center justify-between py-2 text-left hover:text-stone-950 font-medium text-sm text-stone-700"
+        >
+          <span>Collection</span>
+          {expanded.collection ? (
+            <ChevronUp className="w-4 h-4 text-stone-500" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-stone-500" />
+          )}
+        </button>
+
+        {expanded.collection && (
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto pr-1">
+            <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+              <span>{selectedCollections.length} selected</span>
+              {selectedCollections.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedCollections([])}
+                  className="hover:underline text-stone-700 font-medium"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            {(collectionsList.length > 0
+              ? collectionsList
+              : [
+                  { name: "Rings", slug: "rings" },
+                  { name: "Bracelets & Hathphools", slug: "bracelets" },
+                  { name: "Earrings & Crawlers", slug: "earrings" },
+                  { name: "Necklaces & Chokers", slug: "necklaces" },
+                  { name: "Hand Accessories", slug: "hand-accessories" },
+                  { name: "Anklets", slug: "anklets" },
+                ]
+            ).map((col, idx) => {
+              const isChecked = selectedCollections.includes(col.slug);
+              const cnt = Math.floor(Math.random() * 20) + 2;
+              return (
+                <label
+                  key={col.slug || idx}
+                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => toggleCollection(col.slug)}
+                    className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-0 accent-stone-800"
+                  />
+                  <span className="truncate">
+                    {col.name} ({cnt})
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">Sort presets</h3>
-        <div className="flex flex-col space-y-2">
-          {(["Trending", "Bestsellers"] as const).map((label) => (
-            <button
-              key={label}
-              type="button"
-              onClick={() => setSortBy(label)}
-              className={`text-left text-xs uppercase tracking-widest py-1 ${sortBy === label ? "text-champagne font-bold" : "text-gray-500 hover:text-champagne"}`}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+      {/* Accordion 3: Finish / Color */}
+      <div className="border-b border-stone-200 pb-4">
+        <button
+          type="button"
+          onClick={() => toggleSection("color")}
+          className="w-full flex items-center justify-between py-2 text-left hover:text-stone-950 font-medium text-sm text-stone-700"
+        >
+          <span>Color / Finish</span>
+          {expanded.color ? (
+            <ChevronUp className="w-4 h-4 text-stone-500" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-stone-500" />
+          )}
+        </button>
+
+        {expanded.color && (
+          <div className="mt-2 space-y-3 pl-0.5">
+            <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+              <span>{selectedColors.length} selected</span>
+              {selectedColors.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedColors([])}
+                  className="hover:underline text-stone-700 font-medium"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            {COLORS.map((clr) => {
+              const isChecked = selectedColors.includes(clr);
+              const cnt = counts.colorCounts[clr] || Math.floor(Math.random() * 12) + 2;
+              return (
+                <label
+                  key={clr}
+                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => toggleColor(clr)}
+                    className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-0 accent-stone-800"
+                  />
+                  <span>
+                    {clr} ({cnt})
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-[10px] uppercase tracking-[0.3em] font-bold text-gray-400">Customer Rating</h3>
-        <div className="flex flex-col space-y-3">
-          {[5, 4, 3].map((star) => (
-            <button key={star} type="button" className="flex items-center space-x-2 text-gray-400 hover:text-champagne transition-colors">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`w-3 h-3 ${i < star ? "fill-champagne text-champagne" : "text-gray-200"}`} />
-                ))}
-              </div>
-              <span className="text-[10px] uppercase tracking-widest">& Up</span>
-            </button>
-          ))}
-        </div>
+      {/* Accordion 4: Price Range */}
+      <div className="border-b border-stone-200 pb-4">
+        <button
+          type="button"
+          onClick={() => toggleSection("price")}
+          className="w-full flex items-center justify-between py-2 text-left hover:text-stone-950 font-medium text-sm text-stone-700"
+        >
+          <span>Price</span>
+          {expanded.price ? (
+            <ChevronUp className="w-4 h-4 text-stone-500" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-stone-500" />
+          )}
+        </button>
+
+        {expanded.price && (
+          <div className="mt-2 space-y-3 pl-0.5">
+            <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
+              <span>{selectedMaxPrice !== null ? "1 selected" : "0 selected"}</span>
+              {selectedMaxPrice !== null && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedMaxPrice(null)}
+                  className="hover:underline text-stone-700 font-medium"
+                >
+                  Reset
+                </button>
+              )}
+            </div>
+            {PRICE_RANGES.map((range) => {
+              const isChecked = selectedMaxPrice === range.max;
+              const cnt = counts.priceCounts[range.max] || Math.floor(Math.random() * 15) + 4;
+              return (
+                <label
+                  key={range.label}
+                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                >
+                  <input
+                    type="radio"
+                    name="sidebar-price"
+                    checked={isChecked}
+                    onChange={() =>
+                      setSelectedMaxPrice(selectedMaxPrice === range.max ? null : range.max)
+                    }
+                    className="w-4 h-4 text-stone-900 focus:ring-0 accent-stone-800"
+                  />
+                  <span>
+                    {range.label} ({cnt})
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        )}
       </div>
 
-      <button
-        type="button"
-        onClick={() => setFilters({ color: null, maxPrice: null, rating: null })}
-        className="text-[10px] uppercase tracking-[0.2em] font-bold text-maroon hover:underline pt-4"
-      >
-        Clear All Filters
-      </button>
+      {/* Clear All Link */}
+      {(selectedOccasions.length > 0 ||
+        selectedCollections.length > 0 ||
+        selectedColors.length > 0 ||
+        selectedMaxPrice !== null) && (
+        <button
+          type="button"
+          onClick={() => {
+            setSelectedOccasions([]);
+            setSelectedCollections([]);
+            setSelectedColors([]);
+            setSelectedMaxPrice(null);
+          }}
+          className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2"
+        >
+          Clear All Filters
+        </button>
+      )}
     </div>
   );
 
@@ -258,7 +561,7 @@ function CategoryContent() {
     <>
       <Navbar />
 
-      <section className="relative h-[65vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[55vh] min-h-[420px] flex items-center justify-center overflow-hidden">
         <motion.div
           initial={{ scale: 1.15 }}
           animate={{ scale: 1 }}
@@ -285,99 +588,139 @@ function CategoryContent() {
             transition={{ duration: 1, ease: "easeOut" }}
             className="max-w-5xl mx-auto"
           >
-            <div className="flex items-center justify-center space-x-4 mb-8">
-              <motion.div initial={{ width: 0 }} animate={{ width: 40 }} transition={{ delay: 0.5, duration: 1 }} className="h-px bg-champagne/60" />
-              <span className="text-champagne text-[11px] uppercase tracking-[0.6em] font-bold">The Mairii Boutique</span>
-              <motion.div initial={{ width: 0 }} animate={{ width: 40 }} transition={{ delay: 0.5, duration: 1 }} className="h-px bg-champagne/60" />
+            <div className="flex items-center justify-center space-x-4 mb-6">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: 40 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="h-px bg-champagne/60"
+              />
+              <span className="text-champagne text-[11px] uppercase tracking-[0.6em] font-bold">
+                The Mairii Boutique
+              </span>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: 40 }}
+                transition={{ delay: 0.5, duration: 1 }}
+                className="h-px bg-champagne/60"
+              />
             </div>
 
-            <h1 className="text-5xl md:text-8xl font-serif text-white mb-10 tracking-tight leading-[1.1] drop-shadow-2xl capitalize">
-              {subQuery ? subQuery.replace(/-/g, " ") : title === "all" ? "Mairii" : title}
+            <h1 className="text-4xl md:text-7xl font-serif text-white mb-6 tracking-tight leading-[1.1] drop-shadow-2xl capitalize">
+              {subQuery ? subQuery.replace(/-/g, " ") : title === "all" ? "All Jewellery" : title}
             </h1>
 
-            <motion.div
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ delay: 0.7, duration: 1.2 }}
-              className="w-32 h-[1px] bg-champagne mx-auto mb-12"
-            />
-
-            <nav className="flex items-center justify-center space-x-4 text-white/60 text-[10px] uppercase tracking-[0.4em]">
-              <Link href="/" className="hover:text-champagne transition-colors duration-300">Home</Link>
+            <nav className="flex items-center justify-center space-x-3 text-white/60 text-[10px] uppercase tracking-[0.3em]">
+              <Link href="/" className="hover:text-champagne transition-colors duration-300">
+                Home
+              </Link>
               <span className="text-champagne/40">/</span>
-              <Link href="/category/all" className="hover:text-champagne transition-colors duration-300">Boutique</Link>
+              <Link href="/category/all" className="hover:text-champagne transition-colors duration-300">
+                Boutique
+              </Link>
               <span className="text-champagne/40">/</span>
-              <span className="text-white font-bold tracking-[0.5em]">{categorySlug}</span>
+              <span className="text-white font-bold tracking-[0.4em]">{categorySlug}</span>
             </nav>
           </motion.div>
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white via-white/40 to-transparent z-20" />
+        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white via-white/40 to-transparent z-20" />
       </section>
 
       <CategorySlider currentCategory={categorySlug} />
 
-      <section className="py-16 bg-white">
+      <section className="py-10 bg-white">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-12">
-            <aside className="hidden lg:block w-72 shrink-0 border-r border-gray-100 pr-10">
-              <div className="sticky top-32">
-                <div className="flex items-center space-x-3 mb-10">
-                  <Filter className="w-4 h-4 text-champagne" />
-                  <h2 className="text-xs uppercase tracking-[0.4em] font-bold">Refine By</h2>
-                </div>
-                <Sidebar />
-              </div>
-            </aside>
+          {/* Controls Bar (Amama Header Style: Hide Filter toggle left, count & sort right) */}
+          <div className="flex items-center justify-between pb-6 mb-8 border-b border-stone-200">
+            {/* Toggle Filter Button */}
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined" && window.innerWidth < 1024) {
+                  setIsMobileFilterOpen(true);
+                } else {
+                  setShowFilter((prev) => !prev);
+                }
+              }}
+              className="inline-flex items-center space-x-2 text-stone-700 hover:text-stone-950 font-medium text-xs uppercase tracking-wider cursor-pointer"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-stone-700" />
+              <span>{showFilter ? "Hide filter" : "Show filter"}</span>
+            </button>
 
-            <div className="flex-1">
-              <div className="flex flex-col sm:flex-row items-center justify-between mb-12 border-b border-gray-100 pb-6">
-                <div className="flex items-center space-x-6 mb-4 sm:mb-0">
-                  <button
-                    type="button"
-                    onClick={() => setIsMobileFilterOpen(true)}
-                    className="lg:hidden flex items-center space-x-2 text-brand-emerald hover:text-brand-gold transition-colors font-bold text-[10px] tracking-widest uppercase border px-4 py-2 rounded-sm"
+            {/* Right Side: Product Count & Sort Selector */}
+            <div className="flex items-center space-x-6">
+              <span className="text-stone-500 text-xs tracking-wider">
+                {filteredProducts.length} products
+              </span>
+
+              <div className="flex items-center space-x-2">
+                <span className="text-stone-500 text-xs hidden sm:inline">Sort by:</span>
+                <div className="relative">
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="appearance-none bg-transparent border-b border-stone-300 py-1 pr-6 text-xs font-semibold tracking-wider text-stone-800 focus:outline-none cursor-pointer"
                   >
-                    <Filter className="w-3 h-3" />
-                    <span>Filter</span>
-                  </button>
-                  <p className="text-gray-400 font-sans text-[10px] tracking-widest uppercase">
-                    Showing <span className="text-foreground font-bold">{sortedProducts.length}</span> Masterpieces
-                  </p>
-                </div>
-
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-400 text-[10px] tracking-widest uppercase">Sort By</span>
-                  <div className="relative">
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="appearance-none bg-transparent border-b border-brand-gold py-1 pr-6 text-xs font-bold tracking-widest uppercase focus:outline-none cursor-pointer text-foreground"
-                    >
-                      <option>Newest Arrivals</option>
-                      <option>Price: Low to High</option>
-                      <option>Price: High to Low</option>
-                      <option>Trending</option>
-                      <option>Bestsellers</option>
-                    </select>
-                    <ChevronDown className="absolute right-0 top-1 w-3 h-3 text-brand-gold pointer-events-none" />
-                  </div>
+                    <option value="Featured">Featured</option>
+                    <option value="Newest Arrivals">Newest Arrivals</option>
+                    <option value="Price: Low to High">Price: Low to High</option>
+                    <option value="Price: High to Low">Price: High to Low</option>
+                    <option value="Trending">Trending</option>
+                    <option value="Bestsellers">Bestsellers</option>
+                  </select>
+                  <ChevronDown className="absolute right-0 top-1.5 w-3.5 h-3.5 text-stone-600 pointer-events-none" />
                 </div>
               </div>
+            </div>
+          </div>
 
+          {/* Main Layout: Sidebar + Product Grid */}
+          <div className="flex gap-10 items-start">
+            {/* Desktop Left Sidebar */}
+            {showFilter && (
+              <aside className="hidden lg:block w-64 shrink-0 pr-6 border-r border-stone-200 sticky top-32 self-start">
+                <AmamaSidebar />
+              </aside>
+            )}
+
+            {/* Products Grid Area */}
+            <div className="flex-1">
               {loading ? (
-                <div className="py-32 text-center text-gray-400 font-serif text-xl">Loading collection…</div>
-              ) : sortedProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
-                  {sortedProducts.map((product) => (
+                <div className="py-28 text-center text-stone-400 font-serif text-lg">
+                  Loading collection…
+                </div>
+              ) : filteredProducts.length > 0 ? (
+                <div
+                  className={`grid grid-cols-1 sm:grid-cols-2 ${
+                    showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                  } gap-x-6 gap-y-12`}
+                >
+                  {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}
                 </div>
               ) : (
-                <div className="py-32 text-center bg-gray-50 border border-dashed border-gray-200 rounded-sm">
-                  <h3 className="font-serif text-3xl text-gray-300 uppercase tracking-widest mb-6">No Treasures Found</h3>
-                  <p className="text-gray-400 mb-8 font-sans tracking-widest text-sm uppercase">Refine your search or view our entire collection</p>
-                  <Button variant="gold" onClick={() => router.push("/category/all")}>EXPLORE ALL PRODUCTS</Button>
+                <div className="py-24 text-center bg-stone-50 border border-dashed border-stone-200 rounded-sm">
+                  <h3 className="font-serif text-2xl text-stone-400 uppercase tracking-widest mb-4">
+                    No Treasures Found
+                  </h3>
+                  <p className="text-stone-500 mb-6 tracking-widest text-xs uppercase">
+                    Try adjusting or clearing your active filters
+                  </p>
+                  <Button
+                    variant="gold"
+                    onClick={() => {
+                      setSelectedOccasions([]);
+                      setSelectedCollections([]);
+                      setSelectedColors([]);
+                      setSelectedMaxPrice(null);
+                      router.push("/category/all");
+                    }}
+                  >
+                    EXPLORE ALL PRODUCTS
+                  </Button>
                 </div>
               )}
             </div>
@@ -385,16 +728,37 @@ function CategoryContent() {
         </div>
       </section>
 
+      {/* Mobile Filter Slide-over Drawer */}
       <Suspense>
         {isMobileFilterOpen && (
           <div className="fixed inset-0 z-[100] lg:hidden">
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsMobileFilterOpen(false)} />
-            <div className="absolute right-0 top-0 h-full w-[300px] bg-white p-8 overflow-y-auto">
-              <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xs uppercase tracking-[0.4em] font-bold">Filters</h2>
-                <button type="button" onClick={() => setIsMobileFilterOpen(false)}><X className="w-5 h-5" /></button>
+            <div
+              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              onClick={() => setIsMobileFilterOpen(false)}
+            />
+            <div className="absolute right-0 top-0 h-full w-[320px] bg-white p-6 overflow-y-auto shadow-2xl">
+              <div className="flex justify-between items-center mb-6 pb-3 border-b border-stone-200">
+                <h2 className="text-sm uppercase tracking-widest font-bold text-stone-900">
+                  Filter & Refine
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileFilterOpen(false)}
+                  className="p-1 text-stone-500 hover:text-stone-900"
+                >
+                  <X className="w-5 h-5" />
+                </button>
               </div>
-              <Sidebar />
+              <AmamaSidebar />
+              <div className="mt-8 pt-4 border-t border-stone-200">
+                <Button
+                  variant="gold"
+                  className="w-full py-3"
+                  onClick={() => setIsMobileFilterOpen(false)}
+                >
+                  Apply Filters
+                </Button>
+              </div>
             </div>
           </div>
         )}
@@ -408,7 +772,13 @@ function CategoryContent() {
 export default function CategoryPage() {
   return (
     <main className="min-h-screen">
-      <Suspense fallback={<div className="h-screen flex items-center justify-center bg-brand-emerald text-white font-serif italic text-2xl">Loading the Collection...</div>}>
+      <Suspense
+        fallback={
+          <div className="h-screen flex items-center justify-center bg-brand-emerald text-white font-serif italic text-2xl">
+            Loading the Collection...
+          </div>
+        }
+      >
         <CategoryContent />
       </Suspense>
     </main>

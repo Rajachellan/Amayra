@@ -47,6 +47,8 @@ export const NecklacesSection = () => {
     return null;
   }
 
+  const displayedProducts = products.slice(0, 12);
+
   return (
     <section className="py-16 md:py-24 relative overflow-hidden bg-gradient-to-b from-white via-[#FAF8F5] to-white">
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
@@ -74,29 +76,32 @@ export const NecklacesSection = () => {
             </motion.h2>
             <div className="w-24 h-[1px] bg-[#c9a84c]/40 mt-4 mx-auto md:mx-0" />
           </div>
-
-          <div className="text-center md:text-right">
-            <Link href="/category/necklaces">
-              <Button variant="outline" className="text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#0B2516] hover:text-[#c9a84c] transition-colors">
-                View All Necklaces
-              </Button>
-            </Link>
-          </div>
         </div>
 
         {/* Product Grid: 4 per row on desktop, 2 on tablet, 1 on mobile */}
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map((n) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
               <div key={n} className="h-96 rounded-2xl bg-stone-100 animate-pulse" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {displayedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* Explore All Collection Button Centered at Bottom */}
+            <div className="mt-16 text-center">
+              <Link href="/category/necklaces">
+                <Button className="bg-[#0B2516] hover:bg-[#c9a84c] text-white hover:text-[#0B2516] px-10 py-6 text-sm font-semibold uppercase tracking-[0.3em] rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+                  Explore All Collection
+                </Button>
+              </Link>
+            </div>
+          </>
         )}
 
       </div>

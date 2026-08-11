@@ -78,17 +78,29 @@ function ProductDetail() {
           detail.category && typeof detail.category === "object" && "slug" in detail.category
             ? (detail.category as { slug: string }).slug
             : undefined;
+        
+        let relatedItems: any[] = [];
         if (catSlug) {
-          const r = await shopApi.products({ category: catSlug, limit: 8, page: 1 });
-          if (cancelled) return;
-          const mapped = r.items
-            .filter((i) => i.slug !== detail.slug)
-            .slice(0, 6)
-            .map(mapListItemToProduct);
-          setRelatedProducts(mapped);
-        } else {
-          setRelatedProducts([]);
+          try {
+            const r = await shopApi.products({ category: catSlug, limit: 8, page: 1 });
+            relatedItems = r.items.filter((i) => i.slug !== detail.slug);
+          } catch (e) {
+            console.error("Failed to fetch related products by category:", e);
+          }
         }
+        
+        if (relatedItems.length === 0) {
+          try {
+            const r = await shopApi.products({ limit: 8, page: 1 });
+            relatedItems = r.items.filter((i) => i.slug !== detail.slug);
+          } catch (e) {
+            console.error("Failed to fetch fallback products:", e);
+          }
+        }
+
+        if (cancelled) return;
+        const mapped = relatedItems.slice(0, 6).map(mapListItemToProduct);
+        setRelatedProducts(mapped);
       })
       .catch(() => {
         if (!cancelled) setProduct(null);

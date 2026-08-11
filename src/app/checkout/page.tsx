@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -115,7 +115,7 @@ export function clearCheckoutShippingDraft(customerId: string) {
 export default function CheckoutPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const { cart, subtotal, clearCart, openCart } = useCart();
+  const { cart, subtotal, clearCart, openCart, couponCode, discountAmount } = useCart();
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -124,15 +124,18 @@ export default function CheckoutPage() {
   const [stateVal, setStateVal] = useState("");
   const [pincode, setPincode] = useState("");
   const [country, setCountry] = useState("IN");
+  const [addressLabel, setAddressLabel] = useState("Home");
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [saveAddressToProfile, setSaveAddressToProfile] = useState(true);
   const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
+  const [savingNewAddress, setSavingNewAddress] = useState(false);
 
   const [paying, setPaying] = useState(false);
 
   const shipping = 0;
-  const tax = Math.round(subtotal * 0.03 * 100) / 100;
-  const displayTotal = subtotal + shipping + tax;
+  const tax = 0;
+  const displayTotal = Math.max(0, subtotal - discountAmount + shipping);
 
   useEffect(() => {
     if (authLoading) return;
@@ -148,6 +151,8 @@ export default function CheckoutPage() {
         setSavedAddresses(list);
         const a = list.find((x) => x.isDefault) ?? list[0];
         if (a) {
+          if (a.id) setSelectedAddressId(a.id);
+          if (a.label) setAddressLabel(a.label);
           if (a.fullName) setFullName(a.fullName);
           else if (me.name) setFullName(me.name);
           if (a.phone) setPhone(a.phone);
@@ -170,13 +175,13 @@ export default function CheckoutPage() {
     if (!user?.id || !profileLoaded) return;
     const draft = readShippingDraft(user.id);
     if (!draft) return;
-    if (draft.fullName !== undefined) setFullName(draft.fullName);
-    if (draft.phone !== undefined) setPhone(draft.phone);
-    if (draft.line1 !== undefined) setLine1(draft.line1);
-    if (draft.city !== undefined) setCity(draft.city);
-    if (draft.state !== undefined) setStateVal(draft.state);
-    if (draft.pincode !== undefined) setPincode(draft.pincode);
-    if (draft.country !== undefined) setCountry(draft.country);
+    if (draft.fullName) setFullName(draft.fullName);
+    if (draft.phone) setPhone(draft.phone);
+    if (draft.line1) setLine1(draft.line1);
+    if (draft.city) setCity(draft.city);
+    if (draft.state) setStateVal(draft.state);
+    if (draft.pincode) setPincode(draft.pincode);
+    if (draft.country) setCountry(draft.country);
   }, [user?.id, profileLoaded]);
 
   /** Persist shipping while editing. */
@@ -196,6 +201,8 @@ export default function CheckoutPage() {
   const validCart = useMemo(() => cart.filter((i) => i.slug?.trim()), [cart]);
 
   function applySavedAddress(a: CustomerAddress) {
+    if (a.id) setSelectedAddressId(a.id);
+    if (a.label) setAddressLabel(a.label);
     if (a.fullName) setFullName(a.fullName);
     if (a.phone) setPhone(a.phone);
     if (a.line1) setLine1(a.line1);
@@ -213,7 +220,7 @@ export default function CheckoutPage() {
     }
 
     const validated = addressFormSchema.safeParse({
-      label: "Checkout",
+      label: addressLabel.trim() || "Home",
       fullName,
       phone,
       line1,
@@ -249,6 +256,7 @@ export default function CheckoutPage() {
             pincode: ship.pincode,
             country: ship.country || "IN",
           },
+          couponCode: couponCode || undefined,
         }),
       });
 
@@ -290,7 +298,7 @@ export default function CheckoutPage() {
                       method: "POST",
                       body: JSON.stringify({
                         ...ship,
-                        label: "Home",
+                        label: addressLabel.trim() || "Home",
                         isDefault: savedAddresses.length === 0,
                       }),
                     });
@@ -364,26 +372,86 @@ export default function CheckoutPage() {
 
               {savedAddresses.length > 0 ? (
                 <div className="space-y-2">
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
-                    Use a saved address
-                  </p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                      Use a saved address
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedAddressId(null);
+                        setAddressLabel("Home");
+                        setLine1("");
+                        setCity("");
+                        setStateVal("");
+                        setPincode("");
+                      }}
+                      className="text-xs font-semibold text-brand-emerald hover:underline cursor-pointer"
+                    >
+                      + Add New Address
+                    </button>
+                  </div>
                   <div className="flex flex-wrap gap-2">
-                    {savedAddresses.map((a, i) => (
-                      <button
-                        key={a.id ?? `${a.line1}-${i}`}
-                        type="button"
-                        onClick={() => applySavedAddress(a)}
-                        className="px-3 py-2 rounded-full border border-stone-200 text-[11px] uppercase tracking-wider text-stone-700 hover:border-[#c9a84c] hover:text-[#c9a84c] transition"
-                      >
-                        {a.label || `Address ${i + 1}`}
-                        {a.isDefault ? " · Default" : ""}
-                      </button>
-                    ))}
+                    {savedAddresses.map((a, i) => {
+                      const isSelected = selectedAddressId === a.id;
+                      const rawLabel = a.label && String(a.label).trim();
+                      const labelText = rawLabel || `Address ${i + 1}`;
+                      const tagIcon = labelText.toLowerCase().includes("home")
+                        ? "🏠"
+                        : labelText.toLowerCase().includes("work") || labelText.toLowerCase().includes("office")
+                          ? "💼"
+                          : "📍";
+                      return (
+                        <button
+                          key={a.id ?? `${a.line1}-${i}`}
+                          type="button"
+                          onClick={() => applySavedAddress(a)}
+                          className={`px-3 py-2 rounded-lg border text-xs tracking-wider transition flex items-center gap-1.5 cursor-pointer ${
+                            isSelected
+                              ? "border-brand-emerald bg-brand-emerald text-white font-bold shadow-sm"
+                              : "border-stone-200 bg-stone-50 text-stone-700 hover:border-[#c9a84c] hover:bg-white"
+                          }`}
+                        >
+                          <span>{tagIcon}</span>
+                          <span className="font-semibold uppercase">{labelText}</span>
+                          {a.isDefault ? <span className="opacity-75 font-normal text-[10px]">· DEFAULT</span> : null}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               ) : null}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="md:col-span-2 space-y-1">
+                  <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+                    Address Label / Type
+                  </label>
+                  <div className="flex flex-wrap gap-2 pt-1 pb-1">
+                    {["Home", "Work", "Office", "Parents", "Other"].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => setAddressLabel(tag)}
+                        className={`px-3 py-1.5 rounded-md text-xs font-semibold uppercase tracking-wider transition border ${
+                          addressLabel === tag
+                            ? "bg-brand-emerald text-white border-brand-emerald"
+                            : "bg-stone-50 text-stone-600 border-stone-200 hover:border-brand-gold"
+                        }`}
+                      >
+                        {tag === "Home" ? "🏠 Home" : tag === "Work" || tag === "Office" ? "💼 " + tag : "📍 " + tag}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    required
+                    value={addressLabel}
+                    onChange={(e) => setAddressLabel(e.target.value)}
+                    placeholder="e.g. Home, Work, Office, Parents"
+                    className="w-full border border-gray-200 px-4 py-2 text-sm focus:outline-none focus:border-brand-gold"
+                  />
+                </div>
+
                 <div className="space-y-1">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Full name</label>
                   <input
@@ -439,6 +507,59 @@ export default function CheckoutPage() {
                 Save this address to my account for next time
               </label>
 
+              {selectedAddressId === null && (
+                <button
+                  type="button"
+                  disabled={savingNewAddress}
+                  onClick={async () => {
+                    const validated = addressFormSchema.safeParse({
+                      label: addressLabel.trim() || "Home",
+                      fullName,
+                      phone,
+                      line1,
+                      line2: "",
+                      city,
+                      state: stateVal,
+                      pincode,
+                      country: country || "IN",
+                      isDefault: savedAddresses.length === 0,
+                    });
+                    if (!validated.success) {
+                      const msg = validated.error.issues[0]?.message ?? "Check your shipping details";
+                      toast.error(msg);
+                      return;
+                    }
+                    setSavingNewAddress(true);
+                    try {
+                      const updated = await api<{ name?: string; phone?: string; addresses?: CustomerAddress[] }>("/auth/customer/me/addresses", {
+                        method: "POST",
+                        body: JSON.stringify(validated.data),
+                      });
+                      const list = updated.addresses ?? [];
+                      setSavedAddresses(list);
+                      const newAddr = list.find((a) => a.line1 === line1 && a.pincode === pincode) ?? list[list.length - 1];
+                      if (newAddr && newAddr.id) {
+                        setSelectedAddressId(newAddr.id);
+                      }
+                      toast.success("Address saved to profile!");
+                    } catch (err) {
+                      toast.error(err instanceof Error ? err.message : "Failed to save address");
+                    } finally {
+                      setSavingNewAddress(false);
+                    }
+                  }}
+                  className="w-full mt-2 border border-brand-emerald text-brand-emerald hover:bg-brand-emerald hover:text-white transition font-bold py-2.5 rounded text-xs uppercase tracking-wider cursor-pointer flex items-center justify-center gap-2"
+                >
+                  {savingNewAddress ? (
+                    <>
+                      <Loader2 className="animate-spin w-4 h-4" /> Saving…
+                    </>
+                  ) : (
+                    "Save Address to Profile"
+                  )}
+                </button>
+              )}
+
               <Button type="submit" variant="gold" size="lg" className="w-full mt-4" disabled={validCart.length === 0 || paying}>
                 {paying ? (
                   <>
@@ -455,14 +576,19 @@ export default function CheckoutPage() {
 
             <aside className="w-full lg:w-1/3">
               <div className="bg-white p-8 shadow-sm space-y-6 sticky top-32">
-                <h3 className="font-serif text-xl tracking-widest uppercase pb-4 border-b">Your order</h3>
+                <div className="flex items-center justify-between pb-4 border-b">
+                  <h3 className="font-serif text-xl tracking-widest uppercase">Your order</h3>
+                  <span className="text-xs font-sans font-bold text-gray-500 uppercase tracking-wider">
+                    {validCart.reduce((acc, i) => acc + i.quantity, 0)} Items
+                  </span>
+                </div>
                 {validCart.length === 0 ? (
                   <p className="text-sm text-gray-500">Your cart is empty.</p>
                 ) : (
-                  <ul className="space-y-4 max-h-80 overflow-y-auto">
+                  <ul className="space-y-4 max-h-80 overflow-y-auto pr-1">
                     {validCart.map((item) => (
-                      <li key={item.id} className="flex gap-4">
-                        <div className="relative w-16 h-20 shrink-0 overflow-hidden">
+                      <li key={item.id} className="flex gap-4 items-center">
+                        <div className="relative w-16 h-20 shrink-0 overflow-hidden rounded bg-gray-50">
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -473,24 +599,40 @@ export default function CheckoutPage() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="text-sm font-serif text-brand-emerald truncate">{item.name}</p>
-                          <p className="text-[10px] text-gray-400 uppercase tracking-widest">Qty {item.quantity}</p>
-                          <p className="text-sm font-bold text-brand-emerald">₹{(item.price * item.quantity).toLocaleString()}</p>
+                          <p className="text-sm font-serif text-brand-emerald truncate font-medium">{item.name}</p>
+                          <p className="text-[11px] text-gray-500 tracking-wide mt-0.5">
+                            QTY {item.quantity} × ₹{item.price.toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-bold text-brand-emerald">
+                            ₹{(item.price * item.quantity).toLocaleString()}
+                          </p>
                         </div>
                       </li>
                     ))}
                   </ul>
                 )}
-                <div className="border-t pt-4 space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Subtotal</span>
-                    <span>₹{subtotal.toLocaleString()}</span>
+                <div className="border-t pt-4 space-y-2.5 text-xs uppercase tracking-widest">
+                  <div className="flex justify-between text-gray-600">
+                    <span>Items Subtotal</span>
+                    <span className="font-semibold text-gray-900">₹{subtotal.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">GST (3%)</span>
-                    <span>₹{tax.toLocaleString()}</span>
+                  <div className="flex justify-between text-gray-600">
+                    <span>Delivery / Shipping</span>
+                    <span className="font-bold text-emerald-700">FREE</span>
                   </div>
-                  <div className="flex justify-between font-bold text-brand-emerald pt-2 border-t">
+                  {discountAmount > 0 && (
+                    <div className="flex justify-between text-[#c4a064] font-semibold">
+                      <span>Discount ({couponCode})</span>
+                      <span>- ₹{discountAmount.toLocaleString()}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-gray-400 text-[10px]">
+                    <span>Taxes & Duties</span>
+                    <span>Included</span>
+                  </div>
+                  <div className="flex justify-between font-serif font-bold text-brand-emerald text-base pt-3 border-t">
                     <span className="uppercase tracking-widest text-xs">Estimated total</span>
                     <span>₹{displayTotal.toLocaleString()}</span>
                   </div>
