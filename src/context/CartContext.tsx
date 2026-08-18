@@ -44,42 +44,24 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const trimmed = code.trim().toUpperCase();
       if (!trimmed) return false;
 
-      if (trimmed === "WELCOME5") {
-        const discount = Math.round(subtotal * 0.05 * 100) / 100;
-        setCouponCode("WELCOME5");
-        setDiscountAmount(discount);
-        toast.success("Coupon WELCOME5 applied: 5% off!");
-        return true;
-      }
-
       try {
-        const banners = await shopApi.promotionalBanners();
-        const cards = banners.cards || [];
-        const found = cards.find(
-          (c) => c.couponCode && c.couponCode.trim().toUpperCase() === trimmed
-        );
-
-        if (found) {
-          let pct = 0.05;
-          const match = trimmed.match(/\d+/);
-          if (match) {
-            const val = parseInt(match[0], 10);
-            if (val > 0 && val <= 100) pct = val / 100;
-          }
-          const discount = Math.round(subtotal * pct * 100) / 100;
-          setCouponCode(trimmed);
-          setDiscountAmount(discount);
-          toast.success(`Coupon ${trimmed} applied: ${pct * 100}% off!`);
+        const items = cart.map((i) => ({ slug: i.slug, productId: i.id, quantity: i.quantity }));
+        const pricing = await shopApi.calculateCart(items, trimmed);
+        if (pricing.appliedCoupon) {
+          setCouponCode(pricing.appliedCoupon.code);
+          setDiscountAmount(pricing.couponDiscount);
+          toast.success(`Coupon ${pricing.appliedCoupon.code} applied!`);
           return true;
+        } else {
+          toast.error("Coupon is not valid for this cart");
+          return false;
         }
-      } catch (err) {
-        console.error("Failed to validate coupon from banners:", err);
+      } catch (err: any) {
+        toast.error(err?.message || "Invalid coupon code.");
+        return false;
       }
-
-      toast.error("Invalid coupon code.");
-      return false;
     },
-    [subtotal]
+    [cart]
   );
 
   const removeCoupon = useCallback(() => {

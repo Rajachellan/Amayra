@@ -9,7 +9,7 @@ import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight, Tag } from "lucide-rea
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
-import { shopApi } from "@/lib/api/shop";
+import { shopApi, type CartPricingResponse } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 
@@ -37,6 +37,19 @@ export function CartDrawer() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState<string[]>(["WELCOME5"]);
   const [couponInput, setCouponInput] = useState("");
+  const [pricingResult, setPricingResult] = useState<CartPricingResponse | null>(null);
+
+  useEffect(() => {
+    if (!cart.length) {
+      setPricingResult(null);
+      return;
+    }
+    const items = cart.map((i) => ({ slug: i.slug, productId: i.id, quantity: i.quantity }));
+    shopApi
+      .calculateCart(items, couponCode || undefined)
+      .then(setPricingResult)
+      .catch((err) => console.error("Cart calculation error:", err));
+  }, [cart, couponCode]);
 
   useEffect(() => {
     if (!isCartOpen) return;
@@ -181,7 +194,22 @@ export function CartDrawer() {
               </div>
 
               {cart.length > 0 && (
-                <div className="px-5 pb-6">
+                <div className="px-5 pb-6 space-y-3">
+                  {pricingResult?.upsell?.available ? (
+                    <div className="bg-[#fdfbf7] border border-[#c4a064]/50 rounded-lg p-4 font-sans shadow-sm text-center space-y-1">
+                      <p className="text-xs font-extrabold text-[#1a3d2f] uppercase tracking-wider">
+                        🎉 Add ₹{pricingResult.upsell.amountToUnlock?.toLocaleString()} more to unlock {pricingResult.upsell.nextDiscountPercentage}% OFF!
+                      </p>
+                      <p className="text-[11.5px] text-gray-600 font-medium">
+                        You'll receive ₹{pricingResult.upsell.amountToUnlock?.toLocaleString()} worth of additional products for only{" "}
+                        <strong className="text-emerald-800 font-bold underline">
+                          ₹{pricingResult.upsell.additionalPayment?.toLocaleString()}
+                        </strong>{" "}
+                        more.
+                      </p>
+                    </div>
+                  ) : null}
+
                   <div className="bg-[#fdfbf7] border border-[#f0e6d2] rounded p-4 text-center space-y-4 font-sans shadow-sm select-none">
                     <p className="text-xs font-semibold tracking-wider text-[#1a3d2f] uppercase leading-relaxed">
                       {bannerText}
@@ -445,8 +473,32 @@ export function CartDrawer() {
             <div className="shrink-0 border-t border-gray-100 bg-white px-10 py-5 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.12)] space-y-2">
               <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
                 <span>Subtotal ({cart.reduce((acc, i) => acc + i.quantity, 0)} items)</span>
-                <span className="font-semibold text-gray-800">₹{subtotal.toLocaleString()}</span>
+                <span className="font-semibold text-gray-800">
+                  ₹{(pricingResult ? pricingResult.subtotal : subtotal).toLocaleString()}
+                </span>
               </div>
+
+              {pricingResult && pricingResult.automaticDiscount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
+                  <span>Slab Discount ({pricingResult.discountSlab?.discountPercentage}% Off)</span>
+                  <span>- ₹{pricingResult.automaticDiscount.toLocaleString()}</span>
+                </div>
+              )}
+
+              {pricingResult && pricingResult.couponDiscount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
+                  <span>Coupon Discount ({pricingResult.appliedCoupon?.code})</span>
+                  <span>- ₹{pricingResult.couponDiscount.toLocaleString()}</span>
+                </div>
+              )}
+
+              {!pricingResult && milestoneDiscount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
+                  <span>Steal Deal (10% Off)</span>
+                  <span>- ₹{milestoneDiscount.toLocaleString()}</span>
+                </div>
+              )}
+
               <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
                 <span>Delivery / Shipping</span>
                 {shipping > 0 ? (
@@ -455,21 +507,15 @@ export function CartDrawer() {
                   <span className="font-bold text-emerald-700">FREE</span>
                 )}
               </div>
-              {milestoneDiscount > 0 && (
-                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
-                  <span>Steal Deal (10% Off)</span>
-                  <span>- ₹{milestoneDiscount.toLocaleString()}</span>
-                </div>
-              )}
-              {discountAmount > 0 && (
-                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
-                  <span>Discount ({couponCode})</span>
-                  <span>- ₹{discountAmount.toLocaleString()}</span>
-                </div>
-              )}
+
               <div className="flex items-center justify-between font-serif uppercase border-t border-gray-100 pt-2">
-                <span className="text-sm tracking-[0.2em] text-brand-emerald">Estimated Total</span>
-                <span className="text-xl font-bold text-brand-emerald">₹{total.toLocaleString()}</span>
+                <div>
+                  <span className="text-sm tracking-[0.2em] text-brand-emerald">Estimated Total</span>
+                  <p className="text-[9.5px] text-gray-400 font-sans tracking-normal uppercase">GST Included</p>
+                </div>
+                <span className="text-xl font-bold text-brand-emerald">
+                  ₹{(pricingResult ? pricingResult.finalAmount + shipping : total).toLocaleString()}
+                </span>
               </div>
 
               {hasInsufficientStock && (

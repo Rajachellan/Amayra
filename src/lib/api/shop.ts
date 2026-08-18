@@ -109,6 +109,48 @@ export type PromotionsPayload = {
   cards: PromotionalBannerDoc[];
 };
 
+export type CartPricingResponse = {
+  subtotal: number;
+  automaticDiscount: number;
+  couponDiscount: number;
+  totalDiscount: number;
+  taxableValue: number;
+  gstRate: number;
+  gstAmount: number;
+  finalAmount: number;
+  currency: string;
+  appliedCoupon: {
+    code: string;
+    discountType: string;
+    discountValue: number;
+    discountAmount: number;
+  } | null;
+  discountSlab: {
+    minimumCartValue: number;
+    discountPercentage: number;
+  };
+  upsell: {
+    available: boolean;
+    nextThreshold?: number;
+    currentCartValue?: number;
+    amountToUnlock?: number;
+    currentDiscountPercentage?: number;
+    nextDiscountPercentage?: number;
+    currentPayable?: number;
+    newPayable?: number;
+    additionalPayment?: number;
+  };
+  items: Array<{
+    productId: string;
+    name: string;
+    slug: string;
+    unitPrice: number;
+    quantity: number;
+    lineTotal: number;
+    image?: string;
+  }>;
+};
+
 export type AnnouncementDoc = {
   _id: string;
   text: string;
@@ -289,4 +331,10 @@ export const shopApi = {
     const qs = sp.toString();
     return fetchJson<{ items: any[]; total: number }>(`/blogs${qs ? `?${qs}` : ""}`);
   },
+  calculateCart: (items: Array<{ slug?: string; productId?: string; quantity: number }>, couponCode?: string) =>
+    fetchJson<CartPricingResponse>("/cart/calculate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items, couponCode }),
+    }),
 };
