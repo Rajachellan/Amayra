@@ -130,7 +130,6 @@ export const SignatureBlocks = () => {
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-75 group-hover:opacity-90 transition-all duration-500" />
-
                     <div className="absolute inset-0 flex flex-col items-center justify-end p-8 text-center text-white z-10">
                       <span className="text-brand-gold text-xs tracking-[0.35em] font-bold uppercase mb-2 line-clamp-1">
                         {col.description || "Signature Collection"}
