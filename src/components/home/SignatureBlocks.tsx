@@ -65,7 +65,9 @@ export const SignatureBlocks = () => {
             <h2 className="text-brand-gold font-serif italic tracking-[0.3em] text-xl md:text-2xl mb-2">
               Our Legacy
             </h2>
-           
+            <h3 className="text-emerald-dark font-serif text-3xl md:text-5xl lg:text-6xl">
+              The Signature Collections
+            </h3>
             <div className="w-24 h-[1px] bg-brand-gold/40 mt-4 mx-auto md:mx-0" />
           </div>
 
@@ -129,9 +131,9 @@ export const SignatureBlocks = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-75 group-hover:opacity-90 transition-all duration-500" />
                     <div className="absolute inset-0 flex flex-col items-center justify-end p-8 text-center text-white z-10">
-                      <span className="text-brand-gold text-xs tracking-[0.35em] font-bold uppercase mb-2 line-clamp-1">
+                      {/* <span className="text-brand-gold text-xs tracking-[0.35em] font-bold uppercase mb-2 line-clamp-1">
                         {col.description || "Signature Collection"}
-                      </span>
+                      </span> */}
                       <h4 className="font-serif text-2xl md:text-3xl mb-6 tracking-wide line-clamp-2">
                         {col.name}
                       </h4>

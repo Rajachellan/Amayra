@@ -74,7 +74,7 @@ export const MoodCategories = () => {
                   </div>
 
                   <div className="absolute bottom-0 inset-x-0 p-5 pt-2 flex flex-col items-center text-center z-10 bg-pearl/90 backdrop-blur-sm">
-                    <h3 className="text-foreground text-xl font-serif mb-1 group-hover:text-champagne transition-colors duration-300">
+                    <h3 className="text-foreground text-xl font-serif mb-1 group-hover:text-champagne transition-colors duration-300 mb-4">
                       {occ.name}
                     </h3>
                     {/* <p className="text-[#6B6661] text-[10px] uppercase tracking-[0.15em] font-medium mb-3 line-clamp-1">
