@@ -180,16 +180,16 @@ export function SmallNavigationMenu() {
             </div>
 
             {/* Product Grid */}
-            <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 z-10">
+            <main className="relative w-full max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 z-10">
                 <div
-                    className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 lg:gap-10 transition-all duration-300 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+                    className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 transition-all duration-300 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
                         }`}
                     style={{ transition: "opacity 0.3s ease, transform 0.3s ease" }}
                 >
                     {visibleProducts.map((product, index) => (
                         <div
                             key={product.idStr}
-                            className="group cursor-pointer"
+                            className="group cursor-pointer flex flex-col"
                             onMouseEnter={() => setHoveredId(product.idStr)}
                             onMouseLeave={() => setHoveredId(null)}
                             style={{
@@ -199,29 +199,26 @@ export function SmallNavigationMenu() {
                         >
                             {/* Image Card */}
                             <div
-                                className="relative overflow-hidden rounded-xl mb-4 bg-white"
+                                className="relative overflow-hidden rounded-2xl mb-4 bg-white w-full aspect-square"
                                 style={{
-                                    aspectRatio: "1/1",
                                     boxShadow:
                                         hoveredId === product.idStr
-                                            ? "0 15px 40px rgba(0,0,0,0.06), 0 4px 10px rgba(0,0,0,0.03)"
-                                            : "0 4px 15px rgba(0,0,0,0.03)",
+                                            ? "0 20px 45px rgba(0,0,0,0.1), 0 4px 15px rgba(0,0,0,0.05)"
+                                            : "0 4px 18px rgba(0,0,0,0.04)",
                                     transition: "all 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
                                     transform: hoveredId === product.idStr ? "translateY(-4px)" : "translateY(0)",
                                 }}
                             >
-                                {/* Image */}
-                                <div className="relative w-full h-full p-2">
-                                    <div className="relative w-full h-full rounded-lg overflow-hidden">
-                                        <Image
-                                            src={product.image}
-                                            alt={product.name}
-                                            fill
-                                            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                            quality={75}
-                                            className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                        />
-                                    </div>
+                                {/* Full-Bleed Image */}
+                                <div className="relative w-full h-full overflow-hidden">
+                                    <Image
+                                        src={product.image}
+                                        alt={product.name}
+                                        fill
+                                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                                        quality={85}
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
                                 </div>
 
                                 {/* Shimmer overlay on hover */}
@@ -229,7 +226,7 @@ export function SmallNavigationMenu() {
                                     className="absolute inset-0 transition-opacity duration-500 pointer-events-none"
                                     style={{
                                         background:
-                                            "linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(201,168,76,0.08) 100%)",
+                                            "linear-gradient(135deg, rgba(255,255,255,0) 40%, rgba(201,168,76,0.1) 100%)",
                                         opacity: hoveredId === product.idStr ? 1 : 0,
                                     }}
                                 />
@@ -237,7 +234,7 @@ export function SmallNavigationMenu() {
                                 {/* Badge */}
                                 {product.badge && (
                                     <div
-                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] tracking-widest uppercase rounded-sm border border-[#d4af37]/40"
+                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] sm:text-xs tracking-widest uppercase rounded-sm border border-[#d4af37]/40 z-10"
                                         style={{
                                             background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
                                             letterSpacing: "0.14em",
@@ -255,18 +252,18 @@ export function SmallNavigationMenu() {
                                         e.stopPropagation();
                                         toggleWishlist(product.global);
                                     }}
-                                    className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full transition-all duration-300 z-10"
+                                    className="absolute top-4 right-4 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-300 z-10"
                                     style={{
-                                        background: "rgba(255,255,255,0.9)",
+                                        background: "rgba(255,255,255,0.92)",
                                         backdropFilter: "blur(4px)",
                                         opacity: 1,
                                         transform: "translateY(0)",
-                                        boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+                                        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
                                     }}
                                 >
                                     <svg
-                                        width="16"
-                                        height="16"
+                                        width="17"
+                                        height="17"
                                         viewBox="0 0 24 24"
                                         fill={isInWishlist(product.global.id) ? "#c9a84c" : "none"}
                                         stroke="#c9a84c"
@@ -278,14 +275,14 @@ export function SmallNavigationMenu() {
                             </div>
 
                             {/* Product Info */}
-                            <div className="px-1 text-center">
+                            <div className="px-1 text-center flex flex-col flex-grow justify-between">
                                 <Link href={`/product/${product.slug}`}>
                                     <h3
-                                        className="text-sm sm:text-base leading-snug mb-2 transition-colors duration-300"
+                                        className="text-base sm:text-lg md:text-xl capitalize leading-snug mb-2 transition-colors duration-300 line-clamp-1"
                                         style={{
                                             color: hoveredId === product.idStr ? "#c9a84c" : "#3a2a1a",
                                             fontFamily: "'Cormorant Garamond', 'Georgia', serif",
-                                            fontWeight: 500,
+                                            fontWeight: 600,
                                             letterSpacing: "0.01em",
                                         }}
                                     >
@@ -293,33 +290,33 @@ export function SmallNavigationMenu() {
                                     </h3>
                                 </Link>
 
-                                <div className="flex flex-col items-center justify-center gap-2">
+                                <div className="flex flex-col items-center justify-center gap-2.5 mt-auto">
                                     {/* Price Hierarchy Section */}
                                     <div className="flex items-baseline justify-center gap-2 mb-1">
                                         {product.oldPrice && (
                                             <span
-                                                className="text-xs sm:text-sm font-medium line-through"
-                                                style={{ color: "#1a3d2f", opacity: 0.85 }}
+                                                className="text-sm sm:text-base font-medium line-through"
+                                                style={{ color: "#1a3d2f", opacity: 0.75 }}
                                             >
                                                 {product.oldPrice}
                                             </span>
                                         )}
                                         <span
-                                            className="text-base sm:text-lg font-bold tracking-tight"
+                                            className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight"
                                             style={{ color: "#d4af37" }}
                                         >
                                             {product.price}
                                         </span>
                                     </div>
 
-                                    {/* Dark Green Add to Cart Button with White Text and Modern Hover Effect */}
+                                    {/* Dark Green Add to Cart Button with White Text */}
                                     <button
                                         onClick={(e) => {
                                             e.preventDefault();
                                             e.stopPropagation();
                                             addToCart(product.global);
                                         }}
-                                        className="relative w-full group/btn rounded-xl flex items-center justify-center py-2.5 px-4 text-[11px] sm:text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0"
+                                        className="relative w-full group/btn rounded-xl flex items-center justify-center py-3 px-5 text-xs sm:text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0"
                                         style={{
                                             background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
                                             color: "#ffffff",
@@ -331,8 +328,8 @@ export function SmallNavigationMenu() {
                                         />
 
                                         <svg
-                                            width="14"
-                                            height="14"
+                                            width="15"
+                                            height="15"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"

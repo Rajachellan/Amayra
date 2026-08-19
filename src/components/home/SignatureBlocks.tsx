@@ -57,7 +57,7 @@ export const SignatureBlocks = () => {
   return (
     <section className="py-12 md:py-16 overflow-hidden relative" style={{ backgroundColor: "var(--bg-sage-light)" }}>
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
-      <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1450px] relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header with Title and Navigation Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
@@ -138,7 +138,7 @@ export const SignatureBlocks = () => {
                         {col.name}
                       </h4>
                       <Link href={`/category/all?collection=${encodeURIComponent(col.slug)}`}>
-                        <Button variant="outline" className="opacity-100 translate-y-0 transition-all duration-300 border-white/40 text-white hover:bg-[#c9a84c] hover:text-[#0B2516] hover:border-[#c9a84c]">
+                        <Button variant="outline" className="opacity-100 translate-y-0 transition-all duration-300 border-white/40 text-white hover:bg-[#c9a84c] hover:text-white hover:border-[#c9a84c]">
                           VIEW COLLECTION
                         </Button>
                       </Link>

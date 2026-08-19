@@ -152,36 +152,36 @@ export const PreviewBanner = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const slide = sliders[current];
+    if (slide?.dots?.length) {
+      setActiveDot(slide.dots[0].id);
+      setActiveProduct(slide.dots[0].product);
+    } else {
+      setActiveDot(null);
+      setActiveProduct(null);
+    }
+  }, [current, sliders]);
+
   const slide = sliders[current] ?? sliders[0];
 
   if (!slide) return null;
 
   const prev = () => {
-    setActiveProduct(null);
-    setActiveDot(null);
     setCurrent((c) => (c - 1 + sliders.length) % sliders.length);
   };
 
   const next = () => {
-    setActiveProduct(null);
-    setActiveDot(null);
     setCurrent((c) => (c + 1) % sliders.length);
   };
 
   const goTo = (i: number) => {
-    setActiveProduct(null);
-    setActiveDot(null);
     setCurrent(i);
   };
 
   const handleDot = (dot: Dot) => {
-    if (activeDot === dot.id) {
-      setActiveDot(null);
-      setActiveProduct(null);
-    } else {
-      setActiveDot(dot.id);
-      setActiveProduct(dot.product);
-    }
+    setActiveDot(dot.id);
+    setActiveProduct(dot.product);
   };
 
   return (
