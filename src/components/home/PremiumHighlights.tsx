@@ -60,7 +60,7 @@ const HIGHLIGHTS = [
 
 export const PremiumHighlights = () => {
   return (
-    <section className="relative w-full overflow-hidden py-14 md:py-18">
+    <section className="relative w-full bg-[#f6ead9] overflow-hidden py-14 md:py-18">
       {/* Soft edge fading */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 md:w-32 bg-gradient-to-r from-background to-transparent" />
 

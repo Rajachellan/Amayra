@@ -77,9 +77,9 @@ export const MoodCategories = () => {
                     <h3 className="text-foreground text-xl font-serif mb-1 group-hover:text-champagne transition-colors duration-300">
                       {occ.name}
                     </h3>
-                    <p className="text-[#6B6661] text-[10px] uppercase tracking-[0.15em] font-medium mb-3 line-clamp-1">
+                    {/* <p className="text-[#6B6661] text-[10px] uppercase tracking-[0.15em] font-medium mb-3 line-clamp-1">
                       {occ.description || "Curated collection"}
-                    </p>
+                    </p> */}
                     <span className="relative group/btn overflow-hidden w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] uppercase tracking-[0.2em] font-bold shadow-md transition-all duration-300 group-hover:shadow-[0_6px_20px_rgba(26,61,47,0.4)] flex items-center justify-center">
                       <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover:translate-x-full" />
                       <span className="relative z-10 font-bold text-white">Explore More</span>
