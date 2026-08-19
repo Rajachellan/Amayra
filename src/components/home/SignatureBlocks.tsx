@@ -110,7 +110,7 @@ export const SignatureBlocks = () => {
               {collections.map((col, idx) => (
                 <div
                   key={col._id}
-                  className="shrink-0"
+                  className="shrink-0 group flex flex-col"
                   style={{
                     width: `calc((100% - ${(itemsToShow - 1) * 24}px) / ${itemsToShow})`,
                   }}
@@ -120,27 +120,31 @@ export const SignatureBlocks = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.05 }}
-                    className="relative group h-[420px] overflow-hidden rounded-2xl shadow-md border border-stone-200/60"
+                    className="flex flex-col h-full"
                   >
-                    <Image
-                      src={resolveMediaUrl(col.image)}
-                      alt={col.name}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-75 group-hover:opacity-90 transition-all duration-500" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-end p-8 text-center text-white z-10">
-                      {/* <span className="text-brand-gold text-xs tracking-[0.35em] font-bold uppercase mb-2 line-clamp-1">
-                        {col.description || "Signature Collection"}
-                      </span> */}
-                      <h4 className="font-serif text-2xl md:text-3xl mb-6 tracking-wide line-clamp-2">
+                    {/* Image Card */}
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-md border border-stone-200/60 bg-white">
+                      <Image
+                        src={resolveMediaUrl(col.image)}
+                        alt={col.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </div>
+
+                    {/* Title & Button Below Image */}
+                    <div className="pt-4 flex flex-col items-center text-center flex-grow justify-between">
+                      <h4 className="font-serif text-xl sm:text-2xl text-[#1a3d2f] font-semibold tracking-wide mb-3 line-clamp-1">
                         {col.name}
                       </h4>
-                      <Link href={`/category/all?collection=${encodeURIComponent(col.slug)}`}>
-                        <Button variant="outline" className="opacity-100 translate-y-0 transition-all duration-300 border-white/40 text-white hover:bg-[#c9a84c] hover:text-white hover:border-[#c9a84c]">
-                          VIEW COLLECTION
-                        </Button>
+                      <Link href={`/category/all?collection=${encodeURIComponent(col.slug)}`} className="w-full">
+                        <button
+                          type="button"
+                          className="relative w-full rounded-xl flex items-center justify-center py-3 px-4 text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white"
+                        >
+                          <span className="relative z-10 font-bold text-white">View Collection</span>
+                        </button>
                       </Link>
                     </div>
                   </motion.div>
