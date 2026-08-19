@@ -1,84 +1,88 @@
 "use client";
 
 import React from "react";
-import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
-import { Gift, Sparkles, BadgeCheck, Lock, Globe, RefreshCcw } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Heart,
+  Sparkles,
+  HandCoins,
+  RotateCcw,
+  CreditCard,
+  Leaf,
+} from "lucide-react";
 
 const features = [
   {
-    icon: Gift,
-    title: "PREMIUM PACKAGING",
-    desc: "Luxury packaging for every order.",
+    icon: Heart,
+    title: "CURATED WITH LOVE",
+    desc: "Thoughtfully selected pieces created to celebrate warmth, memory, and womanhood.",
   },
   {
     icon: Sparkles,
-    title: "HANDCRAFTED JEWELLERY",
-    desc: "Crafted by skilled artisans.",
+    title: "TIMELESS DESIGNS",
+    desc: "Exquisite imitation jewellery that balances royal heritage with modern elegance.",
   },
   {
-    icon: BadgeCheck,
-    title: "CERTIFIED QUALITY",
-    desc: "Authentic and quality assured.",
+    icon: HandCoins,
+    title: "FLEXIBLE PAYMENTS",
+    desc: "Enjoy seamless shopping with partial cash on delivery and easy checkout options.",
   },
   {
-    icon: Lock,
-    title: "SECURE PAYMENTS",
-    desc: "100% safe and encrypted checkout.",
+    icon: RotateCcw,
+    title: "EASY 5-DAY RETURNS",
+    desc: "Shop with peace of mind backed by our hassle-free return and exchange policy.",
   },
   {
-    icon: Globe,
-    title: "WORLDWIDE SHIPPING",
-    desc: "Fast international delivery.",
+    icon: CreditCard,
+    title: "SECURE TRANSACTIONS",
+    desc: "Encrypted global standard security for all your credit, debit, and digital payments.",
   },
   {
-    icon: RefreshCcw,
-    title: "EASY RETURNS",
-    desc: "Simple and hassle-free returns.",
+    icon: Leaf,
+    title: "10% PURPOSE PLEDGE",
+    desc: "At least 10% of our profits directly empower women's education and entrepreneurship.",
   },
 ];
 
 export const WhyChooseUs = () => {
   return (
-    <section 
-      className="relative overflow-hidden py-[100px] border-y border-black/5" 
-      style={{ backgroundColor: '#FAF8F3' }}
-    >
-      {/* <BotanicalDecoration className="text-emerald-900"  position="top-left" /> */}
-
-      <div className="container relative z-10 mx-auto px-6 max-w-[1400px]">
-        <div className="text-center mb-20">
-          <h2 className="font-serif text-3xl md:text-4xl text-[#2B2B2B]">
+    <section className="relative overflow-hidden py-24 md:py-32 bg-[#FAF8F3] border-y border-stone-200">
+      <div className="container relative z-10 mx-auto px-6 max-w-7xl">
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#C4A064] mb-3 block">
+            The Mairii Promise
+          </span>
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#2B2B2B] mb-4">
             Why Choose Mairii
           </h2>
+          <div className="w-16 h-[1px] bg-[#C4A064] mx-auto" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((item, idx) => {
             const Icon = item.icon;
+
             return (
-              <div 
-                key={idx} 
-                className="group flex flex-col items-center text-center cursor-default"
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className="group flex flex-col items-center text-center p-8 rounded-xl bg-white border border-[#C4A064]/15 hover:border-[#C4A064]/40 shadow-sm hover:shadow-xl hover:shadow-[#C4A064]/10 transition-all duration-300"
               >
-                {/* Icon wrapper with hover scale and color change */}
-                <div 
-                  className="mb-[20px] text-[#2B2B2B] transition-all duration-300 ease-out group-hover:scale-[1.08] group-hover:text-[#C4A064]"
-                >
-                  <Icon strokeWidth={1} className="w-10 h-10" />
+                <div className="w-16 h-16 rounded-full bg-[#FAF8F3] group-hover:bg-[#C4A064] text-[#C4A064] group-hover:text-white flex items-center justify-center mb-6 transition-all duration-300 shadow-inner">
+                  <Icon strokeWidth={1.5} className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" />
                 </div>
-                
-                {/* Title */}
-                <h4 
-                  className="text-[16px] uppercase tracking-[0.1em] font-bold mb-[10px] text-[#2B2B2B] transition-colors duration-300 group-hover:text-[#C4A064]"
-                >
+
+                <h4 className="text-sm font-bold uppercase tracking-[0.15em] mb-3 text-[#2B2B2B] group-hover:text-[#A37F43] transition-colors">
                   {item.title}
                 </h4>
-                
-                {/* Description */}
-                <p className="text-md font-light text-[#555555] leading-relaxed max-w-[180px]">
+
+                <p className="text-xs font-light text-[#666666] leading-relaxed max-w-xs">
                   {item.desc}
                 </p>
-              </div>
+              </motion.div>
             );
           })}
         </div>

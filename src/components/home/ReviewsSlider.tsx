@@ -9,8 +9,8 @@ import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 const REVIEWS = [
   {
     id: 1,
-    name: "Aisha Sharma",
-    location: "Mumbai, India",
+    name: "Kavitha",
+    location: "Chennai, India",
     image:
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -19,8 +19,8 @@ const REVIEWS = [
   },
   {
     id: 2,
-    name: "Elena Rodriguez",
-    location: "Dubai, UAE",
+    name: "Ganesh",
+    location: "Chennai, India",
     image:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -29,8 +29,8 @@ const REVIEWS = [
   },
   {
     id: 3,
-    name: "Sarah Jenkins",
-    location: "London, UK",
+    name: "Devi",
+    location:"Coimbatore, India",
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -39,8 +39,8 @@ const REVIEWS = [
   },
   {
     id: 4,
-    name: "Priya Patel",
-    location: "New Delhi, India",
+    name: "Priya ",
+    location: "Madurai,India",
     image:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -49,8 +49,8 @@ const REVIEWS = [
   },
   {
     id: 5,
-    name: "Victoria Sterling",
-    location: "New York, USA",
+    name:"Sangeetha",
+    location: "Pudukottai,India",
     image:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -59,7 +59,7 @@ const REVIEWS = [
   },
   {
     id: 6,
-    name: "Ananya Verma",
+    name: "Ananya",
     location: "Bangalore, India",
     image:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=240&auto=format&fit=crop",
@@ -229,7 +229,7 @@ export const ReviewsSlider = () => {
                   {/* Client Profile Footer */}
                   <div className="flex items-center gap-4 pt-5 border-t border-stone-100">
                     {/* Avatar with Double Gold Frame */}
-                    <div className="relative w-13 h-13 rounded-full overflow-hidden shrink-0 border-2 border-[#d4af37] p-0.5 shadow-sm">
+                    {/* <div className="relative w-13 h-13 rounded-full overflow-hidden shrink-0 border-2 border-[#d4af37] p-0.5 shadow-sm">
                       <div className="relative w-full h-full rounded-full overflow-hidden">
                         <Image
                           src={review.image}
@@ -240,7 +240,7 @@ export const ReviewsSlider = () => {
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div>
                       <h4 className="font-serif text-base font-bold text-[#1a3d2f] leading-snug">

@@ -87,21 +87,21 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <div className="">
-           <Link href="/" className="relative group block">
-              <Image
-                src="/images/Media__5_-removebg-preview.png"
-                alt="Mairii Logo"
-                width={180}
-                height={70}
-                className={`object-contain py-5 transition-all rounded-full duration-500 `}
-                priority
-              />
-            </Link>
+              <Link href="/" className="relative group block">
+                <Image
+                  src="/images/Media__5_-removebg-preview.png"
+                  alt="Mairii Logo"
+                  width={180}
+                  height={70}
+                  className={`object-contain py-5 transition-all rounded-full duration-500 `}
+                  priority
+                />
+              </Link>
             </div>
             <p
               className="text-xs leading-[1.9] mb-8 text-white/70"
             >
-              Crafting stories of elegance since 1990. We specialize in
+              We specialize in
               handcrafted diamond and gold jewellery that speaks to the soul.
             </p>
 
@@ -187,18 +187,30 @@ export const Footer = () => {
 
             <ul className="space-y-4 font-medium">
               {[
-                "Gold Jewellery",
-                "Diamond Collection",
-                "Bridal Couture",
-                "Traditional Gems",
-                "Pure Silver",
+                {
+                  name: "Virasat",
+                  href: "/category/all?collection=virasat",
+                },
+                {
+                  name: "Pehla Tohfa",
+                  href: "/category/all?collection=pehla-tohfa",
+                },
+                {
+                  name: "AAnchal",
+                  href: "/category/all?collection=aanchal",
+                },
+                {
+                  name: "Jashn Noor",
+                  href: "/category/all?collection=Jashn-noor",
+                },
+
               ].map((item) => (
-                <li key={item}>
+                <li key={item.name}>
                   <Link
-                    href="#"
+                    href={item.href}
                     className="text-xs uppercase tracking-widest text-white/70 hover:text-brand-gold transition-colors"
                   >
-                    {item}
+                    {item.name}
                   </Link>
                 </li>
               ))}
@@ -215,7 +227,7 @@ export const Footer = () => {
 
             <ul className="space-y-4 font-medium">
               {[
-                { name: "Our Story", href: "/our-story" },
+                { name: "Our Story", href: "/about" },
                 { name: "Blogs", href: "/blog" },
                 { name: "Contact", href: "/contact" },
                 { name: "Shipping & Returns", href: "/shipping-returns" },
@@ -247,23 +259,29 @@ export const Footer = () => {
               <li className="flex items-start space-x-3">
                 <MapPin className="w-4 h-4 mt-0.5 text-brand-gold" />
                 <span className="text-sm text-white/70">
-                  123 Diamond Avenue, Jewellery Park,
-                  <br /> Mumbai, MH – 400001
+                  Door No F/22,F Block 2nd Main Road,
+                  <br /> AnnaNagar East,Chennai - 600 102,
                 </span>
               </li>
 
               <li className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-brand-gold" />
-                <span className="text-sm text-white/70">
-                  +91 98765 43210
-                </span>
+                <a
+                  href="tel:+919876543210"
+                  className="text-white/70 hover:text-brand-gold transition-colors"
+                >
+                  +91 9566571655
+                </a>
               </li>
 
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-brand-gold" />
-                <span className="text-sm text-white/70">
-                  concierge@Mairii.com
-                </span>
+                <a
+                  href="mailto:  Connectconnect@mairiijewels.com"
+                  className="text-white/70 hover:text-brand-gold transition-colors"
+                >
+                  Connectconnect@mairiijewels.com
+                </a>
               </li>
             </ul>
           </div>
@@ -271,19 +289,19 @@ export const Footer = () => {
 
         {/* Bottom */}
         <div className="flex items-center justify-center py-7">
-  <p className="w-full text-center text-[10px] text-white/50">
-    © 2026 Mairii. All Rights Reserved. Designed by{" "}
-    <Link
-      target="_blank"
-      href="https://rankraze.com"
-      className="hover:text-brand-gold transition-colors"
-    >
-      @Rankraze
-    </Link>
-  </p>
+          <p className="w-full text-center text-[10px] text-white/50">
+            © 2026 Mairii. All Rights Reserved. Designed by{" "}
+            <Link
+              target="_blank"
+              href="https://rankraze.com"
+              className="hover:text-brand-gold transition-colors"
+            >
+              @Rankraze
+            </Link>
+          </p>
 
-  
-</div>
+
+        </div>
       </div>
     </footer>
   );

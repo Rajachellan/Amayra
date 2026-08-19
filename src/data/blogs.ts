@@ -1,4 +1,4 @@
-﻿export interface BlogPost {
+export interface BlogPost {
   id: string;
   title: string;
   slug: string;
@@ -11,6 +11,42 @@
 }
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    id: "0",
+    title: "For You, Ma: The Origin & Vision Behind MaiRii",
+    slug: "for-you-ma-mairii-origin-story",
+    excerpt: "Every woman carries a story in her jewellery box — MaiRii begins with ours. Discover Bandana's quiet promise and our 10% pledge for women's empowerment.",
+    image: "https://images.unsplash.com/photo-1573408302185-9127ff5f6133?q=80&w=1000&auto=format&fit=crop",
+    date: "August 18, 2026",
+    category: "Origin & Vision",
+    readTime: "4 min read",
+    content: `
+      <p>Every woman carries a story in her jewellery box — MaiRii begins with ours.</p>
+      
+      <p>Long before it was a brand, it was a little girl named Bandana, watching her mother get ready, captivated by the glint of her bangles and her smile that reflected beauty and strength in just one glance.</p>
+      
+      <p>That fascination never left her — it grew into a quiet promise: one day, she'd build something that let every woman feel that same wonder.</p>
+      
+      <p>It started as MaiRii, "mother" in Punjabi — her own quiet way of saying <em>For You, Ma</em>.</p>
+      
+      <p>The name carries that inheritance, rooted in memories: love passed down, one generation to the next.</p>
+      
+      <blockquote>
+        "MaiRii is not just a jewellery brand. It is my way of telling every woman who wears it: You deserve to shine, exactly as you are, at every age and every stage of your life."
+      </blockquote>
+
+      <h3>Redefining Accessible Elegance</h3>
+      <p>MaiRii isn't just jewellery. It's the ritual of getting ready, the small joy of catching your reflection and loving yourself. We make that joy accessible — beautifully made imitation jewellery that doesn't ask you to choose between affordability and elegance.</p>
+      
+      <p>What started as one woman's love for her mother is now an invitation to everyone: come, enjoy a little of that magic for yourself. Because at MaiRii, we celebrate our legacy along with the expression of our unique identity.</p>
+      
+      <h3>Our 10% Social Impact Pledge</h3>
+      <p>Every woman carries a story — of strength quietly worn, dreams quietly set aside, and resilience that often goes unnoticed by the world, and sometimes even by herself.</p>
+      
+      <p>Through MaiRii, we create accessible jewellery and meaningful opportunities for women to earn, grow, and feel valued. We commit at least 10% of our profits towards initiatives that support women's education, entrepreneurship, skill development, and financial well-being.</p>
+    `,
+  },
+
   {
     id: "1",
     title: "The Timeless Allure of Heritage Kundan Artistry",

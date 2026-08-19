@@ -76,7 +76,7 @@ export const Craftsmanship = () => {
               {[
                 {
                   title: "Meticulous Selection",
-                  desc: "Carefully sourced gemstones with unmatched brilliance and authenticity."
+                  desc: "Carefully curated collection of unique yet evergreen designs"
                 },
                 {
                   title: "Heritage Crafting",
@@ -115,13 +115,13 @@ export const Craftsmanship = () => {
             <div>
               <button className="relative px-6 py-3 text-xs uppercase tracking-widest font-semibold text-gray-900 overflow-hidden group">
 
-                <span className="relative z-10">Explore Our Process</span>
+                <span className="relative z-10">Crafted with passion curated with love</span>
 
                 {/* Animated gold underline */}
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-yellow-500 transform scale-x-0 group-hover:scale-x-100 transition origin-left"></span>
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-yellow-500 transform scale-x-0 scale-x-100 transition origin-left"></span>
 
                 {/* Soft glow */}
-                <span className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-yellow-300 blur-xl transition"></span>
+                <span className="absolute inset-0 opacity-0 opacity-10 bg-yellow-300 blur-xl transition"></span>
               </button>
             </div>
 

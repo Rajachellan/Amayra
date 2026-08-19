@@ -22,51 +22,51 @@ const faqs = [
   {
     id: 1,
     category: "Materials & Craftsmanship",
-    question: "What materials are used in your jewelry collections?",
+    question: "How do i lace an order?",
     answer:
-      "Every piece in our atelier is crafted from the finest materials — 18k and 22k gold, platinum, sterling silver, and ethically sourced gemstones including diamonds, rubies, sapphires, and emeralds. Each stone is individually hand-selected by our master gemologists to ensure exceptional brilliance and clarity.",
+      "Simply add your favourite pieces to the cart and check out using any of our accepted payment methods. You'll receive an order confirmation via email and SMS right away.",
   },
   {
     id: 2,
     category: "Authenticity",
-    question: "How do I verify the authenticity of my piece?",
+    question: "How do I track my order?",
     answer:
-      "All our jewelry comes with a Certificate of Authenticity, hallmarked and engraved with unique identification codes. Each piece undergoes rigorous third-party certification from internationally recognized gemological laboratories such as GIA or IGI, guaranteeing the provenance and quality of every stone.",
+      "Once shipped, you'll receive a tracking link via email, SMS, and WhatsApp. You can also track it anytime from 'My Orders' on our website.",
   },
   {
     id: 3,
     category: "Custom Orders",
-    question: "Can I request a bespoke or custom jewelry design?",
+    question: "Do I need an account to shop with MaiRii??",
     answer:
-      "Absolutely. Our bespoke service offers a private consultation with our master jewelers who will bring your vision to life. From initial sketches to the final setting, the entire process is handled with utmost discretion and artistry. Custom orders typically require 6–10 weeks and begin with a complimentary design session.",
+      "You can check out as a guest, but creating an account lets you track orders, save addresses, and view your order history.",
   },
   {
     id: 4,
     category: "Care & Maintenance",
-    question: "How should I care for my fine jewelry?",
+    question: "I was charged but didn't get an order confirmation. What do I do?",
     answer:
-      "We recommend storing each piece individually in our signature velvet-lined pouches, away from direct sunlight and moisture. For routine cleaning, use a soft brush with warm soapy water. Avoid exposure to harsh chemicals, perfumes, and ultrasonic cleaners for gemstone-set pieces. We offer complimentary annual cleaning and inspection at our boutiques.",
+      "Please write to us at connectconnect@mairiijewels.com with your payment reference — we'll verify and resolve it within 24–48 hours.",
   },
   {
     id: 5,
-    category: "Shipping & Delivery",
-    question: "How is my order packaged and delivered?",
+    category: "Is MaiRii jewellery real gold or silver?",
+    question: "Is MaiRii jewellery real gold or silver?",
     answer:
-      "Your jewelry arrives in our signature ivory and gold gift box, nestled in hand-stitched velvet, accompanied by your certificate and a personal note. All shipments are fully insured and dispatched via secure, signature-required courier. Complimentary white-glove delivery is available for orders above ₹1,00,000.",
+      "Unless specifically described as gold-plated, silver, or certified, MaiRii pieces are artificial/imitation fashion jewellery, crafted to look beautiful and last with proper care.",
   },
   {
     id: 6,
-    category: "Returns & Resizing",
-    question: "What is your return and resizing policy?",
+    category: "How do I take care of my jewellery?",
+    question: "How do I take care of my jewellery?",
     answer:
-      "We offer a 30-day return policy for unworn pieces in their original condition. Ring resizing is complimentary within the first year of purchase. Our dedicated concierge team ensures every concern is addressed with the care and attention your investment deserves.",
+      "Keep it away from water, perfume, and direct sunlight, and store it in the pouch provided. This helps preserve the plating and finish for longer.",
   },
   {
     id: 7,
     category: "Sustainability",
-    question: "Are your gemstones ethically sourced?",
+    question: "Will the plating fade over time?",
     answer:
-      "Yes. We are committed to responsible luxury. All our diamonds are conflict-free, compliant with the Kimberley Process, and we work exclusively with mining partners who uphold fair trade and environmental standards. Our gold is recycled or sourced from certified responsible mines, reflecting our pledge to a sustainable future for fine jewelry.",
+      "With normal wear and proper care, plating is designed to last, but like all fashion jewellery, it may show natural wear over extended use — this isn't a manufacturing defect.",
   },
 ];
 
@@ -157,11 +157,10 @@ const FAQItem = ({
 
       {/* Toggle icon */}
       <div
-        className={`shrink-0 w-7 h-7 rounded-full border flex items-center justify-center mt-0.5 transition-all duration-300 ${
-          isOpen
+        className={`shrink-0 w-7 h-7 rounded-full border flex items-center justify-center mt-0.5 transition-all duration-300 ${isOpen
             ? "bg-amber-500 border-amber-500"
             : "bg-transparent border-stone-300 group-hover:border-amber-400"
-        }`}
+          }`}
       >
         <svg
           width="11"
@@ -256,14 +255,14 @@ export default function FAQ() {
                 style={{ fontFamily: "var(--font-playfair)", fontWeight: 400 }}
               >
                 <span className="text-stone-800">Frequently</span>
-              
+
                 <span className="shimmer-gold italic">Asked</span>
-                
+
                 <span className="text-stone-800">Questions</span>
               </h1>
             </div>
 
-          
+
           </div>
 
           {/* ── Two-column layout on large screens ── */}
@@ -281,7 +280,7 @@ export default function FAQ() {
                   onToggle={() => toggle(faq.id)}
                   index={i}
                 />
-              ))}                     
+              ))}
             </div>
           </div>
 

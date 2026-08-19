@@ -21,8 +21,8 @@ type Slide = {
 const FALLBACK_SLIDES: Slide[] = [
   {
     id: "fallback-1",
-    image: "/images/optimized/banner-9.webp",
-    mobileImage: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?q=80&w=2000&auto=format&fit=crop",
+    image: "",
+    mobileImage: "",
     title: "",
     tagline: "",
     cta: "",

@@ -207,31 +207,35 @@ function ProductDetail() {
     <main className="min-h-screen bg-[#faf9f7]">
       <Navbar />
 
-      {/* Breadcrumbs — high contrast, always visible */}
-      <nav
-        aria-label="Breadcrumb"
-        className="container mx-auto px-6 pb-4 pt-28 md:pt-32"
-      >
-        <ol className="flex flex-wrap items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-600 md:text-xs">
-          <li>
-            <Link href="/" className="transition-colors hover:text-neutral-900">
-              Home
-            </Link>
-          </li>
-          <li aria-hidden className="text-neutral-400">
-            <ChevronRight className="h-3.5 w-3.5" />
-          </li>
-          <li>
-            <Link href={catHref} className="transition-colors hover:text-neutral-900">
-              {product.category}
-            </Link>
-          </li>
-          <li aria-hidden className="text-neutral-400">
-            <ChevronRight className="h-3.5 w-3.5" />
-          </li>
-          <li className="max-w-[200px] truncate text-neutral-900 md:max-w-none">{product.name}</li>
-        </ol>
-      </nav>
+      {/* Breadcrumbs — luxury styling */}
+      <div className="bg-[#FAF8F3] border-b border-[#C4A064]/20 pt-28 md:pt-32 pb-4 mb-8">
+        <nav
+          aria-label="Breadcrumb"
+          className="container mx-auto px-6"
+        >
+          <ol className="flex flex-wrap items-center gap-2 text-[10px] font-bold uppercase tracking-[0.25em] text-[#666666]">
+            <li>
+              <Link href="/" className="transition-colors hover:text-[#C4A064]">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden className="text-[#C4A064]/40">
+              <ChevronRight className="h-3.5 h-3.5 text-[#C4A064]" />
+            </li>
+            <li>
+              <Link href={catHref} className="transition-colors hover:text-[#C4A064]">
+                {product.category || "Jewellery"}
+              </Link>
+            </li>
+            <li aria-hidden className="text-[#C4A064]/40">
+              <ChevronRight className="h-3.5 h-3.5 text-[#C4A064]" />
+            </li>
+            <li className="max-w-[220px] truncate text-[#2B2B2B] font-serif capitalize md:max-w-none">
+              {product.name}
+            </li>
+          </ol>
+        </nav>
+      </div>
 
       <section className="pb-16 md:pb-20">
         <div className="container mx-auto px-6">

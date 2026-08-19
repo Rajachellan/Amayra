@@ -9,7 +9,7 @@ import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
-import { ChevronUp, ChevronDown, SlidersHorizontal, X } from "lucide-react";
+import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -39,6 +39,20 @@ const CATEGORY_BANNERS: Record<string, any> = {
   chains: chainImg,
   pendants: pendantImg,
   all: bannerImage,
+};
+
+const CATEGORY_DESCRIPTIONS: Record<string, string> = {
+  silver: "Pure sterling 925 silver creations, hand-carved with timeless perfection and contemporary charm.",
+  earrings: "From intricate jhumkas to statement Kundan drops — handcrafted to frame every expression of beauty.",
+  necklaces: "Handcrafted chokers, temple cascades, and regal Kundan pieces woven to celebrate your unique identity.",
+  bangles: "Traditional kadas, glass-fitted bangles, and embellished wristwear reflecting light in every gesture.",
+  rings: "Solitaires, cocktail rings, and handcrafted bands designed to make every glance unforgettable.",
+  bridal: "Grand wedding sets and royal trousseau heirlooms created for your most sacred moments.",
+  "nose-pins": "Delicate septums, classic Nathis, and embellished nose pins capturing ethnic grace.",
+  mangalsutras: "Sacred bonds reinvented — modern minimalist chains and classic black-beaded heritage sets.",
+  chains: "Fine gold and silver layering chains crafted with delicate filigree and smooth polish.",
+  pendants: "Celestial charms and gemstone pendants designed to rest gracefully near your heart.",
+  all: "Explore the full spectrum of MaiRii imitation jewellery — where affordability meets timeless elegance.",
 };
 
 const COLORS = ["Gold", "Silver", "Rose Gold", "Antique"];
@@ -561,73 +575,66 @@ function CategoryContent() {
     <>
       <Navbar />
 
-      <section className="relative h-[55vh] min-h-[420px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
+        {/* Background Image - Covers 70% of Screen Height */}
         <motion.div
-          initial={{ scale: 1.15 }}
+          initial={{ scale: 1.05 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute inset-0 z-0"
         >
           <Image
             src={heroImage}
             alt="Collection Background"
             fill
-            className="object-cover brightness-[0.65]"
+            className="object-cover object-[center_35%] brightness-[0.92]"
             priority
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-black/30 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-10" />
-        <div className="absolute inset-0 bg-brand-emerald/10 mix-blend-multiply z-10" />
+        {/* Soft Luxury Overlays - Subtle to Show Jewellery Clearly */}
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/50 via-stone-950/15 to-stone-950/70 z-10" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
 
+        {/* Content */}
         <div className="container mx-auto px-6 relative z-20 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="max-w-5xl mx-auto"
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="max-w-3xl mx-auto space-y-5"
           >
-            <div className="flex items-center justify-center space-x-4 mb-6">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: 40 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="h-px bg-champagne/60"
-              />
-              <span className="text-champagne text-[11px] uppercase tracking-[0.6em] font-bold">
-                The Mairii Boutique
+            {/* Tag Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C4A064]/25 border border-[#C4A064]/40 backdrop-blur-md shadow-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span className="text-amber-300 uppercase tracking-[0.4em] text-[10px] font-bold">
+                The MaiRii Boutique
               </span>
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: 40 }}
-                transition={{ delay: 0.5, duration: 1 }}
-                className="h-px bg-champagne/60"
-              />
             </div>
 
-            <h1 className="text-4xl md:text-7xl font-serif text-white mb-6 tracking-tight leading-[1.1] drop-shadow-2xl capitalize">
+            {/* Category Title */}
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white tracking-tight leading-[1.1] capitalize drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
               {subQuery ? subQuery.replace(/-/g, " ") : title === "all" ? "All Jewellery" : title}
             </h1>
 
-            <nav className="flex items-center justify-center space-x-3 text-white/60 text-[10px] uppercase tracking-[0.3em]">
-              <Link href="/" className="hover:text-champagne transition-colors duration-300">
+            {/* Breadcrumb Navigation */}
+            <nav className="flex items-center justify-center space-x-3 text-stone-200 text-[11px] uppercase tracking-[0.3em] font-serif pt-2 drop-shadow-md">
+              <Link href="/" className="hover:text-amber-300 transition-colors duration-300">
                 Home
               </Link>
-              <span className="text-champagne/40">/</span>
-              <Link href="/category/all" className="hover:text-champagne transition-colors duration-300">
+              <span className="text-amber-300/70">/</span>
+              <Link href="/category/all" className="hover:text-amber-300 transition-colors duration-300">
                 Boutique
               </Link>
-              <span className="text-champagne/40">/</span>
-              <span className="text-white font-bold tracking-[0.4em]">{categorySlug}</span>
+              <span className="text-amber-300/70">/</span>
+              <span className="text-amber-300 font-bold tracking-[0.35em]">{categorySlug}</span>
             </nav>
           </motion.div>
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white via-white/40 to-transparent z-20" />
+        {/* Bottom Filigree Line */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
       </section>
-
-      <CategorySlider currentCategory={categorySlug} />
 
       <section className="py-10 bg-white">
         <div className="container mx-auto px-6">

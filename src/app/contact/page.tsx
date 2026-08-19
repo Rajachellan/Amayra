@@ -1,41 +1,48 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { 
-  Phone, 
-  Mail, 
-  Clock, 
-  MapPin, 
-  MessageCircle, 
+import {
+  Phone,
+  Mail,
+  Clock,
+  MapPin,
+  MessageCircle,
   ChevronRight,
   Send,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  HeartHandshake
 } from "lucide-react";
 import { api } from "@/lib/api/index";
 
 const STORES = [
   {
     name: "DLF Promenade",
+    city: "New Delhi",
     address: "Mairii, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
     contact: "+91 9110 540 540"
   },
   {
     name: "DLF Mall of India",
+    city: "Noida",
     address: "Shop No. S-45, First Floor, DLF Mall of India, Sector-18, Noida, Uttar Pradesh 201301",
     contact: "+91 120 1234567"
   },
   {
     name: "Palladium Mall",
-    address: "Mairii Jewels - Shop No. 11-B, First Floor, Palladium Mall, Sarkhej-Gandhinagar Highway, Thaltej, Ahmedabad, Gujarat 380054",
+    city: "Ahmedabad",
+    address: "Mairii Jewels - Shop No. 11-B, First Floor, Palladium Mall, SG Highway, Thaltej, Ahmedabad 380054",
     contact: "+91 79 12345678"
   },
   {
     name: "Phoenix Marketcity",
+    city: "Mumbai",
     address: "Mairii Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
     contact: "+91 22 12345678"
   }
@@ -45,22 +52,25 @@ const SUPPORT_CHANNELS = [
   {
     title: "Online Booking & Custom Styling",
     whatsapp: "+91 9110 540 540",
-    hours: "Available Mon - Sat, 10 AM to 7 PM"
+    hours: "Available Mon - Sat, 10 AM to 7 PM IST",
+    desc: "Personalized styling advice for your occasion or bridal trousseau."
   },
   {
-    title: "Marketing, PR & Media",
+    title: "Marketing, PR & Media Enquiries",
     whatsapp: "+91 9876 543 210",
-    hours: "Available Mon - Fri, 11 AM to 6 PM"
+    hours: "Available Mon - Fri, 11 AM to 6 PM IST",
+    desc: "Collaborations, editorial loans, and brand partnerships."
   },
   {
     title: "Wedding Trousseau & Bulk Orders",
     whatsapp: "+91 9988 776 655",
-    hours: "Available Daily, 10 AM to 8 PM"
+    hours: "Available Daily, 10 AM to 8 PM IST",
+    desc: "Dedicated concierge for custom bridal packages and gift sets."
   }
 ];
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", subject: "general", message: "" });
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [err, setErr] = useState("");
 
@@ -80,7 +90,7 @@ export default function ContactPage() {
         body: JSON.stringify({ ...form, source: "contact_page" }),
       });
       setStatus("success");
-      setForm({ name: "", email: "", phone: "", message: "" });
+      setForm({ name: "", email: "", phone: "", subject: "general", message: "" });
     } catch (error) {
       setStatus("error");
       setErr(error instanceof Error ? error.message : "Failed to send message. Please try again later.");
@@ -88,109 +98,193 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="bg-white selection:bg-champagne/30">
-      <Navbar/>
+    <main className="min-h-screen bg-[#FAF8F3] selection:bg-[#C4A064]/30 overflow-x-hidden">
+      <Navbar />
+
       {/* 1. Hero Experience */}
-      <section className="relative h-[80vh] min-h-[600px] w-full overflow-hidden">
+      <section className="relative h-[75vh] min-h-[620px] w-full overflow-hidden bg-stone-950">
         <Image
-          src="/images/woman-wears-gold-sari-with-green-gold-jewelry.jpg"
-          alt="Contact Mairii"
+          src="/images/optimized/banner (1).png"
+          alt="Contact Mairii Luxury Concierge"
           fill
           priority
           sizes="100vw"
-          className="object-cover brightness-75 scale-105"
+          className="object-cover object-[center_35%] brightness-65 scale-105"
+         
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-        
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-stone-950/70 via-stone-950/40 to-[#FAF8F3]" /> */}
+
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pt-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="space-y-4"
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="space-y-6 max-w-3xl"
           >
-            <span className="text-champagne uppercase tracking-[0.6em] text-[10px] md:text-xs font-bold block mb-4">
-              Connect with Excellence
-            </span>
-            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-serif leading-tight">
-              Hello.... <br />
-              <span className="italic font-light opacity-90">Sunte Ho??</span>
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#C4A064]/20 border border-[#C4A064]/40 backdrop-blur-md">
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span className="text-amber-300 uppercase tracking-[0.4em] text-[10px] font-bold">
+                At Your Service
+              </span>
+            </div>
+
+            <h1 className="text-white text-4xl sm:text-6xl lg:text-7xl font-serif leading-tight">
+              Connect With <br />
+              <span className="italic font-light text-amber-300">MaiRii Concierge</span>
             </h1>
+
+            <p className="text-stone-300 font-serif text-sm sm:text-base font-light tracking-wide max-w-xl mx-auto">
+              Whether you seek personal styling guidance, boutique locations, or order assistance, our dedicated team is at your service.
+            </p>
           </motion.div>
         </div>
       </section>
 
-      {/* 2. Primary Contact & Issues */}
-      <section className="py-24 border-b border-stone-100">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl"
-            >
-              <Image
-                src="/images/hand_work.jpg" // Using existing craftsmanship image
-                alt="Mairii Craftsmanship"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
+      {/* 2. Quick Contact Stats & Direct Care */}
+      <section className="container mx-auto px-6 -mt-12 relative z-30 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-8"
-            >
-              <div>
-                <span className="text-champagne uppercase tracking-[0.4em] text-[10px] font-bold block mb-2">
-                  Customer Care
-                </span>
-                <h2 className="text-4xl font-serif text-stone-900">Facing Issues?</h2>
-              </div>
-              
-              <p className="text-stone-600 leading-relaxed font-light text-lg">
-                Our support team is available <span className="font-semibold text-stone-900">Monday to Friday, 10 AM to 6 PM</span>. 
-                Whether you have a question about our collections or an existing order, we're here to provide clarity.
-              </p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="p-8 rounded-2xl bg-white border border-[#C4A064]/20 shadow-xl flex items-start gap-5 hover:border-[#C4A064] transition-all"
+          >
+            <div className="w-12 h-12 rounded-full bg-[#FAF8F3] text-[#C4A064] flex items-center justify-center shrink-0 border border-[#C4A064]/20 shadow-inner">
+              <Mail className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-[#C4A064] block mb-1">Email Concierge</span>
+              <p className="text-base font-serif text-[#2B2B2B] font-medium">connect@mairiijewels.com</p>
+              <p className="text-xs text-[#666666] font-light mt-1">24h response time guaranteed</p>
+            </div>
+          </motion.div>
 
-              <div className="space-y-4 pt-4">
-                <div className="flex items-center gap-4 text-stone-800">
-                  <div className="w-10 h-10 rounded-full bg-champagne/10 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-champagne" />
-                  </div>
-                  <span className="text-sm font-medium tracking-wide">concierge@Mairiijewels.com</span>
-                </div>
-                <div className="flex items-center gap-4 text-stone-800">
-                  <div className="w-10 h-10 rounded-full bg-champagne/10 flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-champagne" />
-                  </div>
-                  <span className="text-sm font-medium tracking-wide">+91 9110 540 540</span>
-                </div>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="p-8 rounded-2xl bg-white border border-[#C4A064]/20 shadow-xl flex items-start gap-5 hover:border-[#C4A064] transition-all"
+          >
+            <div className="w-12 h-12 rounded-full bg-[#FAF8F3] text-[#C4A064] flex items-center justify-center shrink-0 border border-[#C4A064]/20 shadow-inner">
+              <Phone className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-[#C4A064] block mb-1">Direct Phone Support</span>
+              <p className="text-base font-serif text-[#2B2B2B] font-medium">+91 9566571655</p>
+              <p className="text-xs text-[#666666] font-light mt-1">Mon - Sat, 10 AM to 7 PM IST</p>
+            </div>
+          </motion.div>
 
-              <div className="pt-6">
-                <button className="px-8 py-4 bg-stone-900 text-white text-[10px] uppercase tracking-[0.3em] font-bold rounded-full hover:bg-champagne hover:text-white transition-all duration-500 shadow-xl">
-                  Order Status & Tracking
-                </button>
-              </div>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="p-8 rounded-2xl bg-white border border-[#C4A064]/20 shadow-xl flex items-start gap-5 hover:border-[#C4A064] transition-all"
+          >
+            <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-200 shadow-inner">
+              <MessageCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-emerald-700 block mb-1">Instant WhatsApp</span>
+              <p className="text-base font-serif text-[#2B2B2B] font-medium">+91 9566571655</p>
+              <p className="text-xs text-[#666666] font-light mt-1">Instant bridal & order styling</p>
+            </div>
+          </motion.div>
+
         </div>
       </section>
 
-      {/* 3. Our Ateliers */}
-      <section className="py-24 bg-stone-50">
-        <div className="container mx-auto px-6 text-center">
-          <div className="max-w-2xl mx-auto mb-16">
-            <h2 className="text-4xl font-serif text-stone-900 mb-4 uppercase tracking-widest">Our Stores</h2>
-            <div className="h-px w-24 bg-champagne mx-auto mb-6" />
-            <p className="text-stone-500 text-xs uppercase tracking-[0.3em]">Visit us at our physical luxury boutiques</p>
+      {/* 3. Primary Customer Care Spotlight */}
+      <section className="py-24 max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-12 gap-12 items-center bg-white rounded-3xl border border-[#C4A064]/20 shadow-xl overflow-hidden p-8 md:p-12">
+
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-6 relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lg border border-stone-200"
+          >
+            <Image
+              src="/images/hand_work.jpg"
+              alt="MaiRii Customer Support Atelier"
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+            <div className="absolute bottom-6 left-6 right-6 text-white p-4 rounded-xl bg-stone-900/60 backdrop-blur-md border border-white/20">
+              <p className="font-serif italic text-sm text-amber-200">
+                &ldquo;Every question is answered with patient care and devotion to craft.&rdquo;
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-6 space-y-6"
+          >
+            <div>
+              <span className="text-[#C4A064] uppercase tracking-[0.4em] text-[10px] font-bold block mb-2">
+                CUSTOMER ASSISTANCE
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-serif text-[#2B2B2B] leading-tight">
+                How Can We Help You Today?
+              </h2>
+            </div>
+
+            <p className="text-[#555555] leading-relaxed font-serif text-base md:text-lg font-light">
+              Our dedicated support concierge is available <span className="font-semibold text-[#2B2B2B]">Monday through Saturday</span> to assist with product inquiries, order tracking, custom sizing, and gift options.
+            </p>
+
+            <div className="p-6 rounded-xl bg-[#FAF8F3] border border-[#C4A064]/20 space-y-4">
+              <div className="flex items-center gap-3 text-[#2B2B2B]">
+                <Clock className="w-4 h-4 text-[#C4A064]" />
+                <span className="text-xs uppercase tracking-widest font-bold">Standard Support Hours</span>
+              </div>
+              <p className="text-xs text-[#666666] font-serif leading-relaxed">
+                Monday &ndash; Saturday: 10:00 AM &ndash; 7:00 PM IST <br />
+                Sunday: Closed (WhatsApp messages returned next business day)
+              </p>
+            </div>
+
+            <div className="pt-2 flex flex-wrap gap-4">
+              <Link
+                href="/profile"
+                className="px-8 py-3.5 bg-[#2C2A28] text-white text-[10px] uppercase tracking-[0.3em] font-bold rounded-full hover:bg-[#C4A064] transition-all duration-300 shadow-md"
+              >
+                Track Your Order
+              </Link>
+              <a
+                href="https://wa.me/9566571655"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-8 py-3.5 border border-[#C4A064] text-[#2B2B2B] hover:text-[#A37F43] text-[10px] uppercase tracking-[0.3em] font-bold rounded-full hover:bg-[#C4A064]/10 transition-all duration-300"
+              >
+                Chat On WhatsApp
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 4. Luxury Boutiques & Flagship Locations */}
+      {/* <section className="py-24 bg-white border-y border-stone-200">
+        <div className="container mx-auto px-6 max-w-7xl text-center">
+          <div className="max-w-2xl mx-auto mb-16 space-y-3">
+            <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#C4A064] block">
+              PHYSICAL STORES
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-serif text-[#2B2B2B]">Visit Our Boutiques</h2>
+            <div className="h-px w-24 bg-[#C4A064] mx-auto" />
+            <p className="text-[#666666] text-xs font-serif italic">Experience MaiRii craftsmanship in person at our flagship locations.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 text-left">
             {STORES.map((store, i) => (
               <motion.div
                 key={store.name}
@@ -198,189 +292,243 @@ export default function ContactPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white p-8 rounded-2xl border border-stone-100 shadow-sm hover:shadow-xl transition-all duration-500"
+                className="bg-[#FAF8F3] p-8 rounded-2xl border border-[#C4A064]/20 hover:border-[#C4A064] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col justify-between"
               >
-                <h3 className="font-serif text-xl text-stone-900 mb-4">{store.name}</h3>
-                <p className="text-stone-500 text-xs leading-relaxed mb-6 line-clamp-4 uppercase tracking-wider">
-                  {store.address}
-                </p>
-                <div className="flex items-center justify-center gap-2 text-champagne text-[10px] font-bold tracking-widest pt-4 border-t border-stone-50">
-                  <Phone className="w-3 h-3" />
-                  <span>{store.contact}</span>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="px-3 py-1 rounded-full bg-[#C4A064]/10 text-[#A37F43] text-[9px] uppercase tracking-widest font-bold">
+                      {store.city}
+                    </span>
+                    <MapPin className="w-4 h-4 text-[#C4A064]" />
+                  </div>
+
+                  <h3 className="font-serif text-xl text-[#2B2B2B] font-medium">{store.name}</h3>
+
+                  <p className="text-[#666666] text-xs leading-relaxed font-serif">
+                    {store.address}
+                  </p>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-[#C4A064]/20 flex items-center justify-between text-[#C4A064]">
+                  <span className="text-[10px] font-bold tracking-widest">{store.contact}</span>
+                  <ChevronRight className="w-4 h-4 text-[#C4A064]" />
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* 4. Specialised Support */}
-      <section className="py-24 overflow-hidden">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-10 lg:order-1 order-2"
-            >
-              <div>
-                <h2 className="text-4xl font-serif text-stone-900 uppercase tracking-widest">Specialised Support</h2>
-                <p className="text-stone-500 mt-2 text-xs uppercase tracking-[0.2em]">Dedicated channels for your unique requirements</p>
-              </div>
+      {/* 5. Specialised Support Channels */}
+      {/* <section className="py-24 max-w-7xl mx-auto px-6">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
 
-              <div className="space-y-8">
-                {SUPPORT_CHANNELS.map((channel, i) => (
-                  <div key={i} className="group cursor-pointer">
-                    <h3 className="font-serif text-lg text-stone-800 mb-1 group-hover:text-champagne transition-colors">{channel.title}</h3>
-                    <p className="text-stone-400 text-[10px] uppercase tracking-widest mb-3">{channel.hours}</p>
-                    <div className="flex items-center gap-3 text-stone-900 font-bold text-sm tracking-widest">
-                      <MessageCircle className="w-4 h-4 text-emerald-500 fill-emerald-500/20" />
-                      <span>{channel.whatsapp}</span>
-                      <ChevronRight className="w-4 h-4 text-stone-300 group-hover:translate-x-2 transition-transform" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative aspect-square rounded-2xl overflow-hidden shadow-2xl lg:order-2 order-1"
-            >
-              <Image
-                src="/images/jewels-banner.jpg" // Using existing support image
-                alt="Styling Support"
-                fill
-                className="object-cover"
-              />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Contact Form */}
-      <section className="py-24 bg-stone-900 text-white">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-serif mb-4 uppercase tracking-widest">Leave a Message</h2>
-              <p className="text-white/40 text-xs uppercase tracking-[0.4em]">Our concierge will respond within 24 hours</p>
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="lg:col-span-7 space-y-8"
+          >
+            <div>
+              <span className="text-[#C4A064] uppercase tracking-[0.4em] text-[10px] font-bold block mb-2">
+                DEDICATED CONCIERGE
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-serif text-[#2B2B2B]">Specialized Support Channels</h2>
             </div>
 
-            <div className="bg-white/5 backdrop-blur-xl rounded-[32px] p-8 md:p-16 border border-white/10 shadow-2xl">
-              {status === "success" ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-12 space-y-6"
+            <div className="space-y-6">
+              {SUPPORT_CHANNELS.map((channel, i) => (
+                <div key={i} className="p-6 rounded-2xl bg-white border border-[#C4A064]/20 hover:border-[#C4A064] transition-all shadow-sm group">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="font-serif text-lg text-[#2B2B2B] group-hover:text-[#A37F43] transition-colors">{channel.title}</h3>
+                      <p className="text-xs text-[#666666] font-serif font-light mt-1">{channel.desc}</p>
+                      <p className="text-[#C4A064] text-[9px] uppercase tracking-widest font-bold mt-2">{channel.hours}</p>
+                    </div>
+
+                    <a
+                      href={`https://wa.me/${channel.whatsapp.replace(/[^0-9]/g, "")}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white transition-all duration-300 text-xs font-bold shrink-0"
+                    >
+                      <MessageCircle className="w-4 h-4 fill-current" />
+                      <span>{channel.whatsapp}</span>
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            className="lg:col-span-5 relative aspect-square rounded-3xl overflow-hidden shadow-2xl border border-[#C4A064]/30"
+          >
+            <Image
+              src="/images/jewels-banner.jpg"
+              alt="MaiRii Bridal Styling"
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-1000"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-8 left-8 right-8 text-white p-6 rounded-2xl bg-stone-950/70 backdrop-blur-md border border-white/20">
+              <span className="text-amber-300 uppercase text-[9px] font-bold tracking-[0.3em] block mb-1">Bridal Consultation</span>
+              <p className="font-serif italic text-sm text-stone-200">
+                Book a private styling appointment with our master consultants for your wedding trousseau.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+      </section> */}
+
+      {/* 6. Luxury Glass Contact Form */}
+      <section className="py-24 bg-gradient-to-r from-[#2C2A28] via-[#3B3732] to-[#2C2A28] text-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C4A064] via-amber-300 to-[#C4A064]" />
+
+        <div className="container mx-auto px-6 max-w-4xl relative z-10">
+          <div className="text-center mb-16 space-y-4">
+            <span className="text-amber-300 uppercase tracking-[0.4em] text-[10px] font-bold block">
+              LEAVE A MESSAGE
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-serif text-white">Send Us An Enquiry</h2>
+            <p className="text-stone-300 text-xs font-serif tracking-widest uppercase">Our concierge will review and reply within 24 hours.</p>
+          </div>
+
+          <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-14 border border-white/15 shadow-2xl">
+            {status === "success" ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center py-12 space-y-6"
+              >
+                <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto border border-emerald-400">
+                  <CheckCircle2 className="w-10 h-10 text-emerald-400" />
+                </div>
+                <h3 className="text-3xl font-serif text-white">Enquiry Received</h3>
+                <p className="text-stone-300 max-w-md mx-auto text-sm leading-relaxed font-serif">
+                  Thank you for reaching out to MaiRii. Your message has been assigned to our concierge team and we will be in touch shortly.
+                </p>
+                <button
+                  onClick={() => setStatus("idle")}
+                  className="mt-6 px-10 py-3.5 bg-[#C4A064] text-stone-950 text-[10px] uppercase tracking-[0.3em] font-bold rounded-full hover:bg-amber-300 transition-all duration-300 shadow-lg"
                 >
-                  <div className="w-20 h-20 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-10 h-10 text-emerald-500" />
-                  </div>
-                  <h3 className="text-2xl font-serif">Inquiry Received</h3>
-                  <p className="text-white/60 max-w-md mx-auto text-sm leading-relaxed uppercase tracking-widest">
-                    Your interest in Mairii has been recorded. Our team is reviewing your message and will reach out shortly.
-                  </p>
-                  <button
-                    onClick={() => setStatus("idle")}
-                    className="mt-8 px-10 py-4 bg-white text-stone-900 text-[10px] uppercase tracking-[0.4em] font-bold rounded-full hover:bg-champagne hover:text-white transition-all duration-500"
-                  >
-                    New Message
-                  </button>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-10">
-                  <div className="grid md:grid-cols-2 gap-10">
-                    <div className="relative group">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 block mb-3 group-focus-within:text-champagne transition-colors">Full Name *</label>
-                      <input
-                        type="text"
-                        required
-                        value={form.name}
-                        onChange={(e) => setForm({ ...form, name: e.target.value })}
-                        className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-champagne transition-colors text-sm tracking-widest uppercase"
-                      />
-                    </div>
-                    <div className="relative group">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 block mb-3 group-focus-within:text-champagne transition-colors">Email Address *</label>
-                      <input
-                        type="email"
-                        required
-                        value={form.email}
-                        onChange={(e) => setForm({ ...form, email: e.target.value })}
-                        className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-champagne transition-colors text-sm tracking-widest uppercase"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-10">
-                    <div className="relative group">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 block mb-3 group-focus-within:text-champagne transition-colors">WhatsApp Number</label>
-                      <input
-                        type="tel"
-                        value={form.phone}
-                        onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                        className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-champagne transition-colors text-sm tracking-widest uppercase"
-                      />
-                    </div>
-                    <div className="relative group">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 block mb-3 group-focus-within:text-champagne transition-colors">Subject</label>
-                      <select className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-champagne transition-colors text-sm tracking-widest uppercase appearance-none cursor-pointer">
-                        <option value="general" className="bg-stone-900">General Inquiry</option>
-                        <option value="styling" className="bg-stone-900">Personal Styling</option>
-                        <option value="order" className="bg-stone-900">Order Assistance</option>
-                        <option value="bulk" className="bg-stone-900">Bulk & Corporate</option>
-                      </select>
-                    </div>
-                  </div>
-
+                  Send Another Message
+                </button>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid md:grid-cols-2 gap-8">
                   <div className="relative group">
-                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 block mb-3 group-focus-within:text-champagne transition-colors">Your Message *</label>
-                    <textarea
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-400 block mb-2 group-focus-within:text-amber-300 transition-colors">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
                       required
-                      rows={4}
-                      value={form.message}
-                      onChange={(e) => setForm({ ...form, message: e.target.value })}
-                      className="w-full bg-transparent border-b border-white/10 py-3 focus:outline-none focus:border-champagne transition-colors text-sm tracking-widest uppercase resize-none"
+                      placeholder="e.g. Bandana Sharma"
+                      value={form.name}
+                      onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:border-amber-300 transition-colors font-serif"
                     />
                   </div>
 
-                  {err && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="flex items-center gap-3 text-red-400 text-[10px] uppercase tracking-widest"
-                    >
-                      <AlertCircle className="w-4 h-4" />
-                      <span>{err}</span>
-                    </motion.div>
-                  )}
-
-                  <div className="flex justify-center pt-6">
-                    <button
-                      type="submit"
-                      disabled={status === "submitting"}
-                      className="group flex items-center gap-4 px-14 py-5 bg-white text-stone-900 text-[11px] uppercase tracking-[0.4em] font-bold rounded-full hover:bg-champagne hover:text-white transition-all duration-500 shadow-[0_20px_50px_rgba(0,0,0,0.3)] disabled:opacity-50"
-                    >
-                      {status === "submitting" ? "Sending..." : (
-                        <>
-                          <span>Submit Inquiry</span>
-                          <Send className="w-4 h-4 group-hover:translate-x-2 group-hover:-translate-y-1 transition-transform" />
-                        </>
-                      )}
-                    </button>
+                  <div className="relative group">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-400 block mb-2 group-focus-within:text-amber-300 transition-colors">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="e.g. name@example.com"
+                      value={form.email}
+                      onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:border-amber-300 transition-colors font-serif"
+                    />
                   </div>
-                </form>
-              )}
-            </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="relative group">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-400 block mb-2 group-focus-within:text-amber-300 transition-colors">
+                      WhatsApp Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="+91 98765 43210"
+                      value={form.phone}
+                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:border-amber-300 transition-colors font-serif"
+                    />
+                  </div>
+
+                  <div className="relative group">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-400 block mb-2 group-focus-within:text-amber-300 transition-colors">
+                      Inquiry Category
+                    </label>
+                    <select
+                      value={form.subject}
+                      onChange={(e) => setForm({ ...form, subject: e.target.value })}
+                      className="w-full bg-stone-900 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-amber-300 transition-colors font-serif cursor-pointer"
+                    >
+                      <option value="general">General & Order Inquiry</option>
+                      <option value="styling">Personal & Bridal Styling</option>
+                      <option value="store">Store Location Appointment</option>
+                      <option value="bulk">Wedding & Corporate Bulk Orders</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="relative group">
+                  <label className="text-[10px] uppercase tracking-[0.3em] font-bold text-stone-400 block mb-2 group-focus-within:text-amber-300 transition-colors">
+                    Your Message *
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    placeholder="Tell us about your requirements or questions..."
+                    value={form.message}
+                    onChange={(e) => setForm({ ...form, message: e.target.value })}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:border-amber-300 transition-colors font-serif resize-none"
+                  />
+                </div>
+
+                {err && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="flex items-center gap-3 text-red-400 text-xs font-serif"
+                  >
+                    <AlertCircle className="w-4 h-4 shrink-0" />
+                    <span>{err}</span>
+                  </motion.div>
+                )}
+
+                <div className="flex justify-center pt-4">
+                  <button
+                    type="submit"
+                    disabled={status === "submitting"}
+                    className="group flex items-center gap-4 px-12 py-4 bg-[#C4A064] text-stone-950 text-[10px] uppercase tracking-[0.3em] font-bold rounded-full hover:bg-amber-300 transition-all duration-300 shadow-xl disabled:opacity-50"
+                  >
+                    {status === "submitting" ? (
+                      "Sending Message..."
+                    ) : (
+                      <>
+                        <span>Send Message</span>
+                        <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </section>
-      <Footer/>
+
+      <Footer />
     </main>
   );
 }
-

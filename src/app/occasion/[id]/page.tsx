@@ -142,30 +142,51 @@ function OccasionContent() {
     <>
       <Navbar />
 
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
         <motion.div
-          initial={{ scale: 1.15 }}
+          initial={{ scale: 1.05 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
           className="absolute inset-0 z-0"
         >
           <Image
             src={resolveMediaUrl(occasion?.image) || "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=2000&auto=format&fit=crop"}
             alt="Occasion Background"
             fill
-            className="object-cover brightness-[0.65]"
+            className="object-cover object-[center_35%] brightness-[0.92]"
             priority
           />
         </motion.div>
 
-        <div className="absolute inset-0 bg-black/30 z-10" />
+        {/* Soft Luxury Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/50 via-stone-950/15 to-stone-950/70 z-10" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
+
         <div className="container mx-auto px-6 relative z-20 text-center text-white">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-            <span className="text-champagne text-[11px] uppercase tracking-[0.6em] font-bold mb-4 block">Occasion Collection</span>
-            <h1 className="text-5xl md:text-7xl font-serif mb-6 capitalize">{occasion?.name || (occasionSlug as string).replace(/-/g, ' ')}</h1>
-            <p className="max-w-2xl mx-auto text-white/80 text-sm tracking-widest uppercase">{occasion?.description || "Exquisite designs for your special moments"}</p>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: "easeOut" }} className="max-w-3xl mx-auto space-y-5">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C4A064]/25 border border-[#C4A064]/40 backdrop-blur-md shadow-md">
+              <Star className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+              <span className="text-amber-300 uppercase tracking-[0.4em] text-[10px] font-bold">
+                Occasion Collection
+              </span>
+            </div>
+
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif tracking-tight leading-[1.1] capitalize drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
+              {occasion?.name || (occasionSlug as string).replace(/-/g, ' ')}
+            </h1>
+
+            <nav className="flex items-center justify-center space-x-3 text-stone-200 text-[11px] uppercase tracking-[0.3em] font-serif pt-2 drop-shadow-md">
+              <Link href="/" className="hover:text-amber-300 transition-colors duration-300">
+                Home
+              </Link>
+              <span className="text-amber-300/70">/</span>
+              <span className="text-amber-300 font-bold tracking-[0.35em]">{(occasionSlug as string).replace(/-/g, ' ')}</span>
+            </nav>
           </motion.div>
         </div>
+
+        {/* Bottom Filigree Line */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
       </section>
 
       <section className="py-16 bg-white">

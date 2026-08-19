@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AboutHero } from "@/components/about/AboutHero";
 import { BrandStory } from "@/components/about/BrandStory";
+import { OurVision } from "@/components/about/OurVision";
 import { Craftsmanship } from "@/components/about/Craftsmanship";
 import { Materials } from "@/components/about/Materials";
 import { SignatureCollections } from "@/components/about/SignatureCollections";
@@ -14,14 +15,15 @@ import { StoreExperience } from "@/components/about/StoreExperience";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground overflow-hidden">
+    <main className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <Navbar />
       
       <div className="relative">
         <AboutHero />
         
-        <div className="relative z-10 space-y-0">
+        <div id="our-story" className="relative z-10 space-y-0">
           <BrandStory />
+          <OurVision />
           <Craftsmanship />
           <Materials />
           <SignatureCollections />

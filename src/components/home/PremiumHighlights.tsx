@@ -2,69 +2,218 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ShieldCheck, Award, Gem, Sparkles } from "lucide-react";
-import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import {
+  HandHeart,
+  PackageCheck,
+  ShieldCheck,
+  Truck,
+  Heart,
+  Gem,
+  Sparkles,
+  Crown,
+  BadgeCheck,
+  Gift,
+} from "lucide-react";
 
 const HIGHLIGHTS = [
   {
-    icon: <Sparkles className="w-10 h-10 stroke-[1]" />,
-    title: "Handcrafted",
-    description: "Meticulously shaped by master artisans with ancestral precision."
+    icon: HandHeart,
+    title: "Handcrafted in India",
   },
   {
-    icon: <ShieldCheck className="w-10 h-10 stroke-[1]" />,
-    title: "Certified",
-    description: "Every diamond and gold piece carries international hallmarks of purity."
+    icon: PackageCheck,
+    title: "Premium Packaging",
   },
   {
-    icon: <Gem className="w-10 h-10 stroke-[1]" />,
-    title: "Premium Quality",
-    description: "Sourcing only the finest ethically mined gemstones and 22kt pure gold."
+    icon: ShieldCheck,
+    title: "100% Secure Payments",
   },
   {
-    icon: <Award className="w-10 h-10 stroke-[1]" />,
-    title: "Timeless Design",
-    description: "Masterpieces designed to transcend generations and define legacies."
-  }
+    icon: Truck,
+    title: "Pan India Delivery",
+  },
+  {
+    icon: Heart,
+    title: "Curated with Love",
+  },
+  {
+    icon: Gem,
+    title: "Finest Materials",
+  },
+  {
+    icon: Sparkles,
+    title: "Timeless Elegance",
+  },
+  {
+    icon: Crown,
+    title: "Royal Craftsmanship",
+  },
+  {
+    icon: BadgeCheck,
+    title: "Quality Assured",
+  },
+  {
+    icon: Gift,
+    title: "Perfect for Gifting",
+  },
 ];
 
 export const PremiumHighlights = () => {
   return (
-    <section className="py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-ivory)' }}>
-      <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
-      <div className="container relative z-10 mx-auto px-6">
-        {/* Subtle accent glows */}
-        <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
-        <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-emerald/20 to-transparent" />
+    <section className="relative w-full overflow-hidden py-14 md:py-18">
+      {/* Soft edge fading */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 md:w-32 bg-gradient-to-r from-background to-transparent" />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-24 text-center">
-          {HIGHLIGHTS.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col items-center group"
-            >
-              <div className="text-[#2E5A44] mb-5 transition-all duration-700 group-hover:scale-120 group-hover:text-champagne">
-                {item.icon}
-              </div>
-              <h3 className="text-foreground text-[15px] uppercase tracking-[0.5em] font-bold mb-5 leading-tight font-serif">
-                {item.title}
-              </h3>
-              <p className="text-foreground/60 text-[13px] font-light leading-relaxed max-w-[200px]">
-                {item.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 md:w-32 bg-gradient-to-l from-background to-transparent" />
+
+      {/* Marquee */}
+      <div className="flex w-max">
+        <motion.div
+          className="flex items-center"
+          animate={{
+            x: ["0%", "-50%"],
+          }}
+          transition={{
+            x: {
+              duration: 35,
+              repeat: Infinity,
+              ease: "linear",
+            },
+          }}
+        >
+          {/* First set */}
+          <div className="flex items-center">
+            {HIGHLIGHTS.map((item, index) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={`first-${item.title}`}
+                  className="
+                    group
+                    flex
+                    w-[220px]
+                    md:w-[260px]
+                    flex-shrink-0
+                    flex-col
+                    items-center
+                    justify-center
+                    text-center
+                    px-6
+                  "
+                >
+                  {/* Icon */}
+                  <div
+                    className="
+                      mb-6
+                      text-[#2E5A44]
+                      transition-all
+                      duration-700
+                      ease-out
+                      group-hover:-translate-y-2
+                      group-hover:text-champagne
+                    "
+                  >
+                    <Icon
+                      className="
+                        w-16 h-16
+                        md:w-[76px] md:h-[76px]
+                        stroke-[1]
+                      "
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    className="
+                      max-w-[210px]
+                      text-[13px]
+                      md:text-[15px]
+                      uppercase
+                      tracking-[0.18em]
+                      leading-[1.7]
+                      font-serif
+                      font-semibold
+                      text-foreground
+                      transition-colors
+                      duration-500
+                      group-hover:text-[#2E5A44]
+                    "
+                  >
+                    {item.title}
+                  </h3>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Duplicate set for seamless loop */}
+          <div className="flex items-center">
+            {HIGHLIGHTS.map((item) => {
+              const Icon = item.icon;
+
+              return (
+                <div
+                  key={`second-${item.title}`}
+                  className="
+                    group
+                    flex
+                    w-[220px]
+                    md:w-[260px]
+                    flex-shrink-0
+                    flex-col
+                    items-center
+                    justify-center
+                    text-center
+                    px-6
+                  "
+                >
+                  {/* Icon */}
+                  <div
+                    className="
+                      mb-6
+                      text-[#2E5A44]
+                      transition-all
+                      duration-700
+                      ease-out
+                      group-hover:-translate-y-2
+                      group-hover:text-champagne
+                    "
+                  >
+                    <Icon
+                      className="
+                        w-16 h-16
+                        md:w-[76px] md:h-[76px]
+                        stroke-[1]
+                      "
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    className="
+                      max-w-[210px]
+                      text-[13px]
+                      md:text-[15px]
+                      uppercase
+                      tracking-[0.18em]
+                      leading-[1.7]
+                      font-serif
+                      font-semibold
+                      text-foreground
+                      transition-colors
+                      duration-500
+                      group-hover:text-[#2E5A44]
+                    "
+                  >
+                    {item.title}
+                  </h3>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
       </div>
-
-      {/* Decorative center divider */}
-      <div className="absolute left-1/2 bottom-0 -translate-x-1/2 w-32 h-[1px] bg-champagne/30" />
     </section>
   );
 };
-
-

@@ -71,7 +71,7 @@ export function HomePageClient() {
       <OffersSection />
       <PremiumHighlights />
       <NecklacesSection />
-      {settings.showCategories ? <CategorySection /> : null}
+      {/* {settings.showCategories ? <CategorySection /> : null} */}
       {settings.showCollections ? <SignatureBlocks /> : null}
       <MoodCategories />
       <ProductSpotlight />
@@ -79,7 +79,7 @@ export function HomePageClient() {
       <SilverCollection />
       <Craftsmanship />
       {settings.showBlogSection ? <MagazineGallery /> : null}
-      {settings.showLookbooks ? <CollectionStory /> : null}
+      {/* {settings.showLookbooks ? <CollectionStory /> : null} */}
       <WhyChooseUs />
       <FAQ />
       <ReviewsSlider />

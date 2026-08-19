@@ -6,30 +6,31 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { shopApi } from "@/lib/api/shop";
 import { resolveMediaUrl } from "@/lib/apiBase";
+import { ArrowRight, BookOpen } from "lucide-react";
 
-/** Pre-compressed WebP (~40–300 KB) — avoids shipping multi‑MB JPGs in the bundle */
+/** Pre-compressed WebP & curated fallback items */
 const IMAGES = [
   {
     id: 1,
     src: "/images/optimized/neckles_32.webp",
-    title: "The Heritage Edit",
-    subtitle: "A legacy of brilliance",
+    title: "Floral Pearl Cascade Necklace",
+    subtitle: "Royal Floral Cluster Necklace",
     issue: "01",
-    link: "/category/necklaces"
+    link: "/blog/for-you-ma-mairii-origin-story"
   },
   {
     id: 2,
     src: "/images/optimized/neckles.webp",
-    title: "Modern Minimal",
-    subtitle: "Refined simplicity",
+    title: "Antique Temple Choker Set",
+    subtitle: "Sacred grace & royal heritage",
     issue: "02",
     link: "/category/earrings"
   },
   {
     id: 3,
     src: "/images/optimized/kundan_sets.webp",
-    title: "Royal Kundan",
-    subtitle: "Majestic details",
+    title: "Royal Kundan Artistry",
+    subtitle: "Majestic handcrafted details",
     issue: "03",
     link: "/category/chocker"
   },
@@ -37,15 +38,15 @@ const IMAGES = [
     id: 4,
     src: "/images/optimized/bangles_3.webp",
     title: "Bridal Essence",
-    subtitle: "Timeless vows",
+    subtitle: "Timeless vows & bangles",
     issue: "04",
     link: "/category/bangles"
   },
   {
     id: 5,
     src: "/images/optimized/hip_chain.webp",
-    title: "Hip Chain",
-    subtitle: "Crafted for eternity",
+    title: "Hip Chain & Heritage Accents",
+    subtitle: "Crafted for eternity and beauty",
     issue: "05",
     link: "/category/jewellery"
   },
@@ -82,7 +83,7 @@ const MagazineCard = ({
       transition={{ duration: 1.0, delay: index * 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`relative overflow-hidden rounded-sm group cursor-pointer ${className}`}
+      className={`relative overflow-hidden rounded-md group cursor-pointer border border-[#C4A064]/20 hover:border-[#C4A064]/60 transition-all duration-500 shadow-md ${className}`}
     >
       <div className="relative w-full h-full overflow-hidden">
         <Image
@@ -90,25 +91,24 @@ const MagazineCard = ({
           alt={title}
           fill
           loading="lazy"
-          quality={75}
+          quality={80}
           sizes="(max-width: 1024px) 100vw, 33vw"
-          className={`object-cover transition-transform duration-[2400ms] ease-out ${
-            hovered ? "scale-110" : "scale-100"
+          className={`object-cover transition-transform duration-[2000ms] ease-out ${
+            hovered ? "scale-105" : "scale-100"
           } brightness-90 ${imageClassName}`}
         />
       </div>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-950/10 to-transparent" />
+      {/* Dark luxury gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/20 to-transparent" />
+      
+      {/* Gold highlight strip on hover */}
       <div
-        className={`absolute inset-0 bg-stone-950/25 transition-opacity duration-700 ${
+        className={`absolute left-0 top-[20%] bottom-[20%] w-1 bg-gradient-to-b from-amber-300 via-[#C4A064] to-amber-300 transition-opacity duration-500 ${
           hovered ? "opacity-100" : "opacity-0"
         }`}
       />
-      <div
-        className={`absolute left-0 top-[25%] bottom-[25%] w-px bg-gradient-to-b from-transparent via-amber-300/70 to-transparent transition-opacity duration-700 ${
-          hovered ? "opacity-100" : "opacity-0"
-        }`}
-      />
+
       {pdfUrl && (
         <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 rounded-full bg-amber-300 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-wider text-stone-950 shadow-md">
           <svg className="h-2.5 w-2.5 text-stone-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
@@ -119,22 +119,28 @@ const MagazineCard = ({
           PDF
         </div>
       )}
-      <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-amber-300/30 bg-stone-950/50 backdrop-blur-sm flex items-center justify-center z-10">
-        <span className="font-serif text-[10px] italic text-amber-300/90">{issue}</span>
+
+      {/* Issue Badge */}
+      <div className="absolute top-4 right-4 w-9 h-9 rounded-full border border-amber-300/40 bg-stone-950/60 backdrop-blur-md flex items-center justify-center z-10 shadow-lg">
+        <span className="font-serif text-[11px] italic font-semibold text-amber-300">{issue}</span>
       </div>
+
+      {/* Card Content */}
       <div
-        className={`absolute bottom-0 left-0 right-0 px-5 pb-5 z-10 transition-transform duration-700 ease-out ${
-          hovered ? "translate-y-0" : "translate-y-1.5"
+        className={`absolute bottom-0 left-0 right-0 p-6 z-10 transition-transform duration-500 ease-out ${
+          hovered ? "translate-y-0" : "translate-y-1"
         }`}
       >
         <span
-          className={`block text-[8px] font-light tracking-[0.45em] uppercase text-amber-300 mb-2 transition-all duration-500 ${
-            hovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+          className={`block text-[9px] font-bold tracking-[0.3em] uppercase text-amber-300 mb-1.5 transition-all duration-300 ${
+            hovered ? "opacity-100 translate-y-0 text-amber-200" : "opacity-90"
           }`}
         >
           {subtitle}
         </span>
-        <h3 className="font-serif text-stone-100 leading-snug">{title}</h3>
+        <h3 className="font-serif text-lg md:text-xl text-stone-100 font-normal leading-snug group-hover:text-amber-200 transition-colors">
+          {title}
+        </h3>
       </div>
     </motion.div>
   );
@@ -203,32 +209,36 @@ export const MagazineGallery = () => {
   };
 
   return (
-    <section className="relative py-10 overflow-hidden">
-      <div className="absolute left-1/2 top-0 h-full w-px bg-gradient-to-b from-transparent via-amber-300/8 to-transparent -translate-x-1/2 pointer-events-none" />
-
-      <div className="relative z-10 max-w-6xl mx-auto px-6 lg:px-10">
-        <div className="flex items-center gap-6 mb-8">
-          <div className="h-px flex-1 bg-gradient-to-r from-transparent to-amber-300/20" />
-          <div className="text-center shrink-0">
-            <span className="block text-[12px] font-bold tracking-[0.5em] uppercase text-amber-300 mb-2">
-              Visual Storytelling · Vol. IV
+    <section className="relative py-20 md:py-28 bg-[#FAF8F3] overflow-hidden border-t border-stone-200">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10">
+        
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-12 border-b border-[#C4A064]/20 pb-8">
+          <div>
+            <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-[#C4A064] block mb-2">
+              THE MAIRII JOURNAL & MAGAZINE
             </span>
-            <h2 className="font-serif text-3xl md:text-5xl font-bold text-stone-950">
-              The{" "}
-              <em className="text-amber-300/90 not-italic font-serif">Magazine</em> Gallery
+            <h2 className="font-serif text-3xl md:text-5xl font-normal text-[#2B2B2B]">
+              Editorial <span className="italic text-[#C4A064]">Stories & Gallery</span>
             </h2>
-            <p className="mt-2 text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500">
-              An editorial journey through iconic creations
-            </p>
           </div>
-          <div className="h-px flex-1 bg-gradient-to-l from-transparent to-amber-300/20" />
+
+          <Link
+            href="/blog"
+            className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#2C2A28] text-white text-[11px] font-bold tracking-[0.25em] uppercase hover:bg-[#C4A064] transition-all duration-300 shadow-md"
+          >
+            <BookOpen className="w-4 h-4 text-amber-300 group-hover:text-white" />
+            Explore The Journal
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
+        {/* Grid Cards */}
         <div
-          className="flex flex-col gap-3 lg:grid lg:gap-3"
+          className="flex flex-col gap-4 lg:grid lg:gap-4"
           style={{
             gridTemplateColumns: "1.6fr 1fr 1.1fr",
-            gridTemplateRows: "190px 190px",
+            gridTemplateRows: "210px 210px",
           }}
         >
           {/* Card 1 */}
@@ -263,7 +273,7 @@ export const MagazineGallery = () => {
 
           {/* Card 3 */}
           <div
-            style={{ gridColumn: "3", gridRow: "1 / 3", marginTop: "48px" }}
+            style={{ gridColumn: "3", gridRow: "1 / 3" }}
             className="h-80 lg:h-auto"
           >
             <ArticleLinkWrapper article={mergedArticles[2]}>
@@ -295,67 +305,42 @@ export const MagazineGallery = () => {
           </div>
         </div>
 
-        {/* Card 5 */}
+        {/* Card 5 Horizontal Banner */}
         <ArticleLinkWrapper article={mergedArticles[4]}>
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "80px" }}
-            transition={{ duration: 1.0, delay: 0.6 }}
-            className="mt-3 h-28 lg:h-32 relative overflow-hidden rounded-sm group cursor-pointer"
+            transition={{ duration: 1.0, delay: 0.5 }}
+            className="mt-4 h-32 lg:h-36 relative overflow-hidden rounded-md group cursor-pointer border border-[#C4A064]/20 hover:border-[#C4A064]/60 transition-all duration-500 shadow-md"
           >
             <Image
               src={mergedArticles[4].isFallback ? mergedArticles[4].coverImage : resolveMediaUrl(mergedArticles[4].coverImage)}
               alt={mergedArticles[4].title}
               fill
               loading="lazy"
-              quality={75}
+              quality={80}
               sizes="100vw"
-              className="object-cover object-center transition-transform duration-[2400ms] ease-out group-hover:scale-105 brightness-90"
+              className="object-cover object-center transition-transform duration-[2000ms] ease-out group-hover:scale-105 brightness-90"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-stone-950/70 via-stone-950/20 to-transparent" />
-            <div className="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-stone-950/40 to-transparent" />
             
-            {mergedArticles[4].pdfUrl && (
-              <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 rounded-full bg-amber-300 px-2.5 py-1 text-[8px] font-extrabold uppercase tracking-wider text-stone-950 shadow-md">
-                <svg className="h-2.5 w-2.5 text-stone-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-                PDF
-              </div>
-            )}
-
-            <div className="absolute top-4 right-4 w-8 h-8 rounded-full border border-amber-300/30 bg-stone-950/50 flex items-center justify-center">
-              <span className="font-serif text-[10px] italic text-amber-300/90">
+            <div className="absolute top-4 right-4 w-9 h-9 rounded-full border border-amber-300/40 bg-stone-950/60 backdrop-blur-md flex items-center justify-center">
+              <span className="font-serif text-[11px] italic font-semibold text-amber-300">
                 {mergedArticles[4].isFallback ? mergedArticles[4].issue : "05"}
               </span>
             </div>
-            <div className="absolute left-0 top-[20%] bottom-[20%] w-px bg-gradient-to-b from-transparent via-amber-300/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
             <div className="absolute left-8 bottom-0 top-0 flex flex-col justify-center">
-              <span className="block text-[8px] font-light tracking-[0.45em] uppercase text-amber-300 mb-2 opacity-0 group-hover:opacity-100 transition-all duration-500 -translate-y-1 group-hover:translate-y-0">
-                {mergedArticles[4].excerpt || ""}
+              <span className="block text-[9px] font-bold tracking-[0.3em] uppercase text-amber-300 mb-1">
+                {mergedArticles[4].excerpt || "Curated Series"}
               </span>
-              <h3 className="font-serif text-2xl md:text-3xl text-stone-100 font-light">
+              <h3 className="font-serif text-xl md:text-3xl text-stone-100 font-light group-hover:text-amber-200 transition-colors">
                 {mergedArticles[4].title}
               </h3>
             </div>
           </motion.div>
         </ArticleLinkWrapper>
-
-        <div className="mt-6 flex justify-between items-end border-t border-amber-300/80 pt-4">
-          <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-stone-600">
-            © Mairii Collection · 2026
-          </span>
-          <Link
-            href="/category/new"
-            className="group inline-flex items-center gap-4 text-[12px] font-bold tracking-[0.4em] uppercase text-amber-400 hover:text-amber-300 transition-colors duration-300"
-          >
-            <span className="h-px bg-amber-300 transition-all duration-700 group-hover:w-16 w-8" />
-            Explore All Collections
-          </Link>
-        </div>
       </div>
     </section>
   );
