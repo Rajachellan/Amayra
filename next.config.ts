@@ -12,8 +12,9 @@ const nextConfig: NextConfig = {
     { source: "/cart", destination: "/?openCart=1", permanent: false },
   ],
 
-  // Resize/WebP via Next image optimizer (was unoptimized — full multi‑MB originals)
+  // Resize/WebP via Next image optimizer (unoptimized for instant loading and zero server timeouts)
   images: {
+    unoptimized: true,
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [64, 96, 128, 256, 384],

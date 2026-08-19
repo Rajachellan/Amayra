@@ -133,9 +133,14 @@ export default function CheckoutPage() {
 
   const [paying, setPaying] = useState(false);
 
-  const shipping = 0;
+  const FREE_SHIPPING_THRESHOLD = 1499;
+  const DISCOUNT_THRESHOLD = 3499;
+  const GIFT_THRESHOLD = 6999;
+
+  const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
+  const milestoneDiscount = subtotal >= DISCOUNT_THRESHOLD ? Math.round(subtotal * 0.1 * 100) / 100 : 0;
   const tax = 0;
-  const displayTotal = Math.max(0, subtotal - discountAmount + shipping);
+  const displayTotal = Math.max(0, subtotal - discountAmount - milestoneDiscount + shipping);
 
   useEffect(() => {
     if (authLoading) return;
@@ -198,7 +203,21 @@ export default function CheckoutPage() {
     });
   }, [user?.id, profileLoaded, fullName, phone, line1, city, stateVal, pincode, country]);
 
-  const validCart = useMemo(() => cart.filter((i) => i.slug?.trim()), [cart]);
+  const validCart = useMemo(() => {
+    const list = [...cart.filter((i) => i.slug?.trim())];
+    if (subtotal >= 6999) {
+      list.push({
+        id: "free-gift-id",
+        name: "Free Gift (Worth ₹799)",
+        slug: "free-gift-worth-799",
+        price: 0,
+        quantity: 1,
+        category: "Gift",
+        image: "/images/gift-box.webp",
+      } as any);
+    }
+    return list;
+  }, [cart, subtotal]);
 
   function applySavedAddress(a: CustomerAddress) {
     if (a.id) setSelectedAddressId(a.id);
@@ -620,8 +639,18 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Delivery / Shipping</span>
-                    <span className="font-bold text-emerald-700">FREE</span>
+                    {shipping > 0 ? (
+                      <span className="font-semibold text-gray-900">₹{shipping.toLocaleString()}</span>
+                    ) : (
+                      <span className="font-bold text-emerald-700">FREE</span>
+                    )}
                   </div>
+                  {milestoneDiscount > 0 && (
+                    <div className="flex justify-between text-[#c4a064] font-semibold">
+                      <span>Steal Deal (10% Off)</span>
+                      <span>- ₹{milestoneDiscount.toLocaleString()}</span>
+                    </div>
+                  )}
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-[#c4a064] font-semibold">
                       <span>Discount ({couponCode})</span>

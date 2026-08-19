@@ -20,7 +20,7 @@ export function getPublicApiUrl(): string {
 /** Turn API image path or absolute URL into a usable `next/image` src. */
 export function resolveMediaUrl(pathOrUrl: string | undefined | null): string {
   const raw = typeof pathOrUrl === "string" ? pathOrUrl.trim() : "";
-  if (!raw) return "/images/optimized/neckles.webp";
-  if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+  if (!raw) return "/images/1.jpg";
+  if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) return raw;
   return `${getPublicApiUrl()}${raw.startsWith("/") ? "" : "/"}${raw}`;
 }

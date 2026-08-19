@@ -139,20 +139,15 @@ function PromoCard({
           className="object-cover opacity-50"
         />
       ) : null}
-      <picture>
-        {card.mobileImage ? (
-          <source media="(max-width: 768px)" srcSet={resolveMediaUrl(card.mobileImage)} />
-        ) : null}
-        {card.image ? (
-          <Image
-            src={resolveMediaUrl(card.image)}
-            alt={card.title || card.name || "Promotion"}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover"
-          />
-        ) : null}
-      </picture>
+      {card.image ? (
+        <Image
+          src={resolveMediaUrl(card.image)}
+          alt={card.title || card.name || "Promotion"}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover"
+        />
+      ) : null}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       <div
         className="relative z-[1] flex h-full flex-col justify-end gap-1.5 p-5"

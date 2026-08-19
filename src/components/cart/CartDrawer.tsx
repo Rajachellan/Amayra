@@ -9,7 +9,7 @@ import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight, Tag } from "lucide-rea
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
-import { shopApi } from "@/lib/api/shop";
+import { shopApi, type CartPricingResponse } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 
@@ -37,6 +37,19 @@ export function CartDrawer() {
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState<string[]>(["WELCOME5"]);
   const [couponInput, setCouponInput] = useState("");
+  const [pricingResult, setPricingResult] = useState<CartPricingResponse | null>(null);
+
+  useEffect(() => {
+    if (!cart.length) {
+      setPricingResult(null);
+      return;
+    }
+    const items = cart.map((i) => ({ slug: i.slug, productId: i.id, quantity: i.quantity }));
+    shopApi
+      .calculateCart(items, couponCode || undefined)
+      .then(setPricingResult)
+      .catch((err) => console.error("Cart calculation error:", err));
+  }, [cart, couponCode]);
 
   useEffect(() => {
     if (!isCartOpen) return;
@@ -63,9 +76,42 @@ export function CartDrawer() {
       .catch((err) => console.error("Failed to load promotional banners for coupons:", err));
   }, [isCartOpen]);
 
-  const shipping = 0;
+  const FREE_SHIPPING_THRESHOLD = 1499;
+  const DISCOUNT_THRESHOLD = 3499;
+  const GIFT_THRESHOLD = 6999;
+
+  const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
   const tax = 0;
-  const total = Math.max(0, subtotal - discountAmount + shipping);
+  const milestoneDiscount = subtotal >= DISCOUNT_THRESHOLD ? Math.round(subtotal * 0.1 * 100) / 100 : 0;
+  const total = Math.max(0, subtotal - discountAmount - milestoneDiscount + shipping);
+
+  const progressVal = useMemo(() => {
+    if (subtotal <= 0) return 0;
+    if (subtotal < FREE_SHIPPING_THRESHOLD) {
+      return (subtotal / FREE_SHIPPING_THRESHOLD) * 33.33;
+    }
+    if (subtotal < DISCOUNT_THRESHOLD) {
+      return 33.33 + ((subtotal - FREE_SHIPPING_THRESHOLD) / (DISCOUNT_THRESHOLD - FREE_SHIPPING_THRESHOLD)) * 33.33;
+    }
+    if (subtotal < GIFT_THRESHOLD) {
+      return 66.66 + ((subtotal - DISCOUNT_THRESHOLD) / (GIFT_THRESHOLD - DISCOUNT_THRESHOLD)) * 33.34;
+    }
+    return 100;
+  }, [subtotal]);
+
+  const bannerText = useMemo(() => {
+    if (subtotal <= 0) return "Add items to your bag to unlock luxury benefits!";
+    if (subtotal < FREE_SHIPPING_THRESHOLD) {
+      return `You are ₹${(FREE_SHIPPING_THRESHOLD - subtotal).toLocaleString()} away from Free Shipping`;
+    }
+    if (subtotal < DISCOUNT_THRESHOLD) {
+      return `✓ Free Shipping Unlocked! Add ₹${(DISCOUNT_THRESHOLD - subtotal).toLocaleString()} more for Extra 10% OFF!`;
+    }
+    if (subtotal < GIFT_THRESHOLD) {
+      return `✓ 10% OFF Unlocked! Add ₹${(GIFT_THRESHOLD - subtotal).toLocaleString()} more for a Free Gift (Worth ₹799)!`;
+    }
+    return "✓ All luxury milestones unlocked! Free Shipping, 10% OFF, & Free Gift applied! 🎉";
+  }, [subtotal]);
 
   const cartIds = useMemo(() => new Set(cart.map((i) => i.id)), [cart]);
 
@@ -146,6 +192,69 @@ export function CartDrawer() {
                   Items in your bag are reserved briefly while you check out.
                 </p>
               </div>
+
+              {cart.length > 0 && (
+                <div className="px-5 pb-6 space-y-3">
+                  {pricingResult?.upsell?.available ? (
+                    <div className="bg-[#fdfbf7] border border-[#c4a064]/50 rounded-lg p-4 font-sans shadow-sm text-center space-y-1">
+                      <p className="text-xs font-extrabold text-[#1a3d2f] uppercase tracking-wider">
+                        🎉 Add ₹{pricingResult.upsell.amountToUnlock?.toLocaleString()} more to unlock {pricingResult.upsell.nextDiscountPercentage}% OFF!
+                      </p>
+                      <p className="text-[11.5px] text-gray-600 font-medium">
+                        You'll receive ₹{pricingResult.upsell.amountToUnlock?.toLocaleString()} worth of additional products for only{" "}
+                        <strong className="text-emerald-800 font-bold underline">
+                          ₹{pricingResult.upsell.additionalPayment?.toLocaleString()}
+                        </strong>{" "}
+                        more.
+                      </p>
+                    </div>
+                  ) : null}
+
+                  <div className="bg-[#fdfbf7] border border-[#f0e6d2] rounded p-4 text-center space-y-4 font-sans shadow-sm select-none">
+                    <p className="text-xs font-semibold tracking-wider text-[#1a3d2f] uppercase leading-relaxed">
+                      {bannerText}
+                    </p>
+                    
+                    {/* Progress Track */}
+                    <div 
+                      className="relative h-2 bg-stone-100 rounded-full overflow-hidden border border-stone-200"
+                      role="progressbar"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={Math.round(progressVal)}
+                    >
+                      <div 
+                        className="absolute top-0 left-0 h-full bg-[#c4a064] transition-all duration-500 ease-out" 
+                        style={{ width: `${progressVal}%` }}
+                      />
+                    </div>
+                    
+                    {/* Milestone labels / nodes */}
+                    <div className="grid grid-cols-3 gap-2 text-[10px] text-gray-500 uppercase tracking-wider font-semibold">
+                      <div className="text-left space-y-0.5">
+                        <span className={`block transition-colors duration-300 ${subtotal >= FREE_SHIPPING_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
+                          {subtotal >= FREE_SHIPPING_THRESHOLD ? "✓ Free Ship" : "Free Ship"}
+                        </span>
+                        <span className="text-[9px] text-gray-400 font-normal">₹1,499</span>
+                      </div>
+                      
+                      <div className="text-center space-y-0.5">
+                        <span className={`block transition-colors duration-300 ${subtotal >= DISCOUNT_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
+                          {subtotal >= DISCOUNT_THRESHOLD ? "✓ 10% OFF" : "10% OFF"}
+                        </span>
+                        <span className="text-[9px] text-gray-400 font-normal">₹3,499</span>
+                      </div>
+                      
+                      <div className="text-right space-y-0.5">
+                        <span className={`block transition-colors duration-300 ${subtotal >= GIFT_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
+                          {subtotal >= GIFT_THRESHOLD ? "✓ Free Gift" : "Free Gift"}
+                        </span>
+                        <span className="text-[9px] text-gray-400 font-normal">₹6,999</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {cart.length === 0 ? (
                 <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
@@ -364,21 +473,49 @@ export function CartDrawer() {
             <div className="shrink-0 border-t border-gray-100 bg-white px-10 py-5 shadow-[0_-8px_30px_-12px_rgba(0,0,0,0.12)] space-y-2">
               <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
                 <span>Subtotal ({cart.reduce((acc, i) => acc + i.quantity, 0)} items)</span>
-                <span className="font-semibold text-gray-800">₹{subtotal.toLocaleString()}</span>
+                <span className="font-semibold text-gray-800">
+                  ₹{(pricingResult ? pricingResult.subtotal : subtotal).toLocaleString()}
+                </span>
               </div>
-              <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
-                <span>Delivery / Shipping</span>
-                <span className="font-bold text-emerald-700">FREE</span>
-              </div>
-              {discountAmount > 0 && (
+
+              {pricingResult && pricingResult.automaticDiscount > 0 && (
                 <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
-                  <span>Discount ({couponCode})</span>
-                  <span>- ₹{discountAmount.toLocaleString()}</span>
+                  <span>Slab Discount ({pricingResult.discountSlab?.discountPercentage}% Off)</span>
+                  <span>- ₹{pricingResult.automaticDiscount.toLocaleString()}</span>
                 </div>
               )}
+
+              {pricingResult && pricingResult.couponDiscount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
+                  <span>Coupon Discount ({pricingResult.appliedCoupon?.code})</span>
+                  <span>- ₹{pricingResult.couponDiscount.toLocaleString()}</span>
+                </div>
+              )}
+
+              {!pricingResult && milestoneDiscount > 0 && (
+                <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
+                  <span>Steal Deal (10% Off)</span>
+                  <span>- ₹{milestoneDiscount.toLocaleString()}</span>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
+                <span>Delivery / Shipping</span>
+                {shipping > 0 ? (
+                  <span className="font-semibold text-gray-800">₹{shipping.toLocaleString()}</span>
+                ) : (
+                  <span className="font-bold text-emerald-700">FREE</span>
+                )}
+              </div>
+
               <div className="flex items-center justify-between font-serif uppercase border-t border-gray-100 pt-2">
-                <span className="text-sm tracking-[0.2em] text-brand-emerald">Estimated Total</span>
-                <span className="text-xl font-bold text-brand-emerald">₹{total.toLocaleString()}</span>
+                <div>
+                  <span className="text-sm tracking-[0.2em] text-brand-emerald">Estimated Total</span>
+                  <p className="text-[9.5px] text-gray-400 font-sans tracking-normal uppercase">GST Included</p>
+                </div>
+                <span className="text-xl font-bold text-brand-emerald">
+                  ₹{(pricingResult ? pricingResult.finalAmount + shipping : total).toLocaleString()}
+                </span>
               </div>
 
               {hasInsufficientStock && (

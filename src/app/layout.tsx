@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Metadata } from "next";
@@ -7,17 +7,20 @@ import { AppProviders } from "@/components/AppProviders";
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
+  display: "swap",
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
 });
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-cormorant",
   weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -32,6 +35,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://assets.mairiijewels.com" />
+        <link rel="dns-prefetch" href="https://assets.mairiijewels.com" />
+        <link rel="preconnect" href="https://images.unsplash.com" />
+      </head>
       <body
         className={`${playfair.variable} ${inter.variable} ${cormorant.variable} min-h-full flex flex-col`}
         suppressHydrationWarning

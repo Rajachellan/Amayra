@@ -17,6 +17,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/1.jpg");
 
   const isFavorite = isInWishlist(product.id);
 
@@ -80,12 +81,15 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           onClick={() => setIsLightboxOpen(true)}
         >
           <Image
-            src={product.image}
+            src={imgSrc}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            quality={80}
+            quality={75}
+            loading="lazy"
+            decoding="async"
             className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            onError={() => setImgSrc("/images/1.jpg")}
           />
         </div>
 

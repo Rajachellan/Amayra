@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { ArrowRight, Gift, Star, Tag } from "lucide-react";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import { resolveMediaUrl } from "@/lib/apiBase";
 import {
   shopApi,
   type AnnouncementDoc,
@@ -119,35 +121,36 @@ export const OffersSection = () => {
       <div className="container relative z-10 mx-auto space-y-6 px-4 md:px-6">
         <TickerBar items={ticker} />
 
-        {useClassicTrio ? (
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <MainOfferCard card={cards[0]} />
-            <div className="flex w-full flex-col gap-5 lg:w-[38%]">
-              <SideOfferCard card={cards[1]} index={1} />
-              <SideOfferCard card={cards[2]} index={2} />
+        {cards.length === 1 ? (
+          <MainOfferCard card={cards[0]} />
+        ) : cards.length === 2 ? (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <SideOfferCard card={cards[0]} index={0} />
+            <SideOfferCard card={cards[1]} index={1} />
+          </div>
+        ) : (mode === "one_large_two_small" || mode === "auto_responsive") && cards.length >= 3 ? (
+          <div className="space-y-5">
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <MainOfferCard card={cards[0]} />
+              <div className="flex w-full flex-col gap-5 lg:w-[38%]">
+                <SideOfferCard card={cards[1]} index={1} />
+                <SideOfferCard card={cards[2]} index={2} />
+              </div>
             </div>
+
+            {cards.length > 3 && (
+              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+                {cards.slice(3).map((card, i) => (
+                  <SideOfferCard key={card._id} card={card} index={i + 3} />
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div
-            className={
-              cards.length === 1
-                ? "grid grid-cols-1"
-                : cards.length === 2
-                  ? "grid grid-cols-1 gap-5 md:grid-cols-2"
-                  : cards.length === 4
-                    ? "grid grid-cols-1 gap-5 sm:grid-cols-2"
-                    : "grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3"
-            }
-          >
-            {cards.map((card, i) =>
-              i === 0 && cards.length >= 3 && mode === "one_large_two_small" ? (
-                <div key={card._id} className="md:col-span-2 md:row-span-2">
-                  <MainOfferCard card={card} />
-                </div>
-              ) : (
-                <SideOfferCard key={card._id} card={card} index={i} />
-              )
-            )}
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {cards.map((card, i) => (
+              <SideOfferCard key={card._id} card={card} index={i} />
+            ))}
           </div>
         )}
       </div>
@@ -185,6 +188,15 @@ function MainOfferCard({ card }: { card: OfferCard }) {
         color: card.textColor || "#0b2516",
       }}
     >
+      {card.image || card.backgroundImage ? (
+        <Image
+          src={resolveMediaUrl(card.backgroundImage || card.image)}
+          alt={card.title || card.name || "Offer"}
+          fill
+          sizes="(max-width: 768px) 100vw, 60vw"
+          className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+        />
+      ) : null}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(196,160,100,0.09)_0%,transparent_65%)]" />
       <span className="absolute top-4 left-4 h-5 w-5 animate-shimmer-border rounded-tl border-t-2 border-l-2 border-emerald-dark/20" />
       <span className="absolute top-4 right-4 h-5 w-5 animate-shimmer-border rounded-tr border-t-2 border-r-2 border-emerald-dark/20 [animation-delay:0.6s]" />
@@ -250,6 +262,15 @@ function SideOfferCard({ card, index }: { card: OfferCard; index: number }) {
         animationDelay: index === 2 ? "0.15s" : undefined,
       }}
     >
+      {card.image || card.backgroundImage ? (
+        <Image
+          src={resolveMediaUrl(card.backgroundImage || card.image)}
+          alt={card.title || card.name || "Offer"}
+          fill
+          sizes="(max-width: 768px) 100vw, 40vw"
+          className="object-cover opacity-25 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+        />
+      ) : null}
       <div
         className={`pointer-events-none absolute -top-5 -right-5 h-24 w-24 rounded-full ${
           dark ? "bg-brand-gold/08" : "bg-brand-gold/05"
