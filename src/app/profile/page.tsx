@@ -461,7 +461,7 @@ export default function ProfilePage() {
                             return (
                               <Link
                                 key={order._id}
-                                href={`/profile/orders/${order._id}`}
+                                href={`/profile/orders/${order.orderNumber}`}
                                 className="block p-6 rounded-2xl border border-stone-200/80 hover:border-[#c9a84c]/60 hover:shadow-lg transition-all duration-300 bg-stone-50/40 hover:bg-white group"
                               >
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

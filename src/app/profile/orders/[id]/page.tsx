@@ -198,7 +198,7 @@ export default function OrderDetailPage() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  <Link href={`/profile/orders/${order._id}/invoice`}>
+                  <Link href={`/profile/orders/${order.orderNumber}/invoice`}>
                     <button className="px-4 py-1.5 border border-stone-300 hover:border-[#0B2516] text-stone-700 hover:text-[#0B2516] text-[10px] uppercase tracking-wider font-semibold rounded-full transition-all flex items-center gap-1.5 bg-white">
                       <Printer className="w-3.5 h-3.5" />
                       Invoice
