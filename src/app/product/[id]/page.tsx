@@ -260,9 +260,9 @@ function ProductDetail() {
 
       <section className="pb-16 md:pb-20">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col gap-10 lg:flex-row lg:gap-14 xl:gap-20">
-            {/* Gallery */}
-            <div className="w-full lg:w-[52%]">
+          <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
+            {/* Gallery — Sticky on desktop so images remain visible while scrolling */}
+            <div className="w-full lg:w-[50%] lg:sticky lg:top-28 lg:self-start">
               <ProductImageGallery
                 images={thumbs}
                 alt={product.name}
@@ -272,7 +272,7 @@ function ProductDetail() {
             </div>
 
             {/* Product info */}
-            <div className="w-full lg:w-[48%]">
+            <div className="w-full lg:w-[50%] min-w-0">
               <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-3">
                   {product.isNewArrival && (
@@ -292,7 +292,7 @@ function ProductDetail() {
                     type="button"
                     onClick={() => void handleShare()}
                     aria-label="Share product"
-                    className="flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition hover:border-[#c4a574] hover:text-neutral-900"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-neutral-200 bg-white text-neutral-700 shadow-sm transition hover:border-[#c4a574] hover:text-neutral-900 cursor-pointer"
                   >
                     <Share2 className="h-4 w-4" />
                   </button>
@@ -300,7 +300,7 @@ function ProductDetail() {
                     type="button"
                     onClick={() => toggleWishlist(product)}
                     aria-label="Add to wishlist"
-                    className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-sm transition ${
+                    className={`flex h-11 w-11 items-center justify-center rounded-full border shadow-sm transition cursor-pointer ${
                       inWishlist
                         ? "border-[#c4a574] bg-[#c4a574] text-white"
                         : "border-neutral-200 bg-white text-neutral-700 hover:border-[#c4a574]"
@@ -324,22 +324,22 @@ function ProductDetail() {
                 <span className="text-xs text-neutral-500 font-medium">Effortless elegance, every time you wear it.</span>
               </div>
 
-              {/* Price & Discount */}
+              {/* Price & Discount (Sale price text removed, clean price display) */}
               <div className="mb-6 flex flex-wrap items-baseline gap-3">
+                <span className="text-3xl font-bold text-[#d4af37] md:text-4xl font-serif">
+                  Rs. {product.price.toLocaleString()}.00
+                </span>
                 {product.oldPrice != null && (
                   <span className="text-lg font-medium text-neutral-400 line-through">
                     Rs. {product.oldPrice.toLocaleString()}.00
                   </span>
                 )}
-                <span className="text-3xl font-bold text-[#d4af37] md:text-4xl">
-                  Sale price Rs. {product.price.toLocaleString()}.00
-                </span>
                 {product.oldPrice != null && product.oldPrice > product.price && (
-                  <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700">
+                  <span className="rounded bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">
                     {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
                   </span>
                 )}
-                <span className="w-full text-xs text-neutral-500">Incl. of all taxes</span>
+                <span className="w-full text-xs text-neutral-500 font-medium">Incl. of all taxes</span>
               </div>
 
               {/* Festive Offer Card */}

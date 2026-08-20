@@ -5,11 +5,11 @@ import { ShieldCheck, Truck, RotateCcw, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 const features = [
-  {
-    icon: ShieldCheck,
-    title: "BIS Hallmarked",
-    description: "Every piece of gold is hallmarked for purity and authenticity.",
-  },
+  // {
+  //   icon: ShieldCheck,
+  //   title: "BIS Hallmarked",
+  //   description: "Every piece of gold color is hallmarked for purity and authenticity.",
+  // },
   {
     icon: Truck,
     title: "Secure Shipping",
@@ -41,8 +41,8 @@ export const WhyChooseUs = () => {
               transition={{ delay: idx * 0.1 }}
               className="flex flex-col items-center text-center group"
             >
-              <div className="mb-6 p-4 rounded-full border border-white/10 group-hover:bg-brand-gold transition-colors duration-500">
-                <feature.icon className="w-8 h-8 text-brand-gold group-hover:text-brand-emerald transition-colors duration-500" />
+              <div className="mb-6 p-4 rounded-full border border-white/10 group-hover:bg-brand-gold color transition-colors duration-500">
+                <feature.icon className="w-8 h-8 text-brand-gold color group-hover:text-brand-emerald transition-colors duration-500" />
               </div>
               <h4 className="font-serif text-xl tracking-[0.1em] mb-4 uppercase">
                 {feature.title}

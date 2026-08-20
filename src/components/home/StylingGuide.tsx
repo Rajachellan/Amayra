@@ -19,9 +19,9 @@ const stylingTips = [
   },
   {
     id: 2,
-    title: "Emerald & Gold",
+    title: "Emerald & gold color",
     description:
-      "Pair high-carat gold with deep emeralds. The contrast highlights the natural brilliance of the gemstone.",
+      "Pair high-carat gold color with deep emeralds. The contrast highlights the natural brilliance of the gemstone.",
     image: silver1,
   },
   {
@@ -122,7 +122,7 @@ export const StylingGuide = () => {
                   <Plus className="w-5 h-5 text-white" />
                 </div>
 
-                {/* Corner gold accents */}
+                {/* Corner gold color accents */}
                 <div
                   className="absolute top-3 left-3 w-6 h-6 transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                   style={{

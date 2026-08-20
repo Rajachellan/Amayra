@@ -59,7 +59,7 @@ export const PremiumHighlights = () => {
                   max-w-[180px]
                   text-[12px]
                   font-serif
-                  font-semibold
+                  font-bold
                   uppercase
                   leading-[1.6]
                   tracking-[0.14em]
