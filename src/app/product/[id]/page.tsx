@@ -21,6 +21,16 @@ import {
   Gem,
   Globe2,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  Flame,
+  Ruler,
+  Award,
+  Sparkles,
+  ShieldCheck,
+  Truck,
+  Copy,
+  Check,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
@@ -60,6 +70,17 @@ function ProductDetail() {
   const [activeImg, setActiveImg] = useState(0);
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [copiedCode, setCopiedCode] = useState(false);
+  const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
+    description: true,
+    features: false,
+    care: false,
+    styling: false,
+  });
+
+  const toggleAccordion = (key: string) => {
+    setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
 
   useEffect(() => {
     if (!slug) return;
@@ -293,30 +314,86 @@ function ProductDetail() {
               <h1 className="mb-2 text-2xl font-bold leading-tight text-neutral-900 md:text-3xl">
                 {product.name}
               </h1>
-              {product.material && (
-                <p className="mb-6 flex items-center gap-2 text-sm text-neutral-500">
-                  <span className="inline-block h-3 w-3 rounded-sm bg-[#d4a853]" />
-                  {product.material}
-                </p>
-              )}
 
-              <div className="mb-8 flex flex-wrap items-baseline gap-3">
+              {/* Tagline / Social Proof Badge */}
+              <div className="mb-4 flex flex-wrap items-center gap-3">
+                <span className="flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800 border border-amber-200/60">
+                  <Flame className="h-3.5 w-3.5 fill-amber-500 text-amber-500 animate-pulse" />
+                  26 sold in last 25 hours
+                </span>
+                <span className="text-xs text-neutral-500 font-medium">Effortless elegance, every time you wear it.</span>
+              </div>
+
+              {/* Price & Discount */}
+              <div className="mb-6 flex flex-wrap items-baseline gap-3">
                 {product.oldPrice != null && (
-                  <span className="text-lg font-medium text-[#1a3d2f] line-through opacity-85">
-                    ₹ {product.oldPrice.toLocaleString()}
+                  <span className="text-lg font-medium text-neutral-400 line-through">
+                    Rs. {product.oldPrice.toLocaleString()}.00
                   </span>
                 )}
                 <span className="text-3xl font-bold text-[#d4af37] md:text-4xl">
-                  ₹ {product.price.toLocaleString()}
+                  Sale price Rs. {product.price.toLocaleString()}.00
                 </span>
+                {product.oldPrice != null && product.oldPrice > product.price && (
+                  <span className="rounded bg-red-100 px-2 py-0.5 text-xs font-bold text-red-700">
+                    {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
+                  </span>
+                )}
                 <span className="w-full text-xs text-neutral-500">Incl. of all taxes</span>
               </div>
 
-              {product.description && (
-                <p className="mb-8 max-w-lg text-sm leading-relaxed text-neutral-600">
-                  {product.description}
-                </p>
-              )}
+              {/* Festive Offer Card */}
+              <div className="mb-8 overflow-hidden rounded-xl border border-amber-200/80 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9EE] to-[#FFF6E5] p-4 shadow-sm">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d4af37]/20 text-[#a8895c]">
+                      <Sparkles className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#a8895c]">
+                          FESTIVE OFFER
+                        </span>
+                        <span className="rounded-full bg-[#1a3d2f] px-2 py-0.5 text-[9px] font-bold text-white">
+                          15% OFF
+                        </span>
+                      </div>
+                      <p className="text-xs font-semibold text-neutral-800">Celebrate Raksha Bandhan — Flat 15% off sitewide</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      void navigator.clipboard.writeText("RAKHI15");
+                      setCopiedCode(true);
+                      toast.success("Coupon code RAKHI15 copied!");
+                      setTimeout(() => setCopiedCode(false), 2000);
+                    }}
+                    className="flex items-center gap-1.5 rounded-lg border border-[#c4a574] bg-white px-3 py-1.5 text-xs font-bold text-[#1a3d2f] shadow-sm transition hover:bg-[#faf6f0]"
+                  >
+                    {copiedCode ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-[#c4a574]" />}
+                    {copiedCode ? "COPIED" : "RAKHI15"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Delivery Estimation Card */}
+              <div className="mb-8 rounded-xl border border-neutral-200/80 bg-white p-4 text-xs">
+                <div className="mb-2 flex items-center justify-between border-b border-neutral-100 pb-2 font-bold uppercase tracking-wider text-neutral-700">
+                  <span>Estimated Delivery</span>
+                  <span className="text-emerald-700 font-semibold">In Stock</span>
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-1">
+                  <div>
+                    <span className="font-bold text-neutral-900">Pan India</span>
+                    <p className="text-neutral-500">3–5 days (Mon, 24 Aug – Wed, 26 Aug)</p>
+                  </div>
+                  <div>
+                    <span className="font-bold text-neutral-900">International (INT)</span>
+                    <p className="text-neutral-500">8–12 days (Sat, 29 Aug – Thu, 3 Sep)</p>
+                  </div>
+                </div>
+              </div>
 
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-8">
@@ -393,45 +470,234 @@ function ProductDetail() {
                 </div>
               </div>
 
-              {/* Specs */}
-              {(product.material || product.weight) && (
-                <div className="mb-10 grid grid-cols-2 gap-4 rounded-xl border border-neutral-100 bg-white p-5">
-                  {product.material && (
-                    <div>
-                      <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                        Material
-                      </p>
-                      <p className="text-sm font-medium text-neutral-800">{product.material}</p>
-                    </div>
-                  )}
-                  {product.weight && (
-                    <div>
-                      <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-                        Weight
-                      </p>
-                      <p className="text-sm font-medium text-neutral-800">{product.weight}</p>
+              {/* 4 Brand Trust Badges */}
+              <div className="my-8 grid grid-cols-2 gap-4 border-y border-neutral-200/80 py-6 sm:grid-cols-4">
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
+                    <Sparkles className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-900">Handcrafted</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">artisanal</span>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
+                    <Award className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-900">Made in India</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">heritage</span>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
+                    <ShieldCheck className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-900">Premium Quality</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">finest</span>
+                </div>
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
+                    <Globe2 className="h-5 w-5" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs font-semibold text-neutral-900">Worldwide Shipping</span>
+                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">shipping</span>
+                </div>
+              </div>
+
+              {/* Accordions */}
+              <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200">
+                {/* 1. Description Accordion */}
+                <div className="py-4">
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion("description")}
+                    className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
+                  >
+                    <span>Description</span>
+                    {openAccordions.description ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
+                  </button>
+                  {openAccordions.description && (
+                    <div className="mt-4 space-y-5 text-xs leading-relaxed text-neutral-600">
+                      {product.description && <p className="whitespace-pre-line">{product.description}</p>}
+
+                      {/* Product Specifications Table */}
+                      <div className="rounded-lg bg-white p-4 border border-neutral-100 shadow-sm space-y-2">
+                        <p className="font-bold uppercase tracking-wider text-neutral-900 text-[11px] mb-2 border-b border-neutral-100 pb-1">Product Specification</p>
+                        <p><strong className="text-neutral-800">Material:</strong> {product.material || product.specifications?.material || "Skin Friendly | Hypoallergenic"}</p>
+                        {product.specifications?.craftsmanship && (
+                          <p><strong className="text-neutral-800">Craftsmanship:</strong> {product.specifications.craftsmanship}</p>
+                        )}
+                        {product.specifications?.waterproof && (
+                          <p><strong className="text-neutral-800">Waterproof:</strong> {product.specifications.waterproof}</p>
+                        )}
+                        {(product.length || product.breadth || product.height) && (
+                          <div className="pt-2 border-t border-neutral-100 flex flex-wrap gap-x-6 gap-y-1 text-neutral-800">
+                            {product.length && <p><strong>Length:</strong> {product.length}</p>}
+                            {product.breadth && <p><strong>Breadth / Width:</strong> {product.breadth}</p>}
+                            {product.height && <p><strong>Height:</strong> {product.height}</p>}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Key Highlights */}
+                      {product.keyHighlights && product.keyHighlights.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="font-bold text-neutral-900 text-[11px] uppercase tracking-wider">Key Highlights</p>
+                          <ul className="list-disc space-y-1.5 pl-4 text-neutral-600">
+                            {product.keyHighlights.map((hl, idx) => {
+                              const colonIdx = hl.indexOf(":");
+                              if (colonIdx !== -1) {
+                                return (
+                                  <li key={idx}>
+                                    <strong className="text-neutral-800">{hl.slice(0, colonIdx + 1)}</strong>{hl.slice(colonIdx + 1)}
+                                  </li>
+                                );
+                              }
+                              return <li key={idx}>{hl}</li>;
+                            })}
+                          </ul>
+                        </div>
+                      )}
+
+                      {/* Styling Inspiration */}
+                      {product.stylingInspiration && product.stylingInspiration.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="font-bold text-neutral-900 text-[11px] uppercase tracking-wider">Styling Inspiration</p>
+                          <ul className="list-disc space-y-1.5 pl-4 text-neutral-600">
+                            {product.stylingInspiration.map((item, idx) => (
+                              <li key={idx}>{item}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
-              )}
 
-              {/* Trust badges */}
-              <div className="grid grid-cols-3 gap-4 border-t border-neutral-200 pt-8">
-                {[
-                  { icon: Package, label: "Premium Packaging" },
-                  { icon: Gem, label: "Unbeatable Craftsmanship" },
-                  { icon: Globe2, label: "Shipping Worldwide" },
-                ].map(({ icon: Icon, label }) => (
-                  <div key={label} className="flex flex-col items-center text-center">
-                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-[#e8dfd0] bg-[#faf6f0] text-[#a8895c]">
-                      <Icon className="h-6 w-6" strokeWidth={1.25} />
+                {/* 2. Product Features Accordion */}
+                <div className="py-4">
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion("features")}
+                    className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
+                  >
+                    <span>Product Features</span>
+                    {openAccordions.features ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
+                  </button>
+                  {openAccordions.features && (
+                    <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
+                      {product.productFeatures && product.productFeatures.length > 0 ? (
+                        product.productFeatures.map((feat: any, idx: number) => {
+                          if (typeof feat === "string") {
+                            return <p key={idx}>{feat}</p>;
+                          }
+                          return (
+                            <div key={idx} className="space-y-1">
+                              <p className="font-bold text-neutral-800">{feat.title}:</p>
+                              {feat.description && <p className="text-neutral-600">{feat.description}</p>}
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className="space-y-3">
+                          <div>
+                            <p className="font-bold text-neutral-800">Timeless Designs:</p>
+                            <p>Every accessory is designed to add a graceful touch to every look, ensuring a hint of classic, timeless charm that will never go out of style.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">Trendsetting Pieces:</p>
+                            <p>Curated by drawing major inspiration from the latest fashion jewellery trends to bring a fresh, modern, diva-like look.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">Superior Quality Finish:</p>
+                            <p>Curated with skin-friendly materials plated with 18k gold, rhodium, or silver for lasting radiance.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">Enjoy Comfortable Wear:</p>
+                            <p>Lightweight style with skin-safe materials offering highest comfort from morning to night.</p>
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    <p className="text-[10px] font-semibold uppercase leading-snug tracking-wide text-neutral-600">
-                      {label}
-                    </p>
-                  </div>
-                ))}
+                  )}
+                </div>
+
+                {/* 3. Care Label Accordion */}
+                <div className="py-4">
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion("care")}
+                    className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
+                  >
+                    <span>Care Label</span>
+                    {openAccordions.care ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
+                  </button>
+                  {openAccordions.care && (
+                    <div className="mt-4 space-y-2 text-xs leading-relaxed text-neutral-600">
+                      {product.careLabel && product.careLabel.length > 0 ? (
+                        <ul className="list-disc space-y-1.5 pl-4">
+                          {product.careLabel.map((item, idx) => (
+                            <li key={idx}>{item}</li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <ul className="list-disc space-y-1.5 pl-4">
+                          <li>Store the earrings in an air-tight jewellery box or sealed pouch.</li>
+                          <li>Keep it away from body sprays, body lotions, or perfumes.</li>
+                          <li>Avoid using detergents, soaps, or toothpaste to clean your earrings.</li>
+                          <li>Clean your earrings after every use with a soft brush.</li>
+                        </ul>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* 4. Styling Tips Accordion */}
+                <div className="py-4">
+                  <button
+                    type="button"
+                    onClick={() => toggleAccordion("styling")}
+                    className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
+                  >
+                    <span>Styling Tips</span>
+                    {openAccordions.styling ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
+                  </button>
+                  {openAccordions.styling && (
+                    <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
+                      {product.stylingTips && product.stylingTips.length > 0 ? (
+                        product.stylingTips.map((tip, idx) => {
+                          const colonIdx = tip.indexOf(":");
+                          if (colonIdx !== -1) {
+                            return (
+                              <div key={idx} className="space-y-1">
+                                <p className="font-bold text-neutral-800">{tip.slice(0, colonIdx)}</p>
+                                <p>{tip.slice(colonIdx + 1)}</p>
+                              </div>
+                            );
+                          }
+                          return <p key={idx}>{tip}</p>;
+                        })
+                      ) : (
+                        <div className="space-y-3">
+                          <div>
+                            <p className="font-bold text-neutral-800">Make One Piece of Jewellery the Focal Point</p>
+                            <p>Choose one piece of jewellery that becomes the focal point of your look matching your mood and vibe.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">Match Jewellery to Your Outfit for a Harmonized Look</p>
+                            <p>Select jewellery that complements tone, texture, or colour of your outfit.</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
+
+              {/* SKU display matching reference screenshot */}
+              {product.sku && (
+                <div className="pt-4">
+                  <p className="text-xs font-mono tracking-widest text-neutral-500">{product.sku}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

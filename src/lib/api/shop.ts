@@ -240,6 +240,16 @@ export type ProductListItem = {
   color?: string;
   material?: string;
   weight?: string;
+  sku?: string;
+  length?: string;
+  breadth?: string;
+  height?: string;
+  specifications?: Record<string, string>;
+  keyHighlights?: string[];
+  productFeatures?: Array<{ title?: string; description?: string } | string>;
+  careLabel?: string[];
+  stylingTips?: string[];
+  stylingInspiration?: string[];
   tags?: string[];
 };
 
