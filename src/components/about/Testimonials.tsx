@@ -14,7 +14,7 @@ const reviews = [
   {
     name: "Vikram Malhotra",
     role: "Collector",
-    text: "Mairii has a soul in their designs. I've collected many antique pieces, and theirs are the most authentic I've found in years.",
+    text: "MaiRii has a soul in their designs. I've collected many antique pieces, and theirs are the most authentic I've found in years.",
     rating: 5
   },
   {

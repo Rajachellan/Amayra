@@ -214,7 +214,7 @@ export default function BlogDetailsPage({ params }: PageProps) {
                   </div>
                   <div>
                     <p className="text-[9px] uppercase tracking-[0.2em] font-bold text-[#C4A064]">Written By</p>
-                    <p className="text-base font-serif italic text-[#2B2B2B]">{post.author || "Mairii Editorial Team"}</p>
+                    <p className="text-base font-serif italic text-[#2B2B2B]">{post.author || "MaiRii Editorial Team"}</p>
                   </div>
                 </div>
 

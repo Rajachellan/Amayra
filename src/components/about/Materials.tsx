@@ -59,7 +59,7 @@ export const Materials = () => {
 
             <div className="space-y-4 text-[16px] font-light leading-[1.8] text-[#6B5E51] max-w-md">
               <p>
-                This isn't nostalgia.This isn't nostalgia. It's continuity.
+                This isn't nostalgia. It's continuity.
               </p>
 
               <p>
@@ -70,7 +70,7 @@ export const Materials = () => {
 
             <div className="mt-7 pl-5 border-l border-[#C4A064]">
               <p className="font-serif text-lg md:text-xl italic leading-relaxed text-[#4A3F35]">
-                Mairii celebrates the invisible inheritance every woman carries.
+                MaiRii celebrates the invisible inheritance every woman carries.
               </p>
             </div>
           </motion.div>

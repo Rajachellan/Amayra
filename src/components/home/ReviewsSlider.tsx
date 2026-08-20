@@ -35,7 +35,7 @@ const REVIEWS = [
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Heritage Gold",
-    text: "Exceptional service and exquisite designs. Mairii truly understands what high-end, timeless jewelry should feel like on your skin.",
+    text: "Exceptional service and exquisite designs. MaiRii truly understands what high-end, timeless jewelry should feel like on your skin.",
   },
   {
     id: 4,
@@ -55,7 +55,7 @@ const REVIEWS = [
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Solitaire Diamonds",
-    text: "Shopping at Mairii was an incredible royal experience. My bespoke solitaire diamond pendant is my absolute prized possession.",
+    text: "Shopping at MaiRii was an incredible royal experience. My bespoke solitaire diamond pendant is my absolute prized possession.",
   },
   {
     id: 6,
@@ -65,7 +65,7 @@ const REVIEWS = [
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Kundan Trousseau",
-    text: "Choosing Mairii for my wedding trousseau was the best decision. Every single piece tells a grand story of unmatched elegance and heritage.",
+    text: "Choosing MaiRii for my wedding trousseau was the best decision. Every single piece tells a grand story of unmatched elegance and heritage.",
   },
 ];
 
@@ -160,7 +160,7 @@ export const ReviewsSlider = () => {
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#d4af37]" />
             <span className="font-sans font-bold tracking-[0.45em] uppercase text-[11px] sm:text-xs text-[#1a3d2f]">
-              Patrons of Mairii
+              Patrons of MaiRii
             </span>
             <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#d4af37]" />
           </div>

@@ -69,7 +69,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>Modern Interpretation</h3>
       <p>While traditional designs remain popular, modern jewellers are reimagining Kundan work to suit contemporary tastes. From minimalist chokers to statement earrings, Kundan is being blended with modern aesthetics to create pieces that are both timeless and trendy.</p>
       
-      <p>At Mairii, we take pride in preserving this ancient art form while ensuring each piece meets the highest standards of quality and design. Our heritage collection is a tribute to the master craftsmen who have kept this tradition alive for generations.</p>
+      <p>At MaiRii, we take pride in preserving this ancient art form while ensuring each piece meets the highest standards of quality and design. Our heritage collection is a tribute to the master craftsmen who have kept this tradition alive for generations.</p>
     `,
   },
   {
@@ -93,7 +93,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>3. Statement Chokers</h3>
       <p>A statement choker remains a bridal essential. This season, we're seeing oversized designs featuring a mix of precious stones, intricate gold work, and delicate pearls.</p>
       
-      <p>Choosing your bridal jewellery is a journey of self-expression. At Mairii, our bridal consultants are dedicated to helping you find the perfect pieces that reflect your style and celebrate your special day.</p>
+      <p>Choosing your bridal jewellery is a journey of self-expression. At MaiRii, our bridal consultants are dedicated to helping you find the perfect pieces that reflect your style and celebrate your special day.</p>
     `,
   },
   {
@@ -117,7 +117,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>Professional Inspections</h3>
       <p>We recommend having your diamond jewellery inspected by a professional at least once a year. This ensures that the prongs are secure and the stones are not loose, preventing potential loss.</p>
       
-      <p>At Mairii, we offer complimentary cleaning and inspection services for all our clients. Visit our atelier to ensure your precious pieces continue to shine as brightly as the day you first wore them.</p>
+      <p>At MaiRii, we offer complimentary cleaning and inspection services for all our clients. Visit our atelier to ensure your precious pieces continue to shine as brightly as the day you first wore them.</p>
     `,
   },
   {
@@ -138,12 +138,12 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>Popular Shapes</h3>
       <p>From the classic Round Brilliant to the sophisticated Emerald and the romantic Pear, each diamond shape offers a different aesthetic. However, the quality of the cut remains paramount regardless of the shape.</p>
       
-      <p>Understanding the nuances of diamond cuts can help you make an informed decision when selecting your next piece of fine jewellery. Our experts at Mairii are always available to guide you through the process of finding the perfect diamond.</p>
+      <p>Understanding the nuances of diamond cuts can help you make an informed decision when selecting your next piece of fine jewellery. Our experts at MaiRii are always available to guide you through the process of finding the perfect diamond.</p>
     `,
   },
   {
     id: "5",
-    title: "Ethical Sourcing: The Mairii Commitment",
+    title: "Ethical Sourcing: The MaiRii Commitment",
     slug: "ethical-sourcing-commitment",
     excerpt: "Learn about our journey towards sustainable luxury and how we ensure every gem is responsibly sourced.",
     image: "https://images.unsplash.com/photo-1573408302185-9127ff5f6133?q=80&w=1000&auto=format&fit=crop",
@@ -151,7 +151,7 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Ethics",
     readTime: "5 min read",
     content: `
-      <p>In the world of luxury, true beauty lies in the integrity of the process. At Mairii, we are committed to ensuring that every gemstone and every gram of gold in our collections is sourced ethically and responsibly.</p>
+      <p>In the world of luxury, true beauty lies in the integrity of the process. At MaiRii, we are committed to ensuring that every gemstone and every gram of gold in our collections is sourced ethically and responsibly.</p>
       
       <h3>Conflict-Free Diamonds</h3>
       <p>We strictly adhere to the Kimberley Process and work only with trusted suppliers who share our commitment to human rights and environmental protection. Every diamond we sell is certified conflict-free.</p>
@@ -159,7 +159,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>Sustainable Practices</h3>
       <p>Beyond sourcing, we are constantly working to reduce our environmental footprint. This includes using recycled gold where possible and implementing sustainable practices in our atelier and showrooms.</p>
       
-      <p>By choosing Mairii, you are not just investing in a piece of jewellery; you are supporting a more ethical and sustainable future for the luxury industry.</p>
+      <p>By choosing MaiRii, you are not just investing in a piece of jewellery; you are supporting a more ethical and sustainable future for the luxury industry.</p>
     `,
   },
   {
@@ -183,7 +183,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>The Rule of Three</h3>
       <p>A good rule of thumb is to start with three layers. For necklaces, this could be a short choker, a medium-length pendant, and a longer chain. This creates a pleasing visual gradient without overwhelming your look.</p>
       
-      <p>Mastering the art of layering is about experimentation and finding what works for you. Explore our collection of gold essentials at Mairii and start building your own unique jewellery story.</p>
+      <p>Mastering the art of layering is about experimentation and finding what works for you. Explore our collection of gold essentials at MaiRii and start building your own unique jewellery story.</p>
     `,
   },
 ];

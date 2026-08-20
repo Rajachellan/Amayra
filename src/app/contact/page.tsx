@@ -25,7 +25,7 @@ const STORES = [
   {
     name: "DLF Promenade",
     city: "New Delhi",
-    address: "Mairii, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
+    address: "MaiRii, Shop No. FBC 232, First Floor, DLF Promenade, Plot No. 3, Nelson Mandela Marg, Vasant Kunj, New Delhi 110070",
     contact: "+91 9110 540 540"
   },
   {
@@ -37,13 +37,13 @@ const STORES = [
   {
     name: "Palladium Mall",
     city: "Ahmedabad",
-    address: "Mairii Jewels - Shop No. 11-B, First Floor, Palladium Mall, SG Highway, Thaltej, Ahmedabad 380054",
+    address: "MaiRii Jewels - Shop No. 11-B, First Floor, Palladium Mall, SG Highway, Thaltej, Ahmedabad 380054",
     contact: "+91 79 12345678"
   },
   {
     name: "Phoenix Marketcity",
     city: "Mumbai",
-    address: "Mairii Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
+    address: "MaiRii Phoenix Marketcity, Unit No. G-17, Ground Floor, Phoenix Marketcity Mall, LBS Marg, Kurla West, Mumbai 400070",
     contact: "+91 22 12345678"
   }
 ];
@@ -105,7 +105,7 @@ export default function ContactPage() {
       <section className="relative h-[75vh] min-h-[620px] w-full overflow-hidden bg-stone-950">
         <Image
           src="/images/optimized/banner (1).png"
-          alt="Contact Mairii Luxury Concierge"
+          alt="Contact MaiRii Luxury Concierge"
           fill
           priority
           sizes="100vw"

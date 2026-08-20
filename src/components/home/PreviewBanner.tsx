@@ -199,7 +199,7 @@ export const PreviewBanner = () => {
         <h2 className="mb-3 font-serif text-3xl font-semibold uppercase tracking-widest text-stone-800 md:text-4xl">
           Shop the Look
         </h2>
-        <p className="font-sans text-sm tracking-wide text-stone-400">{slide.subtitle}</p>
+        {/* <p className="font-sans text-sm tracking-wide text-stone-400">{slide.subtitle}</p> */}
       </div>
 
       <div className="flex w-full max-w-6xl items-center gap-3 md:gap-5">

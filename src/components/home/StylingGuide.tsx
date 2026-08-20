@@ -77,7 +77,7 @@ export const StylingGuide = () => {
             className="font-sans text-xs tracking-wider leading-relaxed max-w-lg mx-auto"
             style={{ color: "rgba(28,21,16,0.55)" }}
           >
-            Curated tips from our lead designers on how to wear your Mairii
+            Curated tips from our lead designers on how to wear your MaiRii
             pieces with effortless elegance.
           </p>
         </div>

@@ -58,7 +58,7 @@ export default function WishlistPage() {
             </h1>
 
             <p className="text-white/60 font-sans text-xs md:text-sm tracking-widest uppercase max-w-md mx-auto leading-relaxed">
-              Revisit your cherished Mairii jewellery pieces saved for your special moments.
+              Revisit your cherished MaiRii jewellery pieces saved for your special moments.
             </p>
           </motion.div>
         </div>

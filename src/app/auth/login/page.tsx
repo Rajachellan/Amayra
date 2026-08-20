@@ -130,7 +130,7 @@ function LoginForm() {
       </form>
 
       <div className="mt-10 text-center">
-        <p className="text-xs text-gray-400 tracking-widest uppercase mb-4">New to Mairii?</p>
+        <p className="text-xs text-gray-400 tracking-widest uppercase mb-4">New to MaiRii?</p>
         <Link href={params.get("next") ? `/auth/signup?next=${encodeURIComponent(params.get("next")!)}` : "/auth/signup"}>
           <Button variant="outline" className="w-full">
             CREATE AN ACCOUNT

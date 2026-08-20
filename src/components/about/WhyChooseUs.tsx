@@ -56,11 +56,11 @@ export const WhyChooseUs = () => {
       <div className="container relative z-10 mx-auto px-6 max-w-7xl">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#C4A064] mb-3 block">
-            The Mairii Promise
+            The MaiRii Promise
           </span>
 
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#2B2B2B] mb-4">
-            Why Choose Mairii
+            Why Choose MaiRii
           </h2>
 
       

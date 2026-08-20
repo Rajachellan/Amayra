@@ -117,7 +117,7 @@ export default function ProfilePage() {
         <div className="flex-grow flex flex-col items-center justify-center pt-32 space-y-4">
           <Loader2 className="w-10 h-10 animate-spin text-[#c9a84c]" />
           <span className="text-xs uppercase tracking-[0.25em] text-stone-400 font-medium">
-            Loading your Mairii Privé profile…
+            Loading your MaiRii Privé profile…
           </span>
         </div>
       </main>
@@ -166,7 +166,7 @@ export default function ProfilePage() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c9a84c]/15 border border-[#c9a84c]/30 backdrop-blur-sm">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#c9a84c]" />
                   <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#e5ca78]">
-                    Mairii Privé Concierge
+                    MaiRii Privé Concierge
                   </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-wide leading-tight">
@@ -444,7 +444,7 @@ export default function ProfilePage() {
                           </div>
                           <h3 className="font-serif text-2xl text-stone-900">No Orders Yet</h3>
                           <p className="text-stone-500 text-xs tracking-wider uppercase leading-relaxed">
-                            You haven't placed any orders with us yet. Begin your journey with Mairii today.
+                            You haven't placed any orders with us yet. Begin your journey with MaiRii today.
                           </p>
                           <div className="pt-2">
                             <Link href="/category/all">

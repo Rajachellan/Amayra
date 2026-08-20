@@ -125,19 +125,30 @@ export const CollectionStory = () => {
       Without ever asking for anything in return.
     </p>
 
-    <p>
-      <span
-        className="font-serif text-xl italic"
-        style={{ color: "#C4A064" }}
-      >
-        Mairii
-      </span>{" "}
+   <div className="grid grid-cols-[100px_1fr] items-center">
+  {/* Image */}
+  <div className="relative flex-shrink-0">
+    <Image
+      src="/images/Mairii logo.png"
+      alt="MaiRii"
+      width={100}
+      height={100}
+      className="object-contain"
+    />
+  </div>
+
+  {/* Text */}
+  <div className="flex items-center">
+    <p className="text-lg leading-relaxed ml-2">
+      
       is a celebration of her.
     </p>
+  </div>
+</div>
 
     <p>
       Every piece is inspired by the women whose stories live quietly
-      within us, and designed for the woman we are still becoming.
+      within us and designed for the woman we are still becoming.
     </p>
   </div>
 </motion.div>

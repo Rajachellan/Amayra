@@ -90,7 +90,7 @@ export const Footer = () => {
               <Link href="/" className="relative group block">
                 <Image
                   src="/images/Media__5_-removebg-preview.png"
-                  alt="Mairii Logo"
+                  alt="MaiRii Logo"
                   width={180}
                   height={70}
                   className={`object-contain py-5 transition-all rounded-full duration-500 `}

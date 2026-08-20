@@ -122,7 +122,7 @@ export default function BlogPage() {
         <div className="absolute inset-0 z-0">
           <Image
             src=""
-            alt="The Mairii Journal Hero"
+            alt="The MaiRii Journal Hero"
             fill
             priority
             className="object-cover brightness-50 scale-105"
@@ -139,7 +139,7 @@ export default function BlogPage() {
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-300" />
             <span className="text-amber-300 uppercase text-[10px] font-bold tracking-[0.4em]">
-              The Mairii Journal
+              The MaiRii Journal
             </span>
           </motion.div>
 

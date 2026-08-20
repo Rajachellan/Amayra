@@ -174,7 +174,7 @@ export default function OrderDetailPage() {
                 <div className="flex items-center gap-2 mb-1">
                   <ShieldCheck className="w-4 h-4 text-[#c9a84c]" />
                   <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#c9a84c]">
-                    Mairii Verified Order
+                    MaiRii Verified Order
                   </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-serif text-[#0B2516] font-medium">

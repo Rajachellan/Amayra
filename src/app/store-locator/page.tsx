@@ -12,7 +12,7 @@ const StoreLocator = () => {
   const stores = [
     {
       city: "Mumbai",
-      name: "Mairii Flagship Atelier",
+      name: "MaiRii Flagship Atelier",
       address: "123 Diamond Avenue, Jewellery Park, Mumbai, MH – 400001",
       phone: "+91 98765 43210",
       hours: "Mon - Sat: 11:00 AM - 8:00 PM",
@@ -136,7 +136,7 @@ const StoreLocator = () => {
       <section className="py-24 bg-white text-center border-t border-foreground/5">
         <div className="container mx-auto px-6">
           <span className="text-[10px] tracking-[0.4em] uppercase text-champagne font-bold mb-4 block">Personalized Service</span>
-          <h2 className="text-3xl md:text-5xl font-serif mb-8 italic">Experience Mairii in person</h2>
+          <h2 className="text-3xl md:text-5xl font-serif mb-8 italic">Experience MaiRii in person</h2>
           <p className="text-foreground/50 max-w-xl mx-auto text-sm leading-relaxed mb-10">
             Book a private appointment at any of our boutiques for a curated 
             consultation with our jewellery experts.

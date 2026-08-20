@@ -36,7 +36,7 @@ export const InstagramGrid = () => {
 
           <button className="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-gray-800 hover:text-yellow-600 transition border-b border-gray-300 pb-1">
             <Camera className="w-4 h-4" />
-            @GemsOfMairii
+            @GemsOfMaiRii
           </button>
         </div>
 
