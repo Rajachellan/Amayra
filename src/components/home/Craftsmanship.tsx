@@ -44,7 +44,7 @@ export const Craftsmanship = () => {
               className="absolute bottom-10 left-10 right-10 p-6 rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
             >
               <p className="text-white text-sm tracking-widest uppercase font-medium leading-relaxed">
-                Crafted with passion. Perfected over 40 years of timeless artistry.
+             CRAFTED WITH PASSION CURATED WITH LOVE.
               </p>
             </motion.div>
           </motion.div>
@@ -76,7 +76,7 @@ export const Craftsmanship = () => {
               {[
                 {
                   title: "Meticulous Selection",
-                  desc: "Carefully curated collection of unique yet evergreen designs"
+                  desc: "Carefully curated collection of unique yet evergreen designs."
                 },
                 {
                   title: "Heritage Crafting",
@@ -110,21 +110,6 @@ export const Craftsmanship = () => {
               ))}
 
             </div>
-
-            {/* Button */}
-            <div>
-              <button className="relative px-6 py-3 text-xs uppercase tracking-widest font-semibold text-gray-900 overflow-hidden group">
-
-                <span className="relative z-10">Crafted with passion curated with love</span>
-
-                {/* Animated gold underline */}
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-yellow-500 transform scale-x-0 scale-x-100 transition origin-left"></span>
-
-                {/* Soft glow */}
-                <span className="absolute inset-0 opacity-0 opacity-10 bg-yellow-300 blur-xl transition"></span>
-              </button>
-            </div>
-
           </motion.div>
 
         </div>

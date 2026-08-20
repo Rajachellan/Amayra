@@ -14,7 +14,7 @@ const TermsOfService = () => {
         title="Terms of Service"
         subtitle="Legal"
         image="/images/optimized/banner (4).png"
-          height="h-[75vh]"
+        height="h-[75vh]"
       />
 
       <section className="pb-24 container mx-auto px-6 max-w-4xl pt-20">
@@ -112,11 +112,11 @@ const TermsOfService = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">12. Contact Us</h2>
             <div className="pt-12  text-sm italic">
-              For any questions about these Terms, write to us at connect <a href="mailto:connectconnect@mairiijewels.com" className="text-champagne underline">connectconnect@mairiijewels.com</a>.
+              For any questions about these Terms, write to us at connect <a href="mailto:connect@mairiijewels.com" className="text-champagne underline">connect@mairiijewels.com</a>.
             </div>
           </section>
           {/* <div className="pt-12 border-t border-foreground/10 text-sm italic">
-            If you have any questions about these Terms, please contact us at <a href="mailto:legalconnectconnect@mairiijewels.com" className="text-champagne underline">legalconnectconnect@mairiijewels.com</a>.
+            If you have any questions about these Terms, please contact us at <a href="mailto:legalconnect@mairiijewels.com" className="text-champagne underline">legalconnect@mairiijewels.com</a>.
           </div> */}
         </motion.div>
       </section>

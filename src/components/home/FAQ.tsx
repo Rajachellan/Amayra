@@ -22,7 +22,7 @@ const faqs = [
   {
     id: 1,
     category: "Materials & Craftsmanship",
-    question: "How do i lace an order?",
+    question: "How do i place an order?",
     answer:
       "Simply add your favourite pieces to the cart and check out using any of our accepted payment methods. You'll receive an order confirmation via email and SMS right away.",
   },
@@ -45,7 +45,7 @@ const faqs = [
     category: "Care & Maintenance",
     question: "I was charged but didn't get an order confirmation. What do I do?",
     answer:
-      "Please write to us at connectconnect@mairiijewels.com with your payment reference — we'll verify and resolve it within 24–48 hours.",
+      "Please write to us at connect@mairiijewels.com with your payment reference — we'll verify and resolve it within 24–48 hours.",
   },
   {
     id: 5,
@@ -158,8 +158,8 @@ const FAQItem = ({
       {/* Toggle icon */}
       <div
         className={`shrink-0 w-7 h-7 rounded-full border flex items-center justify-center mt-0.5 transition-all duration-300 ${isOpen
-            ? "bg-amber-500 border-amber-500"
-            : "bg-transparent border-stone-300 group-hover:border-amber-400"
+          ? "bg-amber-500 border-amber-500"
+          : "bg-transparent border-stone-300 group-hover:border-amber-400"
           }`}
       >
         <svg

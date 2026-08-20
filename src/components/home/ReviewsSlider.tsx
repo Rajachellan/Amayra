@@ -215,9 +215,9 @@ export const ReviewsSlider = () => {
                           />
                         ))}
                       </div>
-                      <span className="text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-[#1a3d2f]/5 text-[#1a3d2f] border border-[#1a3d2f]/10">
+                      {/* <span className="text-[10px] font-bold uppercase tracking-[0.2em] px-3 py-1 rounded-full bg-[#1a3d2f]/5 text-[#1a3d2f] border border-[#1a3d2f]/10">
                         {review.tag}
-                      </span>
+                      </span> */}
                     </div>
 
                     {/* Testimonial Quote Content */}

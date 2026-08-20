@@ -29,7 +29,7 @@ const impactPillars = [
 
 export const OurVision = () => {
   return (
-    <section className="relative py-24 md:py-36 bg-gradient-to-b from-[#FAF8F3] via-white to-[#F9F5EC] overflow-hidden">
+    <section className="relative py-10 md:py-10 bg-gradient-to-b from-[#FAF8F3] via-white to-[#F9F5EC] overflow-hidden">
       {/* Subtle Background Elements */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-[#C4A064]/30 to-transparent pointer-events-none" />
       <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-[#C4A064]/5 blur-3xl pointer-events-none" />
@@ -120,7 +120,7 @@ export const OurVision = () => {
         </motion.div>
 
         {/* 4 Impact Pillars Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {impactPillars.map((pillar, idx) => {
             const Icon = pillar.icon;
             return (
@@ -144,7 +144,7 @@ export const OurVision = () => {
               </motion.div>
             );
           })}
-        </div>
+        </div> */}
       </div>
     </section>
   );

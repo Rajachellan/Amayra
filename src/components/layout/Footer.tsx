@@ -101,8 +101,7 @@ export const Footer = () => {
             <p
               className="text-xs leading-[1.9] mb-8 text-white/70"
             >
-              We specialize in
-              handcrafted diamond and gold jewellery that speaks to the soul.
+            Crafting stories of legacy & elegance that speak to the soul.
             </p>
 
             <div className="flex space-x-5">
@@ -277,10 +276,10 @@ export const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-brand-gold" />
                 <a
-                  href="mailto:  Connectconnect@mairiijewels.com"
+                  href="mailto:connect@mairiijewels.com"
                   className="text-white/70 hover:text-brand-gold transition-colors"
                 >
-                  Connectconnect@mairiijewels.com
+                  connect@mairiijewels.com
                 </a>
               </li>
             </ul>

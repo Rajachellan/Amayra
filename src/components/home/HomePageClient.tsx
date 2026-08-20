@@ -79,7 +79,7 @@ export function HomePageClient() {
       <SilverCollection />
       <Craftsmanship />
       {settings.showBlogSection ? <MagazineGallery /> : null}
-      {/* {settings.showLookbooks ? <CollectionStory /> : null} */}
+      {settings.showLookbooks ? <CollectionStory /> : null}
       <WhyChooseUs />
       <FAQ />
       <ReviewsSlider />

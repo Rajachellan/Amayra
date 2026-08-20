@@ -16,7 +16,7 @@ const techniques = [
   },
   {
     title: "Filigree Work",
-    desc: "The art of delicate gold wire manipulation to create lace-like patterns.",
+    desc: "The art of delicate wire manipulation to create lace-like patterns.",
     img: "/images/hand_work3.jpg"
   }
 ];
@@ -31,11 +31,11 @@ export const Craftsmanship = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <span className="text-[10px] uppercase tracking-[0.5em] text-champagne mb-4 block">The Art of Creation</span>
+            {/* <span className="text-[10px] uppercase tracking-[0.5em] text-champagne mb-4 block">ion</span> */}
             <h2 className="text-4xl font-serif mb-6">Mastery in Every Detail</h2>
             <div className="w-20 h-[1px] bg-champagne mx-auto mb-8" />
             <p className="text-foreground/60 font-light leading-relaxed">
-              {"Our artisans spend hundreds of hours on a single piece, ensuring that the balance is perfect and the soul of the craft is visible."}
+              {"Artisans spend hundreds of hours on a single piece, ensuring that the balance is perfect and the soul of the craft is visible."}
             </p>
           </motion.div>
         </div>
@@ -51,8 +51,8 @@ export const Craftsmanship = () => {
               className="group cursor-pointer"
             >
               <div className="overflow-hidden mb-8 relative aspect-[3/4] w-full">
-                <Image 
-                  src={item.img} 
+                <Image
+                  src={item.img}
                   alt={item.title}
                   fill
                   className="object-cover transition-transform duration-1000 group-hover:scale-110"

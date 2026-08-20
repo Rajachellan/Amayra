@@ -12,9 +12,9 @@ import { ArrowRight, BookOpen } from "lucide-react";
 const IMAGES = [
   {
     id: 1,
-    src: "/images/optimized/neckles_32.webp",
-    title: "Floral Pearl Cascade Necklace",
-    subtitle: "Royal Floral Cluster Necklace",
+    src: "/images/bridal_collections/nosepin.jpg",
+    title: "Nose Pin",
+    subtitle: "Modern Designs",
     issue: "01",
     link: "/blog/for-you-ma-mairii-origin-story"
   },
@@ -223,14 +223,7 @@ export const MagazineGallery = () => {
             </h2>
           </div>
 
-          <Link
-            href="/blog"
-            className="group inline-flex items-center gap-3 px-6 py-3 rounded-full bg-[#2C2A28] text-white text-[11px] font-bold tracking-[0.25em] uppercase hover:bg-[#C4A064] transition-all duration-300 shadow-md"
-          >
-            <BookOpen className="w-4 h-4 text-amber-300 group-hover:text-white" />
-            Explore The Journal
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          
         </div>
 
         {/* Grid Cards */}

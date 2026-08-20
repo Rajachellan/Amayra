@@ -7,7 +7,7 @@ import { Heart, Sparkles, Shield, Gift } from "lucide-react";
 
 export const BrandStory = () => {
   return (
-    <section className="py-24 md:py-36 bg-[#FAF8F3] relative overflow-hidden">
+    <section className="py-10 md:py-10 bg-[#FAF8F3] relative overflow-hidden">
       {/* Decorative filigree pattern */}
       <div className="absolute top-0 right-0 w-96 h-96 border-r border-t border-[#C4A064]/20 rounded-full pointer-events-none -translate-y-1/2 translate-x-1/2" />
       <div className="absolute bottom-0 left-0 w-96 h-96 border-l border-b border-[#C4A064]/20 rounded-full pointer-events-none translate-y-1/2 -translate-x-1/2" />
@@ -22,9 +22,9 @@ export const BrandStory = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <span className="text-[10px] uppercase tracking-[0.5em] text-[#C4A064] font-bold mb-4 block">
+            {/* <span className="text-[10px] uppercase tracking-[0.5em] text-[#C4A064] font-bold mb-4 block">
               ABOUT US : ORIGIN & VISION
-            </span>
+            </span> */}
             <h2 className="text-4xl md:text-6xl font-serif text-[#2B2B2B] leading-tight mb-6">
               Rooted in Love, <br />
               <span className="italic font-light text-[#C4A064]">Crafted for Generations</span>
@@ -75,25 +75,16 @@ export const BrandStory = () => {
               transition={{ duration: 0.8 }}
               className="space-y-6 text-[#4A4A4A] text-base md:text-lg font-light leading-relaxed font-serif"
             >
-              <p className="text-xl text-[#2B2B2B] font-normal leading-relaxed border-l-2 border-[#C4A064] pl-6 italic">
+              <p className="">
                 Long before it was a brand, it was a little girl named Bandana, watching her mother get ready, captivated by the glint of her bangles and her smile that reflected beauty and strength in just one glance.
               </p>
 
               <p>
-                That fascination never left her — it grew into a quiet promise: one day, she&apos;d build something that let every woman feel that same wonder.
+                That fascination never left her — it grew into a quiet promise: one day, she&apos;d build something that let every woman feel that same wonder.It started as MaiRii, "mother" in Punjabi — her own quiet way of saying For You, Ma.
               </p>
-
-              <div className="p-8 rounded-xl bg-white border border-[#C4A064]/20 shadow-md relative overflow-hidden">
-                <div className="absolute top-0 right-0 px-4 py-1 bg-[#C4A064]/10 text-[9px] uppercase tracking-widest font-bold text-[#A37F43]">
-                  The Name
-                </div>
-                <h4 className="text-2xl font-serif text-[#2B2B2B] mb-3">
-                  MaiRii <span className="text-sm font-sans text-[#C4A064] font-normal">&mdash; &ldquo;Mother&rdquo; in Punjabi</span>
-                </h4>
-                <p className="text-sm md:text-base text-[#555555] font-light leading-relaxed italic">
-                  It started as MaiRii, &ldquo;mother&rdquo; in Punjabi — her own quiet way of saying <strong>For You, Ma</strong>. The name carries that inheritance, rooted in memories: love passed down, one generation to the next.
-                </p>
-              </div>
+              <p>
+                The name carries that inheritance, rooted in memories: love passed down, one generation to the next.
+              </p>
 
               <p>
                 Mairii isn&apos;t just jewellery. It&apos;s the ritual of getting ready, the small joy of catching your reflection and loving yourself.
@@ -106,74 +97,16 @@ export const BrandStory = () => {
               <p className="text-[#2B2B2B] font-medium">
                 What started as one woman&apos;s love for her mother is now an invitation to everyone: come, enjoy a little of that magic for yourself.
               </p>
+               <p className="text-xl text-[#2B2B2B] font-normal leading-relaxed border-l-2 border-[#C4A064] pl-6 italic">
+              Because at Mairii, we celebrate our legacy along with the expression of our unique identity.
+              </p>
             </motion.div>
 
-            {/* Ethos Callout */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="p-8 rounded-xl bg-gradient-to-r from-[#2C2A28] to-[#3D3934] text-white shadow-xl relative overflow-hidden"
-            >
-              <div className="flex items-start gap-4">
-                <Sparkles className="w-8 h-8 text-amber-300 shrink-0 mt-1" />
-                <div>
-                  <h4 className="text-lg font-serif text-amber-300 mb-2">The Mairii Ethos</h4>
-                  <p className="font-serif italic text-base md:text-lg text-stone-200 leading-relaxed">
-                    &ldquo;Because at Mairii, we celebrate our legacy along with the expression of our unique identity.&rdquo;
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+          
           </div>
         </div>
 
-        {/* 3 Pillared Highlights */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="p-8 rounded-xl bg-white border border-[#C4A064]/15 hover:border-[#C4A064]/40 shadow-sm hover:shadow-lg transition-all"
-          >
-            <Heart className="w-8 h-8 text-[#C4A064] mb-4" />
-            <h4 className="text-lg font-serif text-[#2B2B2B] mb-2">Inheritance of Love</h4>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              Rooted in cherished memories of mothers and daughters, passing love and elegance from one generation to the next.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="p-8 rounded-xl bg-white border border-[#C4A064]/15 hover:border-[#C4A064]/40 shadow-sm hover:shadow-lg transition-all"
-          >
-            <Shield className="w-8 h-8 text-[#C4A064] mb-4" />
-            <h4 className="text-lg font-serif text-[#2B2B2B] mb-2">Accessible Elegance</h4>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              Exquisitely crafted imitation jewellery that brings royal brilliance without forcing a compromise on affordability.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="p-8 rounded-xl bg-white border border-[#C4A064]/15 hover:border-[#C4A064]/40 shadow-sm hover:shadow-lg transition-all"
-          >
-            <Gift className="w-8 h-8 text-[#C4A064] mb-4" />
-            <h4 className="text-lg font-serif text-[#2B2B2B] mb-2">Ritual of Self-Love</h4>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              Celebrating the simple, beautiful ritual of getting ready and finding pure joy in your own reflection.
-            </p>
-          </motion.div>
-        </div>
-
+    
       </div>
     </section>
   );

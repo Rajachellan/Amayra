@@ -9,38 +9,44 @@ import {
   RotateCcw,
   CreditCard,
   Leaf,
+    HeartHandshake,
+  Gem,
+  Banknote,
+  PackageOpen,
+  WalletCards,
+  Flower2,
 } from "lucide-react";
 
 const features = [
   {
-    icon: Heart,
+    icon: HeartHandshake,
     title: "CURATED WITH LOVE",
-    desc: "Thoughtfully selected pieces created to celebrate warmth, memory, and womanhood.",
+    desc: "Thoughtfully selected pieces, curated with love and care to make every moment special.",
   },
   {
-    icon: Sparkles,
+    icon: Gem,
     title: "TIMELESS DESIGNS",
-    desc: "Exquisite imitation jewellery that balances royal heritage with modern elegance.",
+    desc: "Elegant jewellery designs created to complement your style beyond changing trends.",
   },
   {
-    icon: HandCoins,
-    title: "FLEXIBLE PAYMENTS",
-    desc: "Enjoy seamless shopping with partial cash on delivery and easy checkout options.",
+    icon: Banknote,
+    title: "PARTIAL COD AVAILABLE",
+    desc: "Enjoy flexible shopping with the convenience of partial cash on delivery.",
   },
   {
-    icon: RotateCcw,
-    title: "EASY 5-DAY RETURNS",
-    desc: "Shop with peace of mind backed by our hassle-free return and exchange policy.",
+    icon: PackageOpen,
+    title: "EASY 5 DAY RETURNS",
+    desc: "Shop confidently with our simple and hassle-free 5-day return policy.",
   },
   {
-    icon: CreditCard,
-    title: "SECURE TRANSACTIONS",
-    desc: "Encrypted global standard security for all your credit, debit, and digital payments.",
+    icon: WalletCards,
+    title: "MULTIPLE PAYMENT OPTIONS",
+    desc: "Choose from multiple secure and convenient payment options at checkout.",
   },
   {
-    icon: Leaf,
-    title: "10% PURPOSE PLEDGE",
-    desc: "At least 10% of our profits directly empower women's education and entrepreneurship.",
+    icon: Flower2,
+    title: "BEAUTY WITH PURPOSE",
+    desc: "Beautiful jewellery made with a meaningful purpose that goes beyond aesthetics.",
   },
 ];
 
@@ -52,9 +58,11 @@ export const WhyChooseUs = () => {
           <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-[#C4A064] mb-3 block">
             The Mairii Promise
           </span>
+
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl text-[#2B2B2B] mb-4">
             Why Choose Mairii
           </h2>
+
           <div className="w-16 h-[1px] bg-[#C4A064] mx-auto" />
         </div>
 
@@ -71,8 +79,11 @@ export const WhyChooseUs = () => {
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 className="group flex flex-col items-center text-center p-8 rounded-xl bg-white border border-[#C4A064]/15 hover:border-[#C4A064]/40 shadow-sm hover:shadow-xl hover:shadow-[#C4A064]/10 transition-all duration-300"
               >
-                <div className="w-16 h-16 rounded-full bg-[#FAF8F3] group-hover:bg-[#C4A064] text-[#C4A064] group-hover:text-white flex items-center justify-center mb-6 transition-all duration-300 shadow-inner">
-                  <Icon strokeWidth={1.5} className="w-8 h-8 transition-transform duration-300 group-hover:scale-110" />
+                <div className="w-20 h-20 rounded-full bg-[#FAF8F3] group-hover:bg-[#C4A064] text-[#C4A064] group-hover:text-white flex items-center justify-center mb-6 transition-all duration-300 shadow-inner">
+                  <Icon
+                    strokeWidth={1.5}
+                    className="w-10 h-10 transition-transform duration-300 group-hover:scale-110"
+                  />
                 </div>
 
                 <h4 className="text-sm font-bold uppercase tracking-[0.15em] mb-3 text-[#2B2B2B] group-hover:text-[#A37F43] transition-colors">

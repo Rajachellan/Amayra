@@ -16,7 +16,7 @@ const ShippingReturns = () => {
         title="Shipping & Returns"
         subtitle="Client Services"
         image="/images/optimized/banner (5).png"
-          height="h-[75vh]"
+        height="h-[75vh]"
       />
 
       {/* Policy Sections */}
@@ -135,7 +135,7 @@ const ShippingReturns = () => {
                 </li>
 
                 <li>
-                  You need to share the order number,name with images of the products with packaging and tags intact via email at connectconnect@mairiijewels.com within 24 hours from the time you receive your product.Our team will review your request and advise on the further steps.
+                  You need to share the order number,name with images of the products with packaging and tags intact via email at connect@mairiijewels.com within 24 hours from the time you receive your product.Our team will review your request and advise on the further steps.
                 </li>
                 <li>Once you receive our confirmation for your return request approval, you need to ship us the products you wish to return with all the original packaging by keeping it safely back into the box/packaging. The product(s) should be shipped back to us within 5 days from the day we approve your return  request. The cost of shipping the product will be borne by the customer. The product(s) should be in its original and unused condition with intact packaging. We will not be able to process the refund credit if the product(s) is damaged or shipped without its original packaging. Please use a reliable courier service for shipping the product(s) and share the tracking details once the products shipped.</li>
                 <li>When we receive the returned item, it will inspected to ensure everything is present and in it’s in original condition and then issue either a refund or a different item in exchange, as per your request. </li>
@@ -158,7 +158,7 @@ const ShippingReturns = () => {
                   We reserve the right to cancel an order in case the order request is not acceptable to us. Upon such cancellation, we will give you full refund. Any such cancellation shall be at the sole discretion of MaiRii and you will have no right to contest the same. The reasons for cancellation could be due to non-availability of the Product/s, inaccuracy in Product or pricing information or due to reasons of any fraud or wrong usage of payment mechanism adopted by you. Any cancellation will be intimated to you by us over phone or mail.
                 </li>
                 <li>If the order is cancelled by us,we will provide you full refund including shipping charges.</li>
-                <li>For any further queries regarding cancellation/refunds, please <span className="font-bold">email us at : connectconnect@mairiijewels.com</span> </li>
+                <li>For any further queries regarding cancellation/refunds, please <span className="font-bold">email us at : connect@mairiijewels.com</span> </li>
               </ul>
             </div>
             <div>
@@ -257,7 +257,7 @@ const ShippingReturns = () => {
               </div>
               <p className="text-foreground/60">All our products go through a thorough 'Quality Check' and are packed with utmost care to ensure it reaches our customers in the most delightful condition. But in some rare cases, it may happen that due to rough handling of the package during transit by the courier partner, the product may not reach you in the condition you expected it to be. In such cases, below is what you need to do:</p>
               <ul className="mt-5 list-disc space-y-3 pl-6  text-foreground/60">
-                <li>Inform within 24 Hours: Create a video of unboxing your package, or click pictures of the product to that clearly shows the issues you are facing. Write an email within 24 hours of receiving the package to our returns support team at connectconnect@mairiijewels.com and attach all the necessary proofs for faster resolution. Our team will respond to your mail within 48 hours. </li>
+                <li>Inform within 24 Hours: Create a video of unboxing your package, or click pictures of the product to that clearly shows the issues you are facing. Write an email within 24 hours of receiving the package to our returns support team at connect@mairiijewels.com and attach all the necessary proofs for faster resolution. Our team will respond to your mail within 48 hours. </li>
                 <li> Reverse Pickup: Once your return is approved and our team verifies that your order is eligible for a return and replacement, we will arrange a reverse pickup for your product at no extra cost, and the same will be attempted within 24 hours after confirmation. We will request you to keep the products ready for pickup, failure to do so we lead to cancellation of pickup and you will have to ship the product back to us by bearing the shipping charges. </li>
                 <li> Resolution: Once the reverse pickup is successful, we will dispatch a replacement package for your damaged product depending upon the availability of the same or shall issue you a full refund coupon code worth the value of the product for your next purchase which will be valid for the next 3 months from the date of issuance. No refund will be provided in any replacement or damage cases. We will be happy to provide you a replacement or issue a refund coupon code.</li>
               </ul>
@@ -310,7 +310,7 @@ const ShippingReturns = () => {
               <ul className="mt-5 list-disc space-y-3 pl-6  text-foreground/60">
                 <li>In case of a lost shipment, a replacement or credit note will be offered after a thorough check with the courier partner. </li>
                 <li>Lost shipments may take longer than usual to resolve (within 10 business days), depending on the time taken by the courier partner.</li>
-                <li>If the package is marked as "delivered" but not received, customers must raise a complaint at  <strong>connectconnect@mairiijewels.com </strong>within 24 hours for us to initiate the inspection immediately.</li>
+                <li>If the package is marked as "delivered" but not received, customers must raise a complaint at  <strong>connect@mairiijewels.com </strong>within 24 hours for us to initiate the inspection immediately.</li>
               </ul>
             </div>
             <div>
@@ -355,7 +355,7 @@ const ShippingReturns = () => {
             regarding your shipment or return request.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a href="mailto:conciergeconnectconnect@mairiijewels.com" className="px-8 py-3 bg-champagne text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
+            <a href="mailto:connect@mairiijewels.com" className="px-8 py-3 bg-champagne text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
               Email Support
             </a>
             <a href="tel:+919876543210" className="px-8 py-3 border border-white/20 text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">

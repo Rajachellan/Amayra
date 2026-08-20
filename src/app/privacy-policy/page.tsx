@@ -162,7 +162,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">11.Contact Us</h2>
             <p>
-              For privacy-related questions or requests, write to us at connectconnect@mairiijewels.com
+              For privacy-related questions or requests, write to us at connect@mairiijewels.com
             </p>
 
           </section>
@@ -173,7 +173,7 @@ const PrivacyPolicy = () => {
 
 
           <div className="pt-12 border-t border-foreground/10 text-md italic">
-            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:connectconnect@mairiijewels.com" className="text-champagne underline">connectconnect@mairiijewels.com</a>.
+            For any questions regarding this policy, please contact our Data Protection Officer at <a href="mailto:connect@mairiijewels.com" className="text-champagne underline">connect@mairiijewels.com</a>.
           </div>
         </motion.div>
       </section>

@@ -26,10 +26,10 @@ export default function AboutPage() {
           <OurVision />
           <Craftsmanship />
           <Materials />
-          <SignatureCollections />
+          {/* <SignatureCollections /> */}
           <WhyChooseUs />
-          <Testimonials />
-          <StoreExperience />
+          {/* <Testimonials /> */}
+          {/* <StoreExperience /> */}
         </div>
       </div>
 

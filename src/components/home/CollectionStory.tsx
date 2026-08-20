@@ -30,7 +30,7 @@ export const CollectionStory = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1 }}
-              className="relative aspect-[4/5] md:aspect-square lg:aspect-[4/5] max-h-[65vh] mx-auto"
+              className="relative aspect-[4/6] md:aspect-[4/5] lg:aspect-[4/6] max-h-[70vh] mx-auto"
             >
               {/* Gold border offset frame */}
               <div
@@ -38,7 +38,7 @@ export const CollectionStory = () => {
                 style={{ border: "1px solid rgba(196,160,100,0.25)" }}
               />
               <Image
-                src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?q=80&w=1200&auto=format&fit=crop"
+                src="/images/optimized/about-us-daughterandchild.png"
                 alt="Our Heritage"
                 fill
                 loading="lazy"
@@ -67,65 +67,83 @@ export const CollectionStory = () => {
 
           {/* Text Column */}
           <div className="order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-px" style={{ background: "#C4A064" }} />
-                <span
-                  className="font-sans font-bold tracking-[0.45em] uppercase text-[10px]"
-                  style={{ color: "#C4A064" }}
-                >
-                  Our Craftsmanship
-                </span>
-              </div>
+           <motion.div
+  initial={{ opacity: 0, x: 50 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: true }}
+  transition={{ duration: 0.8 }}
+>
+  <h2
+    className="font-serif text-4xl md:text-5xl lg:text-[3.5rem] mb-8 leading-tight"
+    style={{ color: "#4A3F35" }}
+  >
+    A Legacy of 
+    <span className="italic ml-3" style={{ color: "#C4A064" }}>
+      Love
+    </span>
+  </h2>
 
-              <h2
-                className="font-serif text-4xl md:text-5xl lg:text-[3.5rem] mb-8 leading-tight"
-                style={{ color: "#4A3F35" }}
-              >
-                A Legacy of <br />
-                <span className="italic" style={{ color: "#C4A064" }}>
-                  Brilliance
-                </span>
-              </h2>
+  <div
+    className="w-12 h-px mb-8"
+    style={{ background: "rgba(196,160,100,0.3)" }}
+  />
 
-              <div className="w-12 h-px mb-8" style={{ background: "rgba(196,160,100,0.3)" }} />
+  <div
+    className="space-y-6 font-sans text-sm leading-[1.9] tracking-wide"
+    style={{ color: "#6B5E51" }}
+  >
+    <p>
+      More precious than the inheritance of gold are the virtues you
+      inherited from the women who shaped who you are.
+    </p>
 
-              <div
-                className="space-y-5 font-sans text-sm leading-[1.9] tracking-wide"
-                style={{ color: "#6B5E51" }}
-              >
-                <p>
-                  At  Mairii, we believe every piece of jewellery is a vessel of
-                  memories. For over three decades, our master craftsmen have dedicated their
-                  lives to the art of working with precious stones and pure gold.
-                </p>
-                <p>
-                  From the deep emerald mines to the artisanal workshops where gold is hammered
-                  into delicate filigree, our process remains rooted in tradition while embracing
-                  contemporary elegance.
-                </p>
-              </div>
+    {/* Her Qualities */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+      {[
+        "She gave you her courage.",
+        "Her Kindness",
+        "Her Resilience",
+        "Her Way of Loving",
+      ].map((item) => (
+        <div
+          key={item}
+          className="flex items-center gap-3 py-3 px-4 border border-[#C4A064]/15 rounded-lg bg-white/40 transition-all duration-300 hover:border-[#C4A064]/40 hover:bg-white/70"
+        >
+          <span
+            className="w-1.5 h-1.5 rounded-full shrink-0"
+            style={{ backgroundColor: "#C4A064" }}
+          />
 
-              <div
-                className="mt-10 pt-8"
-                style={{ borderTop: "1px solid rgba(196,160,100,0.15)" }}
-              >
-                <div className="font-serif text-3xl italic mb-1" style={{ color: "#C4A064" }}>
-                  Bandana
-                </div>
-                <div
-                  className="text-[13px] tracking-[0.3em] font-bold uppercase"
-                  style={{ color: "rgba(74,63,53,0.5)" }}
-                >
-                  Founder
-                </div>
-              </div>
-            </motion.div>
+          <span
+            className="font-serif text-base italic"
+            style={{ color: "#4A3F35" }}
+          >
+            {item}
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <p className="pt-2">
+      Without ever asking for anything in return.
+    </p>
+
+    <p>
+      <span
+        className="font-serif text-xl italic"
+        style={{ color: "#C4A064" }}
+      >
+        Mairii
+      </span>{" "}
+      is a celebration of her.
+    </p>
+
+    <p>
+      Every piece is inspired by the women whose stories live quietly
+      within us, and designed for the woman we are still becoming.
+    </p>
+  </div>
+</motion.div>
           </div>
         </div>
       </div>
