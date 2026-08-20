@@ -29,7 +29,7 @@ export const BrandStory = () => {
               Rooted in Love, <br />
               <span className="italic font-light text-[#C4A064]">Crafted for Generations</span>
             </h2>
-            <div className="w-24 h-[1px] bg-[#C4A064] mx-auto mb-6" />
+            {/* <div className="w-24 h-[1px] bg-[#C4A064] mx-auto mb-6" /> */}
             <p className="text-xl md:text-2xl font-serif italic text-[#3D3934]">
               &ldquo;Every woman carries a story in her jewellery box — Mairii begins with ours.&rdquo;
             </p>

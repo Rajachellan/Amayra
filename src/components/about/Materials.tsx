@@ -47,7 +47,7 @@ export const Materials = () => {
           >
            
 
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-[3.2rem] leading-[1.08] text-[#4A3F35]">
+            <h2 className="font-serif text-4xl mb-5 md:text-5xl lg:text-[3.2rem] leading-[1.08] text-[#4A3F35]">
              Purity beyond 
               <br />
               <span className="italic text-[#C4A064]">
@@ -55,7 +55,7 @@ export const Materials = () => {
               </span>
             </h2>
 
-            <div className="w-10 h-px bg-[#C4A064]/40 my-6" />
+            {/* <div className="w-10 h-px bg-[#C4A064]/40 my-6" /> */}
 
             <div className="space-y-4 text-[16px] font-light leading-[1.8] text-[#6B5E51] max-w-md">
               <p>

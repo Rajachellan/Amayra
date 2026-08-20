@@ -52,7 +52,7 @@ export const OurVision = () => {
               Empowering Women <br />
               <span className="italic font-light text-[#C4A064]">To Shine In Every Stage</span>
             </h2>
-            <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#C4A064] to-transparent mx-auto mb-8" />
+            {/* <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#C4A064] to-transparent mx-auto mb-8" /> */}
             <p className="text-lg text-[#555555] font-light leading-relaxed font-serif">
               Every woman carries a story — of strength quietly worn, dreams quietly set aside, and resilience that often goes unnoticed by the world, and sometimes even by herself.
             </p>

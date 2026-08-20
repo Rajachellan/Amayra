@@ -83,10 +83,7 @@ export const CollectionStory = () => {
     </span>
   </h2>
 
-  <div
-    className="w-12 h-px mb-8"
-    style={{ background: "rgba(196,160,100,0.3)" }}
-  />
+ 
 
   <div
     className="space-y-6 font-sans text-sm leading-[1.9] tracking-wide"
