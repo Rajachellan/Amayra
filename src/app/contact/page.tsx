@@ -110,7 +110,7 @@ export default function ContactPage() {
           priority
           sizes="100vw"
           className="object-cover object-[center_35%] brightness-65 scale-105"
-         
+
         />
         {/* <div className="absolute inset-0 bg-gradient-to-b from-stone-950/70 via-stone-950/40 to-[#FAF8F3]" /> */}
 
@@ -457,7 +457,7 @@ export default function ContactPage() {
                     </label>
                     <input
                       type="tel"
-                      placeholder="+91 98765 43210"
+                      placeholder="+91 9566571655"
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                       className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white placeholder:text-stone-500 focus:outline-none focus:border-amber-300 transition-colors font-serif"

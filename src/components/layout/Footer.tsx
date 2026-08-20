@@ -101,7 +101,7 @@ export const Footer = () => {
             <p
               className="text-xs leading-[1.9] mb-8 text-white/70"
             >
-            Crafting stories of legacy & elegance that speak to the soul.
+              Crafting stories of legacy & elegance that speak to the soul.
             </p>
 
             <div className="flex space-x-5">
@@ -266,7 +266,7 @@ export const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-brand-gold" />
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919566571655"
                   className="text-white/70 hover:text-brand-gold transition-colors"
                 >
                   +91 9566571655

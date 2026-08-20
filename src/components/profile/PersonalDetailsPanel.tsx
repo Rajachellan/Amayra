@@ -73,11 +73,10 @@ function Field({
         maxLength={maxLength}
         inputMode={inputMode}
         onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-xl border bg-white px-4 py-3 text-sm text-stone-900 outline-none transition duration-200 focus:ring-2 ${
-          error
-            ? "border-rose-300 focus:ring-rose-200"
-            : "border-stone-200 focus:border-[#c9a84c] focus:ring-[#c9a84c]/20"
-        } ${disabled ? "bg-stone-50 text-stone-500 cursor-not-allowed border-stone-200" : ""}`}
+        className={`w-full rounded-xl border bg-white px-4 py-3 text-sm text-stone-900 outline-none transition duration-200 focus:ring-2 ${error
+          ? "border-rose-300 focus:ring-rose-200"
+          : "border-stone-200 focus:border-[#c9a84c] focus:ring-[#c9a84c]/20"
+          } ${disabled ? "bg-stone-50 text-stone-500 cursor-not-allowed border-stone-200" : ""}`}
       />
       {error ? (
         <span className="block text-[11px] text-rose-600 font-medium">{error}</span>
@@ -259,7 +258,7 @@ export function PersonalDetailsPanel() {
 
   return (
     <div className="space-y-12">
-      
+
       {/* Header */}
       <div className="pb-6 border-b border-stone-100">
         <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#c9a84c] block mb-1">
@@ -323,7 +322,7 @@ export function PersonalDetailsPanel() {
                 autoComplete="tel"
                 inputMode="tel"
                 maxLength={16}
-                hint="Format: 9876543210 or +91 98765 43210"
+                hint="Format: 9566571655 or +91 9566571655"
               />
             </div>
           </div>
@@ -380,11 +379,10 @@ export function PersonalDetailsPanel() {
             {addresses.map((a, i) => (
               <div
                 key={a.id ?? `${a.line1}-${i}`}
-                className={`p-6 rounded-2xl border transition-all duration-300 relative space-y-4 flex flex-col justify-between ${
-                  a.isDefault
-                    ? "bg-white border-[#c9a84c] shadow-lg shadow-[#c9a84c]/10"
-                    : "bg-stone-50/50 border-stone-200 hover:border-stone-300 hover:bg-white"
-                }`}
+                className={`p-6 rounded-2xl border transition-all duration-300 relative space-y-4 flex flex-col justify-between ${a.isDefault
+                  ? "bg-white border-[#c9a84c] shadow-lg shadow-[#c9a84c]/10"
+                  : "bg-stone-50/50 border-stone-200 hover:border-stone-300 hover:bg-white"
+                  }`}
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -394,7 +392,7 @@ export function PersonalDetailsPanel() {
                         {a.label || "Address"}
                       </span>
                     </div>
-                    
+
                     {a.isDefault && (
                       <span className="text-[9px] font-bold bg-[#c9a84c]/20 text-[#0B2516] px-2.5 py-1 rounded-full uppercase tracking-widest border border-[#c9a84c]/40">
                         Default Address
@@ -472,7 +470,7 @@ export function PersonalDetailsPanel() {
             onClick={closeEditor}
           />
           <div className="relative w-full max-w-xl my-auto rounded-3xl bg-white shadow-2xl border border-stone-200 p-6 sm:p-10 space-y-6 z-10">
-            
+
             <div className="flex items-center justify-between pb-4 border-b border-stone-100">
               <div>
                 <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-[#c9a84c] block mb-1">
@@ -501,11 +499,10 @@ export function PersonalDetailsPanel() {
                         key={tag}
                         type="button"
                         onClick={() => setAddressForm((f) => ({ ...f, label: tag }))}
-                        className={`px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider transition border ${
-                          addressForm.label === tag
-                            ? "bg-stone-900 text-white border-stone-900"
-                            : "bg-stone-50 text-stone-600 border-stone-200 hover:border-brand-gold"
-                        }`}
+                        className={`px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider transition border ${addressForm.label === tag
+                          ? "bg-stone-900 text-white border-stone-900"
+                          : "bg-stone-50 text-stone-600 border-stone-200 hover:border-brand-gold"
+                          }`}
                       >
                         {tag === "Home" ? "🏠 Home" : tag === "Work" || tag === "Office" ? "💼 " + tag : "📍 " + tag}
                       </button>
