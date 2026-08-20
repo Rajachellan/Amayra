@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { Product, CartItem } from "../types";
 import { toast } from "react-hot-toast";
-import { shopApi } from "@/lib/api/shop";
+import { shopApi, type CartPricingResponse } from "@/lib/api/shop";
 
 interface CartContextType {
   cart: CartItem[];
@@ -28,6 +28,9 @@ interface CartContextType {
   discountAmount: number;
   applyCoupon: (code: string) => Promise<boolean>;
   removeCoupon: () => void;
+  pricingResult: CartPricingResponse | null;
+  loadingPricing: boolean;
+  refreshPricing: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -38,6 +41,32 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isCartOpen, setCartOpen] = useState(false);
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const [discountAmount, setDiscountAmount] = useState<number>(0);
+  const [pricingResult, setPricingResult] = useState<CartPricingResponse | null>(null);
+  const [loadingPricing, setLoadingPricing] = useState<boolean>(false);
+
+  const refreshPricing = useCallback(async () => {
+    if (!cart.length) {
+      setPricingResult(null);
+      return;
+    }
+    setLoadingPricing(true);
+    try {
+      const items = cart.map((i) => ({ slug: i.slug, productId: i.id, quantity: i.quantity }));
+      const pricing = await shopApi.calculateCart(items, couponCode || undefined);
+      setPricingResult(pricing);
+      if (pricing.appliedCoupon) {
+        setDiscountAmount(pricing.couponDiscount);
+      }
+    } catch (err) {
+      console.error("Cart pricing calculation error:", err);
+    } finally {
+      setLoadingPricing(false);
+    }
+  }, [cart, couponCode]);
+
+  useEffect(() => {
+    refreshPricing();
+  }, [refreshPricing]);
 
   const applyCoupon = useCallback(
     async (code: string) => {
@@ -50,6 +79,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (pricing.appliedCoupon) {
           setCouponCode(pricing.appliedCoupon.code);
           setDiscountAmount(pricing.couponDiscount);
+          setPricingResult(pricing);
           toast.success(`Coupon ${pricing.appliedCoupon.code} applied!`);
           return true;
         } else {
@@ -254,6 +284,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       discountAmount,
       applyCoupon,
       removeCoupon,
+      pricingResult,
+      loadingPricing,
+      refreshPricing,
     }),
     [
       cart,
@@ -273,6 +306,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       discountAmount,
       applyCoupon,
       removeCoupon,
+      pricingResult,
+      loadingPricing,
+      refreshPricing,
     ]
   );
 

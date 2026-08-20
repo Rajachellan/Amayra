@@ -31,25 +31,13 @@ export function CartDrawer() {
     discountAmount,
     applyCoupon,
     removeCoupon,
+    pricingResult,
   } = useCart();
 
   const [realProducts, setRealProducts] = useState<Product[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState<string[]>(["WELCOME5"]);
   const [couponInput, setCouponInput] = useState("");
-  const [pricingResult, setPricingResult] = useState<CartPricingResponse | null>(null);
-
-  useEffect(() => {
-    if (!cart.length) {
-      setPricingResult(null);
-      return;
-    }
-    const items = cart.map((i) => ({ slug: i.slug, productId: i.id, quantity: i.quantity }));
-    shopApi
-      .calculateCart(items, couponCode || undefined)
-      .then(setPricingResult)
-      .catch((err) => console.error("Cart calculation error:", err));
-  }, [cart, couponCode]);
 
   useEffect(() => {
     if (!isCartOpen) return;
@@ -80,9 +68,15 @@ export function CartDrawer() {
   const DISCOUNT_THRESHOLD = 3499;
   const GIFT_THRESHOLD = 6999;
 
+  const discountPct = pricingResult?.discountSlab?.discountPercentage ?? (subtotal >= DISCOUNT_THRESHOLD ? 10 : 0);
+
   const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
   const tax = 0;
-  const milestoneDiscount = subtotal >= DISCOUNT_THRESHOLD ? Math.round(subtotal * 0.1 * 100) / 100 : 0;
+  const milestoneDiscount = pricingResult
+    ? pricingResult.automaticDiscount
+    : subtotal >= DISCOUNT_THRESHOLD
+      ? Math.round(subtotal * 0.1 * 100) / 100
+      : 0;
   const total = Math.max(0, subtotal - discountAmount - milestoneDiscount + shipping);
 
   const progressVal = useMemo(() => {
@@ -105,13 +99,13 @@ export function CartDrawer() {
       return `You are ₹${(FREE_SHIPPING_THRESHOLD - subtotal).toLocaleString()} away from Free Shipping`;
     }
     if (subtotal < DISCOUNT_THRESHOLD) {
-      return `✓ Free Shipping Unlocked! Add ₹${(DISCOUNT_THRESHOLD - subtotal).toLocaleString()} more for Extra 10% OFF!`;
+      return `✓ Free Shipping Unlocked! Add ₹${(DISCOUNT_THRESHOLD - subtotal).toLocaleString()} more for Extra ${discountPct || 10}% OFF!`;
     }
     if (subtotal < GIFT_THRESHOLD) {
-      return `✓ 10% OFF Unlocked! Add ₹${(GIFT_THRESHOLD - subtotal).toLocaleString()} more for a Free Gift (Worth ₹799)!`;
+      return `✓ ${discountPct || 10}% OFF Unlocked! Add ₹${(GIFT_THRESHOLD - subtotal).toLocaleString()} more for a Free Gift (Worth ₹799)!`;
     }
-    return "✓ All luxury milestones unlocked! Free Shipping, 10% OFF, & Free Gift applied! 🎉";
-  }, [subtotal]);
+    return `✓ All luxury milestones unlocked! Free Shipping, ${discountPct || 10}% OFF, & Free Gift applied! 🎉`;
+  }, [subtotal, discountPct]);
 
   const cartIds = useMemo(() => new Set(cart.map((i) => i.id)), [cart]);
 
@@ -240,7 +234,7 @@ export function CartDrawer() {
                       
                       <div className="text-center space-y-0.5">
                         <span className={`block transition-colors duration-300 ${subtotal >= DISCOUNT_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
-                          {subtotal >= DISCOUNT_THRESHOLD ? "✓ 10% OFF" : "10% OFF"}
+                          {subtotal >= DISCOUNT_THRESHOLD ? `✓ ${discountPct || 10}% OFF` : `${discountPct || 10}% OFF`}
                         </span>
                         <span className="text-[9px] text-gray-400 font-normal">₹3,499</span>
                       </div>
@@ -272,6 +266,29 @@ export function CartDrawer() {
                 </div>
               ) : (
                 <ul className="divide-y divide-gray-100 px-5">
+                  {subtotal >= GIFT_THRESHOLD && (
+                    <li key="free-gift-item" className="flex gap-4 py-4 bg-emerald-50/50 border-b border-emerald-100 rounded-lg px-3 my-2">
+                      <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded bg-white border border-emerald-200">
+                        <Image src="/images/gift-box.webp" alt="Free Gift" fill className="object-cover" sizes="80px" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <span className="inline-block bg-emerald-700 text-white text-[9px] font-bold px-2 py-0.5 rounded tracking-wider uppercase mb-1">
+                          🎁 COMPLIMENTARY GIFT
+                        </span>
+                        <p className="font-serif text-sm font-semibold uppercase tracking-wide text-brand-emerald">
+                          Free Gift (Worth ₹799)
+                        </p>
+                        <p className="mt-1 text-[10px] text-emerald-800 font-medium">
+                          Unlocked for cart subtotal ≥ ₹6,999
+                        </p>
+                      </div>
+                      <div className="shrink-0 pt-4 text-right">
+                        <span className="text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-1 rounded">
+                          FREE
+                        </span>
+                      </div>
+                    </li>
+                  )}
                   {cart.map((item) => (
                     <li key={item.id} className="flex gap-4 py-5">
                       <div className="relative h-28 w-20 shrink-0 overflow-hidden bg-gray-50">

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { Suspense, useState } from "react";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/Button";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { GoogleAuthSection } from "@/components/auth/GoogleAuthSection";
 import toast from "react-hot-toast";
@@ -17,6 +17,8 @@ function LoginForm() {
   const { login, loginWithGoogleIdToken, loading, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [isGoogleAccountNotice, setIsGoogleAccountNotice] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const redirectTo = () => {
@@ -32,12 +34,17 @@ function LoginForm() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
+    setIsGoogleAccountNotice(false);
     try {
       await login(email, password);
       toast.success("Signed in");
       redirectTo();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Sign in failed");
+      const msg = err instanceof Error ? err.message : "Sign in failed";
+      if (msg.includes("Google sign-in")) {
+        setIsGoogleAccountNotice(true);
+      }
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }
@@ -60,7 +67,13 @@ function LoginForm() {
         }}
       />
 
-      <div className="relative mb-10">
+      {isGoogleAccountNotice && (
+        <div className="mt-4 mb-2 p-3.5 bg-amber-50 border border-amber-200 rounded-md text-xs text-amber-900 font-medium text-center shadow-sm">
+          💡 This account was created with Google. Click <strong className="font-bold underline">"Continue with Google"</strong> above to sign in!
+        </div>
+      )}
+
+      <div className="relative my-8">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t border-gray-200" />
         </div>
@@ -92,14 +105,22 @@ function LoginForm() {
           <div className="relative">
             <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 pl-12 pr-4 py-3 text-sm rounded-md focus:outline-none focus:border-brand-gold font-sans tracking-widest"
+              className="w-full bg-gray-50 border border-gray-200 pl-12 pr-12 py-3 text-sm rounded-md focus:outline-none focus:border-brand-gold font-sans tracking-widest"
               placeholder="••••••••"
               required
               minLength={6}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 

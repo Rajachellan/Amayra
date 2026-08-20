@@ -115,7 +115,7 @@ export function clearCheckoutShippingDraft(customerId: string) {
 export default function CheckoutPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-  const { cart, subtotal, clearCart, openCart, couponCode, discountAmount } = useCart();
+  const { cart, subtotal, clearCart, openCart, couponCode, discountAmount, pricingResult } = useCart();
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -138,9 +138,17 @@ export default function CheckoutPage() {
   const GIFT_THRESHOLD = 6999;
 
   const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
-  const milestoneDiscount = subtotal >= DISCOUNT_THRESHOLD ? Math.round(subtotal * 0.1 * 100) / 100 : 0;
-  const tax = 0;
-  const displayTotal = Math.max(0, subtotal - discountAmount - milestoneDiscount + shipping);
+  const automaticDiscount = pricingResult
+    ? pricingResult.automaticDiscount
+    : subtotal >= DISCOUNT_THRESHOLD
+      ? Math.round(subtotal * 0.1 * 100) / 100
+      : 0;
+  const discountSlabPercentage = pricingResult?.discountSlab?.discountPercentage ?? (subtotal >= DISCOUNT_THRESHOLD ? 10 : 0);
+  const appliedCouponDiscount = pricingResult ? pricingResult.couponDiscount : discountAmount;
+
+  const displayTotal = pricingResult
+    ? pricingResult.finalAmount + shipping
+    : Math.max(0, subtotal - discountAmount - automaticDiscount + shipping);
 
   useEffect(() => {
     if (authLoading) return;
@@ -605,31 +613,40 @@ export default function CheckoutPage() {
                   <p className="text-sm text-gray-500">Your cart is empty.</p>
                 ) : (
                   <ul className="space-y-4 max-h-80 overflow-y-auto pr-1">
-                    {validCart.map((item) => (
-                      <li key={item.id} className="flex gap-4 items-center">
-                        <div className="relative w-16 h-20 shrink-0 overflow-hidden rounded bg-gray-50">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            sizes="64px"
-                            quality={70}
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-serif text-brand-emerald truncate font-medium">{item.name}</p>
-                          <p className="text-[11px] text-gray-500 tracking-wide mt-0.5">
-                            QTY {item.quantity} × ₹{item.price.toLocaleString()}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-sm font-bold text-brand-emerald">
-                            ₹{(item.price * item.quantity).toLocaleString()}
-                          </p>
-                        </div>
-                      </li>
-                    ))}
+                    {validCart.map((item) => {
+                      const isGift = item.id === "free-gift-id" || item.price === 0;
+                      return (
+                        <li key={item.id} className="flex gap-4 items-center">
+                          <div className="relative w-16 h-20 shrink-0 overflow-hidden rounded bg-gray-50 border border-stone-100">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              sizes="64px"
+                              quality={70}
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-serif text-brand-emerald truncate font-medium">{item.name}</p>
+                            {isGift ? (
+                              <span className="inline-block bg-emerald-100 text-emerald-800 text-[9px] font-bold px-1.5 py-0.5 rounded tracking-wider uppercase mt-0.5">
+                                🎁 COMPLIMENTARY GIFT
+                              </span>
+                            ) : (
+                              <p className="text-[11px] text-gray-500 tracking-wide mt-0.5">
+                                QTY {item.quantity} × ₹{item.price.toLocaleString()}
+                              </p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <p className="text-sm font-bold text-brand-emerald">
+                              {isGift ? "FREE" : `₹${(item.price * item.quantity).toLocaleString()}`}
+                            </p>
+                          </div>
+                        </li>
+                      );
+                    })}
                   </ul>
                 )}
                 <div className="border-t pt-4 space-y-2.5 text-xs uppercase tracking-widest">
@@ -645,16 +662,16 @@ export default function CheckoutPage() {
                       <span className="font-bold text-emerald-700">FREE</span>
                     )}
                   </div>
-                  {milestoneDiscount > 0 && (
+                  {automaticDiscount > 0 && (
                     <div className="flex justify-between text-[#c4a064] font-semibold">
-                      <span>Steal Deal (10% Off)</span>
-                      <span>- ₹{milestoneDiscount.toLocaleString()}</span>
+                      <span>Slab Discount ({discountSlabPercentage}% Off)</span>
+                      <span>- ₹{automaticDiscount.toLocaleString()}</span>
                     </div>
                   )}
-                  {discountAmount > 0 && (
+                  {appliedCouponDiscount > 0 && (
                     <div className="flex justify-between text-[#c4a064] font-semibold">
                       <span>Discount ({couponCode})</span>
-                      <span>- ₹{discountAmount.toLocaleString()}</span>
+                      <span>- ₹{appliedCouponDiscount.toLocaleString()}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-gray-400 text-[10px]">

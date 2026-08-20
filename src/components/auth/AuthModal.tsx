@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { X, Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { GoogleAuthSection } from "@/components/auth/GoogleAuthSection";
 import toast from "react-hot-toast";
@@ -20,6 +20,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -200,14 +201,22 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
               <div className="relative">
                 <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-400" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   minLength={6}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-stone-50 border border-stone-200/90 pl-10 pr-4 py-3 text-xs rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white text-stone-900 tracking-wider transition-all"
+                  className="w-full bg-stone-50 border border-stone-200/90 pl-10 pr-10 py-3 text-xs rounded-xl focus:outline-none focus:border-amber-500 focus:bg-white text-stone-900 tracking-wider transition-all"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 focus:outline-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
