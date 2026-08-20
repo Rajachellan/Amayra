@@ -136,27 +136,28 @@ export const ProductSpotlight = () => {
           </div>
 
           <div className="lg:col-span-7 order-1 lg:order-2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-square md:aspect-[4/3] rounded-[40px] overflow-hidden group shadow-2xl"
-            >
-              <Link href={href}>
-                <Image
-                  src={img}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 60vw"
-                  className=" transition-transform duration-[3s] group-hover:scale-110"
-                />
-              </Link>
-              <div className="absolute top-8 left-8 w-12 h-12 border-t border-l border-white/20 rounded-tl-2xl" />
-              <div className="absolute bottom-8 right-8 w-12 h-12 border-b border-r border-white/20 rounded-br-2xl" />
-              <div className="grain-overlay opacity-[0.05]" />
-              <div className="absolute inset-0 bg-gradient-to-tr from-champagne/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-            </motion.div>
+          <motion.div
+  initial={{ opacity: 0, scale: 0.95 }}
+  whileInView={{ opacity: 1, scale: 1 }}
+  viewport={{ once: true }}
+  transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
+  className="relative aspect-square w-full max-w-[600px] mx-auto rounded-[40px] overflow-hidden group shadow-2xl"
+>
+  <Link href={href}>
+    <Image
+      src={img}
+      alt={product.name}
+      fill
+      sizes="(max-width: 768px) 100vw, 60vw"
+      className="object-cover transition-transform duration-[3s] group-hover:scale-110"
+    />
+  </Link>
+
+  <div className="absolute top-8 left-8 w-12 h-12 border-t border-l border-white/20 rounded-tl-2xl" />
+  <div className="absolute bottom-8 right-8 w-12 h-12 border-b border-r border-white/20 rounded-br-2xl" />
+  <div className="grain-overlay opacity-[0.05]" />
+  <div className="absolute inset-0 bg-gradient-to-tr from-champagne/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+</motion.div>
           </div>
         </div>
       </div>
