@@ -521,7 +521,6 @@ function ProductDetail() {
                   ))}
                 </div>
               </div>
-
               {/* Accordions */}
               <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200">
                 {/* 1. Description Accordion */}
