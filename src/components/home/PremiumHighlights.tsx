@@ -1,218 +1,80 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import {
-  HandHeart,
-  PackageCheck,
-  ShieldCheck,
-  Truck,
-  Heart,
-  Gem,
-  Sparkles,
-  Crown,
-  BadgeCheck,
-  Gift,
-} from "lucide-react";
+import Image from "next/image";
 
 const HIGHLIGHTS = [
   {
-    icon: HandHeart,
-    title: "Handcrafted in India",
+    image: "/aimated-icons/gate.png",
+    title: "HANDCRAFTED IN INDIA",
   },
   {
-    icon: PackageCheck,
-    title: "Premium Packaging",
+    image:"/aimated-icons/box.png",
+    title: "PREMIUM PACKAGING",
   },
   {
-    icon: ShieldCheck,
-    title: "100% Secure Payments",
+    image:"/aimated-icons/shield.png",
+    title: "100% SECURE PAYMENTS",
   },
   {
-    icon: Truck,
-    title: "Pan India Delivery",
+    image: "/aimated-icons/fast-delivery.png",
+    title: "PAN INDIA DELIVERY",
   },
   {
-    icon: Heart,
-    title: "Curated with Love",
-  },
-  {
-    icon: Gem,
-    title: "Finest Materials",
-  },
-  {
-    icon: Sparkles,
-    title: "Timeless Elegance",
-  },
-  {
-    icon: Crown,
-    title: "Royal Craftsmanship",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Quality Assured",
-  },
-  {
-    icon: Gift,
-    title: "Perfect for Gifting",
+    image: "/aimated-icons/heart.png",
+    title: "CURATED WITH LOVE",
   },
 ];
 
 export const PremiumHighlights = () => {
   return (
-    <section className="relative w-full bg-[#f6ead9] overflow-hidden py-14 md:py-18">
-      {/* Soft edge fading */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 md:w-32 bg-gradient-to-r from-background to-transparent" />
-
-      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 md:w-32 bg-gradient-to-l from-background to-transparent" />
-
-      {/* Marquee */}
-      <div className="flex w-max">
-        <motion.div
-          className="flex items-center"
-          animate={{
-            x: ["0%", "-50%"],
-          }}
-          transition={{
-            x: {
-              duration: 35,
-              repeat: Infinity,
-              ease: "linear",
-            },
-          }}
-        >
-          {/* First set */}
-          <div className="flex items-center">
-            {HIGHLIGHTS.map((item, index) => {
-              const Icon = item.icon;
-
-              return (
-                <div
-                  key={`first-${item.title}`}
+    <section className="relative w-full bg-[#f6ead9] py-12 md:py-16">
+      <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
+        <div className="grid grid-cols-2 gap-y-10 md:grid-cols-5 md:gap-x-8 md:gap-y-0">
+          {HIGHLIGHTS.map((item, index) => (
+            <div
+              key={item.title}
+              className="group flex flex-col items-center justify-center text-center"
+            >
+              {/* GIF / Image */}
+              <div className="relative mb-5 flex h-20 w-20 items-center justify-center md:h-27 md:w-25">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  unoptimized
                   className="
-                    group
-                    flex
-                    w-[220px]
-                    md:w-[260px]
-                    flex-shrink-0
-                    flex-col
-                    items-center
-                    justify-center
-                    text-center
-                    px-6
+                    object-contain
+                    transition-transform
+                    duration-500
+                    group-hover:scale-105
                   "
-                >
-                  {/* Icon */}
-                  <div
-                    className="
-                      mb-6
-                      text-[#2E5A44]
-                      transition-all
-                      duration-700
-                      ease-out
-                      group-hover:-translate-y-2
-                      group-hover:text-champagne
-                    "
-                  >
-                    <Icon
-                      className="
-                        w-16 h-16
-                        md:w-[76px] md:h-[76px]
-                        stroke-[1]
-                      "
-                    />
-                  </div>
+                  sizes="98px"
+                />
+              </div>
 
-                  {/* Title */}
-                  <h3
-                    className="
-                      max-w-[210px]
-                      text-[13px]
-                      md:text-[15px]
-                      uppercase
-                      tracking-[0.18em]
-                      leading-[1.7]
-                      font-serif
-                      font-semibold
-                      text-foreground
-                      transition-colors
-                      duration-500
-                      group-hover:text-[#2E5A44]
-                    "
-                  >
-                    {item.title}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Duplicate set for seamless loop */}
-          <div className="flex items-center">
-            {HIGHLIGHTS.map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <div
-                  key={`second-${item.title}`}
-                  className="
-                    group
-                    flex
-                    w-[220px]
-                    md:w-[260px]
-                    flex-shrink-0
-                    flex-col
-                    items-center
-                    justify-center
-                    text-center
-                    px-6
-                  "
-                >
-                  {/* Icon */}
-                  <div
-                    className="
-                      mb-6
-                      text-[#2E5A44]
-                      transition-all
-                      duration-700
-                      ease-out
-                      group-hover:-translate-y-2
-                      group-hover:text-champagne
-                    "
-                  >
-                    <Icon
-                      className="
-                        w-16 h-16
-                        md:w-[76px] md:h-[76px]
-                        stroke-[1]
-                      "
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    className="
-                      max-w-[210px]
-                      text-[13px]
-                      md:text-[15px]
-                      uppercase
-                      tracking-[0.18em]
-                      leading-[1.7]
-                      font-serif
-                      font-semibold
-                      text-foreground
-                      transition-colors
-                      duration-500
-                      group-hover:text-[#2E5A44]
-                    "
-                  >
-                    {item.title}
-                  </h3>
-                </div>
-              );
-            })}
-          </div>
-        </motion.div>
+              {/* Title */}
+              <h3
+                className="
+                  max-w-[180px]
+                  text-[12px]
+                  font-serif
+                  font-semibold
+                  uppercase
+                  leading-[1.6]
+                  tracking-[0.14em]
+                  text-foreground
+                  transition-colors
+                  duration-300
+                  group-hover:text-[#2E5A44]
+                  md:text-[18px]
+                "
+              >
+                {item.title}
+              </h3>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
