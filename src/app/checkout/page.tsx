@@ -211,12 +211,16 @@ export default function CheckoutPage() {
     });
   }, [user?.id, profileLoaded, fullName, phone, line1, city, stateVal, pincode, country]);
 
+  const freeGiftEnabled = Boolean(pricingResult?.freeGift?.enabled);
+  const freeGiftUnlocked = Boolean(pricingResult?.freeGift?.unlocked);
+  const freeGiftName = pricingResult?.freeGift?.name || "Free Gift (Worth ₹799)";
+
   const validCart = useMemo(() => {
     const list = [...cart.filter((i) => i.slug?.trim())];
-    if (subtotal >= 6999) {
+    if (freeGiftEnabled && freeGiftUnlocked) {
       list.push({
         id: "free-gift-id",
-        name: "Free Gift (Worth ₹799)",
+        name: freeGiftName,
         slug: "free-gift-worth-799",
         price: 0,
         quantity: 1,
@@ -225,7 +229,7 @@ export default function CheckoutPage() {
       } as any);
     }
     return list;
-  }, [cart, subtotal]);
+  }, [cart, freeGiftEnabled, freeGiftUnlocked, freeGiftName]);
 
   function applySavedAddress(a: CustomerAddress) {
     if (a.id) setSelectedAddressId(a.id);

@@ -21,11 +21,11 @@ type Slide = {
 const FALLBACK_SLIDES: Slide[] = [
   {
     id: "fallback-1",
-    image: "",
-    mobileImage: "",
-    title: "",
-    tagline: "",
-    cta: "",
+    image: "/images/hero-banner.jpg",
+    mobileImage: "/images/hero-banner.jpg",
+    title: "Timeless Luxury Jewels",
+    tagline: "Pure Luxury. Timeless Craftsmanship.",
+    cta: "Explore Collection",
     link: "/category/all",
   },
 ];
@@ -59,13 +59,14 @@ export const Hero = () => {
             cta: (b.buttonText || b.ctaLabel || "").trim(),
             link: b.link || b.redirectLink || "/category/all",
           }));
-        if (mapped.length) {
-          setSlides(mapped);
-          setCurrentIndex(0);
-        }
+        if (mapped.length > 0) setSlides(mapped);
       })
       .catch(() => { });
   }, []);
+
+  const slideCount = slides.length;
+  const safeIndex = slideCount > 0 ? currentIndex % slideCount : 0;
+  const slide = slides[safeIndex] || FALLBACK_SLIDES[0];
 
   const goTo = useCallback((index: number) => {
     if (index < 0 || index >= slides.length) return;
@@ -73,21 +74,21 @@ export const Hero = () => {
   }, [slides.length]);
 
   const nextSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev + 1) % slides.length);
+    setCurrentIndex((prev) => (prev + 1) % Math.max(1, slides.length));
   }, [slides.length]);
 
   const prevSlide = useCallback(() => {
-    setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
+    setCurrentIndex((prev) => (prev - 1 + slides.length) % Math.max(1, slides.length));
   }, [slides.length]);
 
   useEffect(() => {
     if (!isAutoPlaying || slides.length <= 1) return;
-    const timer = setInterval(nextSlide, 5000);
+    const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
-  }, [isAutoPlaying, nextSlide, slides.length]);
+  }, [isAutoPlaying, slides.length, nextSlide]);
 
-  const slide = slides[currentIndex] ?? slides[0];
-  const displayImage = isMobile ? slide.mobileImage : slide.image;
+  const rawImage = isMobile ? slide.mobileImage || slide.image : slide.image || slide.mobileImage;
+  const displayImage = typeof rawImage === "string" && rawImage.trim() !== "" ? rawImage : "/images/hero-banner.jpg";
   const hasMultiple = slides.length > 1;
   const hasText = Boolean(slide.title || slide.tagline || slide.cta);
 

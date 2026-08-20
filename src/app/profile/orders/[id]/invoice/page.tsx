@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
-import { ArrowLeft, Loader2, Printer } from "lucide-react";
+import { ArrowLeft, Loader2, Printer, Download } from "lucide-react";
 
 type OrderDetail = {
   _id: string;
@@ -45,6 +45,7 @@ export default function InvoicePage() {
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
+  const [downloadingPdf, setDownloadingPdf] = useState(false);
 
   useEffect(() => {
     if (authLoading) return;
@@ -73,6 +74,82 @@ export default function InvoicePage() {
       return () => clearTimeout(timer);
     }
   }, [loading, order]);
+
+  const handleDownloadPdf = async () => {
+    if (!order) return;
+    setDownloadingPdf(true);
+    try {
+      const element = document.getElementById("invoice-printable");
+      if (!element) throw new Error("Invoice content unavailable");
+
+      if (!(window as any).html2pdf) {
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error("Failed to load PDF engine"));
+          document.body.appendChild(script);
+        });
+      }
+
+      const html2pdf = (window as any).html2pdf;
+      if (!html2pdf) throw new Error("PDF engine not initialized");
+
+      const opt = {
+        margin: [8, 8, 8, 8],
+        filename: `Invoice-${order.orderNumber}.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          onclone: (clonedDoc: Document) => {
+            // Strip oklab/oklch functions from cloned style tags so html2canvas stylesheet parser doesn't throw
+            const styleTags = clonedDoc.querySelectorAll("style");
+            styleTags.forEach((s) => {
+              if (s.textContent && (s.textContent.includes("oklab") || s.textContent.includes("oklch"))) {
+                s.textContent = s.textContent
+                  .replace(/oklab\([^)]+\)/g, "#1c1510")
+                  .replace(/oklch\([^)]+\)/g, "#1c1510");
+              }
+            });
+
+            const node = clonedDoc.getElementById("invoice-printable");
+            if (node) {
+              node.style.backgroundColor = "#ffffff";
+              node.style.color = "#1c1510";
+              const elements = node.getElementsByTagName("*");
+              for (let i = 0; i < elements.length; i++) {
+                const el = elements[i] as HTMLElement;
+                try {
+                  const cs = window.getComputedStyle(el);
+                  if (cs.color && (cs.color.includes("oklab") || cs.color.includes("oklch"))) {
+                    el.style.color = "#1c1510";
+                  }
+                  if (cs.backgroundColor && (cs.backgroundColor.includes("oklab") || cs.backgroundColor.includes("oklch"))) {
+                    el.style.backgroundColor = "#ffffff";
+                  }
+                  if (cs.borderColor && (cs.borderColor.includes("oklab") || cs.borderColor.includes("oklch"))) {
+                    el.style.borderColor = "#e7e5e4";
+                  }
+                } catch {
+                  // Fallback safe styles
+                }
+              }
+            }
+          },
+        },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+      };
+
+      await html2pdf().set(opt).from(element).save();
+    } catch (e) {
+      console.error("PDF generation failed:", e);
+      window.print();
+    } finally {
+      setDownloadingPdf(false);
+    }
+  };
 
   if (authLoading || loading) {
     return (
@@ -128,26 +205,45 @@ export default function InvoicePage() {
       `}</style>
 
       {/* Action Buttons (Hidden during printing) */}
-      <div className="max-w-3xl mx-auto mb-6 flex items-center justify-between no-print bg-white p-4 rounded-2xl border border-stone-200 shadow-sm">
+      <div className="max-w-3xl mx-auto mb-6 flex flex-wrap items-center justify-between gap-4 no-print bg-white p-4 rounded-2xl border border-stone-200 shadow-sm">
         <Link
-          href={`/profile/orders/${id}`}
+          href={`/profile/orders/${order.orderNumber}`}
           className="inline-flex items-center text-xs font-semibold uppercase tracking-[0.2em] text-stone-500 hover:text-[#0B2516] transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
           Back to Order
         </Link>
 
-        <button
-          onClick={() => window.print()}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B2516] hover:bg-[#c9a84c] text-white hover:text-[#0B2516] font-semibold text-xs uppercase tracking-wider rounded-full shadow-md hover:shadow-lg transition-all"
-        >
-          <Printer className="w-4 h-4" />
-          Print Invoice
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={() => void handleDownloadPdf()}
+            disabled={downloadingPdf}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#c9a84c] hover:bg-[#b08e35] text-[#0B2516] font-bold text-xs uppercase tracking-wider rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer disabled:opacity-50"
+          >
+            {downloadingPdf ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Generating PDF…
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                Download PDF
+              </>
+            )}
+          </button>
+          <button
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0B2516] hover:bg-stone-800 text-white font-semibold text-xs uppercase tracking-wider rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
+          >
+            <Printer className="w-4 h-4" />
+            Print
+          </button>
+        </div>
       </div>
 
       {/* Invoice Card Container */}
-      <div className="max-w-3xl mx-auto bg-white rounded-3xl border border-stone-200/80 shadow-md p-8 sm:p-12 print-container relative overflow-hidden">
+      <div id="invoice-printable" className="max-w-3xl mx-auto bg-white rounded-3xl border border-stone-200/80 shadow-md p-8 sm:p-12 print-container relative overflow-hidden">
         
         {/* Top Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-8 border-b border-stone-100">

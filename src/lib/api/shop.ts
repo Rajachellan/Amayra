@@ -140,6 +140,12 @@ export type CartPricingResponse = {
     newPayable?: number;
     additionalPayment?: number;
   };
+  freeGift?: {
+    enabled: boolean;
+    threshold: number;
+    name: string;
+    unlocked: boolean;
+  };
   items: Array<{
     productId: string;
     name: string;
