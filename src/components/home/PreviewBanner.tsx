@@ -124,7 +124,6 @@ export const PreviewBanner = () => {
   const [current, setCurrent] = useState(0);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
   const [activeDot, setActiveDot] = useState<string | null>(null);
-  const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -273,11 +272,11 @@ export const PreviewBanner = () => {
                   className="absolute inset-0 flex flex-col overflow-hidden bg-white shadow-sm"
                   style={{ animation: "fadeSlideIn 0.3s ease-out" }}
                 >
-                  <div
-                    className="relative w-full shrink-0 overflow-hidden bg-[#FAF7F2] group/img cursor-pointer"
+                  <Link
+                    href={activeProduct.href}
+                    className="relative w-full shrink-0 overflow-hidden bg-[#FAF7F2] group/img cursor-pointer block"
                     style={{ height: "66%" }}
-                    onClick={() => setZoomedImage(activeProduct.image)}
-                    title="Click to view full resolution image"
+                    title={`View ${activeProduct.name}`}
                   >
                     <Image
                       src={activeProduct.image}
@@ -289,35 +288,17 @@ export const PreviewBanner = () => {
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/5 transition-colors duration-300 pointer-events-none" />
 
-                    {/* Expand Zoom Button */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setZoomedImage(activeProduct.image);
-                      }}
-                      aria-label="Zoom image"
-                      className="absolute bottom-3 right-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/90 shadow-md text-stone-700 hover:bg-white hover:text-stone-900 transition-all hover:scale-110"
-                      style={{ outline: "none", border: "none" }}
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <circle cx="11" cy="11" r="8" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                        <line x1="11" y1="8" x2="11" y2="14" />
-                        <line x1="8" y1="11" x2="14" y2="11" />
-                      </svg>
-                    </button>
-
                     {/* Close product panel button */}
                     <button
                       type="button"
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         setActiveProduct(null);
                         setActiveDot(null);
                       }}
                       aria-label="Close product view"
-                      className="absolute top-3 right-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/90 shadow-md text-stone-600 hover:bg-white hover:text-stone-900 transition-all hover:scale-110"
+                      className="absolute top-3 right-3 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-white/90 shadow-md text-stone-600 hover:bg-white hover:text-stone-900 transition-all hover:scale-110 z-10"
                       style={{ outline: "none", border: "none" }}
                     >
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -325,7 +306,7 @@ export const PreviewBanner = () => {
                         <line x1="6" y1="6" x2="18" y2="18" />
                       </svg>
                     </button>
-                  </div>
+                  </Link>
 
                   <div className="flex flex-1 flex-col items-center justify-between p-4 text-center bg-white overflow-hidden">
                     <div className="flex flex-col items-center min-w-0 w-full">
@@ -348,7 +329,7 @@ export const PreviewBanner = () => {
                     </div>
                     <Link
                       href={activeProduct.href}
-                      className="mt-2 w-full rounded-sm bg-stone-900 py-2.5 md:py-3 text-center font-sans text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-300 hover:bg-stone-800 hover:shadow-md"
+                      className="mt-2 w-full rounded-sm bg-stone-900 py-2.5 md:py-3 text-center font-sans text-[10px] md:text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition-all duration-300 mb-10 sm:mb-2  hover:bg-stone-800 hover:shadow-md"
                     >
                       View Product
                     </Link>
@@ -421,38 +402,6 @@ export const PreviewBanner = () => {
           />
         ))}
       </div>
-
-      {/* Lightbox Zoom Modal for full clear product inspection */}
-      {zoomedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm transition-opacity duration-300"
-          onClick={() => setZoomedImage(null)}
-        >
-          <div
-            className="relative max-h-[90vh] max-w-[90vw] overflow-hidden rounded-xl bg-white p-4 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => setZoomedImage(null)}
-              className="absolute top-3 right-3 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-stone-900/80 text-white shadow-lg transition-all hover:bg-stone-900 hover:scale-110"
-              aria-label="Close zoom modal"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-            <div className="relative flex max-h-[82vh] max-w-[85vw] items-center justify-center">
-              <img
-                src={zoomedImage}
-                alt="Full product view"
-                className="max-h-[82vh] max-w-full rounded-md object-contain shadow-sm"
-              />
-            </div>
-          </div>
-        </div>
-      )}
 
       <style>{`
         @keyframes fadeSlideIn {

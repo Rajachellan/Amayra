@@ -11,16 +11,16 @@ import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "@/assets/bridal_banner.jpg";
+import bridalBanner from "../../../assets/preview_banner/inner-banner-2.png";
 import necklaceBanner from "@/assets/neckles.jpg";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
-import bannerImage from "@/assets/banner_image.png";
+import bannerImage from "../../../assets/preview_banner/inner-banner-1.png";
 import ringsImg from "@/assets/pexels-the-glorious-studio-3584518-10361481 (1).jpg";
 import nosePinImg from "@/assets/pexels-ankunijjar-31772512.jpg";
 import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.jpg";
@@ -40,6 +40,21 @@ const CATEGORY_BANNERS: Record<string, any> = {
   pendants: pendantImg,
   all: bannerImage,
 };
+
+/**
+ * Default 2-slide banner configuration for category/collection pages (e.g. category/all?collection=aanchal).
+ * You can easily update or replace the default slide images below.
+ */
+export const DEFAULT_BANNER_SLIDES = [
+  {
+    id: "slide-1",
+    image: bannerImage, // Slide 1 Default Banner Image (User can replace here)
+  },
+  {
+    id: "slide-2",
+    image: bridalBanner, // Slide 2 Default Banner Image (User can replace here)
+  },
+];
 
 const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   silver: "Pure sterling 925 silver creations, hand-carved with timeless perfection and contemporary charm.",
@@ -119,6 +134,15 @@ function CategoryContent() {
   const [loading, setLoading] = useState(true);
   const [heroImage, setHeroImage] = useState<any>(silverBanner);
   const [title, setTitle] = useState(categorySlug);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+
+  // Auto-scroll the 2 default banner slides one by one
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 4500);
+    return () => clearInterval(timer);
+  }, []);
 
   const occasionsToUse = useMemo(() => {
     return occasionsList.length > 0
@@ -576,25 +600,32 @@ function CategoryContent() {
       <Navbar />
 
       <section className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
-        {/* Background Image - Covers 70% of Screen Height */}
-        <motion.div
-          initial={{ scale: 1.05 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute inset-0 z-0"
-        >
-          <Image
-            src={heroImage}
-            alt="Collection Background"
-            fill
-            className="object-cover object-[center_35%] brightness-[0.92]"
-            priority
-          />
-        </motion.div>
+        {/* Background Image Carousel - 2 Default Banner Slides auto-scrolling one by one */}
+        <div className="absolute inset-0 z-0">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentBannerIndex}
+              initial={{ opacity: 0, scale: 1.05 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <Image
+                src={
+                  currentBannerIndex === 0
+                    ? (heroImage || DEFAULT_BANNER_SLIDES[0].image)
+                    : DEFAULT_BANNER_SLIDES[1].image
+                }
+                alt="Collection Banner Slide"
+                fill
+                className="object-cover object-[center_35%] brightness-[0.92]"
+                priority
+              />
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-        {/* Soft Luxury Overlays - Subtle to Show Jewellery Clearly */}
-        <div className="absolute inset-0 bg-gradient-to-b from-stone-950/50 via-stone-950/15 to-stone-950/70 z-10" />
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
 
         {/* Content */}
         <div className="container mx-auto px-6 relative z-20 text-center">
@@ -612,9 +643,15 @@ function CategoryContent() {
               </span>
             </div>
 
-            {/* Category Title */}
+            {/* Category / Collection Title */}
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white tracking-tight leading-[1.1] capitalize drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
-              {subQuery ? subQuery.replace(/-/g, " ") : title === "all" ? "All Jewellery" : title}
+              {collectionQuery
+                ? collectionQuery.replace(/-/g, " ")
+                : subQuery
+                  ? subQuery.replace(/-/g, " ")
+                  : title === "all"
+                    ? "All Jewellery"
+                    : title}
             </h1>
 
             {/* Breadcrumb Navigation */}
@@ -627,9 +664,35 @@ function CategoryContent() {
                 Boutique
               </Link>
               <span className="text-amber-300/70">/</span>
-              <span className="text-amber-300 font-bold tracking-[0.35em]">{categorySlug}</span>
+              <span className="text-amber-300 font-bold tracking-[0.35em]">
+                {collectionQuery || categorySlug}
+              </span>
             </nav>
           </motion.div>
+        </div>
+
+        {/* 2-Slide Auto-Scroll Pagination Indicators */}
+        <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => setCurrentBannerIndex(0)}
+            aria-label="Slide 1"
+            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+              currentBannerIndex === 0
+                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                : "w-2.5 bg-white/50 hover:bg-white/80"
+            }`}
+          />
+          <button
+            type="button"
+            onClick={() => setCurrentBannerIndex(1)}
+            aria-label="Slide 2"
+            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+              currentBannerIndex === 1
+                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                : "w-2.5 bg-white/50 hover:bg-white/80"
+            }`}
+          />
         </div>
 
         {/* Bottom Filigree Line */}
