@@ -87,13 +87,13 @@ export const Footer = () => {
           {/* Brand */}
           <div>
             <div className="">
-              <Link href="/" className="relative group block">
+              <Link href="/" className="relative group block py-3">
                 <Image
                   src="/images/Media__5_-removebg-preview.png"
                   alt="MaiRii Logo"
-                  width={180}
-                  height={70}
-                  className={`object-contain py-5 transition-all rounded-full duration-500 `}
+                  width={160}
+                  height={50}
+                  className="h-12 md:h-14 w-auto object-contain transition-all duration-300"
                   priority
                 />
               </Link>

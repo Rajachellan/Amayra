@@ -77,9 +77,10 @@ function isDarkCard(card: OfferCard, index: number) {
 }
 
 export const OffersSection = () => {
-  const [ticker, setTicker] = useState<string[]>(FALLBACK_TICKER);
-  const [cards, setCards] = useState<OfferCard[]>(FALLBACK_CARDS);
+  const [ticker, setTicker] = useState<string[]>([]);
+  const [cards, setCards] = useState<OfferCard[]>([]);
   const [layout, setLayout] = useState<PromotionLayoutDoc | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -87,26 +88,52 @@ export const OffersSection = () => {
     Promise.all([
       shopApi.announcements().catch(() => [] as AnnouncementDoc[]),
       shopApi.promotionalBanners().catch(() => null),
-    ]).then(([announcements, promotions]) => {
-      if (cancelled) return;
+    ])
+      .then(([announcements, promotions]) => {
+        if (cancelled) return;
 
-      const texts = announcements
-        .map((a) => a.text?.trim())
-        .filter((t): t is string => Boolean(t));
-      if (texts.length) setTicker(texts);
+        const texts = announcements
+          .map((a) => a.text?.trim())
+          .filter((t): t is string => Boolean(t));
+        setTicker(texts.length ? texts : FALLBACK_TICKER);
 
-      if (promotions?.layout) setLayout(promotions.layout);
+        if (promotions?.layout) setLayout(promotions.layout);
 
-      const next = (promotions?.cards ?? []).filter(
-        (c) => c.title || c.name || c.description || c.badge
-      );
-      setCards(next.length ? next : FALLBACK_CARDS);
-    });
+        const next = (promotions?.cards ?? []).filter(
+          (c) => c.title || c.name || c.description || c.badge
+        );
+        setCards(next.length ? next : FALLBACK_CARDS);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setTicker(FALLBACK_TICKER);
+          setCards(FALLBACK_CARDS);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
 
     return () => {
       cancelled = true;
     };
   }, []);
+
+  if (loading) {
+    return (
+      <section className="relative overflow-hidden py-16" style={{ backgroundColor: "var(--bg-sage-light)" }}>
+        <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
+        <div className="container relative z-10 mx-auto space-y-6 px-4 md:px-6">
+          <div className="h-10 w-full bg-emerald-950/10 rounded-full animate-pulse" />
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="h-64 bg-white/60 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const mode = layout?.layout ?? "one_large_two_small";
   const useClassicTrio =

@@ -43,3 +43,11 @@ export function useHomepageSettings() {
     staleTime: 15 * 60 * 1000,
   });
 }
+
+export function useCoupons() {
+  return useQuery({
+    queryKey: queryKeys.coupons,
+    queryFn: () => shopApi.coupons(),
+    staleTime: 5 * 60 * 1000,
+  });
+}

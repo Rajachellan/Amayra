@@ -120,7 +120,8 @@ function lookbooksToSliders(lookbooks: LookbookDoc[]): Slider[] {
 }
 
 export const PreviewBanner = () => {
-  const [sliders, setSliders] = useState<Slider[]>(FALLBACK_SLIDERS);
+  const [sliders, setSliders] = useState<Slider[]>([]);
+  const [loading, setLoading] = useState(true);
   const [fromCms, setFromCms] = useState(false);
   const [current, setCurrent] = useState(0);
   const [activeProduct, setActiveProduct] = useState<Product | null>(null);
@@ -147,6 +148,9 @@ export const PreviewBanner = () => {
           setSliders(FALLBACK_SLIDERS);
           setFromCms(false);
         }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
@@ -163,6 +167,18 @@ export const PreviewBanner = () => {
       setActiveProduct(null);
     }
   }, [current, sliders]);
+
+  if (loading) {
+    return (
+      <section className="py-24 bg-[#0B2516] relative overflow-hidden">
+        <div className="container mx-auto px-6">
+          <div className="h-96 w-full bg-emerald-900/40 rounded-3xl animate-pulse flex items-center justify-center">
+            <div className="h-10 w-48 bg-emerald-800/40 rounded-full animate-pulse" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   const slide = sliders[current] ?? sliders[0];
 

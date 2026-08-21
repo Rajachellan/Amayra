@@ -17,10 +17,20 @@ export const ProductSpotlight = () => {
 
   if (!product) {
     return (
-      <section className="py-32 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
+      <section className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
         <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
-        <div className="container relative z-10 mx-auto px-6 text-center text-gray-400 font-serif">
-          Loading atelier spotlight…
+        <div className="container relative z-10 mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-5 space-y-6">
+              <div className="h-4 w-36 bg-yellow-600/20 rounded-full animate-pulse" />
+              <div className="h-10 w-72 bg-stone-900/20 rounded-xl animate-pulse" />
+              <div className="h-20 w-full bg-stone-900/10 rounded-xl animate-pulse" />
+              <div className="h-12 w-48 bg-[#0B2516]/20 rounded-full animate-pulse" />
+            </div>
+            <div className="lg:col-span-7">
+              <div className="aspect-[4/5] max-w-lg mx-auto bg-stone-200/60 rounded-3xl animate-pulse" />
+            </div>
+          </div>
         </div>
       </section>
     );
@@ -117,7 +127,7 @@ export const ProductSpotlight = () => {
   transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
   className="relative aspect-square w-full max-w-[600px] mx-auto rounded-[40px] overflow-hidden group shadow-2xl"
 >
-  <Link href={href}>
+  <Link href={href} className="relative block w-full h-full">
     <Image
       src={img}
       alt={product.name}

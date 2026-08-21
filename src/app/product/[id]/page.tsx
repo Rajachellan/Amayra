@@ -12,6 +12,7 @@ import { resolveMediaUrl } from "@/lib/apiBase";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useProductDetail } from "@/hooks/useProductDetail";
+import { useCoupons } from "@/hooks/useCatalogMetadata";
 import { ProductImageGallery } from "@/components/products/ProductImageGallery";
 import { RelatedProductsRow } from "@/components/products/RelatedProductsRow";
 import {
@@ -64,12 +65,20 @@ function ProductDetail() {
   const router = useRouter();
   const slug = params.id as string;
   const { product, images, relatedProducts, isLoading } = useProductDetail(slug);
+  const { data: publicCoupons = [] } = useCoupons();
   const { addToCartWithQuantity, buyNow } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [activeImg, setActiveImg] = useState(0);
   const [copiedCode, setCopiedCode] = useState(false);
+
+  const activeCoupon = publicCoupons[0];
+  const couponCode = activeCoupon?.code || "WELCOME5";
+  const couponDiscountText = activeCoupon
+    ? `${activeCoupon.discountValue}${activeCoupon.discountType === "percentage" ? "% OFF" : " OFF"}`
+    : "5% OFF";
+  const couponTitleText = activeCoupon?.title || activeCoupon?.description || "Special offer available at checkout";
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
     description: true,
     features: false,
@@ -289,7 +298,7 @@ function ProductDetail() {
                 <span className="w-full text-xs text-neutral-500 font-medium">Incl. of all taxes</span>
               </div>
 
-              {/* Festive Offer Card */}
+              {/* Dynamic Festive / Special Offer Card */}
               <div className="mb-8 overflow-hidden rounded-xl border border-amber-200/80 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9EE] to-[#FFF6E5] p-4 shadow-sm">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
@@ -299,27 +308,27 @@ function ProductDetail() {
                     <div>
                       <div className="flex items-center gap-2">
                         <span className="text-[10px] font-bold uppercase tracking-widest text-[#a8895c]">
-                          FESTIVE OFFER
+                          SPECIAL OFFER
                         </span>
                         <span className="rounded-full bg-[#1a3d2f] px-2 py-0.5 text-[9px] font-bold text-white">
-                          15% OFF
+                          {couponDiscountText}
                         </span>
                       </div>
-                      <p className="text-xs font-semibold text-neutral-800">Celebrate Raksha Bandhan — Flat 15% off sitewide</p>
+                      <p className="text-xs font-semibold text-neutral-800">{couponTitleText}</p>
                     </div>
                   </div>
                   <button
                     type="button"
                     onClick={() => {
-                      void navigator.clipboard.writeText("RAKHI15");
+                      void navigator.clipboard.writeText(couponCode);
                       setCopiedCode(true);
-                      toast.success("Coupon code RAKHI15 copied!");
+                      toast.success(`Coupon code ${couponCode} copied!`);
                       setTimeout(() => setCopiedCode(false), 2000);
                     }}
                     className="flex items-center gap-1.5 rounded-lg border border-[#c4a574] bg-white px-3 py-1.5 text-xs font-bold text-[#1a3d2f] shadow-sm transition hover:bg-[#faf6f0]"
                   >
                     {copiedCode ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-[#c4a574]" />}
-                    {copiedCode ? "COPIED" : "RAKHI15"}
+                    {copiedCode ? "COPIED" : couponCode}
                   </button>
                 </div>
               </div>

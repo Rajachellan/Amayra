@@ -285,7 +285,19 @@ export type HomepageSectionPublic = {
   items: unknown[];
 };
 
+export interface PublicCouponDoc {
+  _id: string;
+  code: string;
+  title?: string;
+  description?: string;
+  discountType: "percentage" | "fixed";
+  discountValue: number;
+  minCartValue?: number;
+  maxDiscount?: number;
+}
+
 export const shopApi = {
+  coupons: () => fetchJson<PublicCouponDoc[]>("/coupons/public"),
   banners: () => fetchJson<BannerDoc[]>("/banners"),
   promotionalBanners: async () => {
     const data = await fetchJson<PromotionsPayload | PromotionalBannerDoc[]>("/promotional-banners");

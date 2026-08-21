@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { shopApi } from "@/lib/api/shop";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { resolveMediaUrl } from "@/lib/apiBase";
 
 type Slide = {
@@ -31,7 +32,8 @@ const FALLBACK_SLIDES: Slide[] = [
 ];
 
 export const Hero = () => {
-  const [slides, setSlides] = useState<Slide[]>(FALLBACK_SLIDES);
+  const [slides, setSlides] = useState<Slide[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -60,8 +62,14 @@ export const Hero = () => {
             link: b.link || b.redirectLink || "/category/all",
           }));
         if (mapped.length > 0) setSlides(mapped);
+        else setSlides(FALLBACK_SLIDES);
       })
-      .catch(() => { });
+      .catch(() => {
+        setSlides(FALLBACK_SLIDES);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const slideCount = slides.length;
@@ -91,6 +99,14 @@ export const Hero = () => {
   const displayImage = typeof rawImage === "string" && rawImage.trim() !== "" ? rawImage : "/images/hero-banner.jpg";
   const hasMultiple = slides.length > 1;
   const hasText = Boolean(slide.title || slide.tagline || slide.cta);
+
+  if (loading) {
+    return (
+      <section className="relative h-[100svh] min-h-[600px] w-full bg-stone-950 flex flex-col items-center justify-center">
+        <LoadingSpinner size="xl" color="gold" label="Loading Timeless Luxury…" />
+      </section>
+    );
+  }
 
   return (
     <section

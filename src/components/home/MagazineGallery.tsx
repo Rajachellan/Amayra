@@ -148,6 +148,7 @@ const MagazineCard = ({
 
 export const MagazineGallery = () => {
   const [articles, setArticles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     shopApi.blogs({ limit: 5 })
@@ -156,10 +157,14 @@ export const MagazineGallery = () => {
       })
       .catch((err) => {
         console.error("Failed to load magazine articles", err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
   const mergedArticles = useMemo(() => {
+    if (loading) return [];
     const list = [...articles];
     for (let i = list.length; i < 5; i++) {
       const fallback = IMAGES[i];
@@ -174,7 +179,7 @@ export const MagazineGallery = () => {
       });
     }
     return list.slice(0, 5);
-  }, [articles]);
+  }, [articles, loading]);
 
   const ArticleLinkWrapper = ({ article, children, className = "" }: { article: any; children: React.ReactNode; className?: string }) => {
     const isPdf = !!article.pdfUrl;
@@ -207,6 +212,24 @@ export const MagazineGallery = () => {
       </Link>
     );
   };
+
+  if (loading) {
+    return (
+      <section className="relative py-20 md:py-28 bg-[#FAF8F3] overflow-hidden border-t border-stone-200">
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 space-y-12">
+          <div className="text-center space-y-3 max-w-xl mx-auto">
+            <div className="h-4 w-32 bg-yellow-600/20 rounded-full mx-auto animate-pulse" />
+            <div className="h-10 w-64 bg-stone-300/50 rounded-xl mx-auto animate-pulse" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((n) => (
+              <div key={n} className="h-80 bg-stone-200/60 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative py-20 md:py-28 bg-[#FAF8F3] overflow-hidden border-t border-stone-200">

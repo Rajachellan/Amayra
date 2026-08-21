@@ -200,15 +200,14 @@ export const Navbar = () => {
           </AnimatePresence>
 
           {/* Left: Logo */}
-          <div className={`flex justify-start flex-shrink-0 pr-8 transition-transform duration-500 ${isScrolled ? "scale-160" : "scale-150"
-            }`}>
+          <div className="flex justify-start flex-shrink-0 pr-6 items-center">
             <Link href="/" className="relative group block">
               <Image
                 src="/images/Media__5_-removebg-preview.png"
                 alt="MaiRii Logo"
                 width={140}
-                height={70}
-                className={`object-contain transition-all rounded-full duration-500 `}
+                height={50}
+                className="h-10 md:h-12 w-auto object-contain transition-all duration-300"
                 priority
               />
             </Link>

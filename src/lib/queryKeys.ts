@@ -19,5 +19,6 @@ export const queryKeys = {
   occasions: {
     all: ["occasions"] as const,
   },
+  coupons: ["coupons"] as const,
   homepage: ["homepage", "settings"] as const,
 };
