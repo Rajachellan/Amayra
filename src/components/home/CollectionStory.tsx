@@ -90,7 +90,7 @@ export const CollectionStory = () => {
     style={{ color: "#6B5E51" }}
   >
     <p>
-      More precious than the inheritance of gold are the virtues you
+      More precious than the inheritance of jewels are the virtues you
       inherited from the women who shaped who you are.
     </p>
 
