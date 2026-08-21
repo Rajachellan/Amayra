@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { shopApi } from "@/lib/api/shop";
@@ -419,28 +420,51 @@ function ProductDetail() {
                 </div>
               )}
 
-              {/* Quantity + CTAs */}
-              <div className="mb-10 space-y-4">
-                <div className="flex w-full max-w-md items-stretch border border-neutral-200 bg-white">
+              {/* Quantity + CTAs (Full width to eliminate right side empty whitespace) */}
+              <div className="mb-10 space-y-4 w-full">
+                <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full">
+                  {/* Quantity selector */}
+                  <div className="flex shrink-0 w-full sm:w-36 items-stretch border border-neutral-200 bg-white rounded-xl overflow-hidden shadow-xs min-h-[48px]">
+                    <button
+                      type="button"
+                      aria-label="Decrease quantity"
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="flex w-11 items-center justify-center text-neutral-600 transition hover:bg-neutral-50 cursor-pointer"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </button>
+                    <span className="flex flex-1 items-center justify-center border-x border-neutral-200 text-sm font-semibold text-neutral-900">
+                      {quantity}
+                    </span>
+                    <button
+                      type="button"
+                      aria-label="Increase quantity"
+                      disabled={!inStock || quantity >= maxQty}
+                      onClick={() => setQuantity((q) => Math.min(maxQty, q + 1))}
+                      className="flex w-11 items-center justify-center text-neutral-600 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40 cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  </div>
+
+                  {/* Add to Cart Button */}
                   <button
                     type="button"
-                    aria-label="Decrease quantity"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="flex w-14 items-center justify-center text-neutral-600 transition hover:bg-neutral-50"
+                    onClick={handleAddToCart}
+                    disabled={!inStock}
+                    className="flex-1 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400 min-h-[48px] flex items-center justify-center text-center"
                   >
-                    <Minus className="h-4 w-4" />
+                    Add to Cart
                   </button>
-                  <span className="flex flex-1 items-center justify-center border-x border-neutral-200 text-lg font-semibold text-neutral-900">
-                    {quantity}
-                  </span>
+
+                  {/* Buy It Now Button */}
                   <button
                     type="button"
-                    aria-label="Increase quantity"
-                    disabled={!inStock || quantity >= maxQty}
-                    onClick={() => setQuantity((q) => Math.min(maxQty, q + 1))}
-                    className="flex w-14 items-center justify-center text-neutral-600 transition hover:bg-neutral-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    onClick={handleBuyNow}
+                    disabled={!inStock}
+                    className="flex-1 rounded-xl bg-[#d4af37] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400 min-h-[48px] flex items-center justify-center text-center"
                   >
-                    <Plus className="h-4 w-4" />
+                    Buy It Now
                   </button>
                 </div>
 
@@ -449,59 +473,54 @@ function ProductDetail() {
                     Out of stock — update stock in admin or choose another piece.
                   </p>
                 )}
-
-                <div className="flex max-w-md flex-col gap-3 sm:flex-row">
-                  <button
-                    type="button"
-                    onClick={handleAddToCart}
-                    disabled={!inStock}
-                    className="flex-1 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-4 text-[11px] font-bold uppercase tracking-[0.25em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400"
-                  >
-                    Add to Cart
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleBuyNow}
-                    disabled={!inStock}
-                    className="flex-1 rounded-xl bg-[#d4af37] py-4 text-[11px] font-bold uppercase tracking-[0.25em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400"
-                  >
-                    Buy It Now
-                  </button>
-                </div>
               </div>
 
-              {/* 4 Brand Trust Badges */}
-              <div className="my-8 grid grid-cols-2 gap-4 border-y border-neutral-200/80 py-6 sm:grid-cols-4">
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
-                    <Sparkles className="h-5 w-5" strokeWidth={1.5} />
-                  </div>
-                  <span className="text-xs font-semibold text-neutral-900">Handcrafted</span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">artisanal</span>
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
-                    <Award className="h-5 w-5" strokeWidth={1.5} />
-                  </div>
-                  <span className="text-xs font-semibold text-neutral-900">Made in India</span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">heritage</span>
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
-                    <ShieldCheck className="h-5 w-5" strokeWidth={1.5} />
-                  </div>
-                  <span className="text-xs font-semibold text-neutral-900">Premium Quality</span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">finest</span>
-                </div>
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF6F0] text-[#a8895c] border border-[#e8dfd0]">
-                    <Globe2 className="h-5 w-5" strokeWidth={1.5} />
-                  </div>
-                  <span className="text-xs font-semibold text-neutral-900">Worldwide Shipping</span>
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-neutral-400">shipping</span>
+              {/* 5 Homepage Highlight Category Icons */}
+              <div className="my-8 rounded-2xl bg-[#f6ead9]/60 p-4 sm:p-5 border border-[#e8d7c3]/80 shadow-xs">
+                <div className="grid grid-cols-2 gap-y-6 gap-x-2 sm:grid-cols-5 items-center justify-center">
+                  {[
+                    {
+                      image: "/aimated-icons/gate.png",
+                      title: "HANDCRAFTED IN INDIA",
+                    },
+                    {
+                      image: "/aimated-icons/box.png",
+                      title: "PREMIUM PACKAGING",
+                    },
+                    {
+                      image: "/aimated-icons/shield.png",
+                      title: "100% SECURE PAYMENTS",
+                    },
+                    {
+                      image: "/aimated-icons/fast-delivery.png",
+                      title: "PAN INDIA DELIVERY",
+                    },
+                    {
+                      image: "/aimated-icons/heart.png",
+                      title: "CURATED WITH LOVE",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.title}
+                      className="group flex flex-col items-center justify-center text-center px-1"
+                    >
+                      <div className="relative mb-2 flex h-12 w-12 items-center justify-center sm:h-14 sm:w-14">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          unoptimized
+                          className="object-contain transition-transform duration-500 group-hover:scale-110"
+                          sizes="56px"
+                        />
+                      </div>
+                      <h4 className="text-[9px] sm:text-[10px] font-serif font-bold uppercase leading-snug tracking-[0.08em] text-[#1C1917] group-hover:text-[#2E5A44] transition-colors">
+                        {item.title}
+                      </h4>
+                    </div>
+                  ))}
                 </div>
               </div>
-
               {/* Accordions */}
               <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200">
                 {/* 1. Description Accordion */}

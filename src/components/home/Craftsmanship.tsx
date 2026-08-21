@@ -43,7 +43,7 @@ export const Craftsmanship = () => {
               transition={{ delay: 0.5 }}
               className="absolute bottom-10 left-10 right-10 p-6 rounded-2xl backdrop-blur-md bg-white/10 border border-white/20 shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
             >
-              <p className="text-white text-sm tracking-widest uppercase font-medium leading-relaxed">
+              <p className="text-white text-center text-sm tracking-widest uppercase font-medium leading-relaxed">
              CRAFTED WITH PASSION CURATED WITH LOVE.
               </p>
             </motion.div>

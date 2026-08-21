@@ -90,7 +90,7 @@ export const Footer = () => {
               <Link href="/" className="relative group block">
                 <Image
                   src="/images/Media__5_-removebg-preview.png"
-                  alt="Mairii Logo"
+                  alt="MaiRii Logo"
                   width={180}
                   height={70}
                   className={`object-contain py-5 transition-all rounded-full duration-500 `}
@@ -101,7 +101,7 @@ export const Footer = () => {
             <p
               className="text-xs leading-[1.9] mb-8 text-white/70"
             >
-            Crafting stories of legacy & elegance that speak to the soul.
+              Crafting stories of legacy & elegance that speak to the soul.
             </p>
 
             <div className="flex space-x-5">
@@ -266,7 +266,7 @@ export const Footer = () => {
               <li className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-brand-gold" />
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+919566571655"
                   className="text-white/70 hover:text-brand-gold transition-colors"
                 >
                   +91 9566571655

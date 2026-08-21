@@ -47,7 +47,7 @@ export const Collections = () => {
           <h3 className="text-emerald-dark font-serif text-4xl md:text-5xl lg:text-6xl mb-8">
             The Signature Collections
           </h3>
-          <div className="w-32 h-[1px] bg-brand-gold/30 mx-auto" />
+          {/* <div className="w-32 h-[1px] bg-brand-gold/30 mx-auto" /> */}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

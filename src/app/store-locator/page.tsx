@@ -12,9 +12,9 @@ const StoreLocator = () => {
   const stores = [
     {
       city: "Mumbai",
-      name: "Mairii Flagship Atelier",
+      name: "MaiRii Flagship Atelier",
       address: "123 Diamond Avenue, Jewellery Park, Mumbai, MH – 400001",
-      phone: "+91 98765 43210",
+      phone: "+91 9566571655",
       hours: "Mon - Sat: 11:00 AM - 8:00 PM",
       image: "/images/luxury/neckles.jpg"
     },
@@ -40,7 +40,7 @@ const StoreLocator = () => {
     <main className="min-h-screen bg-[#FDFBF9]">
       <Navbar />
 
-      <PageBanner 
+      <PageBanner
         title="Our Boutiques"
         subtitle="Visit Us"
         image="/images/luxury/pexels-nirav-jani-1955297-20736197.jpg"
@@ -50,21 +50,21 @@ const StoreLocator = () => {
       <section className="py-20 container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
           <div className="max-w-2xl">
-          
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center gap-4 text-xs tracking-widest uppercase text-foreground/50"
-          >
-            <span className="w-8 h-px bg-foreground/20" />
-            <span>3 Global Locations</span>
-          </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="flex items-center gap-4 text-xs tracking-widest uppercase text-foreground/50"
+            >
+              <span className="w-8 h-px bg-foreground/20" />
+              <span>3 Global Locations</span>
+            </motion.div>
+          </div>
         </div>
-      </div>
 
         {/* Mock Map / Hero Image */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4, duration: 1 }}
@@ -86,7 +86,7 @@ const StoreLocator = () => {
         {/* Store List */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24">
           {stores.map((store, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +107,7 @@ const StoreLocator = () => {
               </div>
 
               <h3 className="text-xl font-serif mb-6 group-hover:text-champagne transition-colors">{store.name}</h3>
-              
+
               <div className="space-y-4 mb-8">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-champagne shrink-0 mt-0.5" />
@@ -136,9 +136,9 @@ const StoreLocator = () => {
       <section className="py-24 bg-white text-center border-t border-foreground/5">
         <div className="container mx-auto px-6">
           <span className="text-[10px] tracking-[0.4em] uppercase text-champagne font-bold mb-4 block">Personalized Service</span>
-          <h2 className="text-3xl md:text-5xl font-serif mb-8 italic">Experience Mairii in person</h2>
+          <h2 className="text-3xl md:text-5xl font-serif mb-8 italic">Experience MaiRii in person</h2>
           <p className="text-foreground/50 max-w-xl mx-auto text-sm leading-relaxed mb-10">
-            Book a private appointment at any of our boutiques for a curated 
+            Book a private appointment at any of our boutiques for a curated
             consultation with our jewellery experts.
           </p>
           <button className="px-12 py-4 bg-champagne text-white text-[10px] uppercase tracking-[0.3em] font-bold hover:shadow-xl hover:shadow-champagne/20 transition-all duration-300">

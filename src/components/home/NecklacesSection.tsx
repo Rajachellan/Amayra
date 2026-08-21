@@ -74,7 +74,6 @@ export const NecklacesSection = () => {
             >
               Necklaces
             </motion.h2>
-            <div className="w-24 h-[1px] bg-[#c9a84c]/40 mt-4 mx-auto md:mx-0" />
           </div>
         </div>
 

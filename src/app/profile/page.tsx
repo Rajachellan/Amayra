@@ -103,11 +103,11 @@ export default function ProfilePage() {
 
   const initials = user?.name
     ? user.name
-        .split(/\s+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((s) => s[0]?.toUpperCase())
-        .join("")
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((s) => s[0]?.toUpperCase())
+      .join("")
     : "";
 
   if (authLoading || !user) {
@@ -117,7 +117,7 @@ export default function ProfilePage() {
         <div className="flex-grow flex flex-col items-center justify-center pt-32 space-y-4">
           <Loader2 className="w-10 h-10 animate-spin text-[#c9a84c]" />
           <span className="text-xs uppercase tracking-[0.25em] text-stone-400 font-medium">
-            Loading your Mairii Privé profile…
+            Loading your MaiRii Privé profile…
           </span>
         </div>
       </main>
@@ -131,13 +131,13 @@ export default function ProfilePage() {
       {/* Header Banner - Luxury Dark Emerald Section */}
       <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden bg-gradient-to-b from-[#091F13] via-[#0B2516] to-[#0D2E1B] text-white border-b border-[#c9a84c]/20">
         <BotanicalDecoration className="text-[#c9a84c]" opacity={0.05} />
-        
+
         {/* Subtle Ambient Radial Glow */}
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#c9a84c]/10 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            
+
             {/* User Identity Info */}
             <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-6">
               <div className="relative group">
@@ -166,7 +166,7 @@ export default function ProfilePage() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c9a84c]/15 border border-[#c9a84c]/30 backdrop-blur-sm">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#c9a84c]" />
                   <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#e5ca78]">
-                    Mairii Privé Concierge
+                    MaiRii Privé Concierge
                   </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-wide leading-tight">
@@ -216,11 +216,11 @@ export default function ProfilePage() {
       <section className="flex-grow py-10 md:py-16 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
-            
+
             {/* Sidebar Navigation (4 cols) */}
             <aside className="lg:col-span-4 xl:col-span-3 space-y-6 lg:sticky lg:top-28">
               <div className="bg-white rounded-3xl p-6 border border-stone-200/80 shadow-xl shadow-stone-200/40 space-y-6">
-                
+
                 <div className="pb-5 border-b border-stone-100 flex items-center justify-between">
                   <div>
                     <span className="text-[9px] font-bold tracking-[0.25em] uppercase text-stone-400 block mb-0.5">
@@ -235,11 +235,10 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("wishlist")}
-                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${
-                      activeTab === "wishlist"
+                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${activeTab === "wishlist"
                         ? "bg-[#0B2516] text-white shadow-lg shadow-[#0B2516]/20"
                         : "text-stone-700 hover:bg-stone-50 hover:text-[#0B2516]"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-xl transition-colors ${activeTab === "wishlist" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600 group-hover:bg-[#c9a84c]/20 group-hover:text-[#0B2516]"}`}>
@@ -247,9 +246,8 @@ export default function ProfilePage() {
                       </div>
                       <span className="font-semibold">My Wishlist</span>
                     </div>
-                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${
-                      activeTab === "wishlist" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600"
-                    }`}>
+                    <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold ${activeTab === "wishlist" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600"
+                      }`}>
                       {wishlist.length}
                     </span>
                   </button>
@@ -257,11 +255,10 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("orders")}
-                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${
-                      activeTab === "orders"
+                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${activeTab === "orders"
                         ? "bg-[#0B2516] text-white shadow-lg shadow-[#0B2516]/20"
                         : "text-stone-700 hover:bg-stone-50 hover:text-[#0B2516]"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-xl transition-colors ${activeTab === "orders" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600 group-hover:bg-[#c9a84c]/20 group-hover:text-[#0B2516]"}`}>
@@ -275,11 +272,10 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("profile")}
-                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${
-                      activeTab === "profile"
+                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${activeTab === "profile"
                         ? "bg-[#0B2516] text-white shadow-lg shadow-[#0B2516]/20"
                         : "text-stone-700 hover:bg-stone-50 hover:text-[#0B2516]"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-xl transition-colors ${activeTab === "profile" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600 group-hover:bg-[#c9a84c]/20 group-hover:text-[#0B2516]"}`}>
@@ -293,11 +289,10 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setActiveTab("concierge")}
-                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${
-                      activeTab === "concierge"
+                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${activeTab === "concierge"
                         ? "bg-[#0B2516] text-white shadow-lg shadow-[#0B2516]/20"
                         : "text-stone-700 hover:bg-stone-50 hover:text-[#0B2516]"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <div className={`p-2 rounded-xl transition-colors ${activeTab === "concierge" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600 group-hover:bg-[#c9a84c]/20 group-hover:text-[#0B2516]"}`}>
@@ -353,7 +348,7 @@ export default function ProfilePage() {
             <div className="lg:col-span-8 xl:col-span-9">
               <div className="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200/80 shadow-xl shadow-stone-200/40 min-h-[600px]">
                 <AnimatePresence mode="wait">
-                  
+
                   {/* TAB 1: Wishlist */}
                   {activeTab === "wishlist" && (
                     <motion.div
@@ -444,7 +439,7 @@ export default function ProfilePage() {
                           </div>
                           <h3 className="font-serif text-2xl text-stone-900">No Orders Yet</h3>
                           <p className="text-stone-500 text-xs tracking-wider uppercase leading-relaxed">
-                            You haven't placed any orders with us yet. Begin your journey with Mairii today.
+                            You haven't placed any orders with us yet. Begin your journey with MaiRii today.
                           </p>
                           <div className="pt-2">
                             <Link href="/category/all">
@@ -465,7 +460,7 @@ export default function ProfilePage() {
                                 className="block p-6 rounded-2xl border border-stone-200/80 hover:border-[#c9a84c]/60 hover:shadow-lg transition-all duration-300 bg-stone-50/40 hover:bg-white group"
                               >
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                  
+
                                   <div className="flex items-center gap-5 min-w-0">
                                     <div className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
                                       {thumb ? (
@@ -564,7 +559,7 @@ export default function ProfilePage() {
                             </p>
                           </div>
                           <a
-                            href="https://wa.me/919876543210"
+                            href="https://wa.me/919566571655"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#0B2516] hover:text-[#c9a84c] transition-colors"

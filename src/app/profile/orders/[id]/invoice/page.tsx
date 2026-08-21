@@ -249,7 +249,7 @@ export default function InvoicePage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pb-8 border-b border-stone-100">
           <div>
             <h1 className="font-serif text-3xl font-bold tracking-wider text-[#0B2516]">
-              Mairii <span className="text-[#c9a84c] font-light">Jewels</span>
+              MaiRii <span className="text-[#c9a84c] font-light">Jewels</span>
             </h1>
             <p className="text-[10px] text-stone-400 uppercase tracking-widest font-semibold mt-1">
               Pure Luxury. Timeless Craftsmanship.

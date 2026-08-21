@@ -29,9 +29,9 @@ export const BrandStory = () => {
               Rooted in Love, <br />
               <span className="italic font-light text-[#C4A064]">Crafted for Generations</span>
             </h2>
-            <div className="w-24 h-[1px] bg-[#C4A064] mx-auto mb-6" />
+            {/* <div className="w-24 h-[1px] bg-[#C4A064] mx-auto mb-6" /> */}
             <p className="text-xl md:text-2xl font-serif italic text-[#3D3934]">
-              &ldquo;Every woman carries a story in her jewellery box — Mairii begins with ours.&rdquo;
+              &ldquo;Every woman carries a story in her jewellery box — MaiRii begins with ours.&rdquo;
             </p>
           </motion.div>
         </div>
@@ -50,7 +50,7 @@ export const BrandStory = () => {
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-2xl">
                 <Image
                   src="/images/pexels-dandu-16612609.jpg"
-                  alt="Mairii Heritage & Bangles"
+                  alt="MaiRii Heritage & Bangles"
                   fill
                   className="object-cover transition-transform duration-1000 hover:scale-105"
                 />
@@ -87,7 +87,7 @@ export const BrandStory = () => {
               </p>
 
               <p>
-                Mairii isn&apos;t just jewellery. It&apos;s the ritual of getting ready, the small joy of catching your reflection and loving yourself.
+                MaiRii isn&apos;t just jewellery. It&apos;s the ritual of getting ready, the small joy of catching your reflection and loving yourself.
               </p>
 
               <p>
@@ -98,7 +98,7 @@ export const BrandStory = () => {
                 What started as one woman&apos;s love for her mother is now an invitation to everyone: come, enjoy a little of that magic for yourself.
               </p>
                <p className="text-xl text-[#2B2B2B] font-normal leading-relaxed border-l-2 border-[#C4A064] pl-6 italic">
-              Because at Mairii, we celebrate our legacy along with the expression of our unique identity.
+              Because at MaiRii, we celebrate our legacy along with the expression of our unique identity.
               </p>
             </motion.div>
 

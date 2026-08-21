@@ -16,11 +16,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "../../../assets/preview_banner/inner-banner-2.png";
+import bridalBanner from "../../../assets/preview_banner/inner-banner-22.png";
 import necklaceBanner from "@/assets/neckles.jpg";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
-import bannerImage from "../../../assets/preview_banner/inner-banner-1.png";
+import bannerImage from "../../../assets/preview_banner/inner-banner-11.png";
 import ringsImg from "@/assets/pexels-the-glorious-studio-3584518-10361481 (1).jpg";
 import nosePinImg from "@/assets/pexels-ankunijjar-31772512.jpg";
 import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.jpg";
@@ -599,13 +599,13 @@ function CategoryContent() {
     <>
       <Navbar />
 
-      <section className="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
+      <section className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
         {/* Background Image Carousel - 2 Default Banner Slides auto-scrolling one by one */}
         <div className="absolute inset-0 z-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentBannerIndex}
-              initial={{ opacity: 0, scale: 1.05 }}
+              initial={{ opacity: 0, scale: 1.03 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1.2, ease: "easeInOut" }}
@@ -619,56 +619,11 @@ function CategoryContent() {
                 }
                 alt="Collection Banner Slide"
                 fill
-                className="object-cover object-[center_35%] brightness-[0.92]"
+                className="object-cover object-[center_35%] brightness-100"
                 priority
               />
             </motion.div>
           </AnimatePresence>
-        </div>
-
-
-        {/* Content */}
-        <div className="container mx-auto px-6 relative z-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="max-w-3xl mx-auto space-y-5"
-          >
-            {/* Tag Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C4A064]/25 border border-[#C4A064]/40 backdrop-blur-md shadow-md">
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span className="text-amber-300 uppercase tracking-[0.4em] text-[10px] font-bold">
-                The MaiRii Boutique
-              </span>
-            </div>
-
-            {/* Category / Collection Title */}
-            <h1 className="text-4xl sm:text-6xl md:text-7xl font-serif text-white tracking-tight leading-[1.1] capitalize drop-shadow-[0_4px_16px_rgba(0,0,0,0.8)]">
-              {collectionQuery
-                ? collectionQuery.replace(/-/g, " ")
-                : subQuery
-                  ? subQuery.replace(/-/g, " ")
-                  : title === "all"
-                    ? "All Jewellery"
-                    : title}
-            </h1>
-
-            {/* Breadcrumb Navigation */}
-            <nav className="flex items-center justify-center space-x-3 text-stone-200 text-[11px] uppercase tracking-[0.3em] font-serif pt-2 drop-shadow-md">
-              <Link href="/" className="hover:text-amber-300 transition-colors duration-300">
-                Home
-              </Link>
-              <span className="text-amber-300/70">/</span>
-              <Link href="/category/all" className="hover:text-amber-300 transition-colors duration-300">
-                Boutique
-              </Link>
-              <span className="text-amber-300/70">/</span>
-              <span className="text-amber-300 font-bold tracking-[0.35em]">
-                {collectionQuery || categorySlug}
-              </span>
-            </nav>
-          </motion.div>
         </div>
 
         {/* 2-Slide Auto-Scroll Pagination Indicators */}

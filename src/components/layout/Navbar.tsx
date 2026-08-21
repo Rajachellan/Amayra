@@ -205,7 +205,7 @@ export const Navbar = () => {
             <Link href="/" className="relative group block">
               <Image
                 src="/images/Media__5_-removebg-preview.png"
-                alt="Mairii Logo"
+                alt="MaiRii Logo"
                 width={140}
                 height={70}
                 className={`object-contain transition-all rounded-full duration-500 `}

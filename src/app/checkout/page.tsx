@@ -304,7 +304,7 @@ export default function CheckoutPage() {
           amount: checkoutRes.amount,
           currency: checkoutRes.currency ?? "INR",
           order_id: checkoutRes.razorpayOrderId,
-          name: "Mairii",
+          name: "MaiRii",
           description: `Order ${checkoutRes.orderNumber}`,
           prefill: {
             email: user.email,

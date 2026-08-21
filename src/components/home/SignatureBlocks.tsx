@@ -68,7 +68,7 @@ export const SignatureBlocks = () => {
             <h3 className="text-emerald-dark font-serif text-3xl md:text-5xl lg:text-6xl">
               The Signature Collections
             </h3>
-            <div className="w-24 h-[1px] bg-brand-gold/40 mt-4 mx-auto md:mx-0" />
+            {/* <div className="w-24 h-[1px] bg-brand-gold/40 mt-4 mx-auto md:mx-0" /> */}
           </div>
 
           {/* Navigation Arrows (Shown when items > itemsToShow) */}

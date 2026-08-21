@@ -358,7 +358,7 @@ const ShippingReturns = () => {
             <a href="mailto:connect@mairiijewels.com" className="px-8 py-3 bg-champagne text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
               Email Support
             </a>
-            <a href="tel:+919876543210" className="px-8 py-3 border border-white/20 text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
+            <a href="tel:+919566571655" className="px-8 py-3 border border-white/20 text-white text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white hover:text-foreground transition-all duration-300">
               Call Us
             </a>
           </div>

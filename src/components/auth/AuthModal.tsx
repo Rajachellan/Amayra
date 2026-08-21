@@ -112,7 +112,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
           <div className="flex items-center justify-center gap-2 mb-4">
             <div className="w-8 h-px bg-amber-400/60" />
             <span className="text-amber-600 uppercase tracking-[0.4em] text-[10px] font-bold">
-              Mairii Atelier
+              MaiRii Atelier
             </span>
             <div className="w-8 h-px bg-amber-400/60" />
           </div>

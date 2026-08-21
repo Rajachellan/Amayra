@@ -33,7 +33,7 @@ export const Craftsmanship = () => {
           >
             {/* <span className="text-[10px] uppercase tracking-[0.5em] text-champagne mb-4 block">ion</span> */}
             <h2 className="text-4xl font-serif mb-6">Mastery in Every Detail</h2>
-            <div className="w-20 h-[1px] bg-champagne mx-auto mb-8" />
+            {/* <div className="w-20 h-[1px] bg-champagne mx-auto mb-8" /> */}
             <p className="text-foreground/60 font-light leading-relaxed">
               {"Artisans spend hundreds of hours on a single piece, ensuring that the balance is perfect and the soul of the craft is visible."}
             </p>

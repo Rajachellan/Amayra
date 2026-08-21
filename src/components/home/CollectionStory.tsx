@@ -83,17 +83,14 @@ export const CollectionStory = () => {
     </span>
   </h2>
 
-  <div
-    className="w-12 h-px mb-8"
-    style={{ background: "rgba(196,160,100,0.3)" }}
-  />
+ 
 
   <div
     className="space-y-6 font-sans text-sm leading-[1.9] tracking-wide"
     style={{ color: "#6B5E51" }}
   >
     <p>
-      More precious than the inheritance of gold are the virtues you
+      More precious than the inheritance of jewels are the virtues you
       inherited from the women who shaped who you are.
     </p>
 
@@ -128,19 +125,30 @@ export const CollectionStory = () => {
       Without ever asking for anything in return.
     </p>
 
-    <p>
-      <span
-        className="font-serif text-xl italic"
-        style={{ color: "#C4A064" }}
-      >
-        Mairii
-      </span>{" "}
+   <div className="grid grid-cols-[100px_1fr] items-center">
+  {/* Image */}
+  <div className="relative flex-shrink-0">
+    <Image
+      src="/images/Mairii logo.png"
+      alt="MaiRii"
+      width={100}
+      height={100}
+      className="object-contain"
+    />
+  </div>
+
+  {/* Text */}
+  <div className="flex items-center">
+    <p className="text-lg leading-relaxed ml-2">
+      
       is a celebration of her.
     </p>
+  </div>
+</div>
 
     <p>
       Every piece is inspired by the women whose stories live quietly
-      within us, and designed for the woman we are still becoming.
+      within us and designed for the woman we are still becoming.
     </p>
   </div>
 </motion.div>
