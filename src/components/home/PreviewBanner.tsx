@@ -66,7 +66,7 @@ function lookbooksToSliders(lookbooks: LookbookDoc[]): Slider[] {
 
     if (gallery.length) {
       for (const img of gallery) {
-        const srcUrl = img.imageUrl || img.desktopImageUrl || img.mobileImageUrl;
+        const srcUrl = img.imageUrl || (img as any).desktopImageUrl || (img as any).mobileImageUrl;
         if (!srcUrl) continue;
         const dots: Dot[] = (img.hotspots ?? [])
           .map((h, i) => {

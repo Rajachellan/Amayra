@@ -11,6 +11,7 @@ import { mapDetailToProduct, mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useProductDetail } from "@/hooks/useProductDetail";
 import { ProductImageGallery } from "@/components/products/ProductImageGallery";
 import { RelatedProductsRow } from "@/components/products/RelatedProductsRow";
 import {
@@ -62,15 +63,12 @@ function ProductDetail() {
   const params = useParams();
   const router = useRouter();
   const slug = params.id as string;
+  const { product, images, relatedProducts, isLoading } = useProductDetail(slug);
   const { addToCartWithQuantity, buyNow } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [product, setProduct] = useState<Product | null>(null);
-  const [images, setImages] = useState<string[]>([]);
   const [activeImg, setActiveImg] = useState(0);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [copiedCode, setCopiedCode] = useState(false);
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
     description: true,
@@ -82,58 +80,6 @@ function ProductDetail() {
   const toggleAccordion = (key: string) => {
     setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
   };
-
-  useEffect(() => {
-    if (!slug) return;
-    let cancelled = false;
-    setLoading(true);
-    shopApi
-      .productBySlug(slug)
-      .then(async (detail) => {
-        if (cancelled) return;
-        const imgs = collectDetailImages(detail);
-        setImages(imgs.length ? imgs : [resolveMediaUrl(undefined)]);
-        setActiveImg(0);
-        setQuantity(1);
-        setProduct(mapDetailToProduct(detail));
-        const catSlug =
-          detail.category && typeof detail.category === "object" && "slug" in detail.category
-            ? (detail.category as { slug: string }).slug
-            : undefined;
-        
-        let relatedItems: any[] = [];
-        if (catSlug) {
-          try {
-            const r = await shopApi.products({ category: catSlug, limit: 8, page: 1 });
-            relatedItems = r.items.filter((i) => i.slug !== detail.slug);
-          } catch (e) {
-            console.error("Failed to fetch related products by category:", e);
-          }
-        }
-        
-        if (relatedItems.length === 0) {
-          try {
-            const r = await shopApi.products({ limit: 8, page: 1 });
-            relatedItems = r.items.filter((i) => i.slug !== detail.slug);
-          } catch (e) {
-            console.error("Failed to fetch fallback products:", e);
-          }
-        }
-
-        if (cancelled) return;
-        const mapped = relatedItems.slice(0, 6).map(mapListItemToProduct);
-        setRelatedProducts(mapped);
-      })
-      .catch(() => {
-        if (!cancelled) setProduct(null);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [slug]);
 
   const handleShare = useCallback(async () => {
     if (!product) return;
@@ -193,7 +139,7 @@ function ProductDetail() {
     router.push("/checkout");
   }, [buyNow, product, quantity, router, selectedSize]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex min-h-screen flex-col bg-[#faf9f7]">
         <Navbar />

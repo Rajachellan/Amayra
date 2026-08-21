@@ -132,35 +132,28 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const parsedCart = JSON.parse(savedCart) as CartItem[];
         setCart(parsedCart);
         if (parsedCart.length > 0) {
-          Promise.all(
-            parsedCart
-              .filter((item) => !!item.slug)
-              .map((item) =>
-                shopApi.productBySlug(item.slug!)
-                  .then((p: any) => ({
-                    id: item.id,
-                    stock: typeof p.stock === "number" ? p.stock : 0,
-                    price: typeof p.price === "number" ? p.price : item.price,
-                  }))
-                  .catch(() => null)
-              )
-          ).then((results) => {
-            setCart((prev) =>
-              prev.map((item) => {
-                const updated = results.find((r) => r && r.id === item.id);
-                if (updated) {
-                  const newQty = Math.min(item.quantity, updated.stock);
-                  return {
-                    ...item,
-                    stock: updated.stock,
-                    price: updated.price,
-                    quantity: updated.stock <= 0 ? 0 : Math.max(1, newQty),
-                  };
-                }
-                return item;
-              })
-            );
-          });
+          const itemsPayload = parsedCart.map((it) => ({ id: it.id, slug: it.slug }));
+          shopApi
+            .validateCartBatch(itemsPayload)
+            .then((results) => {
+              if (!Array.isArray(results)) return;
+              setCart((prev) =>
+                prev.map((item) => {
+                  const updated = results.find((r) => r.slug === item.slug || r.id === item.id);
+                  if (updated && updated.valid) {
+                    const newQty = Math.min(item.quantity, updated.stock);
+                    return {
+                      ...item,
+                      stock: updated.stock,
+                      price: updated.price,
+                      quantity: Math.max(1, newQty),
+                    };
+                  }
+                  return item;
+                })
+              );
+            })
+            .catch(() => {});
         }
       } catch (err) {
         console.error("Failed to load / sync cart:", err);

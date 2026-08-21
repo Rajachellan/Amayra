@@ -5,41 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
-import { shopApi } from "@/lib/api/shop";
-import { mapListItemToProduct } from "@/lib/mapProduct";
+import { useProducts } from "@/hooks/useProducts";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import type { Product } from "@/types";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const ProductSpotlight = () => {
   const { addToCart, openCart } = useCart();
-  const [product, setProduct] = useState<Product | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        let res = await shopApi.products({ masterpiece: "true", limit: 12, page: 1 });
-        let picked = res.items.find((item) => Array.isArray(item.images) && item.images.some((u) => !!u?.trim()));
-
-        // If masterpiece items are empty/misconfigured, gracefully fall back to Atelier items
-        // that actually have an image so the homepage doesn't show generic placeholders.
-        if (!picked) {
-          res = await shopApi.products({ section: "atelier", limit: 12, page: 1 });
-          picked = res.items.find((item) => Array.isArray(item.images) && item.images.some((u) => !!u?.trim()));
-        }
-
-        if (!picked) picked = res.items[0];
-        if (cancelled || !picked) return;
-        setProduct(mapListItemToProduct(picked));
-      } catch {
-        if (!cancelled) setProduct(null);
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { products } = useProducts({ masterpiece: "true", limit: 12 });
+  const product: Product | null = products[0] ?? null;
 
   if (!product) {
     return (

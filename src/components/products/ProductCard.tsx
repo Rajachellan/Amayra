@@ -7,25 +7,34 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Eye, X, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { usePrefetchProductDetail } from "@/hooks/useProductDetail";
 import { Product } from "@/types";
 
 interface ProductCardProps {
   product: Product;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const prefetchProduct = usePrefetchProductDetail();
   const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/1.jpg");
 
   const isFavorite = isInWishlist(product.id);
   const productHref = `/product/${product.slug ?? product.id}`;
+
+  const handleMouseEnter = () => {
+    if (product.slug) {
+      prefetchProduct(product.slug);
+    }
+  };
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
+      onMouseEnter={handleMouseEnter}
       className="group relative bg-white overflow-hidden transition-all duration-500 border border-gray-100 hover:border-champagne/40 hover:shadow-[0_15px_30px_rgba(230,211,163,0.15)] rounded-2xl flex flex-col justify-between"
     >
       {/* Badges */}
@@ -63,6 +72,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
         <Link
           href={productHref}
           title="View product details"
+          onMouseEnter={handleMouseEnter}
           className="p-2.5 bg-white/90 text-stone-700 rounded-full shadow-md backdrop-blur-md hover:bg-[#0B2516] hover:text-white transition-all duration-300"
         >
           <Eye className="w-3.5 h-3.5" />
@@ -72,6 +82,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       {/* Image Container - Direct link to dedicated product page */}
       <Link
         href={productHref}
+        onMouseEnter={handleMouseEnter}
         className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-stone-50"
       >
         <Image
@@ -93,7 +104,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <span className="text-[#c9a84c] text-[9px] uppercase tracking-[0.35em] block font-bold">
             {product.category}
           </span>
-          <Link href={productHref} className="block group/title w-full">
+          <Link href={productHref} onMouseEnter={handleMouseEnter} className="block group/title w-full">
             <h3 className="font-serif text-base text-stone-900 transition-colors duration-300 group-hover/title:text-[#c9a84c] truncate font-medium">
               {product.name}
             </h3>
@@ -135,4 +146,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       </div>
     </motion.div>
   );
-};
+});
+
+ProductCard.displayName = "ProductCard";

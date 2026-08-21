@@ -7,6 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
+import { useProducts } from "@/hooks/useProducts";
+import { useCategoriesTree, useCollections, useOccasions } from "@/hooks/useCatalogMetadata";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles } from "lucide-react";
@@ -127,11 +129,45 @@ function CategoryContent() {
     price: true,
   });
 
-  const [tree, setTree] = useState<CategoryTreeNode[]>([]);
-  const [collectionsList, setCollectionsList] = useState<{ name: string; slug: string }[]>([]);
-  const [occasionsList, setOccasionsList] = useState<{ name: string; slug: string }[]>([]);
-  const [rawProducts, setRawProducts] = useState<ReturnType<typeof mapListItemToProduct>[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: treeData = [] } = useCategoriesTree();
+  const { data: collectionsData = [] } = useCollections();
+  const { data: occasionsData = [] } = useOccasions();
+
+  const tree = treeData;
+  const collectionsList = useMemo(() => collectionsData.map((c) => ({ name: c.name, slug: c.slug })), [collectionsData]);
+  const occasionsList = useMemo(() => occasionsData.map((o) => ({ name: o.name, slug: o.slug })), [occasionsData]);
+
+  const sortParam =
+    sortBy === "Price: Low to High"
+      ? "price_asc"
+      : sortBy === "Price: High to Low"
+        ? "price_desc"
+        : sortBy === "Trending"
+          ? "trending"
+          : sortBy === "Bestsellers"
+            ? "bestseller"
+            : undefined;
+
+  const productQueryParams = useMemo(() => {
+    const q: Record<string, string | number | undefined> = {
+      page: 1,
+      limit: 100,
+      sort: sortParam,
+    };
+    if (categorySlug && categorySlug !== "all") {
+      q.category = categorySlug;
+    }
+    if (subQuery) {
+      q.subCategory = subQuery;
+    }
+    if (searchQuery.trim()) {
+      q.q = searchQuery.trim();
+    }
+    return q;
+  }, [categorySlug, subQuery, searchQuery, sortParam]);
+
+  const { products: rawProducts, isLoading: loading } = useProducts(productQueryParams);
+
   const [heroImage, setHeroImage] = useState<any>(silverBanner);
   const [title, setTitle] = useState(categorySlug);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -161,22 +197,6 @@ function CategoryContent() {
   };
 
   useEffect(() => {
-    shopApi.categoriesTree().then(setTree).catch(() => setTree([]));
-    shopApi
-      .collections()
-      .then((cols) => {
-        setCollectionsList(cols.map((c) => ({ name: c.name, slug: c.slug })));
-      })
-      .catch(() => setCollectionsList([]));
-    shopApi
-      .occasions()
-      .then((occs) => {
-        setOccasionsList(occs.map((o) => ({ name: o.name, slug: o.slug })));
-      })
-      .catch(() => setOccasionsList([]));
-  }, []);
-
-  useEffect(() => {
     const currentKey = (subQuery || categorySlug || "all").toLowerCase();
     const matchedBanner = CATEGORY_BANNERS[currentKey] || CATEGORY_BANNERS[categorySlug.toLowerCase()] || silverBanner;
 
@@ -193,55 +213,6 @@ function CategoryContent() {
       setTitle(categorySlug);
     }
   }, [tree, categorySlug, subQuery]);
-
-  useEffect(() => {
-    let cancelled = false;
-    setLoading(true);
-
-    const sortParam =
-      sortBy === "Price: Low to High"
-        ? "price_asc"
-        : sortBy === "Price: High to Low"
-          ? "price_desc"
-          : sortBy === "Trending"
-            ? "trending"
-            : sortBy === "Bestsellers"
-              ? "bestseller"
-              : undefined;
-
-    const q: Record<string, string | number | undefined> = {
-      page: 1,
-      limit: 100,
-      sort: sortParam,
-    };
-
-    if (categorySlug && categorySlug !== "all") {
-      q.category = categorySlug;
-    }
-    if (subQuery) {
-      q.subCategory = subQuery;
-    }
-    if (searchQuery.trim()) {
-      q.q = searchQuery.trim();
-    }
-
-    shopApi
-      .products(q)
-      .then((res) => {
-        if (cancelled) return;
-        setRawProducts(res.items.map(mapListItemToProduct));
-      })
-      .catch(() => {
-        if (!cancelled) setRawProducts([]);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [categorySlug, subQuery, sortBy, searchQuery]);
 
   // Compute counts for filter items based on raw products
   const counts = useMemo(() => {

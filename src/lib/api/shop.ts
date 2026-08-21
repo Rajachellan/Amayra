@@ -353,4 +353,13 @@ export const shopApi = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ items, couponCode }),
     }),
+  validateCartBatch: (items: Array<{ id?: string; slug?: string }>) =>
+    fetchJson<Array<{ id: string; slug: string; stock: number; price: number; valid: boolean }>>(
+      "/cart/validate-batch",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items }),
+      }
+    ),
 };

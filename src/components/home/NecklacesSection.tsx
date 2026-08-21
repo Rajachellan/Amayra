@@ -1,47 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { shopApi } from "@/lib/api/shop";
-import { mapListItemToProduct } from "@/lib/mapProduct";
+import { useProducts } from "@/hooks/useProducts";
 import { ProductCard } from "@/components/products/ProductCard";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import { Button } from "@/components/ui/Button";
-import type { Product } from "@/types";
 
 export const NecklacesSection = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        // Query backend for products under 'necklaces' category
-        let res = await shopApi.products({ category: "necklaces", limit: 100, page: 1 });
-        if (!res.items || res.items.length === 0) {
-          // Fallback check for singular 'necklace'
-          res = await shopApi.products({ category: "necklace", limit: 100, page: 1 });
-        }
-        if (!res.items || res.items.length === 0) {
-          // Additional fallback: search term 'necklace'
-          res = await shopApi.products({ search: "necklace", limit: 100, page: 1 });
-        }
-        if (!cancelled) {
-          setProducts(res.items.map(mapListItemToProduct));
-        }
-      } catch {
-        if (!cancelled) setProducts([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { products, isLoading: loading } = useProducts({ category: "necklaces", limit: 12 });
 
   if (!loading && products.length === 0) {
     return null;
