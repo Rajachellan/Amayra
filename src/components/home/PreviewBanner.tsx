@@ -66,7 +66,8 @@ function lookbooksToSliders(lookbooks: LookbookDoc[]): Slider[] {
 
     if (gallery.length) {
       for (const img of gallery) {
-        if (!img.imageUrl) continue;
+        const srcUrl = img.imageUrl || img.desktopImageUrl || img.mobileImageUrl;
+        if (!srcUrl) continue;
         const dots: Dot[] = (img.hotspots ?? [])
           .map((h, i) => {
             const p = productOf(h.product);
@@ -92,7 +93,7 @@ function lookbooksToSliders(lookbooks: LookbookDoc[]): Slider[] {
           id: img._id || `${lb._id}-${slides.length}`,
           title: img.title || lb.title,
           subtitle: lb.shortDescription || lb.description || "Shop the look",
-          mainImage: resolveMediaUrl(img.imageUrl || img.mobileImageUrl),
+          mainImage: resolveMediaUrl(srcUrl),
           dots,
         });
       }
