@@ -7,8 +7,25 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
-import { ArrowLeft, Loader2, Package, MapPin, CreditCard, ShieldCheck, CheckCircle2, Printer } from "lucide-react";
+import { ArrowLeft, Loader2, Package, MapPin, CreditCard, ShieldCheck, CheckCircle2, Printer, Upload, AlertCircle } from "lucide-react";
 import { OrderTrackingSection } from "@/components/orders/OrderTrackingSection";
+
+type ItemEligibility = {
+  productId: string;
+  sku?: string;
+  name: string;
+  orderedQuantity: number;
+  returnedQuantity: number;
+  exchangedQuantity: number;
+  lockedQuantity: number;
+  remainingEligibleQuantity: number;
+  returnEligible: boolean;
+  exchangeEligible: boolean;
+  returnWindowExpiresAt: string | null;
+  exchangeWindowExpiresAt: string | null;
+  futureReversePickupAllowed: boolean;
+  reason?: string;
+};
 
 type OrderDetail = {
   _id: string;
@@ -37,6 +54,8 @@ type OrderDetail = {
     product: string;
     name: string;
     slug: string;
+    sku?: string;
+    size?: string;
     quantity: number;
     unitPrice: number;
     lineTotal: number;
@@ -45,22 +64,45 @@ type OrderDetail = {
   payment?: { status?: string; razorpayPaymentId?: string; method?: string };
 };
 
+type ReasonOption = {
+  _id: string;
+  title: string;
+  code: string;
+  type: string;
+};
+
 export default function OrderDetailPage() {
   const router = useRouter();
   const params = useParams();
   const id = typeof params?.id === "string" ? params.id : "";
   const { user, loading: authLoading } = useAuth();
   const [order, setOrder] = useState<OrderDetail | null>(null);
+  const [eligibilities, setEligibilities] = useState<ItemEligibility[]>([]);
+  const [reasons, setReasons] = useState<ReasonOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
 
   const [isReturnModalOpen, setIsReturnModalOpen] = useState(false);
-  const [returnReason, setReturnReason] = useState("DONT_LIKE");
+  const [requestType, setRequestType] = useState<"RETURN" | "EXCHANGE">("RETURN");
+  const [returnReason, setReturnReason] = useState("");
   const [returnDesc, setReturnDesc] = useState("");
   const [selectedItems, setSelectedItems] = useState<Record<string, number>>({});
+  const [evidenceUrl, setEvidenceUrl] = useState("");
+  const [evidenceFiles, setEvidenceFiles] = useState<Array<{ fileUrl: string; fileType: "IMAGE" | "VIDEO" }>>([]);
   const [submittingReturn, setSubmittingReturn] = useState(false);
   const [returnErr, setReturnErr] = useState("");
   const [returnSuccess, setReturnSuccess] = useState(false);
+
+  // Exchange states
+  const [preferredSize, setPreferredSize] = useState("");
+  const [exchangeNotes, setExchangeNotes] = useState("");
+
+  // Bank/UPI details for COD
+  const [bankHolder, setBankHolder] = useState("");
+  const [bankAccNo, setBankAccNo] = useState("");
+  const [bankIfsc, setBankIfsc] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [upiId, setUpiId] = useState("");
 
   useEffect(() => {
     if (authLoading) return;
@@ -70,9 +112,16 @@ export default function OrderDetailPage() {
     }
     if (!id) return;
     setLoading(true);
-    api<OrderDetail>(`/orders/${encodeURIComponent(id)}`)
-      .then((o) => {
+
+    Promise.all([
+      api<OrderDetail>(`/orders/${encodeURIComponent(id)}`),
+      api<{ orderNumber: string; items: ItemEligibility[] }>(`/returns/eligibility/${encodeURIComponent(id)}`).catch(() => null),
+      api<{ items: ReasonOption[] }>("/returns/reasons").catch(() => null),
+    ])
+      .then(([o, elRes, rRes]) => {
         setOrder(o);
+        if (elRes?.items) setEligibilities(elRes.items);
+        if (rRes?.items) setReasons(rRes.items);
         setErr("");
       })
       .catch((e) => setErr(e instanceof Error ? e.message : "Could not load order"))
@@ -83,13 +132,29 @@ export default function OrderDetailPage() {
     if (order) {
       const initial: Record<string, number> = {};
       order.items.forEach((item) => {
-        if (item.product) {
-          initial[item.product] = item.quantity;
+        const el = eligibilities.find((e) => e.productId === item.product);
+        const maxEligible = el ? el.remainingEligibleQuantity : item.quantity;
+        if (item.product && maxEligible > 0) {
+          initial[item.product] = maxEligible;
         }
       });
       setSelectedItems(initial);
     }
-  }, [order]);
+  }, [order, eligibilities]);
+
+  useEffect(() => {
+    const availableReasons = reasons.filter((r) => r.type === requestType || r.type === "BOTH");
+    if (availableReasons.length > 0 && !returnReason) {
+      setReturnReason(availableReasons[0].code);
+    }
+  }, [requestType, reasons, returnReason]);
+
+  const handleAddEvidence = () => {
+    if (!evidenceUrl.trim()) return;
+    const isVid = evidenceUrl.endsWith(".mp4") || evidenceUrl.endsWith(".mov");
+    setEvidenceFiles((prev) => [...prev, { fileUrl: evidenceUrl.trim(), fileType: isVid ? "VIDEO" : "IMAGE" }]);
+    setEvidenceUrl("");
+  };
 
   const handleReturnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,15 +162,31 @@ export default function OrderDetailPage() {
 
     const items = Object.entries(selectedItems)
       .filter(([_, qty]) => qty > 0)
-      .map(([productId, qty]) => ({
-        product: productId,
-        quantity: qty,
-      }));
+      .map(([productId, qty]) => {
+        const itemObj = order?.items.find((i) => i.product === productId);
+        return {
+          product: productId,
+          quantity: qty,
+          size: itemObj?.size,
+        };
+      });
 
     if (items.length === 0) {
-      setReturnErr("Please select at least one item to return");
+      setReturnErr("Please select at least one item and quantity to return/exchange");
       return;
     }
+
+    if (!returnReason) {
+      setReturnErr("Please select a reason");
+      return;
+    }
+
+    if (requestType === "EXCHANGE" && !preferredSize.trim() && !exchangeNotes.trim()) {
+      setReturnErr("Please enter your preferred size or exchange requirements");
+      return;
+    }
+
+    const selectedReasonObj = reasons.find((r) => r.code === returnReason);
 
     setSubmittingReturn(true);
     try {
@@ -113,14 +194,34 @@ export default function OrderDetailPage() {
         method: "POST",
         body: JSON.stringify({
           orderId: order?._id,
+          requestType,
           items,
           reason: returnReason,
+          reasonTitle: selectedReasonObj?.title || returnReason,
           description: returnDesc,
+          evidenceFiles,
+          exchangeDetails:
+            requestType === "EXCHANGE"
+              ? {
+                  preferredSize,
+                  notes: exchangeNotes,
+                }
+              : undefined,
+          bankDetails:
+            order?.paymentMethod === "COD" || order?.paymentMethod === "cod"
+              ? {
+                  accountHolderName: bankHolder,
+                  accountNumber: bankAccNo,
+                  ifscCode: bankIfsc,
+                  bankName,
+                  upiId,
+                }
+              : undefined,
         }),
       });
       setReturnSuccess(true);
     } catch (err: any) {
-      setReturnErr(err.message || "Failed to submit return request");
+      setReturnErr(err.message || "Failed to submit request");
     } finally {
       setSubmittingReturn(false);
     }
@@ -139,6 +240,8 @@ export default function OrderDetailPage() {
       </main>
     );
   }
+
+  const hasEligibleItems = eligibilities.some((e) => e.remainingEligibleQuantity > 0 && e.futureReversePickupAllowed);
 
   return (
     <main className="min-h-screen bg-[#FAF8F5] text-[#1C1510] flex flex-col">
@@ -192,7 +295,7 @@ export default function OrderDetailPage() {
                   </span>
                   {order.returnStatus && order.returnStatus !== "NOT_REQUESTED" && (
                     <span className="inline-block text-xs font-bold tracking-[0.2em] uppercase px-4 py-1.5 rounded-full bg-[#c9a84c] text-[#0B2516]">
-                      Return: {order.returnStatus.replace(/_/g, " ")}
+                      Return/Exchange: {order.returnStatus.replace(/_/g, " ")}
                     </span>
                   )}
                 </div>
@@ -205,14 +308,13 @@ export default function OrderDetailPage() {
                     </button>
                   </Link>
 
-                  {/* Return Button */}
-                  {(order.status === "delivered" || order.status === "DELIVERED" || order.orderStatus === "DELIVERED") && 
-                   (!order.returnStatus || order.returnStatus === "NOT_REQUESTED" || order.returnStatus === "REJECTED") && (
+                  {/* Return / Exchange Button */}
+                  {(order.status === "delivered" || order.status === "DELIVERED" || order.orderStatus === "DELIVERED") && hasEligibleItems && (
                     <button
                       onClick={() => setIsReturnModalOpen(true)}
-                      className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] uppercase tracking-wider font-semibold rounded-full transition-all font-sans"
+                      className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] uppercase tracking-wider font-semibold rounded-full transition-all font-sans shadow-md hover:shadow-lg"
                     >
-                      Request Return
+                      Return / Exchange
                     </button>
                   )}
                 </div>
@@ -222,23 +324,35 @@ export default function OrderDetailPage() {
             {/* Tracking Section */}
             <OrderTrackingSection orderId={order._id} orderStatus={order.status} />
 
-            {/* Purchased Items Grid */}
+            {/* Purchased Items Grid with Remaining Eligible Quantity info */}
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-stone-900 border-b border-stone-100 pb-3">
                 <Package className="w-4 h-4 text-[#c9a84c]" />
-                <h2 className="text-sm font-semibold uppercase tracking-[0.2em]">Ordered Items</h2>
+                <h2 className="text-sm font-semibold uppercase tracking-[0.2em]">Ordered Items & Eligibility</h2>
               </div>
               
               <ul className="divide-y divide-stone-100">
-                {order.items.map((it, idx) => (
-                  <li key={`${it.slug}-${idx}`} className="py-4 flex items-center justify-between gap-4 text-sm">
-                    <div className="space-y-1">
-                      <p className="font-serif text-stone-900 text-base font-medium">{it.name}</p>
-                      <p className="text-xs text-stone-400">Quantity: {it.quantity} × ₹{it.unitPrice.toLocaleString()}</p>
-                    </div>
-                    <span className="font-semibold text-stone-900">₹{it.lineTotal.toLocaleString()}</span>
-                  </li>
-                ))}
+                {order.items.map((it, idx) => {
+                  const el = eligibilities.find((e) => e.productId === it.product);
+                  const remaining = el ? el.remainingEligibleQuantity : it.quantity;
+                  return (
+                    <li key={`${it.slug}-${idx}`} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm">
+                      <div className="space-y-1">
+                        <p className="font-serif text-stone-900 text-base font-medium">{it.name}</p>
+                        <p className="text-xs text-stone-400">
+                          Purchased Qty: {it.quantity} × ₹{it.unitPrice.toLocaleString()} {it.size ? `| Size: ${it.size}` : ""}
+                        </p>
+                        {el && (
+                          <p className="text-[11px] font-medium text-stone-500">
+                            Remaining Eligible Quantity: <span className="font-bold text-[#0B2516]">{remaining}</span> / {it.quantity}
+                            {el.reason ? <span className="text-rose-600 ml-2">({el.reason})</span> : null}
+                          </p>
+                        )}
+                      </div>
+                      <span className="font-semibold text-stone-900">₹{it.lineTotal.toLocaleString()}</span>
+                    </li>
+                  );
+                })}
               </ul>
 
               {/* Price Breakdown */}
@@ -304,11 +418,11 @@ export default function OrderDetailPage() {
             {/* Return Request Modal Overlay */}
             {isReturnModalOpen && order && (
               <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-stone-200 shadow-2xl relative space-y-6">
+                <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-stone-200 shadow-2xl relative space-y-6 max-h-[90vh] overflow-y-auto">
                   <div>
-                    <h3 className="font-serif text-2xl text-[#0B2516] font-medium">Request Return</h3>
+                    <h3 className="font-serif text-2xl text-[#0B2516] font-medium">Return or Exchange</h3>
                     <p className="text-xs text-stone-500 mt-1">
-                      Select items and specify details for order #{order.orderNumber}
+                      Select items, partial quantities, and reason for order #{order.orderNumber}
                     </p>
                   </div>
 
@@ -317,9 +431,9 @@ export default function OrderDetailPage() {
                       <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto border border-emerald-200">
                         <CheckCircle2 className="w-8 h-8" />
                       </div>
-                      <p className="text-sm font-semibold text-emerald-800">Return Request Submitted Successfully</p>
+                      <p className="text-sm font-semibold text-emerald-800">Request Submitted Successfully</p>
                       <p className="text-xs text-stone-500">
-                        Our team will review your request and schedule a courier pickup.
+                        Our team will review your {requestType.toLowerCase()} request and schedule reverse pickup.
                       </p>
                       <button
                         onClick={() => {
@@ -335,90 +449,227 @@ export default function OrderDetailPage() {
                   ) : (
                     <form onSubmit={handleReturnSubmit} className="space-y-4 text-xs text-stone-600">
                       {returnErr && (
-                        <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl">
-                          {returnErr}
+                        <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl flex items-center gap-2">
+                          <AlertCircle className="w-4 h-4 shrink-0" />
+                          <span>{returnErr}</span>
                         </div>
                       )}
 
-                      {/* Item selection */}
+                      {/* Request Type Selector */}
+                      <div className="grid grid-cols-2 gap-3 p-1 bg-stone-100 rounded-2xl">
+                        <button
+                          type="button"
+                          onClick={() => setRequestType("RETURN")}
+                          className={`py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
+                            requestType === "RETURN"
+                              ? "bg-[#0B2516] text-white shadow-md"
+                              : "text-stone-600 hover:text-stone-900"
+                          }`}
+                        >
+                          Return (Refund/Credit)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setRequestType("EXCHANGE")}
+                          className={`py-2.5 text-xs font-bold uppercase tracking-wider rounded-xl transition-all ${
+                            requestType === "EXCHANGE"
+                              ? "bg-[#0B2516] text-white shadow-md"
+                              : "text-stone-600 hover:text-stone-900"
+                          }`}
+                        >
+                          Exchange (Size/Item)
+                        </button>
+                      </div>
+
+                      {/* Item & Quantity Selection */}
                       <div className="space-y-3">
-                        <label className="font-bold text-stone-700 uppercase tracking-wider">Select Items to Return:</label>
+                        <label className="font-bold text-stone-700 uppercase tracking-wider">Select Items & Quantities:</label>
                         <div className="divide-y divide-stone-100 max-h-48 overflow-y-auto pr-2">
                           {order.items.map((item) => {
-                            const isSelected = selectedItems[item.product] > 0;
-                            return (
-                              <div key={item.product} className="py-2.5 flex items-center justify-between gap-4">
-                                <div className="flex items-center gap-3">
-                                  <input
-                                    type="checkbox"
-                                    checked={isSelected}
-                                    onChange={(e) => {
-                                      setSelectedItems((prev) => ({
-                                        ...prev,
-                                        [item.product]: e.target.checked ? item.quantity : 0,
-                                      }));
-                                    }}
-                                    className="rounded border-stone-300 text-[#0B2516] focus:ring-[#0B2516] w-4 h-4"
-                                  />
-                                  <div>
-                                    <p className="font-semibold text-stone-900">{item.name}</p>
-                                    <p className="text-[10px] text-stone-400">Qty: {item.quantity} × ₹{item.unitPrice.toLocaleString()}</p>
-                                  </div>
-                                </div>
+                            const el = eligibilities.find((e) => e.productId === item.product);
+                            const remaining = el ? el.remainingEligibleQuantity : item.quantity;
+                            const isBlocked = el && !el.futureReversePickupAllowed;
+                            const isSelected = (selectedItems[item.product] || 0) > 0;
 
-                                {isSelected && item.quantity > 1 && (
-                                  <div className="flex items-center gap-2">
-                                    <span>Qty to return:</span>
-                                    <select
-                                      value={selectedItems[item.product]}
+                            return (
+                              <div key={item.product} className="py-3 space-y-1">
+                                <div className="flex items-center justify-between gap-4">
+                                  <div className="flex items-center gap-3">
+                                    <input
+                                      type="checkbox"
+                                      disabled={remaining <= 0 || isBlocked}
+                                      checked={isSelected}
                                       onChange={(e) => {
                                         setSelectedItems((prev) => ({
                                           ...prev,
-                                          [item.product]: Number(e.target.value),
+                                          [item.product]: e.target.checked ? remaining : 0,
                                         }));
                                       }}
-                                      className="bg-stone-50 border border-stone-200 rounded px-2 py-1 focus:outline-none"
-                                    >
-                                      {Array.from({ length: item.quantity }, (_, i) => i + 1).map((val) => (
-                                        <option key={val} value={val}>
-                                          {val}
-                                        </option>
-                                      ))}
-                                    </select>
+                                      className="rounded border-stone-300 text-[#0B2516] focus:ring-[#0B2516] w-4 h-4 disabled:opacity-40"
+                                    />
+                                    <div>
+                                      <p className="font-semibold text-stone-900">{item.name}</p>
+                                      <p className="text-[10px] text-stone-400">
+                                        Purchased: {item.quantity} | Eligible Remaining: <span className="font-bold text-stone-700">{remaining}</span>
+                                      </p>
+                                    </div>
                                   </div>
-                                )}
+
+                                  {isSelected && remaining > 1 && (
+                                    <div className="flex items-center gap-2">
+                                      <span className="text-[11px] font-medium">Return Qty:</span>
+                                      <select
+                                        value={selectedItems[item.product]}
+                                        onChange={(e) => {
+                                          setSelectedItems((prev) => ({
+                                            ...prev,
+                                            [item.product]: Number(e.target.value),
+                                          }));
+                                        }}
+                                        className="bg-stone-50 border border-stone-200 rounded-lg px-2 py-1 focus:outline-none font-bold"
+                                      >
+                                        {Array.from({ length: remaining }, (_, i) => i + 1).map((val) => (
+                                          <option key={val} value={val}>
+                                            {val}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             );
                           })}
                         </div>
                       </div>
 
-                      {/* Return Reason */}
+                      {/* Configured Reasons Dropdown */}
                       <div className="space-y-1.5">
-                        <label className="font-bold text-stone-700 uppercase tracking-wider">Reason for Return:</label>
+                        <label className="font-bold text-stone-700 uppercase tracking-wider">Select Reason:</label>
                         <select
                           value={returnReason}
                           onChange={(e) => setReturnReason(e.target.value)}
-                          className="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-[#c9a84c] text-stone-700"
+                          className="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-[#c9a84c] text-stone-700 font-medium"
                         >
-                          <option value="DONT_LIKE">Don't Like / Changed Mind</option>
-                          <option value="DAMAGED">Damaged Product Received</option>
-                          <option value="WRONG_PRODUCT">Wrong Product Delivered</option>
-                          <option value="QUALITY_ISSUE">Quality Issue</option>
-                          <option value="SIZE_ISSUE">Incorrect Size</option>
-                          <option value="OTHER">Other / Describe below</option>
+                          {reasons
+                            .filter((r) => r.type === requestType || r.type === "BOTH")
+                            .map((r) => (
+                              <option key={r._id} value={r.code}>
+                                {r.title}
+                              </option>
+                            ))}
                         </select>
                       </div>
 
-                      {/* Return Description */}
+                      {/* Media Evidence Upload Section */}
+                      <div className="space-y-2 bg-stone-50/80 p-3.5 rounded-2xl border border-stone-200">
+                        <label className="font-bold text-stone-700 uppercase tracking-wider block text-[11px]">
+                          Upload Photos / Video Evidence:
+                        </label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder="Enter image/video URL (e.g. https://.../photo.jpg)"
+                            value={evidenceUrl}
+                            onChange={(e) => setEvidenceUrl(e.target.value)}
+                            className="flex-grow bg-white border border-stone-200 rounded-xl p-2 focus:outline-none text-xs"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleAddEvidence}
+                            className="px-3.5 py-2 bg-stone-900 text-white rounded-xl text-xs font-semibold hover:bg-[#c9a84c] hover:text-stone-900 transition-all flex items-center gap-1"
+                          >
+                            <Upload className="w-3.5 h-3.5" /> Add
+                          </button>
+                        </div>
+
+                        {evidenceFiles.length > 0 && (
+                          <div className="flex flex-wrap gap-2 pt-2">
+                            {evidenceFiles.map((ev, i) => (
+                              <span key={i} className="inline-flex items-center text-[10px] bg-white px-2.5 py-1 rounded-lg border border-stone-200 font-mono">
+                                {ev.fileType}: {ev.fileUrl.slice(-15)}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Exchange Preferences */}
+                      {requestType === "EXCHANGE" && (
+                        <div className="bg-purple-50/60 p-3.5 rounded-2xl border border-purple-200/60 space-y-2.5">
+                          <label className="font-bold text-purple-900 uppercase tracking-wider block text-[11px]">Exchange Preferences:</label>
+                          <input
+                            type="text"
+                            placeholder="Preferred Size (e.g. Size 7, Large, etc.)"
+                            value={preferredSize}
+                            onChange={(e) => setPreferredSize(e.target.value)}
+                            className="w-full bg-white border border-purple-200 rounded-xl p-2.5 focus:outline-none text-stone-700 text-xs"
+                          />
+                          <input
+                            type="text"
+                            placeholder="Additional exchange requests or variant notes..."
+                            value={exchangeNotes}
+                            onChange={(e) => setExchangeNotes(e.target.value)}
+                            className="w-full bg-white border border-purple-200 rounded-xl p-2.5 focus:outline-none text-stone-700 text-xs"
+                          />
+                        </div>
+                      )}
+
+                      {/* COD Refund Account Details */}
+                      {(order.paymentMethod === "COD" || order.paymentMethod === "cod") && (
+                        <div className="bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-200/60 space-y-2">
+                          <label className="font-bold text-emerald-900 uppercase tracking-wider block text-[11px]">
+                            Bank / UPI Details for COD Refund Payout:
+                          </label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <input
+                              type="text"
+                              placeholder="Account Holder Name"
+                              value={bankHolder}
+                              onChange={(e) => setBankHolder(e.target.value)}
+                              className="bg-white border border-emerald-200 rounded-xl p-2 focus:outline-none text-stone-700 text-xs"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Account Number"
+                              value={bankAccNo}
+                              onChange={(e) => setBankAccNo(e.target.value)}
+                              className="bg-white border border-emerald-200 rounded-xl p-2 focus:outline-none text-stone-700 text-xs"
+                            />
+                            <input
+                              type="text"
+                              placeholder="IFSC Code"
+                              value={bankIfsc}
+                              onChange={(e) => setBankIfsc(e.target.value)}
+                              className="bg-white border border-emerald-200 rounded-xl p-2 focus:outline-none text-stone-700 text-xs"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Bank Name"
+                              value={bankName}
+                              onChange={(e) => setBankName(e.target.value)}
+                              className="bg-white border border-emerald-200 rounded-xl p-2 focus:outline-none text-stone-700 text-xs"
+                            />
+                          </div>
+                          <input
+                            type="text"
+                            placeholder="Or UPI ID (e.g. user@upi)"
+                            value={upiId}
+                            onChange={(e) => setUpiId(e.target.value)}
+                            className="w-full bg-white border border-emerald-200 rounded-xl p-2 focus:outline-none text-stone-700 text-xs"
+                          />
+                        </div>
+                      )}
+
+                      {/* Additional details */}
                       <div className="space-y-1.5">
-                        <label className="font-bold text-stone-700 uppercase tracking-wider">Additional details:</label>
+                        <label className="font-bold text-stone-700 uppercase tracking-wider">Comments / Details:</label>
                         <textarea
                           value={returnDesc}
                           onChange={(e) => setReturnDesc(e.target.value)}
-                          rows={3}
-                          placeholder="Please provide any comments or details about the product state..."
-                          className="w-full bg-stone-50 border border-stone-200 rounded-xl p-3 focus:outline-none focus:ring-1 focus:ring-[#c9a84c] text-stone-700"
+                          rows={2}
+                          placeholder="Provide any additional comments..."
+                          className="w-full bg-stone-50 border border-stone-200 rounded-xl p-2.5 focus:outline-none text-stone-700"
                         />
                       </div>
 
@@ -434,9 +685,13 @@ export default function OrderDetailPage() {
                         <button
                           type="submit"
                           disabled={submittingReturn}
-                          className="px-5 py-2.5 bg-[#0B2516] hover:bg-[#c9a84c] text-white hover:text-[#0B2516] rounded-full font-semibold uppercase tracking-wider disabled:opacity-50 transition-all"
+                          className="px-5 py-2.5 bg-[#0B2516] hover:bg-[#c9a84c] text-white hover:text-[#0B2516] rounded-full font-semibold uppercase tracking-wider disabled:opacity-50 transition-all shadow-md"
                         >
-                          {submittingReturn ? "Submitting..." : "Submit Request"}
+                          {submittingReturn
+                            ? "Submitting..."
+                            : requestType === "EXCHANGE"
+                            ? "Submit Exchange Request"
+                            : "Submit Return Request"}
                         </button>
                       </div>
                     </form>
@@ -448,8 +703,6 @@ export default function OrderDetailPage() {
           </div>
         )}
       </section>
-
-      {/* No Footer on Profile page as requested */}
     </main>
   );
 }
