@@ -74,10 +74,10 @@ function ProductDetail() {
   const [copiedCode, setCopiedCode] = useState(false);
 
   const activeCoupon = publicCoupons[0];
-  const couponCode = activeCoupon?.code || "WELCOME5";
+  const couponCode = activeCoupon?.code || "";
   const couponDiscountText = activeCoupon
-    ? `${activeCoupon.discountValue}${activeCoupon.discountType === "percentage" ? "% OFF" : " OFF"}`
-    : "5% OFF";
+    ? `${activeCoupon.discountValue}${activeCoupon.discountType === "percentage" ? "% OFF" : " ₹ OFF"}`
+    : "";
   const couponTitleText = activeCoupon?.title || activeCoupon?.description || "Special offer available at checkout";
   const [openAccordions, setOpenAccordions] = useState<Record<string, boolean>>({
     description: true,
@@ -271,69 +271,42 @@ function ProductDetail() {
                 {product.name}
               </h1>
 
-              {/* Tagline / Social Proof Badge */}
-              <div className="mb-4 flex flex-wrap items-center gap-3">
-                <span className="flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800 border border-amber-200/60">
-                  <Flame className="h-3.5 w-3.5 fill-amber-500 text-amber-500 animate-pulse" />
-                  26 sold in last 25 hours
-                </span>
-                <span className="text-xs text-neutral-500 font-medium">Effortless elegance, every time you wear it.</span>
-              </div>
-
-              {/* Price & Discount (Sale price text removed, clean price display) */}
-              <div className="mb-6 flex flex-wrap items-baseline gap-3">
-                <span className="text-3xl font-bold text-[#d4af37] md:text-4xl font-serif">
-                  Rs. {product.price.toLocaleString()}.00
-                </span>
-                {product.oldPrice != null && (
-                  <span className="text-lg font-medium text-neutral-400 line-through">
-                    Rs. {product.oldPrice.toLocaleString()}.00
-                  </span>
-                )}
-                {product.oldPrice != null && product.oldPrice > product.price && (
-                  <span className="rounded bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">
-                    {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
-                  </span>
-                )}
-                <span className="w-full text-xs text-neutral-500 font-medium">Incl. of all taxes</span>
-              </div>
-
-              {/* Dynamic Festive / Special Offer Card */}
-              <div className="mb-8 overflow-hidden rounded-xl border border-amber-200/80 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9EE] to-[#FFF6E5] p-4 shadow-sm">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d4af37]/20 text-[#a8895c]">
-                      <Sparkles className="h-5 w-5" />
-                    </span>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-[#a8895c]">
-                          SPECIAL OFFER
-                        </span>
-                        <span className="rounded-full bg-[#1a3d2f] px-2 py-0.5 text-[9px] font-bold text-white">
-                          {couponDiscountText}
-                        </span>
+              {activeCoupon && (
+                <div className="mb-6 overflow-hidden rounded-xl border border-amber-200/80 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9EE] to-[#FFF6E5] p-4 shadow-sm">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d4af37]/20 text-[#a8895c]">
+                        <Sparkles className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold uppercase tracking-widest text-[#a8895c]">
+                            SPECIAL OFFER
+                          </span>
+                          <span className="rounded-full bg-[#1a3d2f] px-2 py-0.5 text-[9px] font-bold text-white">
+                            {couponDiscountText}
+                          </span>
+                        </div>
+                        <p className="text-xs font-semibold text-neutral-800">{couponTitleText}</p>
                       </div>
-                      <p className="text-xs font-semibold text-neutral-800">{couponTitleText}</p>
                     </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        void navigator.clipboard.writeText(couponCode);
+                        setCopiedCode(true);
+                        toast.success(`Coupon code ${couponCode} copied!`);
+                        setTimeout(() => setCopiedCode(false), 2000);
+                      }}
+                      className="flex items-center gap-1.5 rounded-lg border border-[#c4a574] bg-white px-3 py-1.5 text-xs font-bold text-[#1a3d2f] shadow-sm transition hover:bg-[#faf6f0] cursor-pointer"
+                    >
+                      {copiedCode ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-[#c4a574]" />}
+                      {copiedCode ? "COPIED" : couponCode}
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      void navigator.clipboard.writeText(couponCode);
-                      setCopiedCode(true);
-                      toast.success(`Coupon code ${couponCode} copied!`);
-                      setTimeout(() => setCopiedCode(false), 2000);
-                    }}
-                    className="flex items-center gap-1.5 rounded-lg border border-[#c4a574] bg-white px-3 py-1.5 text-xs font-bold text-[#1a3d2f] shadow-sm transition hover:bg-[#faf6f0]"
-                  >
-                    {copiedCode ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5 text-[#c4a574]" />}
-                    {copiedCode ? "COPIED" : couponCode}
-                  </button>
                 </div>
-              </div>
+              )}
 
-              {/* Delivery Estimation Card */}
               <div className="mb-8 rounded-xl border border-neutral-200/80 bg-white p-4 text-xs">
                 <div className="mb-2 flex items-center justify-between border-b border-neutral-100 pb-2 font-bold uppercase tracking-wider text-neutral-700">
                   <span>Estimated Delivery</span>

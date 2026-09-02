@@ -105,19 +105,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setDiscountAmount(0);
       return;
     }
-    let pct = 0.05;
-    if (couponCode === "WELCOME5") {
-      pct = 0.05;
-    } else {
-      const match = couponCode.match(/\d+/);
-      if (match) {
-        const val = parseInt(match[0], 10);
-        if (val > 0 && val <= 100) pct = val / 100;
-      }
+    if (pricingResult?.appliedCoupon && pricingResult.appliedCoupon.code === couponCode) {
+      setDiscountAmount(pricingResult.couponDiscount);
     }
-    const discount = Math.round(subtotal * pct * 100) / 100;
-    setDiscountAmount(discount);
-  }, [subtotal, couponCode]);
+  }, [subtotal, couponCode, pricingResult]);
 
   const setIsCartOpen = useCallback((isOpen: boolean) => setCartOpen(isOpen), []);
   const openCart = useCallback(() => setCartOpen(true), []);

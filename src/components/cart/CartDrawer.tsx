@@ -9,7 +9,7 @@ import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight, Tag } from "lucide-rea
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
-import { shopApi, type CartPricingResponse } from "@/lib/api/shop";
+import { shopApi, type CartPricingResponse, type PublicCouponDoc } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 
@@ -36,7 +36,7 @@ export function CartDrawer() {
 
   const [realProducts, setRealProducts] = useState<Product[]>([]);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
-  const [availableCoupons, setAvailableCoupons] = useState<string[]>(["WELCOME5"]);
+  const [availableCoupons, setAvailableCoupons] = useState<PublicCouponDoc[]>([]);
   const [couponInput, setCouponInput] = useState("");
 
   useEffect(() => {
@@ -52,16 +52,12 @@ export function CartDrawer() {
       .catch((err) => console.error("Failed to load suggestions:", err))
       .finally(() => setLoadingSuggestions(false));
 
-    // Fetch dynamic coupon codes from promotional banners
-    shopApi.promotionalBanners()
-      .then((res) => {
-        const cards = res.cards || [];
-        const codes = cards
-          .map((c) => c.couponCode?.trim())
-          .filter((code): code is string => !!code);
-        setAvailableCoupons([...new Set(["WELCOME5", ...codes])]);
+    // Fetch active public coupons from Coupon management API
+    shopApi.coupons()
+      .then((coupons) => {
+        setAvailableCoupons(coupons || []);
       })
-      .catch((err) => console.error("Failed to load promotional banners for coupons:", err));
+      .catch((err) => console.error("Failed to load active coupons:", err));
   }, [isCartOpen]);
 
   const FREE_SHIPPING_THRESHOLD = 1499;
@@ -429,17 +425,21 @@ export function CartDrawer() {
                     <div className="mt-3">
                       <p className="text-[10px] uppercase tracking-wider text-neutral-400 mb-2">Available Coupons (Click to apply)</p>
                       <div className="flex flex-wrap gap-2">
-                        {availableCoupons.map((code) => {
-                          const isApplied = couponCode === code;
+                        {availableCoupons.map((coupon) => {
+                          const isApplied = couponCode === coupon.code;
+                          const discountLabel =
+                            coupon.discountType === "percentage"
+                              ? `${coupon.discountValue}% off`
+                              : `₹${coupon.discountValue} off`;
                           return (
                             <button
-                              key={code}
+                              key={coupon.code}
                               type="button"
                               onClick={() => {
                                 if (isApplied) {
                                   removeCoupon();
                                 } else {
-                                  applyCoupon(code);
+                                  applyCoupon(coupon.code);
                                 }
                               }}
                               className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer ${
@@ -449,8 +449,8 @@ export function CartDrawer() {
                               }`}
                             >
                               <span className={`h-1.5 w-1.5 rounded-full ${isApplied ? "bg-emerald-600" : "bg-yellow-500"}`} />
-                              {code}
-                              {code === "WELCOME5" && <span className="text-[9px] font-normal text-gray-400 lowercase">(5% off)</span>}
+                              {coupon.code}
+                              <span className="text-[9px] font-normal text-gray-400 lowercase">({discountLabel})</span>
                             </button>
                           );
                         })}

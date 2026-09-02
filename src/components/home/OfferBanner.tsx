@@ -17,7 +17,7 @@ type OfferCard = PromotionalBannerDoc;
 
 const FALLBACK_TICKER = [
   "Limited time wedding sale — flat 20% off bridal sets",
-  "First order perk — use code WELCOME5 for extra 5% off",
+  "Exclusive discounts — check active coupon codes at checkout",
   "Free silver coin on bridal orders above ₹2,00,000",
 ];
 
@@ -39,11 +39,11 @@ const FALLBACK_CARDS: OfferCard[] = [
   {
     _id: "fallback-2",
     title: "First purchase perk",
-    description: "Get an extra 5% off on your first order. Use code",
-    couponCode: "WELCOME5",
-    buttonText: "Get code",
-    buttonUrl: "/shop",
-    link: "/shop",
+    description: "Get exclusive savings on your order with active coupons at checkout.",
+    couponCode: "",
+    buttonText: "Shop now",
+    buttonUrl: "/category/all",
+    link: "/category/all",
     backgroundColor: "#ffffff",
     textColor: "#0b2516",
     order: 1,

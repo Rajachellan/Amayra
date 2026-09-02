@@ -2,10 +2,11 @@
 
 import React, { useEffect, useRef } from "react";
 import { Tag, ArrowRight, Zap, Gift, Star } from "lucide-react";
+import { useCoupons } from "@/hooks/useCatalogMetadata";
 
 const TICKER_ITEMS = [
   "Limited time wedding sale — flat 20% off bridal sets",
-  "First order perk — use code WELCOME5 for extra 5% off",
+  "Exclusive savings — apply active coupons at checkout",
   "Free silver coin on bridal orders above ₹2,00,000",
 ];
 
@@ -107,6 +108,13 @@ function MainCard() {
 
 /* ─── Welcome Card ───────────────────────────────────────────── */
 function WelcomeCard() {
+  const { data: publicCoupons = [] } = useCoupons();
+  const activeCoupon = publicCoupons[0];
+  const couponCode = activeCoupon?.code;
+  const discountText = activeCoupon
+    ? `${activeCoupon.discountValue}${activeCoupon.discountType === "percentage" ? "%" : " ₹"} off`
+    : "special discounts";
+
   return (
     <div className="flex-1 bg-white rounded-2xl p-7 relative overflow-hidden border border-emerald-dark/08 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(11,37,22,0.12)] cursor-pointer animate-fade-left group">
       {/* Decor circle */}
@@ -117,18 +125,22 @@ function WelcomeCard() {
       </div>
 
       <h3 className="font-serif text-emerald-dark text-xl font-normal mb-2">
-        First purchase perk
+        Exclusive Member Offer
       </h3>
       <p className="text-emerald-dark/60 text-[13px] leading-relaxed mb-3">
-        Get an extra 5% off on your first order. Use code
+        {activeCoupon
+          ? `Get an extra ${discountText} on your order. Use code`
+          : "Apply valid coupon codes at checkout for exclusive instant discounts."}
       </p>
-      <span className="inline-block bg-emerald-dark/07 text-emerald-dark text-[11px] font-semibold tracking-widest px-2.5 py-1 rounded mb-4">
-        WELCOME5
-      </span>
+      {couponCode && (
+        <span className="inline-block bg-emerald-dark/07 text-emerald-dark text-[11px] font-semibold tracking-widest px-2.5 py-1 rounded mb-4">
+          {couponCode}
+        </span>
+      )}
 
       <div>
         <button className="inline-flex items-center gap-1.5 text-brand-gold text-[10px] font-semibold tracking-[0.16em] uppercase transition-all duration-200 group-hover:gap-3">
-          Get code
+          {activeCoupon ? "Apply code" : "Shop Collection"}
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
       </div>
