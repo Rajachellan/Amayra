@@ -13,7 +13,7 @@ const ShippingReturns = () => {
       <Navbar />
 
       <PageBanner
-        // title="Shipping & Returns"
+        title="Shipping & Returns"
         // subtitle="Client Services"
         image="/images/optimized/banner (5).png"
         height="h-[75vh]"
