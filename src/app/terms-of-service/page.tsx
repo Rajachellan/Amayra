@@ -11,8 +11,8 @@ const TermsOfService = () => {
     <main className="min-h-screen bg-white">
       <Navbar />
       <PageBanner
-        title="Terms of Service"
-        subtitle="Legal"
+        // title="Terms of Service"
+        // subtitle="Legal"
         image="/images/optimized/banner (4).png"
         height="h-[75vh]"
       />

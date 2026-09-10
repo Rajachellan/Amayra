@@ -12,8 +12,8 @@ const PrivacyPolicy = () => {
       <Navbar />
 
       <PageBanner
-        title="Privacy Policy"
-        subtitle="Legal"
+        // title="Privacy Policy"
+        // subtitle="Legal"
         image="/images/optimized/banner (3).png"
         height="h-[75vh]"
       />

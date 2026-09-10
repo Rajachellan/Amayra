@@ -152,14 +152,14 @@ export default function BlogPage() {
             Stories of <span className="italic font-light text-amber-300">Heritage</span>, Love & <br className="hidden md:block" /> Timeless Brilliance
           </motion.h1>
 
-          <motion.p
+          {/* <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
             className="text-stone-300 text-xs sm:text-sm font-light tracking-[0.2em] uppercase max-w-2xl mx-auto font-serif"
           >
             Explore our origin story, heritage craftsmanship, style guides, and our 10% pledge for women&apos;s empowerment.
-          </motion.p>
+          </motion.p> */}
         </div>
       </section>
 

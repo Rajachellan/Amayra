@@ -91,7 +91,7 @@ export const SilverCollection = () => {
           </h2>
 
           <p className="font-sans text-md sm:text-md tracking-wider leading-relaxed max-w-lg mx-auto text-[#1C1510]/60">
-            Handcrafted 925 sterling silver jewelry designed for refined grace and everyday luxury.
+            Handcrafted jewelry designed for refined grace and everyday luxury.
           </p>
         </div>
 

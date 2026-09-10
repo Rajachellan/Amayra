@@ -199,7 +199,7 @@ export const Footer = () => {
                   href: "/category/all?collection=aanchal",
                 },
                 {
-                  name: "Jashn Noor",
+                  name: "Jashn e Noor",
                   href: "/category/all?collection=Jashn-noor",
                 },
 
@@ -289,7 +289,7 @@ export const Footer = () => {
         {/* Bottom */}
         <div className="flex items-center justify-center py-7">
           <p className="w-full text-center text-[10px] text-white/50">
-            © 2026 Mairii. All Rights Reserved. Designed by{" "}
+            © 2026 MaiRii. All Rights Reserved. Designed by{" "}
             <Link
               target="_blank"
               href="https://rankraze.com"
