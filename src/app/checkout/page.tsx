@@ -13,6 +13,7 @@ import { api } from "@/lib/api";
 import { ArrowLeft, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { addressFormSchema } from "@/lib/validation/customerProfile";
+import { formatPrice } from "@/lib/formatPrice";
 
 type RazorpaySuccess = {
   razorpay_payment_id: string;
@@ -601,7 +602,7 @@ export default function CheckoutPage() {
                 )}
               </Button>
               <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest">
-                Total charged is validated on our server ({displayTotal.toLocaleString()} INR is an estimate; final amount follows live prices).
+                Total charged is validated on our server ({formatPrice(displayTotal)} INR is an estimate; final amount follows live prices).
               </p>
             </form>
 
@@ -639,13 +640,13 @@ export default function CheckoutPage() {
                               </span>
                             ) : (
                               <p className="text-[11px] text-gray-500 tracking-wide mt-0.5">
-                                QTY {item.quantity} × ₹{item.price.toLocaleString()}
+                                QTY {item.quantity} × ₹{formatPrice(item.price)}
                               </p>
                             )}
                           </div>
                           <div className="text-right">
                             <p className="text-sm font-bold text-brand-emerald">
-                              {isGift ? "FREE" : `₹${(item.price * item.quantity).toLocaleString()}`}
+                              {isGift ? "FREE" : `₹${formatPrice(item.price * item.quantity)}`}
                             </p>
                           </div>
                         </li>
@@ -656,12 +657,12 @@ export default function CheckoutPage() {
                 <div className="border-t pt-4 space-y-2.5 text-xs uppercase tracking-widest">
                   <div className="flex justify-between text-gray-600">
                     <span>Items Subtotal</span>
-                    <span className="font-semibold text-gray-900">₹{subtotal.toLocaleString()}</span>
+                    <span className="font-semibold text-gray-900">₹{formatPrice(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Delivery / Shipping</span>
                     {shipping > 0 ? (
-                      <span className="font-semibold text-gray-900">₹{shipping.toLocaleString()}</span>
+                      <span className="font-semibold text-gray-900">₹{formatPrice(shipping)}</span>
                     ) : (
                       <span className="font-bold text-emerald-700">FREE</span>
                     )}
@@ -669,13 +670,13 @@ export default function CheckoutPage() {
                   {automaticDiscount > 0 && (
                     <div className="flex justify-between text-[#c4a064] font-semibold">
                       <span>Slab Discount ({discountSlabPercentage}% Off)</span>
-                      <span>- ₹{automaticDiscount.toLocaleString()}</span>
+                      <span>- ₹{formatPrice(automaticDiscount)}</span>
                     </div>
                   )}
                   {appliedCouponDiscount > 0 && (
                     <div className="flex justify-between text-[#c4a064] font-semibold">
                       <span>Discount ({couponCode})</span>
-                      <span>- ₹{appliedCouponDiscount.toLocaleString()}</span>
+                      <span>- ₹{formatPrice(appliedCouponDiscount)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-gray-400 text-[10px]">
@@ -684,7 +685,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between font-serif font-bold text-brand-emerald text-base pt-3 border-t">
                     <span className="uppercase tracking-widest text-xs">Estimated total</span>
-                    <span>₹{displayTotal.toLocaleString()}</span>
+                    <span>₹{formatPrice(displayTotal)}</span>
                   </div>
                 </div>
               </div>

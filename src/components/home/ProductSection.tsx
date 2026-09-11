@@ -11,6 +11,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { Heart, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 
 export const ProductSection = () => {
   const { addToCart } = useCart();
@@ -242,11 +243,11 @@ const ProductCard = ({
         <div className="flex items-baseline space-x-3">
           {product.oldPrice && (
             <p className="text-[#1a3d2f] line-through text-[11px] md:text-[13px] font-medium opacity-85 tracking-wider">
-              ₹{product.oldPrice.toLocaleString()}
+              ₹{formatPrice(product.oldPrice)}
             </p>
           )}
           <p className="text-[#d4af37] text-[14px] md:text-[16px] font-serif font-bold tracking-wider">
-            ₹{product.price.toLocaleString()}
+            ₹{formatPrice(product.price)}
           </p>
         </div>
       </div>

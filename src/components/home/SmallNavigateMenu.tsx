@@ -9,6 +9,7 @@ import Link from "next/link";
 import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import { formatPrice } from "@/lib/formatPrice";
 
 type Tab = "bestsellers" | "newarrivals" | "trending";
 
@@ -36,8 +37,8 @@ function toRow(
         idStr: p.id,
         slug: p.slug ?? p.id,
         name: p.name,
-        price: `₹${p.price.toLocaleString()}`,
-        oldPrice: computedOldPrice > p.price ? `₹${computedOldPrice.toLocaleString()}` : undefined,
+        price: `₹${formatPrice(p.price)}`,
+        oldPrice: computedOldPrice > p.price ? `₹${formatPrice(computedOldPrice)}` : undefined,
         category: tab,
         badge:
             badge ??

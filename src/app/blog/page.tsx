@@ -345,7 +345,7 @@ export default function BlogPage() {
               <HeartHandshake className="w-6 h-6" />
             </div>
             
-            <h2 className="text-3xl md:text-4xl font-serif text-white">Join The Connoisseur&apos;s Circle</h2>
+            <h2 className="text-3xl md:text-4xl font-serif text-white">Join The Elite Circle</h2>
             
             <p className="text-xs md:text-sm text-stone-300 font-light tracking-widest uppercase font-serif">
               Receive curated insights into heritage jewellery, founder notes, and early previews of new collections.

@@ -10,6 +10,8 @@ import { useWishlist } from "@/context/WishlistContext";
 import { usePrefetchProductDetail } from "@/hooks/useProductDetail";
 import { Product } from "@/types";
 
+import { formatPrice } from "@/lib/formatPrice";
+
 interface ProductCardProps {
   product: Product;
 }
@@ -120,11 +122,11 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           <div className="flex items-baseline justify-center space-x-2.5">
             {product.oldPrice && (
               <span className="text-stone-400 line-through text-xs font-medium">
-                ₹{product.oldPrice.toLocaleString()}
+                ₹{formatPrice(product.oldPrice)}
               </span>
             )}
             <span className="text-[#0B2516] font-serif text-lg font-bold">
-              ₹{product.price.toLocaleString()}
+              ₹{formatPrice(product.price)}
             </span>
           </div>
 

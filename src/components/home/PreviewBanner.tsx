@@ -46,9 +46,11 @@ const FALLBACK_SLIDERS: Slider[] = [
   },
 ];
 
+import { formatPrice } from "@/lib/formatPrice";
+
 function formatInr(n?: number) {
   if (n == null || Number.isNaN(n)) return "";
-  return `₹${n.toLocaleString("en-IN")}`;
+  return `₹${formatPrice(n)}`;
 }
 
 function productOf(hotspotProduct: string | LookbookHotspotProduct | undefined): LookbookHotspotProduct | null {

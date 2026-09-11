@@ -11,6 +11,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { Heart, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const SilverCollection = () => {
@@ -151,11 +152,11 @@ export const SilverCollection = () => {
                     <div className="flex items-baseline justify-center gap-2 mb-3">
                       {product.oldPrice && (
                         <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
-                          ₹{product.oldPrice.toLocaleString()}
+                          ₹{formatPrice(product.oldPrice)}
                         </span>
                       )}
                       <span className="text-sm sm:text-base font-bold text-[#d4af37]">
-                        ₹{product.price.toLocaleString()}
+                        ₹{formatPrice(product.price)}
                       </span>
                     </div>
 

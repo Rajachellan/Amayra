@@ -49,7 +49,7 @@ export const BrandStory = () => {
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-2xl">
                 <Image
-                  src="/images/pexels-dandu-16612609.jpg"
+                  src="/images/about-us.png"
                   alt="MaiRii Heritage & Bangles"
                   fill
                   className="object-cover transition-transform duration-1000 hover:scale-105"
@@ -57,7 +57,7 @@ export const BrandStory = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white p-4 rounded-md backdrop-blur-md bg-black/30 border border-white/20">
                   <p className="font-serif italic text-sm text-amber-200">
-                    &ldquo;For You, Ma — a quiet promise written in gold and memories.&rdquo;
+                    &ldquo;For You, Ma — a quiet promise written in sweet memories.&rdquo;
                   </p>
                 </div>
               </div>

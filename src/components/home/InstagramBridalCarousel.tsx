@@ -13,13 +13,13 @@ import tikka from "../../assets/pexels-rani-sahu-9157351.jpg"
 import nose_pin from "../../assets/pexels-cottonbro-9316936.jpg"
 import earing from "../../assets/pexels-ellaboina-sumanth-2574650-4361861.jpg"
 const videos = [
-  { id: 1, tag: "Heritage", image: neckles, title: "Kudan Necklace Set", price: "₹75,000" },
-  { id: 2, tag: "Bridal", image: nose_pin, title: "Bridal Nose Pin", price: "₹12,400" },
-  { id: 3, tag: "Luxury", image: chain, title: "Santorini Necklace", price: "₹1,20,000" },
-  { id: 4, tag: "Classic", image: earing, title: "Ruby Earring Set", price: "₹45,600" },
-  { id: 5, tag: "Temple", image: bangles, title: "Temple Bangles", price: "₹88,000" },
-  { id: 6, tag: "Royal", image: tikka, title: "Royal Maang Tikka", price: "₹32,000" },
-  { id: 7, tag: "Gold", image: kammal, title: "Antique Jhumkas", price: "₹54,000" },
+  { id: 1, tag: "Heritage", image: neckles, title: "Kudan Necklace Set", price: "₹75,000.00" },
+  { id: 2, tag: "Bridal", image: nose_pin, title: "Bridal Nose Pin", price: "₹12,400.00" },
+  { id: 3, tag: "Luxury", image: chain, title: "Santorini Necklace", price: "₹1,20,000.00" },
+  { id: 4, tag: "Classic", image: earing, title: "Ruby Earring Set", price: "₹45,600.00" },
+  { id: 5, tag: "Temple", image: bangles, title: "Temple Bangles", price: "₹88,000.00" },
+  { id: 6, tag: "Royal", image: tikka, title: "Royal Maang Tikka", price: "₹32,000.00" },
+  { id: 7, tag: "Gold", image: kammal, title: "Antique Jhumkas", price: "₹54,000.00" },
 ];
 
 const SPV = 6;          // slides per view

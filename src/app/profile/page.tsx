@@ -9,6 +9,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { useWishlist } from "@/context/WishlistContext";
 import { useAuth } from "@/context/AuthContext";
 import { ProductCard } from "@/components/products/ProductCard";
+import { formatPrice } from "@/lib/formatPrice";
 import {
   User,
   Package,
@@ -500,7 +501,7 @@ export default function ProfilePage() {
                                         {statusLabel(order.status)}
                                       </span>
                                       <p className="font-serif text-lg text-stone-900 font-semibold">
-                                        ₹{order.total.toLocaleString()}
+                                        ₹{formatPrice(order.total)}
                                       </p>
                                     </div>
                                     <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-[#c9a84c] group-hover:translate-x-1 transition-all" />

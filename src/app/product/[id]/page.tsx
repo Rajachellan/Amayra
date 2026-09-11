@@ -15,6 +15,7 @@ import { useProductDetail } from "@/hooks/useProductDetail";
 import { useCoupons } from "@/hooks/useCatalogMetadata";
 import { ProductImageGallery } from "@/components/products/ProductImageGallery";
 import { RelatedProductsRow } from "@/components/products/RelatedProductsRow";
+import { formatPrice } from "@/lib/formatPrice";
 import {
   Heart,
   Share2,
@@ -270,6 +271,22 @@ function ProductDetail() {
               <h1 className="mb-2 text-2xl font-bold leading-tight text-neutral-900 md:text-3xl">
                 {product.name}
               </h1>
+
+              <div className="mb-6 flex items-baseline gap-3">
+                {product.oldPrice && (
+                  <span className="text-base text-neutral-400 line-through font-medium">
+                    ₹{formatPrice(product.oldPrice)}
+                  </span>
+                )}
+                <span className="text-2xl font-serif font-bold text-[#d4af37]">
+                  ₹{formatPrice(product.price)}
+                </span>
+                {product.oldPrice && product.oldPrice > product.price && (
+                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
+                    {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
+                  </span>
+                )}
+              </div>
 
               {activeCoupon && (
                 <div className="mb-6 overflow-hidden rounded-xl border border-amber-200/80 bg-gradient-to-r from-[#FFFDF7] via-[#FFF9EE] to-[#FFF6E5] p-4 shadow-sm">

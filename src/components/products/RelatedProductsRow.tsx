@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 
 type Props = {
   title: string;
@@ -20,18 +21,18 @@ function RelatedCard({ product }: { product: Product }) {
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-neutral-200/80 bg-white shadow-sm transition-shadow hover:shadow-md">
       <Link
         href={`/product/${product.slug ?? product.id}`}
-        className="relative block aspect-[4/5] overflow-hidden bg-[#f3f0eb]"
+        className="relative aspect-square w-full overflow-hidden bg-neutral-100"
       >
         <Image
           src={product.image}
           alt={product.name}
           fill
-          sizes="(max-width: 768px) 100vw, 25vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 50vw, 25vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
         {product.isNewArrival && (
-          <span className="absolute left-3 top-3 rounded-md bg-[#d4c4a8] px-2.5 py-1 text-[9px] font-bold uppercase tracking-widest text-neutral-900">
-            New Arrival
+          <span className="absolute left-3 top-3 rounded-md bg-[#1a3d2f] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+            New
           </span>
         )}
       </Link>
@@ -49,10 +50,10 @@ function RelatedCard({ product }: { product: Product }) {
         <div className="mb-5 flex items-baseline gap-2">
           {product.oldPrice && (
             <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
-              ₹{product.oldPrice.toLocaleString()}
+              ₹{formatPrice(product.oldPrice)}
             </span>
           )}
-          <span className="text-lg font-bold text-[#d4af37]">₹{product.price.toLocaleString()}</span>
+          <span className="text-lg font-bold text-[#d4af37]">₹{formatPrice(product.price)}</span>
         </div>
         <button
           type="button"

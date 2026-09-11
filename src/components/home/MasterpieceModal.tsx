@@ -11,13 +11,16 @@ import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
+import { formatPrice } from "@/lib/formatPrice";
 
 interface MasterpieceModalProps {
+  product?: Product | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
+  product: propProduct,
   isOpen,
   onClose,
 }) => {
@@ -171,11 +174,11 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
               <div className="flex items-baseline justify-center gap-3 mb-6">
                 {product.oldPrice && (
                   <span className="text-xs sm:text-sm text-[#1a3d2f] line-through font-medium opacity-85">
-                    ₹{product.oldPrice.toLocaleString()}
+                    ₹{formatPrice(product.oldPrice)}
                   </span>
                 )}
                 <span className="text-lg sm:text-xl font-bold text-[#d4af37]">
-                  ₹{product.price.toLocaleString()}
+                  ₹{formatPrice(product.price)}
                 </span>
                 {product.oldPrice && product.oldPrice > product.price && (
                   <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
