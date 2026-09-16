@@ -104,17 +104,17 @@ export default function ContactPage() {
       {/* 1. Hero Experience */}
       <section className="relative h-[75vh] min-h-[620px] w-full overflow-hidden bg-stone-950">
         <Image
-          src="/images/optimized/banner (1).png"
+          src="/images/optimized/contact-banner.png"
           alt="Contact MaiRii Luxury Concierge"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center brightness-65"
+          className="object-cover object-center brightness-85"
 
         />
         {/* <div className="absolute inset-0 bg-gradient-to-b from-stone-950/70 via-stone-950/40 to-[#FAF8F3]" /> */}
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pt-16">
+        {/* <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pt-16">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -137,7 +137,7 @@ export default function ContactPage() {
               Whether you seek personal styling guidance, boutique locations, or order assistance, our dedicated team is at your service.
             </p>
           </motion.div>
-        </div>
+        </div> */}
       </section>
 
       {/* 2. Quick Contact Stats & Direct Care */}

@@ -348,7 +348,7 @@ export default function BlogPage() {
             <h2 className="text-3xl md:text-4xl font-serif text-white">Join The Elite Circle</h2>
             
             <p className="text-xs md:text-sm text-stone-300 font-light tracking-widest uppercase font-serif">
-              Receive curated insights into heritage jewellery, founder notes, and early previews of new collections.
+Discover exquisite pieces, private collection previews, jewellery stories, and exclusive updates curated just for you.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-4">
