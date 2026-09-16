@@ -62,6 +62,13 @@ export const profileFormSchema = z.object({
     .transform((v) => (v === "" ? "" : normalizeIndianPhone(v))),
   birthday: z.string().trim().optional(),
   anniversary: z.string().trim().optional(),
+  specialDate: z.string().trim().optional(),
+  specialNote: z.string().trim().optional(),
+  favoriteColors: z.union([z.array(z.string()), z.string()]).optional(),
+  preferredMetals: z.union([z.array(z.string()), z.string()]).optional(),
+  ringSize: z.string().trim().optional(),
+  bangleSize: z.string().trim().optional(),
+  preferredStyles: z.union([z.array(z.string()), z.string()]).optional(),
 });
 
 export const addressFormSchema = z.object({
@@ -117,6 +124,13 @@ export type CustomerProfile = {
   phone?: string;
   birthday?: string;
   anniversary?: string;
+  specialDate?: string;
+  specialNote?: string;
+  favoriteColors?: string[] | string;
+  preferredMetals?: string[] | string;
+  ringSize?: string;
+  bangleSize?: string;
+  preferredStyles?: string[] | string;
   addresses?: SavedAddress[];
 };
 
