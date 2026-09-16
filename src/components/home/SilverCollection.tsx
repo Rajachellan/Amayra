@@ -12,6 +12,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { Heart, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const SilverCollection = () => {
@@ -92,19 +93,19 @@ export const SilverCollection = () => {
           </h2>
 
           <p className="font-sans text-md sm:text-md tracking-wider leading-relaxed max-w-lg mx-auto text-[#1C1510]/60">
-            Handcrafted 925 sterling silver jewelry designed for refined grace and everyday luxury.
+            Handcrafted jewelry designed for refined grace and everyday luxury.
           </p>
         </div>
 
         {/* Product Grid - 4 items per row on desktop */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="aspect-[1/1] bg-pearl animate-pulse rounded-xl" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             <AnimatePresence initial={false}>
               {visibleProducts.map((product, idx) => (
                 <motion.div

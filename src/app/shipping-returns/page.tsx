@@ -14,7 +14,7 @@ const ShippingReturns = () => {
 
       <PageBanner
         title="Shipping & Returns"
-        subtitle="Client Services"
+        // subtitle="Client Services"
         image="/images/optimized/banner (5).png"
         height="h-[75vh]"
       />

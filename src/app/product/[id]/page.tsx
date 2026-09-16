@@ -16,8 +16,12 @@ import { useProductDetail } from "@/hooks/useProductDetail";
 import { useCoupons } from "@/hooks/useCatalogMetadata";
 import { ProductImageGallery } from "@/components/products/ProductImageGallery";
 import { RelatedProductsRow } from "@/components/products/RelatedProductsRow";
+<<<<<<< HEAD
 import { ProductReviewsSection } from "@/components/products/ProductReviewsSection";
 import { ProductDetailSkeleton } from "@/components/products/ProductDetailSkeleton";
+=======
+import { formatPrice } from "@/lib/formatPrice";
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
 import {
   Heart,
   Share2,
@@ -252,6 +256,7 @@ function ProductDetail() {
                 {product.name}
               </h1>
 
+<<<<<<< HEAD
               {product.shortDescription && (
                 <p className="mb-4 text-sm md:text-base text-neutral-600 font-serif leading-relaxed">
                   {product.shortDescription}
@@ -274,6 +279,22 @@ function ProductDetail() {
                   </>
                 )}
                 <span className="w-full text-xs text-neutral-500 font-medium">Incl. of all taxes</span>
+=======
+              <div className="mb-6 flex items-baseline gap-3">
+                {product.oldPrice && (
+                  <span className="text-base text-neutral-400 line-through font-medium">
+                    ₹{formatPrice(product.oldPrice)}
+                  </span>
+                )}
+                <span className="text-2xl font-serif font-bold text-[#d4af37]">
+                  ₹{formatPrice(product.price)}
+                </span>
+                {product.oldPrice && product.oldPrice > product.price && (
+                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
+                    {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
+                  </span>
+                )}
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
               </div>
 
               {activeCoupon && (

@@ -49,7 +49,7 @@ export const BrandStory = () => {
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-2xl">
                 <Image
-                  src="/images/pexels-dandu-16612609.jpg"
+                  src="/images/about-us.png"
                   alt="MaiRii Heritage & Bangles"
                   fill
                   className="object-cover transition-transform duration-1000 hover:scale-105"
@@ -57,7 +57,7 @@ export const BrandStory = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6 text-white p-4 rounded-md backdrop-blur-md bg-black/30 border border-white/20">
                   <p className="font-serif italic text-sm text-amber-200">
-                    &ldquo;For You, Ma — a quiet promise written in gold and memories.&rdquo;
+                    &ldquo;For You, Ma — a quiet promise written in sweet memories.&rdquo;
                   </p>
                 </div>
               </div>
@@ -76,29 +76,32 @@ export const BrandStory = () => {
               className="space-y-6 text-[#4A4A4A] text-base md:text-lg font-light leading-relaxed font-serif"
             >
               <p className="">
-                Long before it was a brand, it was a little girl named Bandana, watching her mother get ready, captivated by the glint of her bangles and her smile that reflected beauty and strength in just one glance.
+                Long before it was a brand, it was a little girl named BLong before it was a brand, it was a little girl named Bandana, watching her mother get ready and captivated by the glint of her bangles and her smile that reflected "Beauty and Strength in just one glance.
               </p>
 
               <p>
-                That fascination never left her — it grew into a quiet promise: one day, she&apos;d build something that let every woman feel that same wonder.It started as MaiRii, "mother" in Punjabi — her own quiet way of saying For You, Ma.
+               That fascination never left her — it grew into a quiet promise: one day, she'd build something that let every woman feel that same wonder.Years later the promise took form as MaiRii — her own quiet way of saying "For You, Ma".
               </p>
               <p>
-                The name carries that inheritance, rooted in memories: love passed down, one generation to the next.
-              </p>
-
-              <p>
-                MaiRii isn&apos;t just jewellery. It&apos;s the ritual of getting ready, the small joy of catching your reflection and loving yourself.
+                The name carries the inheritance rooted in memories: Love passed down, one generation to the next.
               </p>
 
               <p>
-                We make that joy accessible — beautifully made imitation jewellery that doesn&apos;t ask you to choose between affordability and elegance.
+              MaiRii isn't just jewellery. It's the ritual of getting ready, the small joy of catching your reflection and loving yourself.
+              </p>
+
+              <p>
+             We make that joy accessible — beautifully made imitation jewellery that doesn't ask you to choose between affordability and elegance.
               </p>
 
               <p className="text-[#2B2B2B] font-medium">
-                What started as one woman&apos;s love for her mother is now an invitation to everyone: come, enjoy a little of that magic for yourself.
+                
+What started as one woman's love for her mother is now an invitation to everyone: come, enjoy a little of that magic for yourself.
+
+
               </p>
                <p className="text-xl text-[#2B2B2B] font-normal leading-relaxed border-l-2 border-[#C4A064] pl-6 italic">
-              Because at MaiRii, we celebrate our legacy along with the expression of our unique identity.
+             Because at MaiRii, We celebrate our legacy along with the expression of our unique identity.
               </p>
             </motion.div>
 

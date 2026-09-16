@@ -22,7 +22,7 @@ const faqs = [
   {
     id: 1,
     category: "Materials & Craftsmanship",
-    question: "How do i place an order?",
+    question: "How do I place an order?",
     answer:
       "Simply add your favourite pieces to the cart and check out using any of our accepted payment methods. You'll receive an order confirmation via email and SMS right away.",
   },
@@ -36,7 +36,7 @@ const faqs = [
   {
     id: 3,
     category: "Custom Orders",
-    question: "Do I need an account to shop with MaiRii??",
+    question: "Do I need an account to shop with MaiRii?",
     answer:
       "You can check out as a guest, but creating an account lets you track orders, save addresses, and view your order history.",
   },
@@ -52,21 +52,21 @@ const faqs = [
     category: "Is MaiRii jewellery real gold or silver?",
     question: "Is MaiRii jewellery real gold or silver?",
     answer:
-      "Unless specifically described as gold-plated, silver, or certified, MaiRii pieces are artificial/imitation fashion jewellery, crafted to look beautiful and last with proper care.",
+      "Unless specifically described as gold-plated, silver or certified, MaiRii pieces are artificial/imitation fashion jewellery, crafted to look beautiful and last with proper care.",
   },
   {
     id: 6,
     category: "How do I take care of my jewellery?",
     question: "How do I take care of my jewellery?",
     answer:
-      "Keep it away from water, perfume, and direct sunlight, and store it in the pouch provided. This helps preserve the plating and finish for longer.",
+      "Keep it away from water, perfume, and direct sunlight and store it in the pouch provided. This helps preserve the plating and finish for longer.",
   },
   {
     id: 7,
     category: "Sustainability",
     question: "Will the plating fade over time?",
     answer:
-      "With normal wear and proper care, plating is designed to last, but like all fashion jewellery, it may show natural wear over extended use — this isn't a manufacturing defect.",
+      "With normal wear and proper care, plating is designed to last but like all fashion jewellery, it may show natural wear over extended use — this isn't a manufacturing defect.",
   },
 ];
 

@@ -11,6 +11,7 @@ import { mapListItemToProduct } from "@/lib/mapProduct";
 import { formatPrice } from "@/lib/formatPrice";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
+import { formatPrice } from "@/lib/formatPrice";
 
 type Tab = "bestsellers" | "newarrivals" | "trending";
 
@@ -121,13 +122,13 @@ export function SmallNavigationMenu() {
             {/* Header */}
             <header className="relative text-center px-4 shrink-0 z-10">
                 <p
-                    className="text-[20px] tracking-[0.2em] font-bold uppercase "
+                    className="text-xs sm:text-[20px] tracking-[0.2em] font-bold uppercase mb-1"
                     style={{ color: "#2b743e", letterSpacing: "0.2em" }}
                 >
                     Handcrafted Luxury
                 </p>
                 <h1
-                    className="text-3xl sm:text-4xl md:text-6xl font-light "
+                    className="text-2xl sm:text-4xl md:text-6xl font-light"
                     style={{
                         color: "#3a2a1a",
                         fontFamily: "'Cormorant Garamond', 'Georgia', serif",
@@ -147,12 +148,12 @@ export function SmallNavigationMenu() {
             </header>
 
             {/* Tab Navigation */}
-            <div className="relative flex justify-center px-4 mt-5 mb-5 shrink-0 z-10">
-                <div className="relative flex gap-4 sm:gap-8 border-b border-black/5 pb-2">
+            <div className="relative flex justify-center px-4 mt-4 mb-6 shrink-0 z-10 w-full">
+                <div className="relative flex items-center justify-between sm:justify-center w-full max-w-md gap-1 sm:gap-8 border-b border-black/10 pb-2.5">
                     {/* Sliding indicator */}
                     <div
                         ref={indicatorRef}
-                        className="absolute bottom-[-1px] h-[1px] transition-all duration-500"
+                        className="absolute bottom-[-1px] h-[1.5px] transition-all duration-500"
                         style={{
                             background: "#c9a84c",
                             zIndex: 10,
@@ -164,12 +165,11 @@ export function SmallNavigationMenu() {
                             key={tab.key}
                             ref={(el) => { tabRefs.current[tab.key] = el; }}
                             onClick={() => handleTabChange(tab.key)}
-                            className="relative z-10 px-2  text-[18px] sm:text-lg tracking-widest font-bold uppercase transition-colors duration-300"
+                            className="relative z-10 px-1 sm:px-2 text-[11px] sm:text-lg tracking-wider sm:tracking-widest font-bold uppercase transition-colors duration-300 whitespace-nowrap"
                             style={{
                                 color: activeTab === tab.key ? "#c9a84c" : "#8a6a3a",
                                 fontFamily: "'Cormorant Garamond', 'Georgia', serif",
                                 fontWeight: activeTab === tab.key ? 600 : 400,
-                                letterSpacing: "0.1em",
                                 background: "transparent",
                                 border: "none",
                                 cursor: "pointer",
@@ -184,7 +184,7 @@ export function SmallNavigationMenu() {
             {/* Product Grid */}
             <main className="relative w-full max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 z-10">
                 <div
-                    className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 transition-all duration-300 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+                    className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 transition-all duration-300 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
                         }`}
                     style={{ transition: "opacity 0.3s ease, transform 0.3s ease" }}
                 >
@@ -201,7 +201,7 @@ export function SmallNavigationMenu() {
                         >
                             {/* Image Card */}
                             <div
-                                className="relative overflow-hidden rounded-2xl mb-4 bg-white w-full aspect-square"
+                                className="relative overflow-hidden rounded-2xl mb-3 bg-white w-full aspect-square"
                                 style={{
                                     boxShadow:
                                         hoveredId === product.idStr
@@ -240,10 +240,10 @@ export function SmallNavigationMenu() {
                                 {/* Badge */}
                                 {product.badge && (
                                     <div
-                                        className="absolute top-4 left-4 px-3 py-1 text-white text-[10px] sm:text-xs tracking-widest uppercase rounded-sm border border-[#d4af37]/40 z-10"
+                                        className="absolute top-2 left-2 sm:top-4 sm:left-4 px-2 py-0.5 sm:px-3 sm:py-1 text-white text-[8px] sm:text-xs tracking-widest uppercase rounded-sm border border-[#d4af37]/40 z-10"
                                         style={{
                                             background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
-                                            letterSpacing: "0.14em",
+                                            letterSpacing: "0.1em",
                                             boxShadow: "0 2px 10px rgba(26,61,47,0.3)",
                                         }}
                                     >
@@ -258,7 +258,7 @@ export function SmallNavigationMenu() {
                                         e.stopPropagation();
                                         toggleWishlist(product.global);
                                     }}
-                                    className="absolute top-4 right-4 w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-300 z-10"
+                                    className="absolute top-2 right-2 sm:top-4 sm:right-4 w-7 h-7 sm:w-10 sm:h-10 flex items-center justify-center rounded-full transition-all duration-300 z-10"
                                     style={{
                                         background: "rgba(255,255,255,0.92)",
                                         backdropFilter: "blur(4px)",
@@ -268,8 +268,7 @@ export function SmallNavigationMenu() {
                                     }}
                                 >
                                     <svg
-                                        width="17"
-                                        height="17"
+                                        className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                                         viewBox="0 0 24 24"
                                         fill={isInWishlist(product.global.id) ? "#c9a84c" : "none"}
                                         stroke="#c9a84c"
@@ -281,10 +280,10 @@ export function SmallNavigationMenu() {
                             </div>
 
                             {/* Product Info */}
-                            <div className="px-1 text-center flex flex-col flex-grow justify-between">
+                            <div className="px-1 text-center flex flex-col flex-grow justify-between space-y-2">
                                 <Link href={`/product/${product.slug}`}>
                                     <h3
-                                        className="text-base sm:text-lg md:text-xl capitalize leading-snug mb-2 transition-colors duration-300 line-clamp-1"
+                                        className="text-xs sm:text-lg md:text-xl capitalize leading-snug transition-colors duration-300 line-clamp-1"
                                         style={{
                                             color: hoveredId === product.idStr ? "#c9a84c" : "#3a2a1a",
                                             fontFamily: "'Cormorant Garamond', 'Georgia', serif",
@@ -296,19 +295,19 @@ export function SmallNavigationMenu() {
                                     </h3>
                                 </Link>
 
-                                <div className="flex flex-col items-center justify-center gap-2.5 mt-auto">
+                                <div className="flex flex-col items-center justify-center gap-1.5 mt-auto">
                                     {/* Price Hierarchy Section */}
-                                    <div className="flex items-baseline justify-center gap-2 mb-1">
+                                    <div className="flex flex-wrap items-baseline justify-center gap-1.5 sm:gap-2">
                                         {product.oldPrice && (
                                             <span
-                                                className="text-sm sm:text-base font-medium line-through"
+                                                className="text-xs sm:text-base font-medium line-through"
                                                 style={{ color: "#1a3d2f", opacity: 0.75 }}
                                             >
                                                 {product.oldPrice}
                                             </span>
                                         )}
                                         <span
-                                            className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight"
+                                            className="text-sm sm:text-xl md:text-2xl font-bold tracking-tight"
                                             style={{ color: "#d4af37" }}
                                         >
                                             {product.price}
@@ -322,7 +321,7 @@ export function SmallNavigationMenu() {
                                             e.stopPropagation();
                                             addToCart(product.global);
                                         }}
-                                        className="relative w-full group/btn rounded-xl flex items-center justify-center py-3 px-5 text-xs sm:text-sm font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0"
+                                        className="relative w-full group/btn rounded-full flex items-center justify-center py-2 px-2 sm:py-3 sm:px-5 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
                                         style={{
                                             background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
                                             color: "#ffffff",
@@ -334,19 +333,19 @@ export function SmallNavigationMenu() {
                                         />
 
                                         <svg
-                                            width="15"
-                                            height="15"
+                                            width="12"
+                                            height="12"
                                             viewBox="0 0 24 24"
                                             fill="none"
                                             stroke="currentColor"
                                             strokeWidth="2.2"
-                                            className="mr-2 transition-transform duration-300 group-hover/btn:scale-110 group-hover/btn:-rotate-6"
+                                            className="mr-1 sm:mr-2 shrink-0 transition-transform duration-300 group-hover/btn:scale-110 group-hover/btn:-rotate-6"
                                         >
                                             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
                                             <line x1="3" y1="6" x2="21" y2="6" />
                                             <path d="M16 10a4 4 0 0 1-8 0" />
                                         </svg>
-                                        <span className="relative z-10 font-bold text-white">Add to Cart</span>
+                                        <span className="relative z-10 font-bold text-white whitespace-nowrap">Add to Cart</span>
                                     </button>
                                 </div>
                             </div>
@@ -355,43 +354,12 @@ export function SmallNavigationMenu() {
                 </div>
 
                 {/* View All CTA */}
-                <div className="flex justify-center mt-12">
+                <div className="flex justify-center mt-10">
                     <Link href="/category/necklaces">
                         <button
-                        className="group relative px-8 py-3 text-[11px] tracking-[0.2em] uppercase overflow-hidden"
-                        style={{
-                            border: "1px solid #c9a84c",
-                            color: "#c9a84c",
-                            background: "transparent",
-                            cursor: "pointer",
-                            transition: "color 0.4s ease",
-                        }}
-                        onMouseEnter={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.color = "#fff";
-                        }}
-                        onMouseLeave={(e) => {
-                            (e.currentTarget as HTMLButtonElement).style.color = "#c9a84c";
-                        }}
-                    >
-                        <span
-                            className="absolute inset-0 transition-transform duration-500 origin-left"
-                            style={{
-                                background: "#c9a84c",
-                                transform: "scaleX(0)",
-                                zIndex: 0,
-                            }}
-                            ref={(el) => {
-                                if (el) {
-                                    el.parentElement?.addEventListener("mouseenter", () => {
-                                        el.style.transform = "scaleX(1)";
-                                    });
-                                    el.parentElement?.addEventListener("mouseleave", () => {
-                                        el.style.transform = "scaleX(0)";
-                                    });
-                                }
-                            }}
-                        />
-                        <span className="relative z-10 font-medium text-base">Explore Full Collection</span>
+                            className="group relative rounded-full px-7 py-3 sm:px-10 sm:py-4 text-xs sm:text-sm font-bold tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer border border-[#c9a84c] text-[#c9a84c] hover:bg-[#c9a84c] hover:text-white shadow-sm hover:shadow-lg whitespace-nowrap"
+                        >
+                            <span className="relative z-10 font-bold whitespace-nowrap">Explore Full Collection</span>
                         </button>
                     </Link>
                 </div>

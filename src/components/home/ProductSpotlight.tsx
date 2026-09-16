@@ -9,6 +9,7 @@ import { formatPrice } from "@/lib/formatPrice";
 import { useProducts } from "@/hooks/useProducts";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const ProductSpotlight = () => {

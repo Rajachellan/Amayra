@@ -46,9 +46,15 @@ const FALLBACK_SLIDERS: Slider[] = [
   },
 ];
 
+import { formatPrice } from "@/lib/formatPrice";
+
 function formatInr(n?: number) {
   if (n == null || Number.isNaN(n)) return "";
+<<<<<<< HEAD
   return `₹${Math.round(n).toLocaleString("en-IN")}`;
+=======
+  return `₹${formatPrice(n)}`;
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
 }
 
 function productOf(hotspotProduct: string | LookbookHotspotProduct | undefined): LookbookHotspotProduct | null {

@@ -91,13 +91,13 @@ export const CollectionStory = () => {
   >
     <p>
       More precious than the inheritance of jewels are the virtues you
-      inherited from the women who shaped who you are.
+      inherited from the women who shaped who you are.She gave You,
     </p>
 
     {/* Her Qualities */}
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
       {[
-        "She gave you her courage.",
+        "Her courage.",
         "Her Kindness",
         "Her Resilience",
         "Her Way of Loving",

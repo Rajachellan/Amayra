@@ -48,10 +48,10 @@ export const Materials = () => {
            
 
             <h2 className="font-serif text-4xl mb-5 md:text-5xl lg:text-[3.2rem] leading-[1.08] text-[#4A3F35]">
-             Purity beyond 
+           Stories from 
               <br />
               <span className="italic text-[#C4A064]">
-                expectations
+               our past
               </span>
             </h2>
 

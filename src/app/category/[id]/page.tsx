@@ -18,11 +18,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "../../../assets/preview_banner/inner-banner-22.png";
+import bridalBanner from "../../../assets/preview_banner/banner.png"
 import necklaceBanner from "@/assets/neckles.jpg";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
-import bannerImage from "../../../assets/preview_banner/inner-banner-11.png";
+import bannerImage from "../../../assets/preview_banner/inner-banner-1.png";
 import ringsImg from "@/assets/pexels-the-glorious-studio-3584518-10361481 (1).jpg";
 import nosePinImg from "@/assets/pexels-ankunijjar-31772512.jpg";
 import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.jpg";
@@ -192,12 +192,12 @@ function CategoryContent() {
     return occasionsList.length > 0
       ? occasionsList
       : [
-          { name: "Wedding", slug: "wedding" },
-          { name: "Cocktail", slug: "cocktail" },
-          { name: "Daily Wear", slug: "daily-wear" },
-          { name: "Festive", slug: "festival" },
-          { name: "Gifting", slug: "gifting" },
-        ];
+        { name: "Wedding", slug: "wedding" },
+        { name: "Cocktail", slug: "cocktail" },
+        { name: "Daily Wear", slug: "daily-wear" },
+        { name: "Festive", slug: "festival" },
+        { name: "Gifting", slug: "gifting" },
+      ];
   }, [occasionsList]);
 
   const toggleSection = (key: string) => {
@@ -290,16 +290,16 @@ function CategoryContent() {
   const subCategoryItems =
     ctx && ctx.node.children?.length
       ? ctx.node.children.map((c) => ({
+        name: c.name,
+        slug: c.slug,
+        image: resolveMediaUrl(c.image),
+      }))
+      : ctx?.parent?.children?.length
+        ? ctx.parent.children.map((c) => ({
           name: c.name,
           slug: c.slug,
           image: resolveMediaUrl(c.image),
         }))
-      : ctx?.parent?.children?.length
-        ? ctx.parent.children.map((c) => ({
-            name: c.name,
-            slug: c.slug,
-            image: resolveMediaUrl(c.image),
-          }))
         : [];
 
   const toggleOccasion = (name: string) => {
@@ -412,13 +412,13 @@ function CategoryContent() {
             {(collectionsList.length > 0
               ? collectionsList
               : [
-                  { name: "Rings", slug: "rings" },
-                  { name: "Bracelets & Hathphools", slug: "bracelets" },
-                  { name: "Earrings & Crawlers", slug: "earrings" },
-                  { name: "Necklaces & Chokers", slug: "necklaces" },
-                  { name: "Hand Accessories", slug: "hand-accessories" },
-                  { name: "Anklets", slug: "anklets" },
-                ]
+                { name: "Rings", slug: "rings" },
+                { name: "Bracelets & Hathphools", slug: "bracelets" },
+                { name: "Earrings & Crawlers", slug: "earrings" },
+                { name: "Necklaces & Chokers", slug: "necklaces" },
+                { name: "Hand Accessories", slug: "hand-accessories" },
+                { name: "Anklets", slug: "anklets" },
+              ]
             ).map((col, idx) => {
               const isChecked = selectedCollections.includes(col.slug);
               const cnt = Math.floor(Math.random() * 20) + 2;
@@ -557,19 +557,19 @@ function CategoryContent() {
         selectedCollections.length > 0 ||
         selectedColors.length > 0 ||
         selectedMaxPrice !== null) && (
-        <button
-          type="button"
-          onClick={() => {
-            setSelectedOccasions([]);
-            setSelectedCollections([]);
-            setSelectedColors([]);
-            setSelectedMaxPrice(null);
-          }}
-          className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2"
-        >
-          Clear All Filters
-        </button>
-      )}
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedOccasions([]);
+              setSelectedCollections([]);
+              setSelectedColors([]);
+              setSelectedMaxPrice(null);
+            }}
+            className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2"
+          >
+            Clear All Filters
+          </button>
+        )}
     </div>
   );
 
@@ -604,6 +604,7 @@ function CategoryContent() {
           </AnimatePresence>
         </div>
 
+<<<<<<< HEAD
         {/* 2-Slide Auto-Scroll Pagination Indicators (only when multiple slides active) */}
         {hasMultipleSlides && (
           <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
@@ -629,6 +630,29 @@ function CategoryContent() {
             />
           </div>
         )}
+=======
+        {/* 2-Slide Auto-Scroll Pagination Indicators */}
+        <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
+          <button
+            type="button"
+            onClick={() => setCurrentBannerIndex(0)}
+            aria-label="Slide 1"
+            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === 0
+                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                : "w-2.5 bg-white/50 hover:bg-white/80"
+              }`}
+          />
+          <button
+            type="button"
+            onClick={() => setCurrentBannerIndex(1)}
+            aria-label="Slide 2"
+            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === 1
+                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                : "w-2.5 bg-white/50 hover:bg-white/80"
+              }`}
+          />
+        </div>
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
 
         {/* Bottom Filigree Line */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
@@ -696,9 +720,14 @@ function CategoryContent() {
                 <ProductGridSkeleton count={6} showFilter={showFilter} />
               ) : filteredProducts.length > 0 ? (
                 <div
+<<<<<<< HEAD
                   className={`grid grid-cols-2 sm:grid-cols-2 ${
                     showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
                   } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
+=======
+                  className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    } gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-12`}
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />

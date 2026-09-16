@@ -17,6 +17,13 @@ import {
   Building2,
   Home,
   Tag,
+  Sparkles,
+  Palette,
+  Ruler,
+  Gem,
+  Calendar,
+  HeartHandshake,
+  Check
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -94,6 +101,35 @@ function getAddressIcon(label?: string) {
   return <Tag className="w-4 h-4 text-[#c9a84c]" />;
 }
 
+const COLOR_PRESETS = [
+  { name: "Emerald Green", color: "#0B2516" },
+  { name: "Rose Gold", color: "#B76E79" },
+  { name: "Royal Ruby Red", color: "#8B0000" },
+  { name: "Sapphire Blue", color: "#0F2C59" },
+  { name: "Champagne Gold", color: "#D4AF37" },
+  { name: "Pearl White", color: "#F5F5F0" },
+  { name: "Platinum Silver", color: "#E5E4E2" },
+  { name: "Midnight Velvet", color: "#1C1510" },
+];
+
+const METAL_PRESETS = [
+  "22K Gold",
+  "18K Rose Gold",
+  "925 Sterling Silver",
+  "White Gold",
+  "Platinum",
+  "Antique Oxidized Silver",
+];
+
+const STYLE_PRESETS = [
+  "Traditional Bridal",
+  "Statement Partywear",
+  "Minimalist Dailywear",
+  "Festive Heirloom",
+  "Temple Jewellery",
+  "Modern Chic",
+];
+
 export function PersonalDetailsPanel() {
   const { user, refreshMe } = useAuth();
   const [profile, setProfile] = useState<CustomerProfile | null>(null);
@@ -101,10 +137,21 @@ export function PersonalDetailsPanel() {
   const [savingProfile, setSavingProfile] = useState(false);
   const [savingAddress, setSavingAddress] = useState(false);
 
+  // Form Fields
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [anniversary, setAnniversary] = useState("");
+  const [specialDate, setSpecialDate] = useState("");
+  const [specialNote, setSpecialNote] = useState("");
+  const [favoriteColors, setFavoriteColors] = useState<string[]>([]);
+  const [preferredMetals, setPreferredMetals] = useState<string[]>([]);
+  const [ringSize, setRingSize] = useState("");
+  const [bangleSize, setBangleSize] = useState("");
+  const [preferredStyles, setPreferredStyles] = useState<string[]>([]);
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
 
+  // Address Editor State
   const [editorOpen, setEditorOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [addressForm, setAddressForm] = useState<AddressFormValues>(EMPTY_ADDRESS_FORM);
@@ -119,6 +166,35 @@ export function PersonalDetailsPanel() {
       setProfile(p);
       setName(p.name ?? "");
       setPhone(p.phone ?? "");
+      setBirthday(p.birthday ?? "");
+      setAnniversary(p.anniversary ?? "");
+      setSpecialDate(p.specialDate ?? "");
+      setSpecialNote(p.specialNote ?? "");
+
+      const colorsArr = Array.isArray(p.favoriteColors)
+        ? p.favoriteColors
+        : (typeof p.favoriteColors === "string" && p.favoriteColors.trim() !== "")
+          ? p.favoriteColors.split(",").map((s) => s.trim()).filter(Boolean)
+          : [];
+      setFavoriteColors(colorsArr);
+
+      const metalsArr = Array.isArray(p.preferredMetals)
+        ? p.preferredMetals
+        : (typeof p.preferredMetals === "string" && p.preferredMetals.trim() !== "")
+          ? p.preferredMetals.split(",").map((s) => s.trim()).filter(Boolean)
+          : [];
+      setPreferredMetals(metalsArr);
+
+      setRingSize(p.ringSize ?? "");
+      setBangleSize(p.bangleSize ?? "");
+
+      const stylesArr = Array.isArray(p.preferredStyles)
+        ? p.preferredStyles
+        : (typeof p.preferredStyles === "string" && p.preferredStyles.trim() !== "")
+          ? p.preferredStyles.split(",").map((s) => s.trim()).filter(Boolean)
+          : [];
+      setPreferredStyles(stylesArr);
+
     } catch {
       if (user) {
         setProfile({ name: user.name, email: user.email, phone: user.phone });
@@ -134,6 +210,24 @@ export function PersonalDetailsPanel() {
     void loadProfile();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
+
+  function toggleColor(cName: string) {
+    setFavoriteColors((prev) =>
+      prev.includes(cName) ? prev.filter((i) => i !== cName) : [...prev, cName]
+    );
+  }
+
+  function toggleMetal(mName: string) {
+    setPreferredMetals((prev) =>
+      prev.includes(mName) ? prev.filter((i) => i !== mName) : [...prev, mName]
+    );
+  }
+
+  function toggleStyle(sName: string) {
+    setPreferredStyles((prev) =>
+      prev.includes(sName) ? prev.filter((i) => i !== sName) : [...prev, sName]
+    );
+  }
 
   function openCreateAddress() {
     setEditingId(null);
@@ -179,13 +273,26 @@ export function PersonalDetailsPanel() {
         body: JSON.stringify({
           name: parsed.data.name,
           phone: parsed.data.phone,
+          birthday,
+          anniversary,
+          specialDate,
+          specialNote,
+          favoriteColors,
+          preferredMetals,
+          ringSize,
+          bangleSize,
+          preferredStyles,
         }),
       });
       setProfile(updated);
       setName(updated.name);
       setPhone(updated.phone ?? "");
+      setBirthday(updated.birthday ?? birthday);
+      setAnniversary(updated.anniversary ?? anniversary);
+      setSpecialDate(updated.specialDate ?? specialDate);
+      setSpecialNote(updated.specialNote ?? specialNote);
       await refreshMe();
-      toast.success("Profile details updated successfully!");
+      toast.success("Profile & styling preferences updated!");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Could not update profile");
     } finally {
@@ -265,25 +372,26 @@ export function PersonalDetailsPanel() {
           Account Settings
         </span>
         <h2 className="text-2xl sm:text-3xl font-serif text-stone-900 font-medium">
-          Personal Details & Addresses
+          Personal Details & Concierge Preferences
         </h2>
       </div>
 
-      {/* Profile Contact Form Card */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-stone-50/50 border border-stone-200/80 space-y-6">
-        <div className="flex items-center justify-between border-b border-stone-200/60 pb-4">
-          <div className="flex items-center gap-3 text-stone-900">
-            <div className="p-2 rounded-xl bg-[#0B2516] text-[#c9a84c]">
-              <User className="w-4 h-4" />
-            </div>
-            <div>
-              <h3 className="font-serif text-lg font-medium">Contact Information</h3>
-              <p className="text-xs text-stone-500">Manage your primary account details</p>
+      <form onSubmit={saveProfile} className="space-y-8" noValidate>
+
+        {/* 1. Contact Information & Milestone Dates */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-stone-50/50 border border-stone-200/80 space-y-6">
+          <div className="flex items-center justify-between border-b border-stone-200/60 pb-4">
+            <div className="flex items-center gap-3 text-stone-900">
+              <div className="p-2 rounded-xl bg-[#0B2516] text-[#c9a84c]">
+                <User className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-serif text-lg font-medium">Contact & Milestone Dates</h3>
+                <p className="text-xs text-stone-500">Manage your primary details and important celebration dates</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <form onSubmit={saveProfile} className="space-y-5" noValidate>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             <Field
               label="Full Name"
@@ -307,38 +415,203 @@ export function PersonalDetailsPanel() {
                 className="w-full rounded-xl border border-stone-200 bg-stone-100/70 px-4 py-3 text-sm text-stone-500 cursor-not-allowed font-sans"
               />
               <span className="block text-[11px] text-stone-400 font-light">
-                Email is linked to your account authentication and cannot be changed here.
+                Email is linked to your account authentication.
               </span>
             </label>
 
+            <Field
+              label="Mobile Number"
+              name="phone"
+              value={phone}
+              onChange={setPhone}
+              error={profileErrors.phone}
+              placeholder="10-digit Indian mobile number"
+              autoComplete="tel"
+              inputMode="tel"
+              maxLength={16}
+              hint="Format: 9566571655 or +91 9566571655"
+            />
+
+            <Field
+              label="Date of Birth / Birthday"
+              name="birthday"
+              type="date"
+              value={birthday}
+              onChange={setBirthday}
+              hint="Share your birthday for special Privé anniversary surprises"
+            />
+
+            <Field
+              label="Anniversary Date"
+              name="anniversary"
+              type="date"
+              value={anniversary}
+              onChange={setAnniversary}
+              hint="Share your anniversary date for exclusive curated gifts"
+            />
+
+            <Field
+              label="Special Note Date"
+              name="specialDate"
+              type="date"
+              value={specialDate}
+              onChange={setSpecialDate}
+              hint="Select a custom milestone date (e.g. Graduation, Renewal)"
+            />
+
             <div className="md:col-span-2">
               <Field
-                label="Mobile Number"
-                name="phone"
-                value={phone}
-                onChange={setPhone}
-                error={profileErrors.phone}
-                placeholder="10-digit Indian mobile number"
-                autoComplete="tel"
-                inputMode="tel"
-                maxLength={16}
-                hint="Format: 9566571655 or +91 9566571655"
+                label="Occasion / Special Note"
+                name="specialNote"
+                value={specialNote}
+                onChange={setSpecialNote}
+                placeholder="e.g. Spouse's Birthday, Graduation, Family Heirloom Celebration"
+                hint="Describe what you celebrate on your Special Note Date"
               />
             </div>
           </div>
+        </div>
 
-          <div className="pt-2">
-            <button
-              type="submit"
-              disabled={savingProfile}
-              className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#0B2516] text-white text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#c9a84c] hover:text-[#0B2516] transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-60"
-            >
-              {savingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-              Save Contact Details
-            </button>
+        {/* 2. Styling Preferences & Favorite Colors */}
+        <div className="p-6 sm:p-8 rounded-3xl bg-stone-50/50 border border-stone-200/80 space-y-6">
+          <div className="flex items-center justify-between border-b border-stone-200/60 pb-4">
+            <div className="flex items-center gap-3 text-stone-900">
+              <div className="p-2 rounded-xl bg-[#0B2516] text-[#c9a84c]">
+                <Palette className="w-4 h-4" />
+              </div>
+              <div>
+                <h3 className="font-serif text-lg font-medium">Privé Styling Preferences</h3>
+                <p className="text-xs text-stone-500">Help our concierge tailor recommendations to your aesthetic</p>
+              </div>
+            </div>
           </div>
-        </form>
-      </div>
+
+          <div className="space-y-6">
+
+            {/* Favorite Colors */}
+            <div className="space-y-3">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500 flex items-center gap-1.5">
+                <Palette className="w-3.5 h-3.5 text-[#c9a84c]" /> Favorite Colors & Gem Tones
+              </span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {COLOR_PRESETS.map((preset) => {
+                  const selected = favoriteColors.includes(preset.name);
+                  return (
+                    <button
+                      key={preset.name}
+                      type="button"
+                      onClick={() => toggleColor(preset.name)}
+                      className={`flex items-center gap-2.5 p-2.5 rounded-xl border text-xs transition-all ${selected
+                        ? "border-[#c9a84c] bg-white shadow-md ring-1 ring-[#c9a84c]"
+                        : "border-stone-200 bg-white/70 hover:border-stone-300"
+                        }`}
+                    >
+                      <span
+                        className="w-4 h-4 rounded-full border border-black/10 shrink-0 flex items-center justify-center"
+                        style={{ backgroundColor: preset.color }}
+                      >
+                        {selected && <Check className={`w-2.5 h-2.5 ${preset.color === "#F5F5F0" || preset.color === "#E5E4E2" ? "text-stone-900" : "text-white"}`} />}
+                      </span>
+                      <span className={`font-medium truncate ${selected ? "text-stone-900 font-semibold" : "text-stone-600"}`}>
+                        {preset.name}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Category 1: Preferred Metals & Finishes */}
+            <div className="space-y-3 pt-2">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500 flex items-center gap-1.5">
+                <Gem className="w-3.5 h-3.5 text-[#c9a84c]" /> Preferred Metals & Finishes
+              </span>
+              <div className="flex flex-wrap gap-2.5">
+                {METAL_PRESETS.map((metal) => {
+                  const selected = preferredMetals.includes(metal);
+                  return (
+                    <button
+                      key={metal}
+                      type="button"
+                      onClick={() => toggleMetal(metal)}
+                      className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all border ${selected
+                        ? "bg-[#0B2516] text-[#c9a84c] border-[#0B2516] shadow-sm"
+                        : "bg-white text-stone-600 border-stone-200 hover:border-[#c9a84c]/50"
+                        }`}
+                    >
+                      {selected ? `✓ ${metal}` : metal}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Category 2: Sizing & Fit Details */}
+            <div className="space-y-3 pt-2">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500 flex items-center gap-1.5">
+                <Ruler className="w-3.5 h-3.5 text-[#c9a84c]" /> Jewellery Sizing & Fit Preferences
+              </span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field
+                  label="Ring Size"
+                  name="ringSize"
+                  value={ringSize}
+                  onChange={setRingSize}
+                  placeholder="e.g. US 6 / IN 12"
+                  hint="Your preferred standard ring size"
+                />
+                <Field
+                  label="Bangle / Bracelet Size"
+                  name="bangleSize"
+                  value={bangleSize}
+                  onChange={setBangleSize}
+                  placeholder="e.g. 2.4, 2.6, 2.8 or Small/Medium"
+                  hint="Your comfortable bangle size"
+                />
+              </div>
+            </div>
+
+            {/* Category 3: Preferred Style & Occasions */}
+            <div className="space-y-3 pt-2">
+              <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-stone-500 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#c9a84c]" /> Preferred Styles & Occasions
+              </span>
+              <div className="flex flex-wrap gap-2.5">
+                {STYLE_PRESETS.map((style) => {
+                  const selected = preferredStyles.includes(style);
+                  return (
+                    <button
+                      key={style}
+                      type="button"
+                      onClick={() => toggleStyle(style)}
+                      className={`px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all border ${selected
+                        ? "bg-[#0B2516] text-[#c9a84c] border-[#0B2516] shadow-sm"
+                        : "bg-white text-stone-600 border-stone-200 hover:border-[#c9a84c]/50"
+                        }`}
+                    >
+                      {selected ? `✓ ${style}` : style}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Form Action Button */}
+        <div className="pt-2 flex justify-start">
+          <button
+            type="submit"
+            disabled={savingProfile}
+            className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full bg-[#0B2516] text-white text-xs uppercase tracking-[0.2em] font-semibold hover:bg-[#c9a84c] hover:text-[#0B2516] transition-all duration-300 shadow-md hover:shadow-xl disabled:opacity-60"
+          >
+            {savingProfile ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+            Save Contact Details & Preferences
+          </button>
+        </div>
+
+      </form>
 
       {/* Saved Addresses Section */}
       <div className="space-y-6">
@@ -501,7 +774,7 @@ export function PersonalDetailsPanel() {
                         onClick={() => setAddressForm((f) => ({ ...f, label: tag }))}
                         className={`px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-wider transition border ${addressForm.label === tag
                           ? "bg-stone-900 text-white border-stone-900"
-                          : "bg-stone-50 text-stone-600 border-stone-200 hover:border-brand-gold"
+                          : "bg-stone-50 text-stone-600 border-stone-200 hover:border-[#c9a84c]"
                           }`}
                       >
                         {tag === "Home" ? "🏠 Home" : tag === "Work" || tag === "Office" ? "💼 " + tag : "📍 " + tag}

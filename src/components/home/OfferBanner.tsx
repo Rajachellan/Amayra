@@ -188,12 +188,12 @@ export const OffersSection = () => {
 function TickerBar({ items }: { items: string[] }) {
   const doubled = [...items, ...items];
   return (
-    <div className="overflow-hidden rounded-xl bg-emerald-dark py-2">
-      <div className="animate-marquee flex w-max">
+    <div className="w-full max-w-full overflow-hidden rounded-xl bg-emerald-dark py-2.5 shadow-sm">
+      <div className="animate-marquee flex w-max items-center">
         {doubled.map((item, i) => (
           <span
             key={`${item}-${i}`}
-            className="inline-flex items-center gap-3 whitespace-nowrap px-8 text-[14px] font-medium uppercase tracking-[0.18em] text-brand-gold"
+            className="inline-flex items-center gap-2.5 whitespace-nowrap px-4 sm:px-8 text-[11px] sm:text-[14px] font-medium uppercase tracking-wider sm:tracking-[0.18em] text-brand-gold"
           >
             <span className="h-1 w-1 flex-shrink-0 rounded-full bg-brand-gold" />
             {item}

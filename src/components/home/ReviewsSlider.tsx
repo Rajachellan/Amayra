@@ -15,22 +15,22 @@ const REVIEWS = [
       "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Bridal Collection",
-    text: "The craftsmanship is unparalleled. I've never seen such intricate gold work that still feels modern and wearable. A true royal masterpiece.",
+    text: "The craftsmanship is unparalleled. I've never seen such intricate work that still feels modern and wearable. A true royal masterpiece.",
   },
   {
     id: 2,
     name: "Ganesh",
-    location: "Chennai, India",
+    location: "Chandigarh, India",
     image:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Haute Joaillerie",
-    text: "Pure luxury. From the velvet packaging to the jewelry itself, every detail exudes elegance. My custom bridal set received endless compliments!",
+    text: "A beautiful shopping experience from start to finish. The packaging was elegant, and the jewellery was even more stunning in person. The quality and finishing are exceptional, and I received so many compliments!",
   },
   {
     id: 3,
     name: "Devi",
-    location:"Coimbatore, India",
+    location:"Jaipur, India",
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -49,13 +49,13 @@ const REVIEWS = [
   },
   {
     id: 5,
-    name:"Sangeetha",
-    location: "Pudukottai,India",
+    name:"Amala",
+    location: "Delhi,India",
     image:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Solitaire Diamonds",
-    text: "Shopping at MaiRii was an incredible royal experience. My bespoke solitaire diamond pendant is my absolute prized possession.",
+    text: "Shopping at MaiRii was an incredible royal experience. My bespoke jewellery piece is now one of my absolute prized possessions.",
   },
   {
     id: 6,
@@ -159,8 +159,8 @@ export const ReviewsSlider = () => {
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#d4af37]" />
-            <span className="font-sans font-bold tracking-[0.45em] uppercase text-[11px] sm:text-xs text-[#1a3d2f]">
-              Patrons of MaiRii
+            <span className="font-sans font-bold tracking-[0.45em]  text-[11px] sm:text-xs text-[#1a3d2f]">
+              PATRONS OF MaiRii
             </span>
             <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#d4af37]" />
           </div>

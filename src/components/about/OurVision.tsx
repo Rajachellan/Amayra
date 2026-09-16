@@ -54,7 +54,7 @@ export const OurVision = () => {
             </h2>
             {/* <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#C4A064] to-transparent mx-auto mb-8" /> */}
             <p className="text-lg text-[#555555] font-light leading-relaxed font-serif">
-              Every woman carries a story — of strength quietly worn, dreams quietly set aside, and resilience that often goes unnoticed by the world, and sometimes even by herself.
+              Every woman carries a story — of strength quietly worn, dreams quietly set aside, and resilience that often goes unnoticed by the world and sometimes even by herself.
             </p>
           </motion.div>
         </div>
@@ -79,22 +79,22 @@ export const OurVision = () => {
               &ldquo;MaiRii is not just a jewellery brand. It is my way of telling every woman who wears it: &lsquo;You deserve to shine, exactly as you are, at every age and every stage of your life.&rsquo;&rdquo;
             </p>
             <div className="pt-2">
-              <span className="text-[11px] font-bold uppercase tracking-[0.3em] text-[#C4A064]">
-                — Bandana, Founder of MaiRii
+              <span className="text-[15px] font-bold uppercase tracking-[0.3em] text-[#C4A064]">
+                — Bandana,Founder & Custodian, MaiRii
               </span>
             </div>
           </div>
         </motion.div>
 
         {/* 10% Profit Pledge Banner */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1.0 }}
           className="p-10 md:p-16 rounded-2xl bg-gradient-to-r from-[#2C2A28] via-[#3B3732] to-[#2C2A28] text-white shadow-2xl relative overflow-hidden mb-16"
         >
-          {/* Decorative Gold Line */}
+       
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C4A064] via-amber-300 to-[#C4A064]" />
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
@@ -117,7 +117,7 @@ export const OurVision = () => {
               </p>
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* 4 Impact Pillars Grid */}
         {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

@@ -12,7 +12,7 @@ const TermsOfService = () => {
       <Navbar />
       <PageBanner
         title="Terms of Service"
-        subtitle="Legal"
+        // subtitle="Legal"
         image="/images/optimized/banner (4).png"
         height="h-[75vh]"
       />

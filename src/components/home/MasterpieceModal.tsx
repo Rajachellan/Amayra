@@ -12,13 +12,16 @@ import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
+import { formatPrice } from "@/lib/formatPrice";
 
 interface MasterpieceModalProps {
+  product?: Product | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
+  product: propProduct,
   isOpen,
   onClose,
 }) => {

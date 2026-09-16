@@ -7,6 +7,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/formatPrice";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 
 type Props = {
   title: string;
@@ -26,14 +27,19 @@ function RelatedCard({ product }: { product: Product }) {
     <article className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-xs transition-all hover:shadow-lg min-w-[210px] sm:min-w-[260px] max-w-[280px] shrink-0">
       <Link
         href={`/product/${product.slug ?? product.id}`}
+<<<<<<< HEAD
         style={{ position: "relative" }}
         className="relative block aspect-[4/5] overflow-hidden bg-[#f3f0eb]"
+=======
+        className="relative aspect-square w-full overflow-hidden bg-neutral-100"
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
       >
         <Image
           src={imgSrc}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
+<<<<<<< HEAD
           className="object-cover transition-transform duration-700 group-hover:scale-105"
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
@@ -46,6 +52,15 @@ function RelatedCard({ product }: { product: Product }) {
             ? "New Arrival"
             : "Exclusive"}
         </span>
+=======
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        {product.isNewArrival && (
+          <span className="absolute left-3 top-3 rounded-md bg-[#1a3d2f] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-sm">
+            New
+          </span>
+        )}
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
       </Link>
 
       <div className="flex flex-1 flex-col p-3.5 sm:p-5">
@@ -67,10 +82,18 @@ function RelatedCard({ product }: { product: Product }) {
             ₹{formatPrice(product.price)}
           </span>
           {product.oldPrice && (
+<<<<<<< HEAD
             <span className="text-[11px] sm:text-xs text-neutral-400 line-through">
               ₹{formatPrice(product.oldPrice)}
             </span>
           )}
+=======
+            <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
+              ₹{formatPrice(product.oldPrice)}
+            </span>
+          )}
+          <span className="text-lg font-bold text-[#d4af37]">₹{formatPrice(product.price)}</span>
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
         </div>
 
         <button
@@ -138,6 +161,7 @@ export function RelatedProductsRow({ title, products, shopAllHref }: Props) {
   return (
     <section className="border-t border-neutral-200/80 bg-[#FAF9F7] py-14 sm:py-18">
       <div className="container mx-auto px-6">
+<<<<<<< HEAD
         <div className="mb-8 flex items-center justify-between">
           <h2 className="text-lg sm:text-2xl font-serif font-bold uppercase tracking-[0.25em] text-neutral-900">
             {title}
@@ -168,6 +192,13 @@ export function RelatedProductsRow({ title, products, shopAllHref }: Props) {
           className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 no-scrollbar scroll-smooth"
         >
           {products.map((p) => (
+=======
+        <h2 className="mb-10 text-center text-xl font-bold uppercase tracking-[0.35em] text-neutral-900 md:text-2xl">
+          {title}
+        </h2>
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {shown.map((p) => (
+>>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
             <RelatedCard key={p.id} product={p} />
           ))}
           <ShopAllCard

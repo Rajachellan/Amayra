@@ -13,7 +13,7 @@ const PrivacyPolicy = () => {
 
       <PageBanner
         title="Privacy Policy"
-        subtitle="Legal"
+        // subtitle="Legal"
         image="/images/optimized/banner (3).png"
         height="h-[75vh]"
       />

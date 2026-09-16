@@ -13,6 +13,7 @@ import { shopApi, type CartPricingResponse, type PublicCouponDoc } from "@/lib/a
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { formatPrice, formatCurrency } from "@/lib/formatPrice";
 import type { Product } from "@/types";
+import { formatPrice } from "@/lib/formatPrice";
 
 const SUGGESTION_COUNT = 10;
 
@@ -235,14 +236,14 @@ export function CartDrawer() {
                         <span className={`block transition-colors duration-300 ${subtotal >= FREE_SHIPPING_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
                           {subtotal >= FREE_SHIPPING_THRESHOLD ? "✓ Free Ship" : "Free Ship"}
                         </span>
-                        <span className="text-[9px] text-gray-400 font-normal">₹1,499</span>
+                        <span className="text-[9px] text-gray-400 font-normal">₹{formatPrice(1499)}</span>
                       </div>
                       
                       <div className={`${freeGiftEnabled ? "text-center" : "text-right"} space-y-0.5`}>
                         <span className={`block transition-colors duration-300 ${subtotal >= DISCOUNT_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
                           {subtotal >= DISCOUNT_THRESHOLD ? `✓ ${discountPct || 10}% OFF` : `${discountPct || 10}% OFF`}
                         </span>
-                        <span className="text-[9px] text-gray-400 font-normal">₹3,499</span>
+                        <span className="text-[9px] text-gray-400 font-normal">₹{formatPrice(3499)}</span>
                       </div>
                       
                       {freeGiftEnabled && (

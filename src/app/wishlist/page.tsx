@@ -12,6 +12,7 @@ import { formatPrice } from "@/lib/formatPrice";
 import { Heart, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import toast from "react-hot-toast";
+import { formatPrice } from "@/lib/formatPrice";
 
 export default function WishlistPage() {
   const { wishlist, toggleWishlist } = useWishlist();
@@ -49,13 +50,13 @@ export default function WishlistPage() {
             <div className="flex items-center justify-center gap-3">
               <div className="w-10 h-px bg-amber-400/60" />
               <span className="font-sans font-bold tracking-[0.45em] uppercase text-xs shimmer-gold">
-                Curated Favorites
+                MAIRII PRIVÉ
               </span>
               <div className="w-10 h-px bg-amber-400/60" />
             </div>
 
             <h1 className="text-4xl md:text-6xl font-serif leading-tight">
-              Your Saved <span className="shimmer-gold italic font-serif">Treasures</span>
+              MAIRII <span className="shimmer-gold italic font-serif">Treasures</span>
             </h1>
 
             <p className="text-white/60 font-sans text-xs md:text-sm tracking-widest uppercase max-w-md mx-auto leading-relaxed">
@@ -80,7 +81,7 @@ export default function WishlistPage() {
               </div>
 
               {/* Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                 <AnimatePresence>
                   {wishlist.map((product) => (
                     <motion.div
