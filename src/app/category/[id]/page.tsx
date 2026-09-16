@@ -43,6 +43,11 @@ const CATEGORY_BANNERS: Record<string, any> = {
   all: bannerImage,
 };
 
+function getCategoryBanner(slug: string, sub?: string | null): any {
+  const currentKey = (sub || slug || "all").toLowerCase();
+  return CATEGORY_BANNERS[currentKey] || CATEGORY_BANNERS[(slug || "all").toLowerCase()] || bannerImage;
+}
+
 /**
  * Default 2-slide banner configuration for category/collection pages (e.g. category/all?collection=aanchal).
  * You can easily update or replace the default slide images below.
@@ -168,17 +173,20 @@ function CategoryContent() {
 
   const { products: rawProducts, isLoading: loading } = useProducts(productQueryParams);
 
-  const [heroImage, setHeroImage] = useState<any>(silverBanner);
+  const [heroImage, setHeroImage] = useState<any>(() => getCategoryBanner(categorySlug, subQuery));
   const [title, setTitle] = useState(categorySlug);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 
-  // Auto-scroll the 2 default banner slides one by one
+  const hasMultipleSlides = (categorySlug === "all" || !categorySlug) && !subQuery;
+
+  // Auto-scroll default banner slides only when category is 'all'
   useEffect(() => {
+    if (!hasMultipleSlides) return;
     const timer = setInterval(() => {
       setCurrentBannerIndex((prev) => (prev === 0 ? 1 : 0));
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [hasMultipleSlides]);
 
   const occasionsToUse = useMemo(() => {
     return occasionsList.length > 0
@@ -197,8 +205,7 @@ function CategoryContent() {
   };
 
   useEffect(() => {
-    const currentKey = (subQuery || categorySlug || "all").toLowerCase();
-    const matchedBanner = CATEGORY_BANNERS[currentKey] || CATEGORY_BANNERS[categorySlug.toLowerCase()] || silverBanner;
+    const matchedBanner = getCategoryBanner(categorySlug, subQuery);
 
     const ctx = findInTree(tree, categorySlug);
     if (ctx?.node.image && typeof ctx.node.image === "string") {
@@ -571,11 +578,11 @@ function CategoryContent() {
       <Navbar />
 
       <section className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
-        {/* Background Image Carousel - 2 Default Banner Slides auto-scrolling one by one */}
+        {/* Background Image Carousel */}
         <div className="absolute inset-0 z-0">
           <AnimatePresence mode="wait">
             <motion.div
-              key={currentBannerIndex}
+              key={hasMultipleSlides ? currentBannerIndex : "single"}
               initial={{ opacity: 0, scale: 1.03 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -584,7 +591,7 @@ function CategoryContent() {
             >
               <Image
                 src={
-                  currentBannerIndex === 0
+                  !hasMultipleSlides || currentBannerIndex === 0
                     ? (heroImage || DEFAULT_BANNER_SLIDES[0].image)
                     : DEFAULT_BANNER_SLIDES[1].image
                 }
@@ -597,29 +604,31 @@ function CategoryContent() {
           </AnimatePresence>
         </div>
 
-        {/* 2-Slide Auto-Scroll Pagination Indicators */}
-        <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setCurrentBannerIndex(0)}
-            aria-label="Slide 1"
-            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-              currentBannerIndex === 0
-                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                : "w-2.5 bg-white/50 hover:bg-white/80"
-            }`}
-          />
-          <button
-            type="button"
-            onClick={() => setCurrentBannerIndex(1)}
-            aria-label="Slide 2"
-            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-              currentBannerIndex === 1
-                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                : "w-2.5 bg-white/50 hover:bg-white/80"
-            }`}
-          />
-        </div>
+        {/* 2-Slide Auto-Scroll Pagination Indicators (only when multiple slides active) */}
+        {hasMultipleSlides && (
+          <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setCurrentBannerIndex(0)}
+              aria-label="Slide 1"
+              className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+                currentBannerIndex === 0
+                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                  : "w-2.5 bg-white/50 hover:bg-white/80"
+              }`}
+            />
+            <button
+              type="button"
+              onClick={() => setCurrentBannerIndex(1)}
+              aria-label="Slide 2"
+              className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+                currentBannerIndex === 1
+                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                  : "w-2.5 bg-white/50 hover:bg-white/80"
+              }`}
+            />
+          </div>
+        )}
 
         {/* Bottom Filigree Line */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
@@ -684,14 +693,12 @@ function CategoryContent() {
             {/* Products Grid Area */}
             <div className="flex-1">
               {loading ? (
-                <div className="py-28 text-center text-stone-400 font-serif text-lg">
-                  Loading collection…
-                </div>
+                <ProductGridSkeleton count={6} showFilter={showFilter} />
               ) : filteredProducts.length > 0 ? (
                 <div
-                  className={`grid grid-cols-1 sm:grid-cols-2 ${
+                  className={`grid grid-cols-2 sm:grid-cols-2 ${
                     showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  } gap-x-6 gap-y-12`}
+                  } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
@@ -765,13 +772,47 @@ function CategoryContent() {
   );
 }
 
+function ProductGridSkeleton({ count = 6, showFilter }: { count?: number; showFilter?: boolean }) {
+  return (
+    <div
+      className={`grid grid-cols-2 sm:grid-cols-2 ${
+        showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+      } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12 animate-pulse`}
+    >
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="relative bg-white border border-gray-100 rounded-2xl flex flex-col justify-between overflow-hidden shadow-sm"
+        >
+          <div className="relative aspect-[4/5] bg-neutral-200/80 overflow-hidden">
+            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_1.8s_infinite]" />
+          </div>
+          <div className="p-5 flex flex-col items-center text-center space-y-3">
+            <div className="h-3 w-16 rounded bg-neutral-200" />
+            <div className="h-4 w-3/4 rounded bg-neutral-200" />
+            <div className="h-3 w-1/2 rounded bg-neutral-200" />
+            <div className="pt-2 border-t border-stone-100 w-full flex flex-col items-center space-y-3">
+              <div className="h-5 w-20 rounded bg-neutral-200" />
+              <div className="h-10 w-full rounded-full bg-neutral-200" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function CategoryPage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
       <Suspense
         fallback={
-          <div className="h-screen flex items-center justify-center bg-brand-emerald text-white font-serif italic text-2xl">
-            Loading the Collection...
+          <div className="min-h-screen bg-white">
+            <Navbar />
+            <div className="h-[40vh] bg-stone-900 animate-pulse" />
+            <div className="container mx-auto px-6 py-12">
+              <ProductGridSkeleton count={8} showFilter={false} />
+            </div>
           </div>
         }
       >

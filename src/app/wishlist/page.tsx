@@ -8,6 +8,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { Heart, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import toast from "react-hot-toast";
@@ -124,11 +125,11 @@ export default function WishlistPage() {
                         <div className="flex items-baseline justify-center gap-2 mb-4">
                           {product.oldPrice && (
                             <span className="text-xs text-[#1a3d2f] line-through font-medium opacity-85">
-                              ₹{product.oldPrice.toLocaleString()}
+                              ₹{formatPrice(product.oldPrice)}
                             </span>
                           )}
                           <span className="text-sm sm:text-base font-bold text-[#d4af37]">
-                            ₹{product.price.toLocaleString()}
+                            ₹{formatPrice(product.price)}
                           </span>
                         </div>
 

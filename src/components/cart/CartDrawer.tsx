@@ -11,6 +11,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
 import { shopApi, type CartPricingResponse, type PublicCouponDoc } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
+import { formatPrice, formatCurrency } from "@/lib/formatPrice";
 import type { Product } from "@/types";
 
 const SUGGESTION_COUNT = 10;
@@ -98,16 +99,16 @@ export function CartDrawer() {
   const bannerText = useMemo(() => {
     if (subtotal <= 0) return "Add items to your bag to unlock luxury benefits!";
     if (subtotal < FREE_SHIPPING_THRESHOLD) {
-      return `You are ₹${(FREE_SHIPPING_THRESHOLD - subtotal).toLocaleString()} away from Free Shipping`;
+      return `You are ₹${formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} away from Free Shipping`;
     }
     if (subtotal < DISCOUNT_THRESHOLD) {
-      return `✓ Free Shipping Unlocked! Add ₹${(DISCOUNT_THRESHOLD - subtotal).toLocaleString()} more for Extra ${discountPct || 10}% OFF!`;
+      return `✓ Free Shipping Unlocked! Add ₹${formatPrice(DISCOUNT_THRESHOLD - subtotal)} more for Extra ${discountPct || 10}% OFF!`;
     }
     if (!freeGiftEnabled) {
       return `✓ Free Shipping & ${discountPct || 10}% OFF Unlocked! 🎉`;
     }
     if (subtotal < freeGiftThreshold) {
-      return `✓ ${discountPct || 10}% OFF Unlocked! Add ₹${(freeGiftThreshold - subtotal).toLocaleString()} more for a ${freeGiftName}!`;
+      return `✓ ${discountPct || 10}% OFF Unlocked! Add ₹${formatPrice(freeGiftThreshold - subtotal)} more for a ${freeGiftName}!`;
     }
     return `✓ All luxury milestones unlocked! Free Shipping, ${discountPct || 10}% OFF, & ${freeGiftName} applied! 🎉`;
   }, [subtotal, discountPct, freeGiftEnabled, freeGiftThreshold, freeGiftName]);
@@ -197,12 +198,12 @@ export function CartDrawer() {
                   {pricingResult?.upsell?.available ? (
                     <div className="bg-[#fdfbf7] border border-[#c4a064]/50 rounded-lg p-4 font-sans shadow-sm text-center space-y-1">
                       <p className="text-xs font-extrabold text-[#1a3d2f] uppercase tracking-wider">
-                        🎉 Add ₹{pricingResult.upsell.amountToUnlock?.toLocaleString()} more to unlock {pricingResult.upsell.nextDiscountPercentage}% OFF!
+                        🎉 Add ₹{formatPrice(pricingResult.upsell.amountToUnlock)} more to unlock {pricingResult.upsell.nextDiscountPercentage}% OFF!
                       </p>
                       <p className="text-[11.5px] text-gray-600 font-medium">
-                        You'll receive ₹{pricingResult.upsell.amountToUnlock?.toLocaleString()} worth of additional products for only{" "}
+                        You'll receive ₹{formatPrice(pricingResult.upsell.amountToUnlock)} worth of additional products for only{" "}
                         <strong className="text-emerald-800 font-bold underline">
-                          ₹{pricingResult.upsell.additionalPayment?.toLocaleString()}
+                          ₹{formatPrice(pricingResult.upsell.additionalPayment)}
                         </strong>{" "}
                         more.
                       </p>
@@ -249,7 +250,7 @@ export function CartDrawer() {
                           <span className={`block transition-colors duration-300 ${freeGiftUnlocked ? 'text-emerald-700 font-bold' : ''}`}>
                             {freeGiftUnlocked ? "✓ Free Gift" : "Free Gift"}
                           </span>
-                          <span className="text-[9px] text-gray-400 font-normal">₹{freeGiftThreshold.toLocaleString()}</span>
+                          <span className="text-[9px] text-gray-400 font-normal">₹{formatPrice(freeGiftThreshold)}</span>
                         </div>
                       )}
                     </div>
@@ -286,7 +287,7 @@ export function CartDrawer() {
                           {freeGiftName}
                         </p>
                         <p className="mt-1 text-[10px] text-emerald-800 font-medium">
-                          Unlocked for cart subtotal ≥ ₹{freeGiftThreshold.toLocaleString()}
+                          Unlocked for cart subtotal ≥ ₹{formatPrice(freeGiftThreshold)}
                         </p>
                       </div>
                       <div className="shrink-0 pt-4 text-right">
@@ -360,7 +361,7 @@ export function CartDrawer() {
                       </div>
                       <div className="shrink-0 pt-6 text-right">
                         <p className="text-sm font-bold text-brand-emerald">
-                          ₹{(item.price * item.quantity).toLocaleString()}
+                          ₹{formatPrice(item.price * item.quantity)}
                         </p>
                       </div>
                     </li>
@@ -416,7 +417,7 @@ export function CartDrawer() {
                         <span className="h-2 w-2 rounded-full bg-emerald-600 animate-pulse" />
                         Code <strong className="text-emerald-950 font-bold uppercase">{couponCode}</strong> applied
                       </span>
-                      <span className="font-bold">-₹{discountAmount.toLocaleString()}</span>
+                      <span className="font-bold">-₹{formatPrice(discountAmount)}</span>
                     </div>
                   )}
 
@@ -430,7 +431,7 @@ export function CartDrawer() {
                           const discountLabel =
                             coupon.discountType === "percentage"
                               ? `${coupon.discountValue}% off`
-                              : `₹${coupon.discountValue} off`;
+                              : `₹${formatPrice(coupon.discountValue)} off`;
                           return (
                             <button
                               key={coupon.code}
@@ -482,7 +483,7 @@ export function CartDrawer() {
                           {p.name}
                         </p>
                         <p className="mt-1 font-sans text-xs font-bold text-brand-emerald">
-                          ₹{p.price.toLocaleString()}
+                          ₹{formatPrice(p.price)}
                         </p>
                         <button
                           type="button"
@@ -502,35 +503,35 @@ export function CartDrawer() {
               <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
                 <span>Subtotal ({cart.reduce((acc, i) => acc + i.quantity, 0)} items)</span>
                 <span className="font-semibold text-gray-800">
-                  ₹{(pricingResult ? pricingResult.subtotal : subtotal).toLocaleString()}
+                  ₹{formatPrice(pricingResult ? pricingResult.subtotal : subtotal)}
                 </span>
               </div>
 
               {pricingResult && pricingResult.automaticDiscount > 0 && (
                 <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
                   <span>Slab Discount ({pricingResult.discountSlab?.discountPercentage}% Off)</span>
-                  <span>- ₹{pricingResult.automaticDiscount.toLocaleString()}</span>
+                  <span>- ₹{formatPrice(pricingResult.automaticDiscount)}</span>
                 </div>
               )}
 
               {pricingResult && pricingResult.couponDiscount > 0 && (
                 <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
                   <span>Coupon Discount ({pricingResult.appliedCoupon?.code})</span>
-                  <span>- ₹{pricingResult.couponDiscount.toLocaleString()}</span>
+                  <span>- ₹{formatPrice(pricingResult.couponDiscount)}</span>
                 </div>
               )}
 
               {!pricingResult && milestoneDiscount > 0 && (
                 <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
                   <span>Steal Deal (10% Off)</span>
-                  <span>- ₹{milestoneDiscount.toLocaleString()}</span>
+                  <span>- ₹{formatPrice(milestoneDiscount)}</span>
                 </div>
               )}
 
               <div className="flex items-center justify-between text-xs text-gray-500 uppercase tracking-widest">
                 <span>Delivery / Shipping</span>
                 {shipping > 0 ? (
-                  <span className="font-semibold text-gray-800">₹{shipping.toLocaleString()}</span>
+                  <span className="font-semibold text-gray-800">₹{formatPrice(shipping)}</span>
                 ) : (
                   <span className="font-bold text-emerald-700">FREE</span>
                 )}
@@ -542,7 +543,7 @@ export function CartDrawer() {
                   <p className="text-[9.5px] text-gray-400 font-sans tracking-normal uppercase">GST Included</p>
                 </div>
                 <span className="text-xl font-bold text-brand-emerald">
-                  ₹{(pricingResult ? pricingResult.finalAmount + shipping : total).toLocaleString()}
+                  ₹{formatPrice(pricingResult ? pricingResult.finalAmount + shipping : total)}
                 </span>
               </div>
 

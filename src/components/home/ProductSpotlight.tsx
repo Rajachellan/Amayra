@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { useProducts } from "@/hooks/useProducts";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import type { Product } from "@/types";
@@ -83,10 +84,10 @@ export const ProductSpotlight = () => {
                   <div className="flex items-baseline gap-3">
                     {product.oldPrice != null && (
                       <p className="text-lg font-serif text-[#1a3d2f] line-through font-medium opacity-85">
-                        ₹{product.oldPrice.toLocaleString()}
+                        ₹{formatPrice(product.oldPrice)}
                       </p>
                     )}
-                    <p className="text-3xl font-serif font-bold text-[#d4af37]">₹{product.price.toLocaleString()}</p>
+                    <p className="text-3xl font-serif font-bold text-[#d4af37]">₹{formatPrice(product.price)}</p>
                   </div>
                 </div>
 

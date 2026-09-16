@@ -45,16 +45,16 @@ export const NecklacesSection = () => {
           </div>
         </div>
 
-        {/* Product Grid: 4 per row on desktop, 2 on tablet, 1 on mobile */}
+        {/* Product Grid: 4 per row on desktop, 2 on tablet, 2 on mobile */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
               <div key={n} className="h-96 rounded-2xl bg-stone-100 animate-pulse" />
             ))}
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8">
               {displayedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

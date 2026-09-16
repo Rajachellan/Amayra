@@ -48,7 +48,7 @@ const FALLBACK_SLIDERS: Slider[] = [
 
 function formatInr(n?: number) {
   if (n == null || Number.isNaN(n)) return "";
-  return `₹${n.toLocaleString("en-IN")}`;
+  return `₹${Math.round(n).toLocaleString("en-IN")}`;
 }
 
 function productOf(hotspotProduct: string | LookbookHotspotProduct | undefined): LookbookHotspotProduct | null {

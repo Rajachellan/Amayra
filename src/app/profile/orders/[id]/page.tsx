@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { ArrowLeft, Loader2, Package, MapPin, CreditCard, ShieldCheck, CheckCircle2, Printer, Upload, AlertCircle } from "lucide-react";
 import { OrderTrackingSection } from "@/components/orders/OrderTrackingSection";
+import { formatPrice } from "@/lib/formatPrice";
 
 type ItemEligibility = {
   productId: string;
@@ -340,7 +341,7 @@ export default function OrderDetailPage() {
                       <div className="space-y-1">
                         <p className="font-serif text-stone-900 text-base font-medium">{it.name}</p>
                         <p className="text-xs text-stone-400">
-                          Purchased Qty: {it.quantity} × ₹{it.unitPrice.toLocaleString()} {it.size ? `| Size: ${it.size}` : ""}
+                          Purchased Qty: {it.quantity} × ₹{formatPrice(it.unitPrice)} {it.size ? `| Size: ${it.size}` : ""}
                         </p>
                         {el && (
                           <p className="text-[11px] font-medium text-stone-500">
@@ -349,7 +350,7 @@ export default function OrderDetailPage() {
                           </p>
                         )}
                       </div>
-                      <span className="font-semibold text-stone-900">₹{it.lineTotal.toLocaleString()}</span>
+                      <span className="font-semibold text-stone-900">₹{formatPrice(it.lineTotal)}</span>
                     </li>
                   );
                 })}
@@ -359,19 +360,19 @@ export default function OrderDetailPage() {
               <div className="bg-stone-50/70 rounded-2xl p-5 space-y-2.5 text-xs text-stone-600 border border-stone-200/60 mt-4">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>₹{order.subtotal.toLocaleString()}</span>
+                  <span>₹{formatPrice(order.subtotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax (GST)</span>
-                  <span>₹{order.tax.toLocaleString()}</span>
+                  <span>₹{formatPrice(order.tax)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Insured Shipping</span>
-                  <span>₹{order.shipping.toLocaleString()}</span>
+                  <span>₹{formatPrice(order.shipping)}</span>
                 </div>
                 <div className="flex justify-between font-bold text-stone-900 text-sm pt-3 border-t border-stone-200">
                   <span className="uppercase tracking-widest">Total Paid</span>
-                  <span className="font-serif text-lg text-[#0B2516]">₹{order.total.toLocaleString()} {order.currency}</span>
+                  <span className="font-serif text-lg text-[#0B2516]">₹{formatPrice(order.total)} {order.currency}</span>
                 </div>
               </div>
             </div>

@@ -37,7 +37,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = Math.round(cart.reduce((acc, item) => acc + (Math.round(item.price) * item.quantity), 0));
   const [isCartOpen, setCartOpen] = useState(false);
   const [couponCode, setCouponCode] = useState<string | null>(null);
   const [discountAmount, setDiscountAmount] = useState<number>(0);
@@ -136,7 +136,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
                     return {
                       ...item,
                       stock: updated.stock,
-                      price: updated.price,
+                      price: Math.round(updated.price),
                       quantity: Math.max(1, newQty),
                     };
                   }
@@ -185,14 +185,20 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return [...prev, { ...product, quantity: allowedQty, stock: maxStock }];
         }
 
+        const sanitizedProduct = {
+          ...product,
+          price: Math.round(product.price),
+          oldPrice: product.oldPrice != null ? Math.round(product.oldPrice) : undefined,
+        };
+
         if (existingItem) {
           finalMessage = `Updated ${product.name} in cart (${desiredTotal} in bag)`;
           return prev.map((item) =>
-            item.id === product.id ? { ...item, ...product, quantity: desiredTotal, stock: maxStock } : item
+            item.id === product.id ? { ...item, ...sanitizedProduct, quantity: desiredTotal, stock: maxStock } : item
           );
         }
 
-        return [...prev, { ...product, quantity: requestedQty, stock: maxStock }];
+        return [...prev, { ...sanitizedProduct, quantity: requestedQty, stock: maxStock }];
       });
 
       if (isCapped) {

@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { ArrowLeft, Loader2, Printer, Download } from "lucide-react";
+import { formatPrice } from "@/lib/formatPrice";
 
 type OrderDetail = {
   _id: string;
@@ -320,10 +321,10 @@ export default function InvoicePage() {
                     <p className="font-semibold text-stone-950 font-serif text-sm">{it.name}</p>
                     <p className="text-[10px] text-stone-400 mt-0.5">SKU: {it.slug}</p>
                   </td>
-                  <td className="py-4 text-right">₹{it.unitPrice.toLocaleString()}</td>
+                  <td className="py-4 text-right">₹{formatPrice(it.unitPrice)}</td>
                   <td className="py-4 text-center">{it.quantity}</td>
                   <td className="py-4 text-right font-semibold text-stone-900">
-                    ₹{it.lineTotal.toLocaleString()}
+                    ₹{formatPrice(it.lineTotal)}
                   </td>
                 </tr>
               ))}
@@ -355,20 +356,20 @@ export default function InvoicePage() {
           <div className="w-full sm:w-64 text-xs space-y-2 text-stone-600 self-end">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>₹{order.subtotal.toLocaleString()}</span>
+              <span>₹{formatPrice(order.subtotal)}</span>
             </div>
             <div className="flex justify-between">
               <span>GST (Tax)</span>
-              <span>₹{order.tax.toLocaleString()}</span>
+              <span>₹{formatPrice(order.tax)}</span>
             </div>
             <div className="flex justify-between">
               <span>Shipping & Insurance</span>
-              <span>₹{order.shipping.toLocaleString()}</span>
+              <span>₹{formatPrice(order.shipping)}</span>
             </div>
             <div className="flex justify-between font-bold text-stone-900 text-sm pt-3 border-t border-stone-100">
               <span className="uppercase tracking-wider">Total</span>
               <span className="font-serif text-lg text-[#0B2516]">
-                ₹{order.total.toLocaleString()} {order.currency}
+                ₹{formatPrice(order.total)} {order.currency}
               </span>
             </div>
           </div>

@@ -14,6 +14,7 @@ export interface Product {
   subCategory?: string;
   subCategorySlug?: string;
   description: string;
+  shortDescription?: string;
   color?: string;
   isNew?: boolean;
   isBestSeller?: boolean;

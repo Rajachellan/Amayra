@@ -1,9 +1,14 @@
 import { getPublicApiUrl } from "../apiBase";
 
 async function fetchJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${getPublicApiUrl()}${path}`, {
+  const url = `${getPublicApiUrl()}${path}`;
+  const res = await fetch(url, {
+    cache: "no-store",
     ...init,
-    headers: { Accept: "application/json", ...init?.headers },
+    headers: {
+      Accept: "application/json",
+      ...init?.headers,
+    },
   });
   if (!res.ok) {
     const text = await res.text();
@@ -296,7 +301,50 @@ export interface PublicCouponDoc {
   maxDiscount?: number;
 }
 
+export type ReviewItem = {
+  _id: string;
+  rating: number;
+  title: string;
+  comment: string;
+  reviewerName: string;
+  reviewerEmail?: string;
+  isAnonymous: boolean;
+  verified: boolean;
+  createdAt: string;
+};
+
+export type ProductReviewsResponse = {
+  items: ReviewItem[];
+  total: number;
+  averageRating: number;
+};
+
+export type SubmitReviewPayload = {
+  productSlug: string;
+  productId?: string;
+  rating: number;
+  title: string;
+  comment: string;
+  reviewerName: string;
+  reviewerEmail: string;
+  isAnonymous?: boolean;
+};
+
 export const shopApi = {
+  subscribeNewsletter: (email: string, source = "footer_newsletter") =>
+    fetchJson<{ ok: boolean; message: string }>("/newsletter/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, source }),
+    }),
+  productReviews: (idOrSlug: string) =>
+    fetchJson<ProductReviewsResponse>(`/reviews/product/${encodeURIComponent(idOrSlug)}?_t=${Date.now()}`),
+  submitReview: (payload: SubmitReviewPayload) =>
+    fetchJson<{ ok: boolean; review: ReviewItem }>("/reviews", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }),
   coupons: () => fetchJson<PublicCouponDoc[]>("/coupons/public"),
   banners: () => fetchJson<BannerDoc[]>("/banners"),
   promotionalBanners: async () => {
@@ -351,7 +399,7 @@ export const shopApi = {
     });
     return fetchJson<ProductListResponse>(`/products?${sp.toString()}`);
   },
-  productBySlug: (slug: string) => fetchJson<ProductDetail>(`/products/${encodeURIComponent(slug)}`),
+  productBySlug: (slug: string) => fetchJson<ProductDetail>(`/products/${encodeURIComponent(slug)}?_t=${Date.now()}`),
   blogs: (q?: { page?: number; limit?: number }) => {
     const sp = new URLSearchParams();
     if (q?.page) sp.set("page", String(q.page));

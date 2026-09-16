@@ -4,6 +4,7 @@ import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/formatPrice";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -94,7 +95,7 @@ export const CartDrawer = () => {
                           </button>
                         </div>
                         <p className="text-sm font-serif font-semibold">
-                          ₹{(item.price * item.quantity).toLocaleString()}
+                          ₹{formatPrice(item.price * item.quantity)}
                         </p>
                       </div>
                     </div>
@@ -124,7 +125,7 @@ export const CartDrawer = () => {
               <div className="p-8 bg-gray-50 border-t border-gray-100 space-y-6">
                 <div className="flex items-center justify-between">
                   <span className="text-xs uppercase tracking-[0.3em] font-bold text-gray-400">Subtotal</span>
-                  <span className="text-xl font-serif font-bold">₹{subtotal.toLocaleString()}</span>
+                  <span className="text-xl font-serif font-bold">₹{formatPrice(subtotal)}</span>
                 </div>
                 <p className="text-[10px] text-gray-400 text-center uppercase tracking-widest">
                   Shipping and taxes calculated at checkout

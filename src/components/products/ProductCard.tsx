@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Eye, X, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { usePrefetchProductDetail } from "@/hooks/useProductDetail";
 import { Product } from "@/types";
 
@@ -18,7 +19,11 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const prefetchProduct = usePrefetchProductDetail();
-  const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/1.jpg");
+  const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/placeholder.svg");
+
+  React.useEffect(() => {
+    setImgSrc(product.image || "/images/placeholder.svg");
+  }, [product.image]);
 
   const isFavorite = isInWishlist(product.id);
   const productHref = `/product/${product.slug ?? product.id}`;
@@ -38,21 +43,21 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
       className="group relative bg-white overflow-hidden transition-all duration-500 border border-gray-100 hover:border-champagne/40 hover:shadow-[0_15px_30px_rgba(230,211,163,0.15)] rounded-2xl flex flex-col justify-between"
     >
       {/* Badges */}
-      <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
+      <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 z-10 flex flex-col space-y-1.5 sm:space-y-2">
         {product.isNewArrival && (
-          <span className="bg-[#0B2516] text-white text-[8px] font-bold px-3 py-1 tracking-[0.2em] uppercase rounded-full shadow-sm">
+          <span className="bg-[#0B2516] text-white text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
             New Arrival
           </span>
         )}
         {product.isBestSeller && (
-          <span className="bg-[#c9a84c] text-[#0B2516] text-[8px] font-bold px-3 py-1 tracking-[0.2em] uppercase rounded-full shadow-sm">
+          <span className="bg-[#c9a84c] text-[#0B2516] text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
             Bestseller
           </span>
         )}
       </div>
 
       {/* Permanently Visible Action Icons (Wishlist & View Product Details) */}
-      <div className="absolute top-4 right-4 z-20 flex flex-col space-y-2">
+      <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 flex flex-col space-y-1.5 sm:space-y-2">
         <button
           type="button"
           title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
@@ -61,70 +66,70 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
             e.stopPropagation();
             toggleWishlist(product);
           }}
-          className={`p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-300 ${
+          className={`p-2 sm:p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-300 ${
             isFavorite
               ? "bg-rose-600 text-white shadow-rose-600/30"
               : "bg-white/90 text-stone-700 hover:bg-[#c9a84c] hover:text-[#0B2516]"
           }`}
         >
-          <Heart className={`w-3.5 h-3.5 ${isFavorite ? "fill-current" : ""}`} />
+          <Heart className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${isFavorite ? "fill-current" : ""}`} />
         </button>
         <Link
           href={productHref}
           title="View product details"
           onMouseEnter={handleMouseEnter}
-          className="p-2.5 bg-white/90 text-stone-700 rounded-full shadow-md backdrop-blur-md hover:bg-[#0B2516] hover:text-white transition-all duration-300"
+          className="p-2 sm:p-2.5 bg-white/90 text-stone-700 rounded-full shadow-md backdrop-blur-md hover:bg-[#0B2516] hover:text-white transition-all duration-300"
         >
-          <Eye className="w-3.5 h-3.5" />
+          <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </Link>
       </div>
 
-      {/* Image Container - Direct link to dedicated product page */}
       <Link
         href={productHref}
         onMouseEnter={handleMouseEnter}
-        className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-stone-50"
+        style={{ position: "relative" }}
+        className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-[#f7f5f0]"
       >
         <Image
           src={imgSrc}
           alt={product.name}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-          quality={75}
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          quality={80}
           loading="lazy"
           decoding="async"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          onError={() => setImgSrc("/images/1.jpg")}
+          onError={() => setImgSrc("/images/placeholder.svg")}
         />
       </Link>
 
       {/* Product Info & Always-Visible Add to Cart Button */}
-      <div className="p-5 flex flex-col items-center text-center flex-grow justify-between space-y-4">
-        <div className="w-full space-y-1.5">
-          <span className="text-[#c9a84c] text-[9px] uppercase tracking-[0.35em] block font-bold">
+      <div className="p-3 sm:p-5 flex flex-col items-center text-center flex-grow justify-between space-y-2.5 sm:space-y-4">
+        <div className="w-full space-y-1 sm:space-y-1.5">
+          <span className="text-[#c9a84c] text-[8px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.35em] block font-bold">
             {product.category}
           </span>
           <Link href={productHref} onMouseEnter={handleMouseEnter} className="block group/title w-full">
-            <h3 className="font-serif text-base text-stone-900 transition-colors duration-300 group-hover/title:text-[#c9a84c] truncate font-medium">
+            <h3 className="font-serif text-xs sm:text-base text-stone-900 transition-colors duration-300 group-hover/title:text-[#c9a84c] truncate font-medium">
               {product.name}
             </h3>
           </Link>
 
-          <p className="text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-4">
-            {product.description || "Handcrafted Luxury Jewellery"}
+          <p className="text-[9px] sm:text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-3.5 sm:h-4">
+            {product.shortDescription || product.description || "Handcrafted Luxury Jewellery"}
           </p>
         </div>
 
-        <div className="w-full space-y-3 pt-2 border-t border-stone-100">
+        <div className="w-full space-y-2 sm:space-y-3 pt-2 border-t border-stone-100">
           {/* Price Display */}
-          <div className="flex items-baseline justify-center space-x-2.5">
+          <div className="flex items-baseline justify-center space-x-1.5 sm:space-x-2.5">
             {product.oldPrice && (
-              <span className="text-stone-400 line-through text-xs font-medium">
-                ₹{product.oldPrice.toLocaleString()}
+              <span className="text-stone-400 line-through text-[10px] sm:text-xs font-medium">
+                ₹{formatPrice(product.oldPrice)}
               </span>
             )}
-            <span className="text-[#0B2516] font-serif text-lg font-bold">
-              ₹{product.price.toLocaleString()}
+            <span className="text-[#0B2516] font-serif text-sm sm:text-lg font-bold">
+              ₹{formatPrice(product.price)}
             </span>
           </div>
 
@@ -136,10 +141,10 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
               e.stopPropagation();
               addToCart(product);
             }}
-            className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-3 px-4 rounded-full text-[9px] uppercase tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-2 group/btn cursor-pointer"
+            className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 sm:py-3 px-2 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-[0.15em] sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1.5 sm:space-x-2 group/btn cursor-pointer"
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
-            <ShoppingBag className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:scale-110" />
+            <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 group-hover/btn:scale-110" />
             <span className="relative z-10 font-bold">Add to Bag</span>
           </button>
         </div>
