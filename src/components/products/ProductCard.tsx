@@ -138,11 +138,11 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
               e.stopPropagation();
               addToCart(product);
             }}
-            className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 px-2.5 sm:py-3 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-[0.15em] sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1.5 sm:space-x-2 group/btn cursor-pointer"
+            className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 px-1.5 sm:py-3 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-tight sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 group/btn cursor-pointer whitespace-nowrap"
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
-            <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 group-hover/btn:scale-110" />
-            <span className="relative z-10 font-bold">Add to Bag</span>
+            <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 transition-transform duration-300 group-hover/btn:scale-110" />
+            <span className="relative z-10 font-bold whitespace-nowrap">Add to Bag</span>
           </button>
         </div>
       </div>

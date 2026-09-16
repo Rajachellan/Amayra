@@ -21,10 +21,10 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 right-6 z-50 group"
+      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group"
     >
       {/* Tooltip */}
-      <div className="absolute bottom-[72px] left-1/2 -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+      <div className="absolute bottom-[56px] sm:bottom-[72px] left-1/2 -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
         <div className="relative bg-gray-900 text-white text-xs font-medium px-3 py-2 rounded-lg whitespace-nowrap shadow-lg">
           Chat with Us
 
@@ -34,13 +34,13 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
       </div>
 
       {/* WhatsApp Button */}
-      <div className="relative flex items-center justify-center w-14 h-14 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-110">
+      <div className="relative flex items-center justify-center w-11 h-11 sm:w-14 sm:h-14 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-110">
         {/* Pulse Ring */}
         <span className="absolute inset-0 rounded-full bg-[#25D366] opacity-75 animate-ping group-hover:animate-none pointer-events-none" />
 
         {/* WhatsApp SVG */}
         <svg
-          className="relative z-10 w-7 h-7 fill-current"
+          className="relative z-10 w-5.5 h-5.5 sm:w-7 sm:h-7 fill-current"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
         >
