@@ -167,7 +167,7 @@ export default function ProfilePage() {
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#c9a84c]/15 border border-[#c9a84c]/30 backdrop-blur-sm">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#c9a84c]" />
                   <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#e5ca78]">
-                    MaiRii Privé Concierge
+                    MAIRII PRIVÉ CONCIERGE
                   </span>
                 </div>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-wide leading-tight">
@@ -334,13 +334,15 @@ export default function ProfilePage() {
                   <p className="text-stone-300 text-xs font-light leading-relaxed">
                     Connect with our dedicated jewellery specialists for bridal consultations and bespoke custom pieces.
                   </p>
-                  <Link
-                    href="/contact"
+                  <a
+                    href="https://wa.me/919566571655?text=Hello%20MaiRii%20Concierge,%20I%20would%20like%20to%20book%20a%20consultation."
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f3e5ab] hover:text-white transition-colors pt-1"
                   >
                     <span>Book Consultation</span>
                     <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  </a>
                 </div>
               </div>
             </aside>
@@ -549,41 +551,90 @@ export default function ProfilePage() {
                       </div>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4">
+                        {/* Card 1: Bespoke Consultation */}
+                        <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4 hover:border-[#c9a84c]/60 transition-colors">
                           <div className="w-12 h-12 rounded-xl bg-[#0B2516] text-[#c9a84c] flex items-center justify-center">
-                            <Headphones className="w-6 h-6" />
+                            <Sparkles className="w-6 h-6" />
                           </div>
                           <div>
-                            <h3 className="font-serif text-lg text-stone-900 font-medium">Personal Assistant</h3>
+                            <h3 className="font-serif text-lg text-stone-900 font-medium">Bespoke Concierge</h3>
                             <p className="text-xs text-stone-500 leading-relaxed mt-1">
-                              Reach out directly for order assistance, customized engraving, or sizing advice.
+                              Book a 1-on-1 private consultation with our master jewellery concierge for bridal collections and custom heirlooms.
                             </p>
                           </div>
                           <a
-                            href="https://wa.me/919566571655"
+                            href="https://wa.me/919566571655?text=Hello%20MaiRii%20Concierge,%20I%20would%20like%20to%20book%20a%20bespoke%20jewellery%20consultation."
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#0B2516] hover:text-[#c9a84c] transition-colors"
                           >
-                            <span>WhatsApp Concierge</span>
+                            <span>Book Consultation</span>
                             <ArrowRight className="w-3.5 h-3.5" />
                           </a>
                         </div>
 
-                        <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4">
+                        {/* Card 2: Personal Styling */}
+                        <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4 hover:border-[#c9a84c]/60 transition-colors">
                           <div className="w-12 h-12 rounded-xl bg-[#0B2516] text-[#c9a84c] flex items-center justify-center">
-                            <Lock className="w-6 h-6" />
+                            <Headphones className="w-6 h-6" />
                           </div>
                           <div>
-                            <h3 className="font-serif text-lg text-stone-900 font-medium">Account Protection</h3>
+                            <h3 className="font-serif text-lg text-stone-900 font-medium">Personal Styling Advice</h3>
                             <p className="text-xs text-stone-500 leading-relaxed mt-1">
-                              Your account is secured with encrypted login sessions and verified contact access.
+                              Get expert styling recommendations matched to your trousseau, wedding themes, and special occasions.
                             </p>
                           </div>
-                          <div className="flex items-center gap-2 text-xs text-emerald-700 font-medium">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                            <span>Session Authenticated</span>
+                          <a
+                            href="https://wa.me/919566571655?text=Hello%20MaiRii%20Concierge,%20I%20would%20like%20personal%20styling%20advice."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#0B2516] hover:text-[#c9a84c] transition-colors"
+                          >
+                            <span>Request Styling</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </a>
+                        </div>
+
+                        {/* Card 3: Engraving & Personalization */}
+                        <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4 hover:border-[#c9a84c]/60 transition-colors">
+                          <div className="w-12 h-12 rounded-xl bg-[#0B2516] text-[#c9a84c] flex items-center justify-center">
+                            <ShieldCheck className="w-6 h-6" />
                           </div>
+                          <div>
+                            <h3 className="font-serif text-lg text-stone-900 font-medium">Engraving & Personalization</h3>
+                            <p className="text-xs text-stone-500 leading-relaxed mt-1">
+                              Add customized initials or sacred motifs to your sterling silver or bridal pieces.
+                            </p>
+                          </div>
+                          <a
+                            href="https://wa.me/919566571655?text=Hello%20MaiRii%20Concierge,%20I%20would%20like%20to%20inquire%20about%20custom%20engraving."
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#0B2516] hover:text-[#c9a84c] transition-colors"
+                          >
+                            <span>Request Personalization</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </a>
+                        </div>
+
+                        {/* Card 4: Guaranteed Care & Response */}
+                        <div className="p-6 rounded-2xl border border-stone-200 bg-stone-50/50 space-y-4 hover:border-[#c9a84c]/60 transition-colors">
+                          <div className="w-12 h-12 rounded-xl bg-[#0B2516] text-[#c9a84c] flex items-center justify-center">
+                            <Clock className="w-6 h-6" />
+                          </div>
+                          <div>
+                            <h3 className="font-serif text-lg text-stone-900 font-medium">Guaranteed Member Response</h3>
+                            <p className="text-xs text-stone-500 leading-relaxed mt-1">
+                              24-48 business hours response time guaranteed for all Privé members.
+                            </p>
+                          </div>
+                          <Link
+                            href="/contact"
+                            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#0B2516] hover:text-[#c9a84c] transition-colors"
+                          >
+                            <span>Contact VIP Desk</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
                         </div>
                       </div>
                     </motion.div>

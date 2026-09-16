@@ -103,6 +103,8 @@ export function PersonalDetailsPanel() {
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [anniversary, setAnniversary] = useState("");
   const [profileErrors, setProfileErrors] = useState<Record<string, string>>({});
 
   const [editorOpen, setEditorOpen] = useState(false);
@@ -119,11 +121,15 @@ export function PersonalDetailsPanel() {
       setProfile(p);
       setName(p.name ?? "");
       setPhone(p.phone ?? "");
+      setBirthday(p.birthday ?? "");
+      setAnniversary(p.anniversary ?? "");
     } catch {
       if (user) {
         setProfile({ name: user.name, email: user.email, phone: user.phone });
         setName(user.name);
         setPhone(user.phone ?? "");
+        setBirthday("");
+        setAnniversary("");
       }
     } finally {
       setLoading(false);
@@ -179,11 +185,15 @@ export function PersonalDetailsPanel() {
         body: JSON.stringify({
           name: parsed.data.name,
           phone: parsed.data.phone,
+          birthday,
+          anniversary,
         }),
       });
       setProfile(updated);
       setName(updated.name);
       setPhone(updated.phone ?? "");
+      setBirthday(updated.birthday ?? birthday);
+      setAnniversary(updated.anniversary ?? anniversary);
       await refreshMe();
       toast.success("Profile details updated successfully!");
     } catch (err) {
@@ -311,20 +321,36 @@ export function PersonalDetailsPanel() {
               </span>
             </label>
 
-            <div className="md:col-span-2">
-              <Field
-                label="Mobile Number"
-                name="phone"
-                value={phone}
-                onChange={setPhone}
-                error={profileErrors.phone}
-                placeholder="10-digit Indian mobile number"
-                autoComplete="tel"
-                inputMode="tel"
-                maxLength={16}
-                hint="Format: 9566571655 or +91 9566571655"
-              />
-            </div>
+            <Field
+              label="Mobile Number"
+              name="phone"
+              value={phone}
+              onChange={setPhone}
+              error={profileErrors.phone}
+              placeholder="10-digit Indian mobile number"
+              autoComplete="tel"
+              inputMode="tel"
+              maxLength={16}
+              hint="Format: 9566571655 or +91 9566571655"
+            />
+
+            <Field
+              label="Date of Birth / Birthday"
+              name="birthday"
+              type="date"
+              value={birthday}
+              onChange={setBirthday}
+              hint="Share your birthday for special Privé anniversary surprises"
+            />
+
+            <Field
+              label="Anniversary Date"
+              name="anniversary"
+              type="date"
+              value={anniversary}
+              onChange={setAnniversary}
+              hint="Share your anniversary date for exclusive curated gifts"
+            />
           </div>
 
           <div className="pt-2">

@@ -60,6 +60,8 @@ export const profileFormSchema = z.object({
       message: "Enter a valid Indian mobile (10 digits, starting 6–9)",
     })
     .transform((v) => (v === "" ? "" : normalizeIndianPhone(v))),
+  birthday: z.string().trim().optional(),
+  anniversary: z.string().trim().optional(),
 });
 
 export const addressFormSchema = z.object({
@@ -113,6 +115,8 @@ export type CustomerProfile = {
   name: string;
   email: string;
   phone?: string;
+  birthday?: string;
+  anniversary?: string;
   addresses?: SavedAddress[];
 };
 

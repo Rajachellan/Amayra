@@ -49,13 +49,13 @@ export default function WishlistPage() {
             <div className="flex items-center justify-center gap-3">
               <div className="w-10 h-px bg-amber-400/60" />
               <span className="font-sans font-bold tracking-[0.45em] uppercase text-xs shimmer-gold">
-                Curated Favorites
+                MAIRII PRIVÉ
               </span>
               <div className="w-10 h-px bg-amber-400/60" />
             </div>
 
             <h1 className="text-4xl md:text-6xl font-serif leading-tight">
-              Your Saved <span className="shimmer-gold italic font-serif">Treasures</span>
+              MAIRII <span className="shimmer-gold italic font-serif">Treasures</span>
             </h1>
 
             <p className="text-white/60 font-sans text-xs md:text-sm tracking-widest uppercase max-w-md mx-auto leading-relaxed">

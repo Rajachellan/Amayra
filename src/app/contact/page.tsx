@@ -109,7 +109,7 @@ export default function ContactPage() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[center_35%] brightness-65 scale-105"
+          className="object-cover object-center brightness-65"
 
         />
         {/* <div className="absolute inset-0 bg-gradient-to-b from-stone-950/70 via-stone-950/40 to-[#FAF8F3]" /> */}
@@ -157,7 +157,7 @@ export default function ContactPage() {
             <div>
               <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-[#C4A064] block mb-1">Email Concierge</span>
               <p className="text-base font-serif text-[#2B2B2B] font-medium">connect@mairiijewels.com</p>
-              <p className="text-xs text-[#666666] font-light mt-1">24h response time guaranteed</p>
+              <p className="text-xs text-[#666666] font-light mt-1">24-48 business hours response time guaranteed</p>
             </div>
           </motion.div>
 
@@ -191,7 +191,7 @@ export default function ContactPage() {
             <div>
               <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-emerald-700 block mb-1">Instant WhatsApp</span>
               <p className="text-base font-serif text-[#2B2B2B] font-medium">+91 9566571655</p>
-              <p className="text-xs text-[#666666] font-light mt-1">Instant bridal & order styling</p>
+              <p className="text-xs text-[#666666] font-light mt-1">Mon - Sat, 10 AM to 7 PM IST</p>
             </div>
           </motion.div>
 
@@ -233,12 +233,12 @@ export default function ContactPage() {
                 CUSTOMER ASSISTANCE
               </span>
               <h2 className="text-3xl sm:text-4xl font-serif text-[#2B2B2B] leading-tight">
-                How Can We Help You Today?
+                MaiRii Concierge Assistance
               </h2>
             </div>
 
             <p className="text-[#555555] leading-relaxed font-serif text-base md:text-lg font-light">
-              Our dedicated support concierge is available <span className="font-semibold text-[#2B2B2B]">Monday through Saturday</span> to assist with product inquiries, order tracking, custom sizing, and gift options.
+              Our dedicated support concierge is available <span className="font-semibold text-[#2B2B2B]">Monday through Saturday</span> to assist with product inquiries, order tracking, and gift options.
             </p>
 
             <div className="p-6 rounded-xl bg-[#FAF8F3] border border-[#C4A064]/20 space-y-4">
@@ -394,7 +394,7 @@ export default function ContactPage() {
               LEAVE A MESSAGE
             </span>
             <h2 className="text-3xl sm:text-5xl font-serif text-white">Send Us An Enquiry</h2>
-            <p className="text-stone-300 text-xs font-serif tracking-widest uppercase">Our concierge will review and reply within 24 hours.</p>
+            <p className="text-stone-300 text-xs font-serif tracking-widest uppercase">Our concierge will review and reply within 24-48 business hours.</p>
           </div>
 
           <div className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-14 border border-white/15 shadow-2xl">
