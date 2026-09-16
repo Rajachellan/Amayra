@@ -240,7 +240,7 @@ function OccasionContent() {
               {loading ? (
                 <div className="py-32 text-center text-gray-400 font-serif text-xl">Unveiling collection…</div>
               ) : rawProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
+                <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 gap-x-3 gap-y-8 sm:gap-x-8 sm:gap-y-16">
                   {rawProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))}

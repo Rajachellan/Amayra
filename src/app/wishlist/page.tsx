@@ -80,7 +80,7 @@ export default function WishlistPage() {
               </div>
 
               {/* Grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                 <AnimatePresence>
                   {wishlist.map((product) => (
                     <motion.div

@@ -103,7 +103,7 @@ export function RelatedProductsRow({ title, products, shopAllHref }: Props) {
         <h2 className="mb-10 text-center text-xl font-bold uppercase tracking-[0.35em] text-neutral-900 md:text-2xl">
           {title}
         </h2>
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {shown.map((p) => (
             <RelatedCard key={p.id} product={p} />
           ))}

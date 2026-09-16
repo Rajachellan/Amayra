@@ -183,7 +183,7 @@ export function SmallNavigationMenu() {
             {/* Product Grid */}
             <main className="relative w-full max-w-[1450px] mx-auto px-4 sm:px-6 lg:px-8 z-10">
                 <div
-                    className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 lg:gap-8 transition-all duration-300 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
+                    className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8 transition-all duration-300 ${animating ? "opacity-0 translate-y-4" : "opacity-100 translate-y-0"
                         }`}
                     style={{ transition: "opacity 0.3s ease, transform 0.3s ease" }}
                 >

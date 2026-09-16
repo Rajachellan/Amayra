@@ -98,13 +98,13 @@ export const SilverCollection = () => {
 
         {/* Product Grid - 4 items per row on desktop */}
         {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="aspect-[1/1] bg-pearl animate-pulse rounded-xl" />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             <AnimatePresence initial={false}>
               {visibleProducts.map((product, idx) => (
                 <motion.div

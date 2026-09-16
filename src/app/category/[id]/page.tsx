@@ -687,8 +687,8 @@ function CategoryContent() {
                 </div>
               ) : filteredProducts.length > 0 ? (
                 <div
-                  className={`grid grid-cols-1 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                    } gap-x-6 gap-y-12`}
+                  className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    } gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-12`}
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />

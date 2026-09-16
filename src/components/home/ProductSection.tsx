@@ -63,8 +63,8 @@ export const ProductSection = () => {
         </motion.div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 md:gap-14">
+      <div className="container mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 md:gap-14">
 
           {/* Item 1: Large Featured */}
           <motion.div
@@ -72,7 +72,7 @@ export const ProductSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1.2 }}
-            className="md:col-span-4 md:row-span-2"
+            className="col-span-2 md:col-span-4 md:row-span-2"
           >
             {featuredProducts[0] && (
             <ProductCard
@@ -91,7 +91,7 @@ export const ProductSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="md:col-span-2 mt-0 md:mt-20"
+            className="col-span-1 md:col-span-2 mt-0 md:mt-20"
           >
             {featuredProducts[1] && (
             <ProductCard
@@ -110,7 +110,7 @@ export const ProductSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="md:col-span-2"
+            className="col-span-1 md:col-span-2"
           >
             {featuredProducts[2] && (
             <ProductCard
@@ -129,7 +129,7 @@ export const ProductSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="md:col-span-3 -mt-4 md:-mt-24"
+            className="col-span-1 md:col-span-3 -mt-0 md:-mt-24"
           >
             {featuredProducts[3] && (
             <ProductCard
@@ -148,7 +148,7 @@ export const ProductSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.5 }}
-            className="md:col-span-3"
+            className="col-span-1 md:col-span-3"
           >
             {featuredProducts[4] && (
             <ProductCard
