@@ -285,32 +285,12 @@ export const Footer = () => {
             </h4>
             <ul className="space-y-3 font-light text-xs text-white/75">
               {[
-<<<<<<< HEAD
                 { name: "Virasat (Royal Heritage)", href: "/category/all?collection=virasat" },
                 { name: "Pehla Tohfa (Festive Grace)", href: "/category/all?collection=pehla-tohfa" },
                 { name: "AAnchal (Bridal Trousseau)", href: "/category/all?collection=aanchal" },
                 { name: "Jashn Noor (Celebrations)", href: "/category/all?collection=Jashn-noor" },
                 { name: "Darpan (Polki & Mirror)", href: "/category/all?collection=darpan" },
                 { name: "New Arrivals Archive", href: "/category/all?sort=newest" },
-=======
-                {
-                  name: "Virasat",
-                  href: "/category/all?collection=virasat",
-                },
-                {
-                  name: "Pehla Tohfa",
-                  href: "/category/all?collection=pehla-tohfa",
-                },
-                {
-                  name: "AAnchal",
-                  href: "/category/all?collection=aanchal",
-                },
-                {
-                  name: "Jashn e Noor",
-                  href: "/category/all?collection=Jashn-noor",
-                },
-
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
               ].map((item) => (
                 <li key={item.name}>
                   <Link
@@ -427,7 +407,6 @@ export const Footer = () => {
           </div>
         </div>
 
-<<<<<<< HEAD
         {/* 4. BOTTOM BAR: SECURITY, PAYMENT BADGES & COPYRIGHT */}
         <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-5 text-xs text-white/55">
           {/* Copyright */}
@@ -453,21 +432,6 @@ export const Footer = () => {
               </Link>
             </p>
           </div>
-=======
-        {/* Bottom */}
-        <div className="flex items-center justify-center py-7">
-          <p className="w-full text-center text-[10px] text-white/50">
-            © 2026 MaiRii. All Rights Reserved. Designed by{" "}
-            <Link
-              target="_blank"
-              href="https://rankraze.com"
-              className="hover:text-brand-gold transition-colors"
-            >
-              @Rankraze
-            </Link>
-          </p>
-
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
 
           {/* Secure Payment Badges */}
           <div className="flex flex-wrap items-center justify-center gap-2">

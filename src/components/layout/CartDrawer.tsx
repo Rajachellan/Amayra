@@ -7,7 +7,6 @@ import { useCart } from "@/context/CartContext";
 import { formatPrice } from "@/lib/formatPrice";
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice } from "@/lib/formatPrice";
 
 export const CartDrawer = () => {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, subtotal } = useCart();

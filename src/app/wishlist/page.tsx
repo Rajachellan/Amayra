@@ -12,7 +12,6 @@ import { formatPrice } from "@/lib/formatPrice";
 import { Heart, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import toast from "react-hot-toast";
-import { formatPrice } from "@/lib/formatPrice";
 
 export default function WishlistPage() {
   const { wishlist, toggleWishlist } = useWishlist();

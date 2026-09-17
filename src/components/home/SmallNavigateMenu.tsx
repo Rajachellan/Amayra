@@ -11,7 +11,6 @@ import { mapListItemToProduct } from "@/lib/mapProduct";
 import { formatPrice } from "@/lib/formatPrice";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
-import { formatPrice } from "@/lib/formatPrice";
 
 type Tab = "bestsellers" | "newarrivals" | "trending";
 

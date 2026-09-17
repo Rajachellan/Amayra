@@ -604,7 +604,6 @@ function CategoryContent() {
           </AnimatePresence>
         </div>
 
-<<<<<<< HEAD
         {/* 2-Slide Auto-Scroll Pagination Indicators (only when multiple slides active) */}
         {hasMultipleSlides && (
           <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
@@ -630,29 +629,6 @@ function CategoryContent() {
             />
           </div>
         )}
-=======
-        {/* 2-Slide Auto-Scroll Pagination Indicators */}
-        <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
-          <button
-            type="button"
-            onClick={() => setCurrentBannerIndex(0)}
-            aria-label="Slide 1"
-            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === 0
-                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
-          />
-          <button
-            type="button"
-            onClick={() => setCurrentBannerIndex(1)}
-            aria-label="Slide 2"
-            className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === 1
-                ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
-          />
-        </div>
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
 
         {/* Bottom Filigree Line */}
         <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#C4A064] to-transparent z-20" />
@@ -720,14 +696,9 @@ function CategoryContent() {
                 <ProductGridSkeleton count={6} showFilter={showFilter} />
               ) : filteredProducts.length > 0 ? (
                 <div
-<<<<<<< HEAD
                   className={`grid grid-cols-2 sm:grid-cols-2 ${
                     showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
                   } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
-=======
-                  className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                    } gap-x-3 gap-y-6 sm:gap-x-6 sm:gap-y-12`}
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />

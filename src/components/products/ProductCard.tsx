@@ -11,8 +11,6 @@ import { formatPrice } from "@/lib/formatPrice";
 import { usePrefetchProductDetail } from "@/hooks/useProductDetail";
 import { Product } from "@/types";
 
-import { formatPrice } from "@/lib/formatPrice";
-
 interface ProductCardProps {
   product: Product;
 }
@@ -45,11 +43,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
       className="group relative bg-white overflow-hidden transition-all duration-500 border border-gray-100 hover:border-champagne/40 hover:shadow-[0_15px_30px_rgba(230,211,163,0.15)] rounded-2xl flex flex-col justify-between"
     >
       {/* Badges */}
-<<<<<<< HEAD
-      <div className="absolute top-2.5 left-2.5 sm:top-4 sm:left-4 z-10 flex flex-col space-y-1.5 sm:space-y-2">
-=======
       <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex flex-col space-y-1.5 sm:space-y-2">
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
         {product.isNewArrival && (
           <span className="bg-[#0B2516] text-white text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
             New Arrival
@@ -63,11 +57,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
       </div>
 
       {/* Permanently Visible Action Icons (Wishlist & View Product Details) */}
-<<<<<<< HEAD
-      <div className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-20 flex flex-col space-y-1.5 sm:space-y-2">
-=======
       <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-20 flex flex-col space-y-1.5 sm:space-y-2">
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
         <button
           type="button"
           title={isFavorite ? "Remove from wishlist" : "Add to wishlist"}
@@ -76,11 +66,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
             e.stopPropagation();
             toggleWishlist(product);
           }}
-<<<<<<< HEAD
-          className={`p-2 sm:p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-300 ${
-=======
           className={`p-1.5 sm:p-2.5 rounded-full shadow-md backdrop-blur-md transition-all duration-300 ${
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
             isFavorite
               ? "bg-rose-600 text-white shadow-rose-600/30"
               : "bg-white/90 text-stone-700 hover:bg-[#c9a84c] hover:text-[#0B2516]"
@@ -92,11 +78,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           href={productHref}
           title="View product details"
           onMouseEnter={handleMouseEnter}
-<<<<<<< HEAD
-          className="p-2 sm:p-2.5 bg-white/90 text-stone-700 rounded-full shadow-md backdrop-blur-md hover:bg-[#0B2516] hover:text-white transition-all duration-300"
-=======
           className="p-1.5 sm:p-2.5 bg-white/90 text-stone-700 rounded-full shadow-md backdrop-blur-md hover:bg-[#0B2516] hover:text-white transition-all duration-300"
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
         >
           <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
         </Link>
@@ -112,13 +94,8 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           src={imgSrc}
           alt={product.name}
           fill
-<<<<<<< HEAD
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
           quality={80}
-=======
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 25vw"
-          quality={75}
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
           loading="lazy"
           decoding="async"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -128,11 +105,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
 
       {/* Product Info & Always-Visible Add to Cart Button */}
       <div className="p-3 sm:p-5 flex flex-col items-center text-center flex-grow justify-between space-y-2.5 sm:space-y-4">
-<<<<<<< HEAD
         <div className="w-full space-y-1 sm:space-y-1.5">
-=======
-        <div className="w-full space-y-1">
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
           <span className="text-[#c9a84c] text-[8px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.35em] block font-bold">
             {product.category}
           </span>
@@ -143,11 +116,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           </Link>
 
           <p className="text-[9px] sm:text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-3.5 sm:h-4">
-<<<<<<< HEAD
             {product.shortDescription || product.description || "Handcrafted Luxury Jewellery"}
-=======
-            {product.description || "Handcrafted Luxury Jewellery"}
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
           </p>
         </div>
 
@@ -172,19 +141,11 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
               e.stopPropagation();
               addToCart(product);
             }}
-<<<<<<< HEAD
-            className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 sm:py-3 px-2 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-[0.15em] sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1.5 sm:space-x-2 group/btn cursor-pointer"
-          >
-            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
-            <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 transition-transform duration-300 group-hover/btn:scale-110" />
-            <span className="relative z-10 font-bold">Add to Bag</span>
-=======
             className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 px-1.5 sm:py-3 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-tight sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 group/btn cursor-pointer whitespace-nowrap"
           >
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
             <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 transition-transform duration-300 group-hover/btn:scale-110" />
             <span className="relative z-10 font-bold whitespace-nowrap">Add to Bag</span>
->>>>>>> c14ba75af9b64383e7b5f4ba4124b6af1ce0dbc2
           </button>
         </div>
       </div>

@@ -13,7 +13,6 @@ import { shopApi, type CartPricingResponse, type PublicCouponDoc } from "@/lib/a
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { formatPrice, formatCurrency } from "@/lib/formatPrice";
 import type { Product } from "@/types";
-import { formatPrice } from "@/lib/formatPrice";
 
 const SUGGESTION_COUNT = 10;
 

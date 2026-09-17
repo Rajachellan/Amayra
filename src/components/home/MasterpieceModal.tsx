@@ -12,7 +12,6 @@ import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
-import { formatPrice } from "@/lib/formatPrice";
 
 interface MasterpieceModalProps {
   product?: Product | null;
