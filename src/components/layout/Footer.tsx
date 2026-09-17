@@ -316,7 +316,7 @@ export const Footer = () => {
                 { name: "Our Story & Heritage", href: "/about" },
                 { name: "Track Your Order", href: "/profile" },
                 { name: "Shipping & Delivery Policy", href: "/shipping-returns" },
-                { name: "Returns & Exchanges", href: "/shipping-returns" },
+                { name: "Returns & Exchanges", href: "/returns-exchanges" },
                 { name: "Jewellery Care Guide", href: "/blog" },
                 { name: "Sitemap Directory", href: "/sitemap" },
               ].map((item) => (
