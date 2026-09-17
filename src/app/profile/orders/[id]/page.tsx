@@ -42,6 +42,17 @@ type OrderDetail = {
   shipping: number;
   currency: string;
   createdAt: string;
+  discount?: number;
+  automaticDiscount?: number;
+  couponDiscount?: number;
+  couponCode?: string;
+  taxableValue?: number;
+  gstRate?: number;
+  gstAmount?: number;
+  discountSlab?: {
+    minimumCartValue?: number;
+    discountPercentage?: number;
+  };
   shippingAddress: {
     fullName: string;
     phone: string;
@@ -357,24 +368,97 @@ export default function OrderDetailPage() {
               </ul>
 
               {/* Price Breakdown */}
-              <div className="bg-stone-50/70 rounded-2xl p-5 space-y-2.5 text-xs text-stone-600 border border-stone-200/60 mt-4">
-                <div className="flex justify-between">
-                  <span>Subtotal</span>
-                  <span>₹{formatPrice(order.subtotal)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Tax (GST)</span>
-                  <span>₹{formatPrice(order.tax)}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Insured Shipping</span>
-                  <span>₹{formatPrice(order.shipping)}</span>
-                </div>
-                <div className="flex justify-between font-bold text-stone-900 text-sm pt-3 border-t border-stone-200">
-                  <span className="uppercase tracking-widest">Total Paid</span>
-                  <span className="font-serif text-lg text-[#0B2516]">₹{formatPrice(order.total)} {order.currency}</span>
-                </div>
-              </div>
+              {(() => {
+                const effectiveDiscount =
+                  order.discount && order.discount > 0
+                    ? order.discount
+                    : (order.automaticDiscount || 0) + (order.couponDiscount || 0);
+
+                const totalSavings =
+                  effectiveDiscount > 0
+                    ? effectiveDiscount
+                    : Math.max(0, (order.subtotal || 0) - (order.total || 0) + (order.shipping || 0));
+
+                const automaticDiscount =
+                  order.automaticDiscount && order.automaticDiscount > 0
+                    ? order.automaticDiscount
+                    : !order.couponDiscount && totalSavings > 0
+                    ? totalSavings
+                    : 0;
+
+                const couponDiscount =
+                  order.couponDiscount && order.couponDiscount > 0
+                    ? order.couponDiscount
+                    : 0;
+
+                const slabPercentage =
+                  order.discountSlab?.discountPercentage ||
+                  (order.subtotal && automaticDiscount > 0
+                    ? Math.round((automaticDiscount / order.subtotal) * 100)
+                    : 0);
+
+                const effectiveGstRate = order.gstRate ?? 3;
+                const effectiveGstAmount = order.gstAmount ?? order.tax ?? 0;
+
+                return (
+                  <div className="bg-stone-50/70 rounded-2xl p-5 space-y-2.5 text-xs text-stone-600 border border-stone-200/60 mt-4">
+                    <div className="flex justify-between">
+                      <span>Subtotal</span>
+                      <span>₹{formatPrice(order.subtotal)}</span>
+                    </div>
+
+                    {automaticDiscount > 0 && (
+                      <div className="flex justify-between text-[#c4a064] font-semibold">
+                        <span>Offer Applied {slabPercentage > 0 ? `(${slabPercentage}% Off)` : ""}</span>
+                        <span>- ₹{formatPrice(automaticDiscount)}</span>
+                      </div>
+                    )}
+
+                    {couponDiscount > 0 && (
+                      <div className="flex justify-between text-[#c4a064] font-semibold">
+                        <span>Coupon Discount {order.couponCode ? `(${order.couponCode})` : ""}</span>
+                        <span>- ₹{formatPrice(couponDiscount)}</span>
+                      </div>
+                    )}
+
+                    {!automaticDiscount && !couponDiscount && totalSavings > 0 && (
+                      <div className="flex justify-between text-[#c4a064] font-semibold">
+                        <span>Offer / Discount Applied</span>
+                        <span>- ₹{formatPrice(totalSavings)}</span>
+                      </div>
+                    )}
+
+                    {order.taxableValue && order.taxableValue > 0 ? (
+                      <div className="flex justify-between text-stone-500">
+                        <span>Taxable Amount</span>
+                        <span>₹{formatPrice(order.taxableValue)}</span>
+                      </div>
+                    ) : null}
+
+                    <div className="flex justify-between">
+                      <span>Tax (GST {effectiveGstRate}% Included)</span>
+                      <span className="font-medium text-stone-700">₹{formatPrice(effectiveGstAmount)}</span>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <span>Insured Shipping</span>
+                      <span>{order.shipping > 0 ? `₹${formatPrice(order.shipping)}` : "FREE"}</span>
+                    </div>
+
+                    <div className="flex justify-between items-baseline font-bold text-stone-900 text-sm pt-3 border-t border-stone-200">
+                      <div>
+                        <span className="uppercase tracking-widest block">Total Paid</span>
+                        <span className="text-[10px] text-stone-400 font-normal lowercase tracking-normal">
+                          (incl. ₹{formatPrice(effectiveGstAmount)} {effectiveGstRate}% GST)
+                        </span>
+                      </div>
+                      <span className="font-serif text-lg text-[#0B2516]">
+                        ₹{formatPrice(order.total)} {order.currency}
+                      </span>
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             {/* Shipping & Payment Details */}
