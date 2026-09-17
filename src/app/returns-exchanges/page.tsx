@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/layout/Navbar";
@@ -23,6 +23,10 @@ import {
   HelpCircle,
   Building2,
   Wallet,
+  X,
+  FileText,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
 type ItemEligibility = {
@@ -121,6 +125,27 @@ export default function ReturnsExchangesPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submittedReturn, setSubmittedReturn] = useState<ReturnResponse | null>(null);
+
+  // Policy Modal & Accordion states
+  const [isPolicyModalOpen, setIsPolicyModalOpen] = useState(false);
+  const [isPolicyExpanded, setIsPolicyExpanded] = useState(false);
+
+  // Handle escape key and body scroll lock for policy modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsPolicyModalOpen(false);
+    };
+    if (isPolicyModalOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isPolicyModalOpen]);
 
   // Handle Order Lookup
   const handleLookup = async (e: React.FormEvent) => {
@@ -401,15 +426,86 @@ export default function ReturnsExchangesPage() {
                 )}
               </button>
 
-              <div className="text-center pt-2">
-                <Link
-                  href="/shipping-returns"
-                  className="text-xs text-stone-500 hover:text-[#0B2516] underline underline-offset-4 transition-colors"
-                >
-                  Check our return & cancellation policy here
-                </Link>
+              <div className="text-center pt-2 space-y-2">
+                <p className="text-xs text-stone-500">
+                  Check our return & cancellation policy{" "}
+                  <button
+                    type="button"
+                    onClick={() => setIsPolicyModalOpen(true)}
+                    className="text-[#0B2516] font-semibold underline underline-offset-4 hover:text-[#c4a064] transition-colors cursor-pointer"
+                  >
+                    here
+                  </button>
+                </p>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setIsPolicyExpanded(!isPolicyExpanded)}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-medium text-stone-600 hover:text-[#0B2516] transition-colors py-1 px-3 rounded-full bg-stone-100 hover:bg-stone-200/70"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-[#c4a064]" />
+                    <span>{isPolicyExpanded ? "Hide Return Guidelines" : "Read Detailed Policy on this Page"}</span>
+                    {isPolicyExpanded ? (
+                      <ChevronUp className="w-3.5 h-3.5" />
+                    ) : (
+                      <ChevronDown className="w-3.5 h-3.5" />
+                    )}
+                  </button>
+                </div>
               </div>
             </form>
+
+            {/* Inline Expandable Policy Guide */}
+            {isPolicyExpanded && (
+              <div className="mt-8 pt-6 border-t border-stone-100 space-y-5 text-xs text-stone-600 animate-in fade-in duration-300">
+                <div className="flex items-center gap-2 text-stone-900 font-semibold uppercase tracking-wider text-xs">
+                  <ShieldCheck className="w-4 h-4 text-[#c4a064]" />
+                  <span>Return & Exchange Policy Guidelines</span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/70 space-y-1.5">
+                    <p className="font-semibold text-stone-900 text-xs flex items-center gap-1.5">
+                      <Clock className="w-3.5 h-3.5 text-[#c4a064]" />
+                      <span>5-Day Policy Window</span>
+                    </p>
+                    <p className="text-[11px] leading-relaxed text-stone-600">
+                      Returns & exchanges are accepted within 5 days of confirmed delivery for unused, unworn items.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/70 space-y-1.5">
+                    <p className="font-semibold text-stone-900 text-xs flex items-center gap-1.5">
+                      <Package className="w-3.5 h-3.5 text-[#c4a064]" />
+                      <span>Packaging & Tags Intact</span>
+                    </p>
+                    <p className="text-[11px] leading-relaxed text-stone-600">
+                      Items must be in original royal packaging with security tags, certificates, and sealed box intact.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/70 space-y-1.5">
+                    <p className="font-semibold text-stone-900 text-xs flex items-center gap-1.5">
+                      <Truck className="w-3.5 h-3.5 text-[#c4a064]" />
+                      <span>Doorstep Reverse Pickup</span>
+                    </p>
+                    <p className="text-[11px] leading-relaxed text-stone-600">
+                      Our insured courier partner will be assigned to collect the package directly from your shipping address.
+                    </p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200/70 space-y-1.5">
+                    <p className="font-semibold text-stone-900 text-xs flex items-center gap-1.5">
+                      <Wallet className="w-3.5 h-3.5 text-[#c4a064]" />
+                      <span>Fast Refunds & Exchanges</span>
+                    </p>
+                    <p className="text-[11px] leading-relaxed text-stone-600">
+                      Instant store credits upon QC verification or bank settlement within 5–7 working days.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -937,6 +1033,178 @@ export default function ReturnsExchangesPage() {
           </div>
         )}
       </div>
+
+      {/* RETURN & EXCHANGE POLICY MODAL */}
+      {isPolicyModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="policy-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200"
+          onClick={() => setIsPolicyModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-2xl max-h-[90vh] bg-white rounded-3xl shadow-2xl border border-stone-200 flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 bg-[#0B2516] text-[#FAF7F0] border-b border-[#0B2516]">
+              <div className="space-y-0.5">
+                <span className="text-[10px] uppercase font-bold tracking-[0.25em] text-[#c4a064]">
+                  Maison Mairii Jewels
+                </span>
+                <h2 id="policy-modal-title" className="font-serif text-xl sm:text-2xl font-medium tracking-wide">
+                  Return & Exchange Policy
+                </h2>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPolicyModalOpen(false)}
+                className="p-2 rounded-full text-stone-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Close policy modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Quick Summary Highlights Banner */}
+            <div className="grid grid-cols-3 gap-2 px-6 py-3 bg-[#FAF7F0] border-b border-stone-200 text-center">
+              <div className="space-y-0.5">
+                <p className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">Window</p>
+                <p className="text-xs font-bold text-stone-900">5 Days</p>
+              </div>
+              <div className="space-y-0.5 border-x border-stone-200 px-2">
+                <p className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">Pickup</p>
+                <p className="text-xs font-bold text-stone-900">Doorstep Reverse</p>
+              </div>
+              <div className="space-y-0.5">
+                <p className="text-[10px] uppercase tracking-wider text-stone-500 font-semibold">Refund Mode</p>
+                <p className="text-xs font-bold text-stone-900">Voucher / Bank</p>
+              </div>
+            </div>
+
+            {/* Modal Scrollable Content */}
+            <div className="overflow-y-auto p-6 sm:p-8 space-y-6 text-xs sm:text-sm text-stone-600 leading-relaxed">
+              {/* Section 1: Overview */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-stone-900 text-sm flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-[#c4a064]" />
+                  <span>1. 5-Day Return & Exchange Guarantee</span>
+                </h3>
+                <p>
+                  At Mairii Jewels, each piece is handcrafted to perfection. If you are not completely satisfied with your order, you can raise an exchange or return request within <strong className="text-stone-900">5 days of delivery</strong> directly on this page using your Order Number and phone or email.
+                </p>
+              </div>
+
+              {/* Section 2: Condition & Quality Check */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-stone-900 text-sm flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#c4a064]" />
+                  <span>2. Eligibility & Quality Standards</span>
+                </h3>
+                <ul className="list-disc list-inside space-y-1.5 pl-1 text-stone-600">
+                  <li>Jewellery must be <strong className="text-stone-900">unused, unworn, and unwashed</strong> with zero signs of wear, perfume scent, or makeup residue.</li>
+                  <li>The tamper-proof security tag, brand barcode tag, and authenticity guarantee card must remain fully attached and intact.</li>
+                  <li>Items must be returned inside the original protective velvet box / pouch and packed in the outer transit box.</li>
+                </ul>
+              </div>
+
+              {/* Section 3: Reverse Pickup & Logistics */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-stone-900 text-sm flex items-center gap-2">
+                  <Truck className="w-4 h-4 text-[#c4a064]" />
+                  <span>3. Hassle-Free Reverse Pickup</span>
+                </h3>
+                <p>
+                  Once your request is registered, our concierge courier partners will attempt pickup from your doorstep within <strong className="text-stone-900">24 to 48 working hours</strong>. You will receive SMS & WhatsApp tracking updates. Please ensure the parcel is securely packed and sealed before handing it to the pickup courier executive.
+                </p>
+              </div>
+
+              {/* Section 4: Refund Timelines & Methods */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-stone-900 text-sm flex items-center gap-2">
+                  <Wallet className="w-4 h-4 text-[#c4a064]" />
+                  <span>4. Refund & Settlement Processing</span>
+                </h3>
+                <p>
+                  Once the parcel reaches our Jaipur inspection atelier and passes quality check (within 48 hours of receipt):
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                  <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+                    <p className="font-semibold text-stone-900 text-xs mb-1">Mairii Gift Card / Store Voucher</p>
+                    <p className="text-[11px] text-stone-500">
+                      Disbursed immediately via email/WhatsApp. 100% value with no deduction, valid for 1 year across all collections.
+                    </p>
+                  </div>
+                  <div className="p-3.5 rounded-xl bg-stone-50 border border-stone-200">
+                    <p className="font-semibold text-stone-900 text-xs mb-1">Bank / UPI / Original Mode</p>
+                    <p className="text-[11px] text-stone-500">
+                      Processed directly to your verified bank account or source card within 7 to 10 working days.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Section 5: Unboxing Video for Damaged/Defective claims */}
+              <div className="space-y-2 p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+                <h3 className="font-semibold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                  <span>Mandatory Unboxing Video for Transit Claims</span>
+                </h3>
+                <p className="text-xs text-amber-800 leading-relaxed">
+                  In the rare event that an item arrives broken, damaged, or with a missing gemstone, an uncut, continuous 360° unboxing video recorded while opening the outer courier parcel is required. Please attach a link (Google Drive / cloud link) in your request or share it directly with our team on WhatsApp.
+                </p>
+              </div>
+
+              {/* Section 6: Non-Returnable Items */}
+              <div className="space-y-2">
+                <h3 className="font-semibold text-stone-900 text-sm flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-[#c4a064]" />
+                  <span>5. Non-Returnable Items</span>
+                </h3>
+                <p className="text-xs text-stone-600">
+                  The following items cannot be returned or exchanged:
+                </p>
+                <ul className="list-disc list-inside space-y-1 pl-1 text-[11px] text-stone-500">
+                  <li>Custom-engraved or personalized bespoke jewellery.</li>
+                  <li>Items bought during "Final Clearance" or special flash sale events marked as Non-Returnable.</li>
+                  <li>Pierced earrings whose hygiene safety sticker has been opened or tampered with.</li>
+                </ul>
+              </div>
+
+              {/* Section 7: Concierge Contact */}
+              <div className="pt-2 border-t border-stone-200">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-2xl bg-stone-50 border border-stone-200">
+                  <div>
+                    <p className="font-semibold text-stone-900 text-xs">Need Direct Support?</p>
+                    <p className="text-[11px] text-stone-500">Our customer concierge is available Mon-Sat, 10 AM - 7 PM IST</p>
+                  </div>
+                  <a
+                    href="https://wa.me/919566571655?text=Hi%20Mairii%20Jewels,%20I%20have%20a%20question%20regarding%20Return%20and%20Exchange."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-semibold rounded-full shadow-sm transition-colors shrink-0"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    <span>WhatsApp Concierge</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="sticky bottom-0 z-10 flex items-center justify-end gap-3 px-6 py-4 bg-stone-50 border-t border-stone-200">
+              <button
+                type="button"
+                onClick={() => setIsPolicyModalOpen(false)}
+                className="px-6 py-2.5 bg-[#0B2516] hover:bg-[#123822] text-[#FAF7F0] text-xs uppercase tracking-wider font-semibold rounded-xl transition shadow-sm cursor-pointer"
+              >
+                Close Policy
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </main>
