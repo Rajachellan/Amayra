@@ -24,7 +24,7 @@ Effects are intended to synchronize state between React and external systems suc
 * Update external systems with the latest state from React.
 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
 
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
 C:\SRI\Jewellery_website\src\context\CartContext.tsx:25:7
   23 |     const savedCart = localStorage.getItem("cart");
@@ -42,7 +42,7 @@ Effects are intended to synchronize state between React and external systems suc
 * Update external systems with the latest state from React.
 * Subscribe for updates from some external system, calling setState in a callback function when external state changes.
 
-Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
 
 C:\SRI\Jewellery_website\src\context\WishlistContext.tsx:21:7
   19 |     const savedWishlist = localStorage.getItem("wishlist");

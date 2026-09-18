@@ -8,7 +8,7 @@ const impactPillars = [
   {
     icon: GraduationCap,
     title: "Women's Education",
-    description: "Sponsoring scholarships, educational materials, and learning centers for girls and young women."
+    description: "Sponsoring scholarships, educational materials and learning centers for girls and young women."
   },
   {
     icon: Briefcase,
@@ -18,7 +18,7 @@ const impactPillars = [
   {
     icon: Wrench,
     title: "Skill Development",
-    description: "Offering hands-on vocational training in craftsmanship, design, and digital literacy skills."
+    description: "Offering hands-on vocational training in craftsmanship, design and digital literacy skills."
   },
   {
     icon: Coins,
@@ -54,7 +54,7 @@ export const OurVision = () => {
             </h2>
             {/* <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#C4A064] to-transparent mx-auto mb-8" /> */}
             <p className="text-lg text-[#555555] font-light leading-relaxed font-serif">
-              Every woman carries a story — of strength quietly worn, dreams quietly set aside, and resilience that often goes unnoticed by the world and sometimes even by herself.
+              Every woman carries a story — of strength quietly worn, dreams quietly set aside and resilience that often goes unnoticed by the world and sometimes even by herself.
             </p>
           </motion.div>
         </div>
@@ -110,7 +110,7 @@ export const OurVision = () => {
 
             <div className="lg:col-span-8 space-y-4 border-t lg:border-t-0 lg:border-l border-white/10 pt-6 lg:pt-0 lg:pl-10">
               <p className="text-base md:text-lg font-light leading-relaxed text-stone-300 font-serif">
-                Through MaiRii, we create accessible jewellery and meaningful opportunities for women to earn, grow, and feel valued. We commit at least 10% of our profits towards initiatives that support women&apos;s education, entrepreneurship, skill development, and financial well-being.
+                Through MaiRii, we create accessible jewellery and meaningful opportunities for women to earn, grow and feel valued. We commit at least 10% of our profits towards initiatives that support women&apos;s education, entrepreneurship, skill development and financial well-being.
               </p>
               <p className="text-xs uppercase tracking-[0.2em] font-medium text-amber-300/80">
                 Every purchase directly contributes to empowering women across communities.

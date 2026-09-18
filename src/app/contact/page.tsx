@@ -59,7 +59,7 @@ const SUPPORT_CHANNELS = [
     title: "Marketing, PR & Media Enquiries",
     whatsapp: "+91 9876 543 210",
     hours: "Available Mon - Fri, 11 AM to 6 PM IST",
-    desc: "Collaborations, editorial loans, and brand partnerships."
+    desc: "Collaborations, editorial loans and brand partnerships."
   },
   {
     title: "Wedding Trousseau & Bulk Orders",
@@ -238,7 +238,7 @@ export default function ContactPage() {
             </div>
 
             <p className="text-[#555555] leading-relaxed font-serif text-base md:text-lg font-light">
-              Our dedicated support concierge is available <span className="font-semibold text-[#2B2B2B]">Monday through Saturday</span> to assist with product inquiries, order tracking, and gift options.
+              Our dedicated support concierge is available <span className="font-semibold text-[#2B2B2B]">Monday through Saturday</span> to assist with product inquiries, order tracking and gift options.
             </p>
 
             <div className="p-6 rounded-xl bg-[#FAF8F3] border border-[#C4A064]/20 space-y-4">

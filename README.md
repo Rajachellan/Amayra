@@ -17,6 +17,16 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Environment variables
+
+Copy `.env.example` to `.env.local` and fill in the public Google and Razorpay values when those integrations are enabled. Keep `RAZORPAY_KEY_SECRET` server-side in the API environment; it must never be exposed through a `NEXT_PUBLIC_` variable.
+
+The frontend variables are:
+
+- `NEXT_PUBLIC_API_URL`: API origin, without a trailing slash.
+- `NEXT_PUBLIC_GOOGLE_CLIENT_ID`: Google Identity Services web client ID.
+- `NEXT_PUBLIC_RAZORPAY_KEY_ID`: Razorpay public key ID.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

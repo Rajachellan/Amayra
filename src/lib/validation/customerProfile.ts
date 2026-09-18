@@ -33,7 +33,7 @@ export const personNameSchema = z
   .trim()
   .min(2, "Name must be at least 2 characters")
   .max(80, "Name must be at most 80 characters")
-  .regex(PERSON_NAME_RE, "Use letters only (spaces, apostrophes, and hyphens allowed)");
+  .regex(PERSON_NAME_RE, "Use letters only (spaces, apostrophes and hyphens allowed)");
 
 export const emailSchema = z
   .string()
@@ -77,7 +77,7 @@ export const addressFormSchema = z.object({
     .trim()
     .min(1, "Add a label (Home, Office…)")
     .max(40)
-    .regex(LABEL_RE, "Label may only contain letters, numbers, and basic punctuation"),
+    .regex(LABEL_RE, "Label may only contain letters, numbers and basic punctuation"),
   fullName: personNameSchema,
   phone: phoneSchema,
   line1: z

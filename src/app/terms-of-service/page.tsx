@@ -49,7 +49,7 @@ const TermsOfService = () => {
             <h2 className="text-2xl font-serif text-foreground mb-6">3. Product Information & Pricing</h2>
             <ul className="mt-5 list-disc space-y-3 pl-6 text-muted-foreground">
               <li>
-                We make every effort to display accurate product images, descriptions, and prices. Colours may vary slightly due to screen settings and photography.
+                We make every effort to display accurate product images, descriptions and prices. Colours may vary slightly due to screen settings and photography.
               </li>
 
               <li>
@@ -69,7 +69,7 @@ const TermsOfService = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">5.Intellectual Property</h2>
             <p>
-              All content on the Platform — including but not limited to the MaiRii name, logo, designs, photography, and brand messaging — is the intellectual property of Gems of Sree Amala LLP. No content may be copied, reproduced, or used commercially without prior written consent.
+              All content on the Platform — including but not limited to the MaiRii name, logo, designs, photography and brand messaging — is the intellectual property of Gems of Sree Amala LLP. No content may be copied, reproduced, or used commercially without prior written consent.
             </p>
           </section>
 

@@ -31,14 +31,14 @@ const faqs = [
     category: "Authenticity",
     question: "How do I track my order?",
     answer:
-      "Once shipped, you'll receive a tracking link via email, SMS, and WhatsApp. You can also track it anytime from 'My Orders' on our website.",
+      "Once shipped, you'll receive a tracking link via email, SMS and WhatsApp. You can also track it anytime from 'My Orders' on our website.",
   },
   {
     id: 3,
     category: "Custom Orders",
     question: "Do I need an account to shop with MaiRii?",
     answer:
-      "You can check out as a guest, but creating an account lets you track orders, save addresses, and view your order history.",
+      "You can check out as a guest, but creating an account lets you track orders, save addresses and view your order history.",
   },
   {
     id: 4,
@@ -59,7 +59,7 @@ const faqs = [
     category: "How do I take care of my jewellery?",
     question: "How do I take care of my jewellery?",
     answer:
-      "Keep it away from water, perfume, and direct sunlight and store it in the pouch provided. This helps preserve the plating and finish for longer.",
+      "Keep it away from water, perfume and direct sunlight and store it in the pouch provided. This helps preserve the plating and finish for longer.",
   },
   {
     id: 7,

@@ -41,9 +41,9 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>What started as one woman's love for her mother is now an invitation to everyone: come, enjoy a little of that magic for yourself. Because at MaiRii, we celebrate our legacy along with the expression of our unique identity.</p>
       
       <h3>Our 10% Social Impact Pledge</h3>
-      <p>Every woman carries a story — of strength quietly worn, dreams quietly set aside, and resilience that often goes unnoticed by the world, and sometimes even by herself.</p>
+      <p>Every woman carries a story — of strength quietly worn, dreams quietly set aside and resilience that often goes unnoticed by the world and sometimes even by herself.</p>
       
-      <p>Through MaiRii, we create accessible jewellery and meaningful opportunities for women to earn, grow, and feel valued. We commit at least 10% of our profits towards initiatives that support women's education, entrepreneurship, skill development, and financial well-being.</p>
+      <p>Through MaiRii, we create accessible jewellery and meaningful opportunities for women to earn, grow and feel valued. We commit at least 10% of our profits towards initiatives that support women's education, entrepreneurship, skill development and financial well-being.</p>
     `,
   },
 
@@ -91,7 +91,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>For the bride who prefers understated elegance, minimalist diamond sets are the way to go. Delicate necklaces and stud earrings are being layered to create a sophisticated yet effortless look.</p>
       
       <h3>3. Statement Chokers</h3>
-      <p>A statement choker remains a bridal essential. This season, we're seeing oversized designs featuring a mix of precious stones, intricate gold work, and delicate pearls.</p>
+      <p>A statement choker remains a bridal essential. This season, we're seeing oversized designs featuring a mix of precious stones, intricate gold work and delicate pearls.</p>
       
       <p>Choosing your bridal jewellery is a journey of self-expression. At MaiRii, our bridal consultants are dedicated to helping you find the perfect pieces that reflect your style and celebrate your special day.</p>
     `,
@@ -130,10 +130,10 @@ export const BLOG_POSTS: BlogPost[] = [
     category: "Education",
     readTime: "6 min read",
     content: `
-      <p>The cut of a diamond is perhaps the most crucial of the 4Cs, as it directly impacts the stone's ability to reflect light. While often confused with the shape, the 'cut' refers to the symmetry, proportion, and polish of the diamond's facets.</p>
+      <p>The cut of a diamond is perhaps the most crucial of the 4Cs, as it directly impacts the stone's ability to reflect light. While often confused with the shape, the 'cut' refers to the symmetry, proportion and polish of the diamond's facets.</p>
       
       <h3>The Ideal Cut</h3>
-      <p>A well-cut diamond allows light to enter through the table, bounce off the pavilion facets, and return through the table, creating maximum brilliance and fire. If a cut is too shallow or too deep, light escapes through the bottom or sides, resulting in a dull appearance.</p>
+      <p>A well-cut diamond allows light to enter through the table, bounce off the pavilion facets and return through the table, creating maximum brilliance and fire. If a cut is too shallow or too deep, light escapes through the bottom or sides, resulting in a dull appearance.</p>
       
       <h3>Popular Shapes</h3>
       <p>From the classic Round Brilliant to the sophisticated Emerald and the romantic Pear, each diamond shape offers a different aesthetic. However, the quality of the cut remains paramount regardless of the shape.</p>
@@ -181,7 +181,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <p>Don't be afraid to mix different textures—like a smooth herringbone chain with a delicate box chain. While staying within the same gold tone (like yellow gold) provides a cohesive look, mixing metals can also create a modern, edgy vibe.</p>
       
       <h3>The Rule of Three</h3>
-      <p>A good rule of thumb is to start with three layers. For necklaces, this could be a short choker, a medium-length pendant, and a longer chain. This creates a pleasing visual gradient without overwhelming your look.</p>
+      <p>A good rule of thumb is to start with three layers. For necklaces, this could be a short choker, a medium-length pendant and a longer chain. This creates a pleasing visual gradient without overwhelming your look.</p>
       
       <p>Mastering the art of layering is about experimentation and finding what works for you. Explore our collection of gold essentials at MaiRii and start building your own unique jewellery story.</p>
     `,

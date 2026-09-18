@@ -27,7 +27,7 @@ const CATEGORIES = [
   {
     title: "Daily Elegance",
     subtitle: "Minimalist Luxury",
-    description: "Delicate necklaces and studs crafted for daily sophistication. Subtle, modern, and timeless pieces for every occasion.",
+    description: "Delicate necklaces and studs crafted for daily sophistication. Subtle, modern and timeless pieces for every occasion.",
     image: "/images/luxury/daily.png",
     background: "bg-pearl",
     href: "/category/earrings?sub=Daily Wear",

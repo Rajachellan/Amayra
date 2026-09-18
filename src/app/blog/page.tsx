@@ -158,7 +158,7 @@ export default function BlogPage() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="text-stone-300 text-xs sm:text-sm font-light tracking-[0.2em] uppercase max-w-2xl mx-auto font-serif"
           >
-            Explore our origin story, heritage craftsmanship, style guides, and our 10% pledge for women&apos;s empowerment.
+            Explore our origin story, heritage craftsmanship, style guides and our 10% pledge for women&apos;s empowerment.
           </motion.p> */}
         </div>
       </section>
@@ -348,7 +348,7 @@ export default function BlogPage() {
             <h2 className="text-3xl md:text-4xl font-serif text-white">Join The Elite Circle</h2>
             
             <p className="text-xs md:text-sm text-stone-300 font-light tracking-widest uppercase font-serif">
-Discover exquisite pieces, private collection previews, jewellery stories, and exclusive updates curated just for you.
+Discover exquisite pieces, private collection previews, jewellery stories and exclusive updates curated just for you.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto pt-4">

@@ -53,7 +53,7 @@ const PrivacyPolicy = () => {
               </li>
 
               <li>
-                <span className="font-semibold">Technical data:</span> IP address, browser type, device information, and cookies (see Section 4).
+                <span className="font-semibold">Technical data:</span> IP address, browser type, device information and cookies (see Section 4).
               </li>
             </ul>
           </section>
@@ -64,11 +64,11 @@ const PrivacyPolicy = () => {
             {/* Points */}
             <ul className="mt-5 list-disc space-y-3 pl-6 text-muted-foreground">
               <li>
-                To process, dispatch, and support your orders.
+                To process, dispatch and support your orders.
               </li>
 
               <li>
-                To communicate order updates, offers, and newsletters (you may opt out anytime).
+                To communicate order updates, offers and newsletters (you may opt out anytime).
               </li>
 
               <li>
@@ -106,7 +106,7 @@ const PrivacyPolicy = () => {
           <section>
             <h2 className="text-2xl font-serif text-foreground mb-6">5. Cookies </h2>
             <p>
-              We use cookies and similar technologies to remember your preferences, keep you signed in, and understand how you use our Platform. You can disable cookies in your browser settings, though some features may not work as intended.
+              We use cookies and similar technologies to remember your preferences, keep you signed in and understand how you use our Platform. You can disable cookies in your browser settings, though some features may not work as intended.
             </p>
 
 

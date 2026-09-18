@@ -423,7 +423,7 @@ export default function OrderDetailPage() {
                   <div>
                     <h3 className="font-serif text-2xl text-[#0B2516] font-medium">Return or Exchange</h3>
                     <p className="text-xs text-stone-500 mt-1">
-                      Select items, partial quantities, and reason for order #{order.orderNumber}
+                      Select items, partial quantities and reason for order #{order.orderNumber}
                     </p>
                   </div>
 

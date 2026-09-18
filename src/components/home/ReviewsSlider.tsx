@@ -25,7 +25,7 @@ const REVIEWS = [
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=240&auto=format&fit=crop",
     rating: 5,
     tag: "Haute Joaillerie",
-    text: "A beautiful shopping experience from start to finish. The packaging was elegant, and the jewellery was even more stunning in person. The quality and finishing are exceptional, and I received so many compliments!",
+    text: "A beautiful shopping experience from start to finish. The packaging was elegant and the jewellery was even more stunning in person. The quality and finishing are exceptional and I received so many compliments!",
   },
   {
     id: 3,

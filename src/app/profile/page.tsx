@@ -389,7 +389,7 @@ export default function ProfilePage() {
                           </div>
                           <h3 className="font-serif text-2xl text-stone-900">Your wishlist is empty</h3>
                           <p className="text-stone-500 text-xs tracking-wider uppercase leading-relaxed">
-                            Discover our handcrafted gold, diamond, and bridal collections to save your favorite luxury creations.
+                        Discover beautiful artificial jewellery for every occasion. Find your favorite designs and add a stylish touch to your look.
                           </p>
                           <div className="pt-2">
                             <Link href="/category/all">
@@ -581,7 +581,7 @@ export default function ProfilePage() {
                           <div>
                             <h3 className="font-serif text-lg text-stone-900 font-medium">Personal Styling Advice</h3>
                             <p className="text-xs text-stone-500 leading-relaxed mt-1">
-                              Get expert styling recommendations matched to your trousseau, wedding themes, and special occasions.
+                              Get expert styling recommendations matched to your trousseau, wedding themes and special occasions.
                             </p>
                           </div>
                           <a

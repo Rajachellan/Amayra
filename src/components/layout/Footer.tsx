@@ -195,7 +195,7 @@ export const Footer = () => {
                   href: "/category/all?collection=pehla-tohfa",
                 },
                 {
-                  name: "AAnchal",
+                  name: "Anchal",
                   href: "/category/all?collection=aanchal",
                 },
                 {

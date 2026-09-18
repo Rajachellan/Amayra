@@ -113,12 +113,13 @@ const COLOR_PRESETS = [
 ];
 
 const METAL_PRESETS = [
-  "22K Gold",
-  "18K Rose Gold",
-  "925 Sterling Silver",
-  "White Gold",
-  "Platinum",
-  "Antique Oxidized Silver",
+ "Brass",
+  "Alloy",
+  "Stainless Steel",
+  "Gold Plated",
+  "Silver Plated",
+  "Rose Gold Plated",
+  "Oxidized Finish",
 ];
 
 const STYLE_PRESETS = [

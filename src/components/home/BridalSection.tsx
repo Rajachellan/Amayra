@@ -35,7 +35,7 @@ export const BridalSection = () => {
             </h2>
             <div className="w-32 h-[1px] bg-brand-gold mx-auto mb-10" />
             <p className="text-gray-200 font-sans text-xl mb-12 leading-relaxed max-w-2xl mx-auto italic font-light">
-              "Every piece tells a story of heritage, love, and the timeless beauty of a bride on her most special day."
+              "Every piece tells a story of heritage, love and the timeless beauty of a bride on her most special day."
             </p>
 
             <div className="flex flex-col md:flex-row items-center justify-center gap-6">
