@@ -99,6 +99,7 @@ export default function ReturnsExchangesPage() {
 
   // Step 2: Verified Order Data
   const [lookupResult, setLookupResult] = useState<LookupResponse | null>(null);
+  const [reviewMode, setReviewMode] = useState(false);
 
   // Step 2: Request Form States
   const [requestType, setRequestType] = useState<"RETURN" | "EXCHANGE">("EXCHANGE");
@@ -178,12 +179,17 @@ export default function ReturnsExchangesPage() {
       });
 
       setLookupResult(res);
+      setReviewMode(false);
       // Reset request selection
       setSelectedItems({});
       setReasonCode("");
       setDescription("");
       setPreferredSize("");
       setExchangeNotes("");
+
+      if (typeof window !== "undefined") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     } catch (err) {
       setLookupResult(null);
       setLookupError(
@@ -360,7 +366,7 @@ export default function ReturnsExchangesPage() {
         </div>
 
         {/* STEP 1: ORDER LOOKUP FORM */}
-        {!submittedReturn && (
+        {!lookupResult && !submittedReturn && (
           <div className="bg-white rounded-3xl border border-stone-200 shadow-xl shadow-stone-200/40 p-6 sm:p-10 mb-10 transition-all">
             <form onSubmit={handleLookup} className="space-y-6 max-w-xl mx-auto">
               <div className="space-y-4">
@@ -512,6 +518,26 @@ export default function ReturnsExchangesPage() {
         {/* STEP 2: VERIFIED ORDER & RETURN / EXCHANGE SELECTION */}
         {lookupResult && !submittedReturn && (
           <div className="space-y-8 animate-in fade-in duration-300">
+            {/* Navigation Header */}
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => {
+                  setLookupResult(null);
+                  setReviewMode(false);
+                }}
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-700 hover:text-[#0B2516] bg-white hover:bg-stone-50 border border-stone-200 px-3.5 py-1.5 rounded-full shadow-xs transition-colors cursor-pointer"
+              >
+                ← Search Another Order
+              </button>
+              {reviewMode && (
+                <span className="px-3 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5">
+                  <AlertCircle className="w-3.5 h-3.5 text-amber-600" />
+                  <span>Review / Preview Mode</span>
+                </span>
+              )}
+            </div>
+
             {/* Order Overview Banner */}
             <div className="bg-white rounded-3xl border border-stone-200 p-6 sm:p-8 shadow-md">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-stone-100 pb-5">
@@ -538,8 +564,8 @@ export default function ReturnsExchangesPage() {
               </div>
 
               {/* Delivery Check Notification */}
-              {!lookupResult.order.isDelivered ? (
-                <div className="mt-6 p-5 rounded-2xl bg-amber-50/80 border border-amber-200/80 space-y-3">
+              {!lookupResult.order.isDelivered && !reviewMode ? (
+                <div className="mt-6 p-5 rounded-2xl bg-amber-50/80 border border-amber-200/80 space-y-4">
                   <div className="flex items-start gap-3 text-amber-900">
                     <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                     <div className="space-y-1 text-xs leading-relaxed">
@@ -549,19 +575,31 @@ export default function ReturnsExchangesPage() {
                         <strong className="capitalize">
                           {lookupResult.order.orderStatus?.replace(/_/g, " ") || lookupResult.order.status}
                         </strong>
-                        . Returns and exchanges can be initiated once your package is marked as Delivered by our logistics team.
+                        . In live customer operations, returns and exchanges are opened once your package is marked as Delivered. You can preview the full return/exchange request form below to review all options.
                       </p>
                     </div>
                   </div>
                   <div className="pt-2 flex flex-wrap gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setReviewMode(true)}
+                      className="px-4 py-2.5 bg-[#0B2516] text-[#FAF7F0] text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-[#123822] transition shadow-xs cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span>Preview Return & Exchange Form</span>
+                      <ChevronRight className="w-3.5 h-3.5 text-[#c4a064]" />
+                    </button>
                     <Link href={`/profile/orders/${lookupResult.order.orderNumber}`}>
-                      <button className="px-4 py-2 bg-[#0B2516] text-[#FAF7F0] text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-[#123822] transition">
+                      <button type="button" className="px-4 py-2.5 bg-white border border-stone-300 text-stone-700 text-xs font-semibold uppercase tracking-wider rounded-full hover:border-[#0B2516] transition cursor-pointer">
                         Track Order Progress
                       </button>
                     </Link>
                     <button
-                      onClick={() => setLookupResult(null)}
-                      className="px-4 py-2 bg-white border border-stone-300 text-stone-700 text-xs font-semibold uppercase tracking-wider rounded-full hover:border-[#0B2516] transition"
+                      type="button"
+                      onClick={() => {
+                        setLookupResult(null);
+                        setReviewMode(false);
+                      }}
+                      className="px-4 py-2.5 bg-white border border-stone-300 text-stone-700 text-xs font-semibold uppercase tracking-wider rounded-full hover:border-[#0B2516] transition cursor-pointer"
                     >
                       Search Another Order
                     </button>
@@ -570,6 +608,24 @@ export default function ReturnsExchangesPage() {
               ) : (
                 /* DELIVERED ORDER RETURN/EXCHANGE FORM */
                 <form onSubmit={handleSubmitRequest} className="mt-8 space-y-8">
+                  {reviewMode && !lookupResult.order.isDelivered && (
+                    <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center justify-between gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                        <p className="leading-relaxed">
+                          <strong>Preview Mode Active:</strong> This order is in status <span className="font-semibold uppercase">{lookupResult.order.orderStatus}</span>. Item selection and all options are unlocked so you can test and review the full return and exchange form.
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setReviewMode(false)}
+                        className="text-xs font-semibold underline text-amber-900 hover:text-amber-700 shrink-0 cursor-pointer"
+                      >
+                        Exit Preview
+                      </button>
+                    </div>
+                  )}
+
                   {/* Request Type Selector */}
                   <div className="space-y-3">
                     <label className="block text-xs font-semibold uppercase tracking-[0.15em] text-stone-900">
@@ -642,10 +698,16 @@ export default function ReturnsExchangesPage() {
 
                     <div className="divide-y divide-stone-200 border border-stone-200 rounded-2xl overflow-hidden bg-white">
                       {lookupResult.order.items.map((item) => {
-                        const isEligible =
-                          requestType === "EXCHANGE"
-                            ? item.exchangeEligible && item.remainingEligibleQuantity > 0
-                            : item.returnEligible && item.remainingEligibleQuantity > 0;
+                        const isEligible = reviewMode
+                          ? true
+                          : (requestType === "EXCHANGE"
+                              ? item.exchangeEligible && item.remainingEligibleQuantity > 0
+                              : item.returnEligible && item.remainingEligibleQuantity > 0);
+
+                        const maxSelectableQty =
+                          item.remainingEligibleQuantity > 0
+                            ? item.remainingEligibleQuantity
+                            : item.orderedQuantity || 1;
 
                         const isSelected = Boolean(selectedItems[item.productId]);
 
@@ -661,7 +723,7 @@ export default function ReturnsExchangesPage() {
                                 type="checkbox"
                                 checked={isSelected}
                                 disabled={!isEligible}
-                                onChange={() => handleToggleItem(item.productId, item.remainingEligibleQuantity)}
+                                onChange={() => handleToggleItem(item.productId, maxSelectableQty)}
                                 className="mt-1 sm:mt-0 h-4 w-4 rounded border-stone-300 text-[#0B2516] focus:ring-[#0B2516] cursor-pointer disabled:cursor-not-allowed"
                               />
 
@@ -686,11 +748,16 @@ export default function ReturnsExchangesPage() {
                                 </p>
                                 <div className="flex flex-wrap items-center gap-2 pt-0.5">
                                   <span className="text-[11px] font-medium text-stone-600">
-                                    Eligible Qty: <strong className="text-[#0B2516]">{item.remainingEligibleQuantity}</strong>
+                                    Eligible Qty: <strong className="text-[#0B2516]">{reviewMode && item.remainingEligibleQuantity === 0 ? item.orderedQuantity : item.remainingEligibleQuantity}</strong>
                                   </span>
-                                  {!isEligible && (
+                                  {!isEligible && !reviewMode && (
                                     <span className="text-[10px] text-rose-600 font-medium bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
                                       {item.reason || "Not eligible for this request type"}
+                                    </span>
+                                  )}
+                                  {reviewMode && !lookupResult.order.isDelivered && (
+                                    <span className="text-[10px] text-amber-700 font-medium bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+                                      Unlocked for Review
                                     </span>
                                   )}
                                 </div>
@@ -707,7 +774,7 @@ export default function ReturnsExchangesPage() {
                                   className="px-3 py-1.5 border border-stone-300 rounded-lg text-xs bg-white focus:outline-none focus:border-[#0B2516]"
                                 >
                                   {Array.from(
-                                    { length: item.remainingEligibleQuantity },
+                                    { length: maxSelectableQty },
                                     (_, idx) => idx + 1
                                   ).map((q) => (
                                     <option key={q} value={q}>
@@ -968,9 +1035,12 @@ export default function ReturnsExchangesPage() {
 
                     <button
                       type="button"
-                      onClick={() => setLookupResult(null)}
+                      onClick={() => {
+                        setLookupResult(null);
+                        setReviewMode(false);
+                      }}
                       disabled={submitting}
-                      className="px-6 py-4 border border-stone-300 hover:border-stone-400 text-stone-700 text-xs uppercase tracking-wider font-semibold rounded-xl bg-white hover:bg-stone-50 transition"
+                      className="px-6 py-4 border border-stone-300 hover:border-stone-400 text-stone-700 text-xs uppercase tracking-wider font-semibold rounded-xl bg-white hover:bg-stone-50 transition cursor-pointer"
                     >
                       Cancel / New Search
                     </button>
