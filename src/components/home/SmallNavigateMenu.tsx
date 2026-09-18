@@ -8,8 +8,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
-import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import { formatPrice } from "@/lib/formatPrice";
+import { resolveMediaUrl } from "@/lib/apiBase";
+import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 type Tab = "bestsellers" | "newarrivals" | "trending";
 
@@ -209,8 +210,12 @@ export function SmallNavigationMenu() {
                                     transform: hoveredId === product.idStr ? "translateY(-4px)" : "translateY(0)",
                                 }}
                             >
-                                {/* Full-Bleed Image */}
-                                <div className="relative w-full h-full overflow-hidden">
+                                {/* Full-Bleed Image Link */}
+                                <Link
+                                    href={`/product/${product.slug || product.idStr}`}
+                                    className="block relative w-full h-full overflow-hidden cursor-pointer"
+                                    aria-label={`View ${product.name}`}
+                                >
                                     <Image
                                         src={product.image}
                                         alt={product.name}
@@ -219,7 +224,7 @@ export function SmallNavigationMenu() {
                                         quality={85}
                                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                                     />
-                                </div>
+                                </Link>
 
                                 {/* Shimmer overlay on hover */}
                                 <div

@@ -7,11 +7,11 @@ import { motion } from "framer-motion";
 import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { useWishlist } from "@/context/WishlistContext";
 import { Heart, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
-import { formatPrice } from "@/lib/formatPrice";
 
 export const ProductSection = () => {
   const { addToCart } = useCart();

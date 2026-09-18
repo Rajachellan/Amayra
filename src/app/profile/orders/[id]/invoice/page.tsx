@@ -19,6 +19,17 @@ type OrderDetail = {
   currency: string;
   createdAt: string;
   paymentMethod?: string;
+  discount?: number;
+  automaticDiscount?: number;
+  couponDiscount?: number;
+  couponCode?: string;
+  taxableValue?: number;
+  gstRate?: number;
+  gstAmount?: number;
+  discountSlab?: {
+    minimumCartValue?: number;
+    discountPercentage?: number;
+  };
   shippingAddress: {
     fullName: string;
     phone: string;
@@ -353,26 +364,97 @@ export default function InvoicePage() {
             </div>
           </div>
 
-          <div className="w-full sm:w-64 text-xs space-y-2 text-stone-600 self-end">
-            <div className="flex justify-between">
-              <span>Subtotal</span>
-              <span>₹{formatPrice(order.subtotal)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>GST (Tax)</span>
-              <span>₹{formatPrice(order.tax)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Shipping & Insurance</span>
-              <span>₹{formatPrice(order.shipping)}</span>
-            </div>
-            <div className="flex justify-between font-bold text-stone-900 text-sm pt-3 border-t border-stone-100">
-              <span className="uppercase tracking-wider">Total</span>
-              <span className="font-serif text-lg text-[#0B2516]">
-                ₹{formatPrice(order.total)} {order.currency}
-              </span>
-            </div>
-          </div>
+          {(() => {
+            const effectiveDiscount =
+              order.discount && order.discount > 0
+                ? order.discount
+                : (order.automaticDiscount || 0) + (order.couponDiscount || 0);
+
+            const totalSavings =
+              effectiveDiscount > 0
+                ? effectiveDiscount
+                : Math.max(0, (order.subtotal || 0) - (order.total || 0) + (order.shipping || 0));
+
+            const automaticDiscount =
+              order.automaticDiscount && order.automaticDiscount > 0
+                ? order.automaticDiscount
+                : !order.couponDiscount && totalSavings > 0
+                ? totalSavings
+                : 0;
+
+            const couponDiscount =
+              order.couponDiscount && order.couponDiscount > 0
+                ? order.couponDiscount
+                : 0;
+
+            const slabPercentage =
+              order.discountSlab?.discountPercentage ||
+              (order.subtotal && automaticDiscount > 0
+                ? Math.round((automaticDiscount / order.subtotal) * 100)
+                : 0);
+
+            const effectiveGstRate = order.gstRate ?? 3;
+            const effectiveGstAmount = order.gstAmount ?? order.tax ?? 0;
+
+            return (
+              <div className="w-full sm:w-72 text-xs space-y-2 text-stone-600 self-end">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>₹{formatPrice(order.subtotal)}</span>
+                </div>
+
+                {automaticDiscount > 0 && (
+                  <div className="flex justify-between text-[#c4a064] font-semibold">
+                    <span>Offer Applied {slabPercentage > 0 ? `(${slabPercentage}% Off)` : ""}</span>
+                    <span>- ₹{formatPrice(automaticDiscount)}</span>
+                  </div>
+                )}
+
+                {couponDiscount > 0 && (
+                  <div className="flex justify-between text-[#c4a064] font-semibold">
+                    <span>Coupon Discount {order.couponCode ? `(${order.couponCode})` : ""}</span>
+                    <span>- ₹{formatPrice(couponDiscount)}</span>
+                  </div>
+                )}
+
+                {!automaticDiscount && !couponDiscount && totalSavings > 0 && (
+                  <div className="flex justify-between text-[#c4a064] font-semibold">
+                    <span>Offer / Discount</span>
+                    <span>- ₹{formatPrice(totalSavings)}</span>
+                  </div>
+                )}
+
+                {order.taxableValue && order.taxableValue > 0 ? (
+                  <div className="flex justify-between text-stone-500">
+                    <span>Taxable Amount</span>
+                    <span>₹{formatPrice(order.taxableValue)}</span>
+                  </div>
+                ) : null}
+
+                <div className="flex justify-between">
+                  <span>GST ({effectiveGstRate}% Included)</span>
+                  <span className="font-medium text-stone-700">₹{formatPrice(effectiveGstAmount)}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Shipping & Insurance</span>
+                  <span>{order.shipping > 0 ? `₹${formatPrice(order.shipping)}` : "FREE"}</span>
+                </div>
+
+                <div className="flex justify-between items-baseline font-bold text-stone-900 text-sm pt-3 border-t border-stone-100">
+                  <div>
+                    <span className="uppercase tracking-wider block">Total</span>
+                    <span className="text-[10px] text-stone-400 font-normal lowercase tracking-normal">
+                      (incl. ₹{formatPrice(effectiveGstAmount)} {effectiveGstRate}% GST)
+                    </span>
+                  </div>
+                  <span className="font-serif text-lg text-[#0B2516]">
+                    ₹{formatPrice(order.total)} {order.currency}
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
       </div>

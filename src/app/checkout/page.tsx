@@ -140,16 +140,18 @@ export default function CheckoutPage() {
 
   const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
   const automaticDiscount = pricingResult
-    ? pricingResult.automaticDiscount
+    ? Math.round(pricingResult.automaticDiscount)
     : subtotal >= DISCOUNT_THRESHOLD
-      ? Math.round(subtotal * 0.1 * 100) / 100
+      ? Math.round(subtotal * 0.1)
       : 0;
   const discountSlabPercentage = pricingResult?.discountSlab?.discountPercentage ?? (subtotal >= DISCOUNT_THRESHOLD ? 10 : 0);
-  const appliedCouponDiscount = pricingResult ? pricingResult.couponDiscount : discountAmount;
+  const appliedCouponDiscount = pricingResult ? Math.round(pricingResult.couponDiscount) : Math.round(discountAmount);
 
-  const displayTotal = pricingResult
-    ? pricingResult.finalAmount + shipping
-    : Math.max(0, subtotal - discountAmount - automaticDiscount + shipping);
+  const displayTotal = Math.round(
+    pricingResult
+      ? pricingResult.finalAmount + shipping
+      : Math.max(0, subtotal - discountAmount - automaticDiscount + shipping)
+  );
 
   useEffect(() => {
     if (authLoading) return;

@@ -56,15 +56,16 @@ export function mapListItemToProduct(p: ProductListItem): Product {
     id: p._id,
     slug: p.slug,
     name: p.name,
-    price: hasSale ? (p.salePrice as number) : p.price,
-    oldPrice: hasSale ? p.price : undefined,
+    price: hasSale ? Math.round(p.salePrice as number) : Math.round(p.price),
+    oldPrice: hasSale ? Math.round(p.price) : undefined,
     image: resolveMediaUrl(img),
     category: categoryName(p.category),
     categorySlug: categorySlug(p.category),
     subCategory: subCategoryName(p.subCategory),
     subCategorySlug: subCategorySlug(p.subCategory),
-    description: p.shortDescription || p.description || "",
-    color: p.color,
+    description: p.description || p.shortDescription || "",
+    shortDescription: p.shortDescription || "",
+    color: p.color || (p.specifications as any)?.color || (p.specifications as any)?.colour,
     material: p.material,
     weight: p.weight,
     sku: p.sku,
@@ -88,6 +89,7 @@ export function mapDetailToProduct(p: ProductDetail): Product {
   return {
     ...mapListItemToProduct(p),
     description: p.description || p.shortDescription || "",
+    shortDescription: p.shortDescription || "",
     sizes: sizesFromVariants(p.variants),
     lookbooks: Array.isArray(p.lookbooks)
       ? p.lookbooks.map((lb: any) => ({

@@ -9,13 +9,15 @@ import { Footer } from "@/components/layout/Footer";
 import { shopApi } from "@/lib/api/shop";
 import { mapDetailToProduct, mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
+import { formatPrice } from "@/lib/formatPrice";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useProductDetail } from "@/hooks/useProductDetail";
 import { useCoupons } from "@/hooks/useCatalogMetadata";
 import { ProductImageGallery } from "@/components/products/ProductImageGallery";
 import { RelatedProductsRow } from "@/components/products/RelatedProductsRow";
-import { formatPrice } from "@/lib/formatPrice";
+import { ProductReviewsSection } from "@/components/products/ProductReviewsSection";
+import { ProductDetailSkeleton } from "@/components/products/ProductDetailSkeleton";
 import {
   Heart,
   Share2,
@@ -39,33 +41,12 @@ import {
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
 
-function collectDetailImages(detail: any): string[] {
-  const out: string[] = [];
-  const push = (v: unknown) => {
-    if (typeof v !== "string") return;
-    const s = v.trim();
-    if (!s) return;
-    out.push(resolveMediaUrl(s));
-  };
-
-  if (Array.isArray(detail?.images)) detail.images.forEach(push);
-  if (Array.isArray(detail?.occasions)) detail.occasions.forEach((o: any) => push(o?.image));
-  if (Array.isArray(detail?.collections)) detail.collections.forEach((c: any) => push(c?.image));
-  if (Array.isArray(detail?.lookbooks)) {
-    detail.lookbooks.forEach((lb: any) => {
-      push(lb?.coverImage);
-      if (Array.isArray(lb?.images)) lb.images.forEach(push);
-    });
-  }
-
-  return [...new Set(out)];
-}
 
 function ProductDetail() {
   const params = useParams();
   const router = useRouter();
   const slug = params.id as string;
-  const { product, images, relatedProducts, isLoading } = useProductDetail(slug);
+  const { product, images, relatedProducts, pairWithProducts, isLoading } = useProductDetail(slug);
   const { data: publicCoupons = [] } = useCoupons();
   const { addToCartWithQuantity, buyNow } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -150,15 +131,7 @@ function ProductDetail() {
   }, [buyNow, product, quantity, router, selectedSize]);
 
   if (isLoading) {
-    return (
-      <div className="flex min-h-screen flex-col bg-[#faf9f7]">
-        <Navbar />
-        <div className="flex flex-grow items-center justify-center py-40">
-          <p className="font-serif text-sm uppercase tracking-widest text-neutral-400">Loading…</p>
-        </div>
-        <Footer />
-      </div>
-    );
+    return <ProductDetailSkeleton />;
   }
 
   if (!product) {
@@ -173,8 +146,15 @@ function ProductDetail() {
     );
   }
 
-  const mainSrc = typeof product.image === "string" ? product.image : resolveMediaUrl(undefined);
-  const thumbs = images.length ? images : [mainSrc];
+  const mainSrc =
+    typeof product.image === "string"
+      ? product.image
+      : product.image && typeof product.image === "object" && "src" in product.image
+      ? (product.image as { src: string }).src
+      : resolveMediaUrl(undefined);
+  const thumbs: string[] = (images && images.length)
+    ? images.map((img: any) => (typeof img === "string" ? img : img?.src || resolveMediaUrl(undefined)))
+    : [mainSrc];
   const catHref = product.categorySlug ? `/category/${product.categorySlug}` : "/category/all";
   const inWishlist = isInWishlist(product.id);
   const inStock = product.stock > 0;
@@ -272,20 +252,28 @@ function ProductDetail() {
                 {product.name}
               </h1>
 
-              <div className="mb-6 flex items-baseline gap-3">
-                {product.oldPrice && (
-                  <span className="text-base text-neutral-400 line-through font-medium">
-                    ₹{formatPrice(product.oldPrice)}
-                  </span>
-                )}
-                <span className="text-2xl font-serif font-bold text-[#d4af37]">
+              {product.shortDescription && (
+                <p className="mb-4 text-sm md:text-base text-neutral-600 font-serif leading-relaxed">
+                  {product.shortDescription}
+                </p>
+              )}
+
+              {/* Price & Discount (Clean, rounded, no decimals) */}
+              <div className="mb-6 flex flex-wrap items-baseline gap-3">
+                <span className="text-3xl font-bold text-[#d4af37] md:text-4xl font-serif">
                   ₹{formatPrice(product.price)}
                 </span>
-                {product.oldPrice && product.oldPrice > product.price && (
-                  <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
-                    {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
-                  </span>
+                {product.oldPrice != null && product.oldPrice > product.price && (
+                  <>
+                    <span className="text-lg font-medium text-neutral-400 line-through">
+                      ₹{formatPrice(product.oldPrice)}
+                    </span>
+                    <span className="rounded bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-700">
+                      {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
+                    </span>
+                  </>
                 )}
+                <span className="w-full text-xs text-neutral-500 font-medium">Incl. of all taxes</span>
               </div>
 
               {activeCoupon && (
@@ -485,12 +473,16 @@ function ProductDetail() {
                       {/* Product Specifications Table */}
                       <div className="rounded-lg bg-white p-4 border border-neutral-100 shadow-sm space-y-2">
                         <p className="font-bold uppercase tracking-wider text-neutral-900 text-[11px] mb-2 border-b border-neutral-100 pb-1">Product Specification</p>
-                        <p><strong className="text-neutral-800">Material:</strong> {product.material || product.specifications?.material || "Skin Friendly | Hypoallergenic"}</p>
-                        {product.specifications?.craftsmanship && (
-                          <p><strong className="text-neutral-800">Craftsmanship:</strong> {product.specifications.craftsmanship}</p>
+                        {product.sku && (
+                          <p><strong className="text-neutral-800">SKU:</strong> <span className="font-mono">{product.sku}</span></p>
                         )}
-                        {product.specifications?.waterproof && (
-                          <p><strong className="text-neutral-800">Waterproof:</strong> {product.specifications.waterproof}</p>
+                        <p><strong className="text-neutral-800">Material:</strong> {product.material || product.specifications?.material || "Gold-tone metal alloy base"}</p>
+                        {(product.specifications?.inspiration || product.specifications?.craftsmanship) && (
+                          <p><strong className="text-neutral-800">The Inspiration:</strong> {product.specifications.inspiration || product.specifications.craftsmanship}</p>
+                        )}
+                        <p><strong className="text-neutral-800">Finish:</strong> {product.specifications?.finish || product.specifications?.waterproof || "Warm gold finish with contrasting dark-toned outlines around kundan, polki and mozanite stones. Complementing enamel designs, motifs and beads."}</p>
+                        {(product.color || (product.specifications as any)?.color || (product.specifications as any)?.colour) && (
+                          <p><strong className="text-neutral-800">Colour:</strong> {product.color || (product.specifications as any)?.color || (product.specifications as any)?.colour}</p>
                         )}
                         {(product.length || product.breadth || product.height) && (
                           <div className="pt-2 border-t border-neutral-100 flex flex-wrap gap-x-6 gap-y-1 text-neutral-800">
@@ -501,23 +493,20 @@ function ProductDetail() {
                         )}
                       </div>
 
-                      {/* Key Highlights */}
+                      {/* Perfect for occasions */}
                       {product.keyHighlights && product.keyHighlights.length > 0 && (
                         <div className="space-y-2">
-                          <p className="font-bold text-neutral-900 text-[11px] uppercase tracking-wider">Key Highlights</p>
-                          <ul className="list-disc space-y-1.5 pl-4 text-neutral-600">
-                            {product.keyHighlights.map((hl, idx) => {
-                              const colonIdx = hl.indexOf(":");
-                              if (colonIdx !== -1) {
-                                return (
-                                  <li key={idx}>
-                                    <strong className="text-neutral-800">{hl.slice(0, colonIdx + 1)}</strong>{hl.slice(colonIdx + 1)}
-                                  </li>
-                                );
-                              }
-                              return <li key={idx}>{hl}</li>;
-                            })}
-                          </ul>
+                          <p className="font-bold text-neutral-900 text-[11px] uppercase tracking-wider">Perfect for occasions</p>
+                          <div className="flex flex-wrap gap-2 pt-1">
+                            {product.keyHighlights.map((occ, idx) => (
+                              <span
+                                key={idx}
+                                className="inline-flex items-center rounded-full bg-[#f6ead9]/80 px-3 py-1 text-xs font-medium text-[#735427] border border-[#e8d7c3]"
+                              >
+                                {occ}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       )}
 
@@ -584,31 +573,57 @@ function ProductDetail() {
                   )}
                 </div>
 
-                {/* 3. Care Label Accordion */}
+                {/* 3. Care Tips Accordion */}
                 <div className="py-4">
                   <button
                     type="button"
                     onClick={() => toggleAccordion("care")}
                     className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
                   >
-                    <span>Care Label</span>
+                    <span>Jewellery Care Tips</span>
                     {openAccordions.care ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
                   </button>
                   {openAccordions.care && (
-                    <div className="mt-4 space-y-2 text-xs leading-relaxed text-neutral-600">
+                    <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
                       {product.careLabel && product.careLabel.length > 0 ? (
-                        <ul className="list-disc space-y-1.5 pl-4">
+                        <div className="space-y-2">
                           {product.careLabel.map((item, idx) => (
-                            <li key={idx}>{item}</li>
+                            <p key={idx} className="whitespace-pre-line leading-relaxed">{item}</p>
                           ))}
-                        </ul>
+                        </div>
                       ) : (
-                        <ul className="list-disc space-y-1.5 pl-4">
-                          <li>Store the earrings in an air-tight jewellery box or sealed pouch.</li>
-                          <li>Keep it away from body sprays, body lotions, or perfumes.</li>
-                          <li>Avoid using detergents, soaps, or toothpaste to clean your earrings.</li>
-                          <li>Clean your earrings after every use with a soft brush.</li>
-                        </ul>
+                        <div className="space-y-3">
+                          <p className="font-semibold text-neutral-800">6 Little Secrets to Keep Your Jewellery Looking Gorgeous</p>
+                          <div>
+                            <p className="font-bold text-neutral-800">1. Jewellery loves to stay dry.</p>
+                            <p>Take it off before a shower, swim, or washing up. Water and moisture can make your favourite pieces lose their shine faster.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">2. Perfume first, jewellery last.</p>
+                            <p>Your perfume, lotion and hairspray should get their moment before you put on your jewellery. Chemicals can affect the finish over time.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">3. Give every piece its own little home.</p>
+                            <p>Store your jewellery in a soft pouch or box, preferably separately. This helps prevent scratches, tangles and unnecessary rubbing.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">4. Sweat? Give it a wipe!</p>
+                            <p>Heading to the gym or out in the heat? It's best to remove your jewellery. After wearing, gently wipe it with a soft, dry cloth.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">5. Handle your pretties gently!</p>
+                            <p>Chains, clasps, beads and stones can be delicate. Avoid pulling, twisting or bending them - treat them as gently as you would your favourite silk outfit!</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">6. A little wipe goes a long way.</p>
+                            <p>After every wear, give your jewellery a quick wipe with a soft, dry cotton or microfiber cloth. Avoid soaking or using harsh cleaners.</p>
+                          </div>
+                          <div className="rounded-lg bg-[#FAF8F3] p-3 border border-[#e8d7c3]/60">
+                            <p className="font-bold text-neutral-800">The golden rule: Last on, first off!</p>
+                            <p className="italic text-neutral-700">Put your jewellery on after getting ready, and take it off before changing, bathing or going to bed. This one simple habit can help your pieces stay beautiful for longer.</p>
+                          </div>
+                          <p className="italic text-neutral-500">Because every beautiful piece deserves a little Tender Loving Care.</p>
+                        </div>
                       )}
                     </div>
                   )}
@@ -627,27 +642,41 @@ function ProductDetail() {
                   {openAccordions.styling && (
                     <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
                       {product.stylingTips && product.stylingTips.length > 0 ? (
-                        product.stylingTips.map((tip, idx) => {
-                          const colonIdx = tip.indexOf(":");
-                          if (colonIdx !== -1) {
-                            return (
-                              <div key={idx} className="space-y-1">
-                                <p className="font-bold text-neutral-800">{tip.slice(0, colonIdx)}</p>
-                                <p>{tip.slice(colonIdx + 1)}</p>
-                              </div>
-                            );
-                          }
-                          return <p key={idx}>{tip}</p>;
-                        })
+                        <div className="space-y-2">
+                          {product.stylingTips.map((tip, idx) => (
+                            <p key={idx} className="whitespace-pre-line leading-relaxed">{tip}</p>
+                          ))}
+                        </div>
                       ) : (
                         <div className="space-y-3">
+                          <p className="font-semibold text-neutral-800">6 Easy Jewellery Styling Tips</p>
                           <div>
-                            <p className="font-bold text-neutral-800">Make One Piece of Jewellery the Focal Point</p>
-                            <p>Choose one piece of jewellery that becomes the focal point of your look matching your mood and vibe.</p>
+                            <p className="font-bold text-neutral-800">1. Let your jewellery set the mood.</p>
+                            <p>Choosing a statement piece? Keep the rest of your look simple and let your jewellery take centre stage. For a minimal look, layer a few delicate pieces together.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">Match Jewellery to Your Outfit for a Harmonized Look</p>
-                            <p>Select jewellery that complements tone, texture, or colour of your outfit.</p>
+                            <p className="font-bold text-neutral-800">2. Mix, match & make it yours.</p>
+                            <p>Don't be afraid to pair different designs, textures or finishes. Sometimes, the most unexpected combinations create the prettiest looks.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">3. Balance is everything.</p>
+                            <p>If you're wearing a bold piece around your face, keep the rest of your jewellery subtle - or go all out for a festive, statement look. There are no hard rules, just find your balance!</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">4. Style according to the neckline.</p>
+                            <p>Use your outfit's neckline as your styling guide. A necklace can beautifully complement an open neckline, while earrings can add impact when your outfit is more covered.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">5. Layer with intention.</p>
+                            <p>When layering necklaces, bracelets or rings, play with different lengths and sizes. Give each piece a little space to shine rather than letting everything compete for attention.</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-neutral-800">6. Day to night, just switch it up.</p>
+                            <p>The same jewellery can create completely different looks. Keep it understated for the day and add a few more pieces for an effortlessly elevated evening or festive look.</p>
+                          </div>
+                          <div className="rounded-lg bg-[#FAF8F3] p-3 border border-[#e8d7c3]/60">
+                            <p className="font-bold text-neutral-800">Styling secret:</p>
+                            <p className="italic text-neutral-700">There's no "right" way to wear jewellery. Your jewellery should reflect your personality, mood and style. If you love the look, you're wearing it right.</p>
                           </div>
                         </div>
                       )}
@@ -656,17 +685,22 @@ function ProductDetail() {
                 </div>
               </div>
 
-              {/* SKU display matching reference screenshot */}
-              {product.sku && (
-                <div className="pt-4">
-                  <p className="text-xs font-mono tracking-widest text-neutral-500">{product.sku}</p>
-                </div>
-              )}
+
             </div>
           </div>
         </div>
       </section>
 
+      {/* Pair It With Section */}
+      {((pairWithProducts && pairWithProducts.length > 0) || (relatedProducts && relatedProducts.length > 3)) && (
+        <RelatedProductsRow
+          title="Pair It With"
+          products={pairWithProducts && pairWithProducts.length > 0 ? pairWithProducts : relatedProducts.slice(3)}
+          shopAllHref={catHref}
+        />
+      )}
+
+      {/* You May Also Like Section */}
       {relatedProducts.length > 0 && (
         <RelatedProductsRow
           title="You May Also Like"
@@ -675,11 +709,13 @@ function ProductDetail() {
         />
       )}
 
-      {relatedProducts.length > 3 && (
-        <RelatedProductsRow
-          title="Pair It With"
-          products={relatedProducts.slice(3)}
-          shopAllHref={catHref}
+      {/* Customer Reviews Section */}
+      {product && (
+        <ProductReviewsSection
+          productSlug={product.slug || slug}
+          productId={product.id}
+          productName={product.name}
+          productImage={thumbs[0] || (typeof product.image === "string" ? product.image : undefined)}
         />
       )}
 
@@ -690,13 +726,7 @@ function ProductDetail() {
 
 export default function ProductPage() {
   return (
-    <React.Suspense
-      fallback={
-        <div className="flex h-screen items-center justify-center bg-[#faf9f7] font-serif uppercase tracking-widest text-neutral-400">
-          Loading Product...
-        </div>
-      }
-    >
+    <React.Suspense fallback={<ProductDetailSkeleton />}>
       <ProductDetail />
     </React.Suspense>
   );

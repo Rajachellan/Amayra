@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 750" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FBF9F5"/>
+      <stop offset="50%" stop-color="#F3EFE6"/>
+      <stop offset="100%" stop-color="#EAE3D4"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#C4A064"/>
+      <stop offset="100%" stop-color="#997A3D"/>
+    </linearGradient>
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000000" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="750" fill="url(#bgGrad)"/>
+
+  <!-- Elegant Inner Border -->
+  <rect x="24" y="24" width="552" height="702" fill="none" stroke="#C4A064" stroke-opacity="0.25" stroke-width="1" rx="4"/>
+  <rect x="30" y="30" width="540" height="690" fill="none" stroke="#C4A064" stroke-opacity="0.12" stroke-width="0.5" rx="2"/>
+
+  <!-- Corner Filigrees -->
+  <g stroke="#C4A064" stroke-opacity="0.3" stroke-width="0.8" fill="none">
+    <path d="M 38 48 L 48 48 L 48 38"/>
+    <path d="M 562 48 L 552 48 L 552 38"/>
+    <path d="M 38 702 L 48 702 L 48 712"/>
+    <path d="M 562 702 L 552 702 L 552 712"/>
+  </g>
+
+  <!-- Center Luxury Icon & Monogram -->
+  <g transform="translate(300, 340)" filter="url(#subtleShadow)">
+    <!-- Diamond/Gem Symbol -->
+    <path d="M 0 -55 L 42 -20 L 26 38 L -26 38 L -42 -20 Z" 
+          fill="none" 
+          stroke="url(#goldGrad)" 
+          stroke-width="1.8" 
+          stroke-linejoin="round"/>
+    <path d="M -42 -20 L 42 -20" stroke="url(#goldGrad)" stroke-width="1.2" stroke-opacity="0.7"/>
+    <path d="M -26 38 L 0 -20 L 26 38" stroke="url(#goldGrad)" stroke-width="1.2" stroke-opacity="0.7"/>
+    <path d="M -18 -20 L 0 -55 L 18 -20" stroke="url(#goldGrad)" stroke-width="1.2" stroke-opacity="0.7"/>
+    <circle cx="0" cy="5" r="3.5" fill="#C4A064" fill-opacity="0.85"/>
+  </g>
+
+  <!-- Typography -->
+  <text x="300" y="440" 
+        text-anchor="middle" 
+        font-family="'Playfair Display', 'Cinzel', 'Georgia', serif" 
+        font-size="22" 
+        letter-spacing="9" 
+        fill="#2B2B2B" 
+        font-weight="500">MAIRII</text>
+  
+  <text x="300" y="468" 
+        text-anchor="middle" 
+        font-family="'Montserrat', 'Inter', sans-serif" 
+        font-size="9" 
+        letter-spacing="4" 
+        fill="#8C8275" 
+        font-weight="600">HAUTE JEWELLERY</text>
+
+  <line x1="240" y1="488" x2="360" y2="488" stroke="#C4A064" stroke-opacity="0.3" stroke-width="1"/>
+</svg>

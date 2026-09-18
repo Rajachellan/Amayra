@@ -6,12 +6,12 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Sparkles, Heart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { useWishlist } from "@/context/WishlistContext";
 import { shopApi } from "@/lib/api/shop";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
-import { formatPrice } from "@/lib/formatPrice";
 
 interface MasterpieceModalProps {
   product?: Product | null;

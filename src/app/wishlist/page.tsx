@@ -8,10 +8,10 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { Heart, ShoppingBag, Trash2, ArrowRight } from "lucide-react";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import toast from "react-hot-toast";
-import { formatPrice } from "@/lib/formatPrice";
 
 export default function WishlistPage() {
   const { wishlist, toggleWishlist } = useWishlist();

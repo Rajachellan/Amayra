@@ -13,9 +13,11 @@ type Props = {
 
 export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexChange }: Props) {
   const [zoom, setZoom] = useState({ x: 50, y: 50, active: false });
+  const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({});
 
   const safeIndex = Math.min(activeIndex, Math.max(0, images.length - 1));
-  const src = images[safeIndex] ?? images[0];
+  const rawSrc = images[safeIndex] ?? images[0];
+  const src = imgErrors[safeIndex] ? "/images/placeholder.svg" : (rawSrc || "/images/placeholder.svg");
 
   const goPrev = useCallback(() => {
     onActiveIndexChange(safeIndex <= 0 ? images.length - 1 : safeIndex - 1);
@@ -26,9 +28,27 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
   }, [images.length, onActiveIndexChange, safeIndex]);
 
   const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    // If hovering on or inside the slider buttons, turn off zoom
+    if ((e.target as HTMLElement).closest("button")) {
+      setZoom((z) => ({ ...z, active: false }));
+      return;
+    }
+
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    const clientX = e.clientX - rect.left;
+    const clientY = e.clientY - rect.top;
+    const x = (clientX / rect.width) * 100;
+    const y = (clientY / rect.height) * 100;
+
+    // If cursor is near the left or right sliding button regions, turn off zoom
+    const isNearLeftButton = x < 16 && y > 28 && y < 72;
+    const isNearRightButton = x > 84 && y > 28 && y < 72;
+
+    if (isNearLeftButton || isNearRightButton) {
+      setZoom((z) => ({ ...z, active: false }));
+      return;
+    }
+
     setZoom({ x, y, active: true });
   };
 
@@ -50,6 +70,7 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
             transform: zoom.active ? "scale(2.2)" : "scale(1)",
             transformOrigin: `${zoom.x}% ${zoom.y}%`,
           }}
+          onError={() => setImgErrors((prev) => ({ ...prev, [safeIndex]: true }))}
         />
 
         {images.length > 1 && (
@@ -58,7 +79,15 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
               type="button"
               aria-label="Previous image"
               onClick={goPrev}
-              className="absolute left-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-neutral-800 shadow-md transition hover:bg-white"
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+                setZoom((z) => ({ ...z, active: false }));
+              }}
+              onMouseMove={(e) => {
+                e.stopPropagation();
+                setZoom((z) => ({ ...z, active: false }));
+              }}
+              className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-neutral-800 shadow-md transition hover:bg-white hover:scale-105 active:scale-95 cursor-pointer"
             >
               <ChevronLeft className="h-5 w-5" />
             </button>
@@ -66,7 +95,15 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
               type="button"
               aria-label="Next image"
               onClick={goNext}
-              className="absolute right-4 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-neutral-800 shadow-md transition hover:bg-white"
+              onMouseEnter={(e) => {
+                e.stopPropagation();
+                setZoom((z) => ({ ...z, active: false }));
+              }}
+              onMouseMove={(e) => {
+                e.stopPropagation();
+                setZoom((z) => ({ ...z, active: false }));
+              }}
+              className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/90 p-2.5 text-neutral-800 shadow-md transition hover:bg-white hover:scale-105 active:scale-95 cursor-pointer"
             >
               <ChevronRight className="h-5 w-5" />
             </button>
@@ -85,7 +122,14 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
                 safeIndex === i ? "border-[#c4a574]" : "border-transparent opacity-70 hover:opacity-100"
               }`}
             >
-              <Image src={thumb} alt="" fill sizes="80px" className="object-cover" />
+              <Image
+                src={imgErrors[i] ? "/images/placeholder.svg" : thumb}
+                alt=""
+                fill
+                sizes="80px"
+                className="object-cover"
+                onError={() => setImgErrors((prev) => ({ ...prev, [i]: true }))}
+              />
             </button>
           ))}
         </div>

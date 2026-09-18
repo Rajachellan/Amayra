@@ -16,13 +16,15 @@ function collectDetailImages(detail: any): string[] {
     out.push(resolveMediaUrl(s));
   };
 
-  if (Array.isArray(detail?.images)) detail.images.forEach(push);
-  if (Array.isArray(detail?.occasions)) detail.occasions.forEach((o: any) => push(o?.image));
-  if (Array.isArray(detail?.collections)) detail.collections.forEach((c: any) => push(c?.image));
-  if (Array.isArray(detail?.lookbooks)) {
-    detail.lookbooks.forEach((lb: any) => {
-      push(lb?.coverImage);
-      if (Array.isArray(lb?.images)) lb.images.forEach(push);
+  // Only include product-specific images in gallery
+  if (Array.isArray(detail?.images)) {
+    detail.images.forEach(push);
+  }
+  
+  if (Array.isArray(detail?.variants)) {
+    detail.variants.forEach((v: any) => {
+      if (Array.isArray(v?.images)) v.images.forEach(push);
+      else if (typeof v?.image === "string") push(v.image);
     });
   }
 
@@ -30,57 +32,89 @@ function collectDetailImages(detail: any): string[] {
 }
 
 export function useProductDetail(slug: string) {
-  const query = useQuery({
+  // 1. Fast, non-blocking primary product detail query
+  const detailQuery = useQuery({
     queryKey: queryKeys.products.detail(slug),
     queryFn: async () => {
       if (!slug) return null;
       const detail = await shopApi.productBySlug(slug);
       const product = mapDetailToProduct(detail);
       const images = collectDetailImages(detail);
+      const fallbackImg = product.image || resolveMediaUrl(undefined);
 
-      let relatedItems: any[] = [];
-      const catSlug =
-        detail.category && typeof detail.category === "object" && "slug" in detail.category
-          ? (detail.category as { slug: string }).slug
-          : undefined;
+      return {
+        product,
+        images: images.length ? images : [fallbackImg],
+        categorySlug: product.categorySlug,
+      };
+    },
+    enabled: !!slug,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+  });
 
+  const catSlug = detailQuery.data?.categorySlug;
+  const currentSlug = slug;
+
+  // 2. Decoupled related products query (fetches concurrently in background without delaying product view)
+  const relatedQuery = useQuery({
+    queryKey: ["products", "related", catSlug, currentSlug],
+    queryFn: async () => {
+      let items: any[] = [];
       if (catSlug) {
         try {
           const r = await shopApi.products({ category: catSlug, limit: 8, page: 1 });
-          relatedItems = r.items.filter((i) => i.slug !== detail.slug);
+          items = r.items.filter((i) => i.slug !== currentSlug);
         } catch {
           /* fallback below */
         }
       }
 
-      if (relatedItems.length === 0) {
+      if (items.length === 0) {
         try {
           const r = await shopApi.products({ limit: 8, page: 1 });
-          relatedItems = r.items.filter((i) => i.slug !== detail.slug);
+          items = r.items.filter((i) => i.slug !== currentSlug);
         } catch {
           /* ignore */
         }
       }
 
-      const relatedProducts: Product[] = relatedItems.slice(0, 6).map(mapListItemToProduct);
-
-      return {
-        product,
-        images: images.length ? images : [resolveMediaUrl(undefined)],
-        relatedProducts,
-      };
+      return items.slice(0, 8).map(mapListItemToProduct);
     },
-    enabled: !!slug,
-    staleTime: 10 * 60 * 1000, // 10 minutes cache
+    enabled: !!catSlug && !detailQuery.isLoading,
+    staleTime: 10 * 60 * 1000,
+  });
+
+  // 3. Complementary "Pair It With" accessories query
+  const pairWithQuery = useQuery({
+    queryKey: ["products", "pair-with", currentSlug],
+    queryFn: async () => {
+      try {
+        const r = await shopApi.products({ trending: "true", limit: 8, page: 1 });
+        const filtered = r.items.filter((i) => i.slug !== currentSlug);
+        if (filtered.length >= 3) return filtered.map(mapListItemToProduct);
+      } catch {
+        /* fallback */
+      }
+      try {
+        const r = await shopApi.products({ sort: "bestseller", limit: 8, page: 1 });
+        return r.items.filter((i) => i.slug !== currentSlug).map(mapListItemToProduct);
+      } catch {
+        return [];
+      }
+    },
+    enabled: !detailQuery.isLoading,
+    staleTime: 10 * 60 * 1000,
   });
 
   return {
-    product: query.data?.product ?? null,
-    images: query.data?.images ?? [],
-    relatedProducts: query.data?.relatedProducts ?? [],
-    isLoading: query.isLoading,
-    isFetching: query.isFetching,
-    error: query.error,
+    product: detailQuery.data?.product ?? null,
+    images: detailQuery.data?.images ?? [],
+    relatedProducts: relatedQuery.data ?? [],
+    pairWithProducts: pairWithQuery.data ?? [],
+    isLoading: detailQuery.isLoading,
+    isFetching: detailQuery.isFetching,
+    error: detailQuery.error,
   };
 }
 
@@ -95,10 +129,11 @@ export function usePrefetchProductDetail() {
         const detail = await shopApi.productBySlug(slug);
         const product = mapDetailToProduct(detail);
         const images = collectDetailImages(detail);
+        const fallbackImg = product.image || resolveMediaUrl(undefined);
         return {
           product,
-          images: images.length ? images : [resolveMediaUrl(undefined)],
-          relatedProducts: [],
+          images: images.length ? images : [fallbackImg],
+          categorySlug: product.categorySlug,
         };
       },
       staleTime: 10 * 60 * 1000,

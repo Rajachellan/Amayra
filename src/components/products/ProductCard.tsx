@@ -7,10 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Eye, X, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { formatPrice } from "@/lib/formatPrice";
 import { usePrefetchProductDetail } from "@/hooks/useProductDetail";
 import { Product } from "@/types";
-
-import { formatPrice } from "@/lib/formatPrice";
 
 interface ProductCardProps {
   product: Product;
@@ -20,7 +19,11 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const prefetchProduct = usePrefetchProductDetail();
-  const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/1.jpg");
+  const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/placeholder.svg");
+
+  React.useEffect(() => {
+    setImgSrc(product.image || "/images/placeholder.svg");
+  }, [product.image]);
 
   const isFavorite = isInWishlist(product.id);
   const productHref = `/product/${product.slug ?? product.id}`;
@@ -81,28 +84,28 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
         </Link>
       </div>
 
-      {/* Image Container - Direct link to dedicated product page */}
       <Link
         href={productHref}
         onMouseEnter={handleMouseEnter}
-        className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-stone-50"
+        style={{ position: "relative" }}
+        className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-[#f7f5f0]"
       >
         <Image
           src={imgSrc}
           alt={product.name}
           fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 50vw, 25vw"
-          quality={75}
+          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+          quality={80}
           loading="lazy"
           decoding="async"
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-          onError={() => setImgSrc("/images/1.jpg")}
+          onError={() => setImgSrc("/images/placeholder.svg")}
         />
       </Link>
 
       {/* Product Info & Always-Visible Add to Cart Button */}
       <div className="p-3 sm:p-5 flex flex-col items-center text-center flex-grow justify-between space-y-2.5 sm:space-y-4">
-        <div className="w-full space-y-1">
+        <div className="w-full space-y-1 sm:space-y-1.5">
           <span className="text-[#c9a84c] text-[8px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.35em] block font-bold">
             {product.category}
           </span>
@@ -113,7 +116,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           </Link>
 
           <p className="text-[9px] sm:text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-3.5 sm:h-4">
-            {product.description || "Handcrafted Luxury Jewellery"}
+            {product.shortDescription || product.description || "Handcrafted Luxury Jewellery"}
           </p>
         </div>
 

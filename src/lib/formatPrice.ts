@@ -1,31 +1,24 @@
 /**
- * Formats a price value:
- * Converts decimal values to a whole number first (truncates the decimal part),
- * then formats and displays the final amount in decimal format with 2 decimal places (.00).
- *
- * Example:
- *   2300.45 -> treated as 2300 -> displayed as "2,300.00"
- *   2300    -> treated as 2300 -> displayed as "2,300.00"
+ * Utility functions for rounding and formatting currency without decimals across the application.
  */
-export function formatPrice(value: number | string | null | undefined): string {
-  if (value == null || value === "") return "0.00";
 
+export function roundOff(amount: number | string | null | undefined): number {
+  if (amount == null || amount === "") return 0;
   let num: number;
-  if (typeof value === "string") {
-    const cleaned = value.replace(/[^0-9.-]/g, "");
+  if (typeof amount === "string") {
+    const cleaned = amount.replace(/[^0-9.-]/g, "");
     num = parseFloat(cleaned);
   } else {
-    num = value;
+    num = amount;
   }
+  return isNaN(num) ? 0 : Math.round(num);
+}
 
-  if (isNaN(num)) return "0.00";
+export function formatPrice(amount: number | string | null | undefined): string {
+  const rounded = roundOff(amount);
+  return rounded.toLocaleString("en-IN", { maximumFractionDigits: 0 });
+}
 
-  // Convert the value to a whole number first (truncating any decimals)
-  const wholeNumber = Math.floor(Math.abs(num)) * (num < 0 ? -1 : 1);
-
-  // Display the final amount in decimal format (with .00)
-  return wholeNumber.toLocaleString("en-IN", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+export function formatCurrency(amount: number | string | null | undefined): string {
+  return `₹${formatPrice(amount)}`;
 }
