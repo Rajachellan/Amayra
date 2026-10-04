@@ -229,7 +229,7 @@ export const products: Product[] = [
     category: "Necklaces",
     subCategory: "Kundan",
     color: "Green",
-    description: "A complete Kundan set including heavy necklace, matching earrings, and maang tikka.",
+    description: "A complete Kundan set including heavy necklace, matching earrings and maang tikka.",
     isNew: true,
     isBestSeller: true,
     rating: 5.0,

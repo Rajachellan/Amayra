@@ -43,7 +43,7 @@ export const BrandStory = () => {
                 Our 10% Social Pledge
               </span>
               <p className="text-[#555555] text-sm md:text-base font-light leading-relaxed font-serif">
-                We make the ritual of getting ready accessible with imitation jewellery that balances affordability and elegance. We commit at least 10% of our profits to women&apos;s education, entrepreneurship, skill development, and financial well-being.
+                We make the ritual of getting ready accessible with imitation jewellery that balances affordability and elegance. We commit at least 10% of our profits to women&apos;s education, entrepreneurship, skill development and financial well-being.
               </p>
             </div>
           </div>

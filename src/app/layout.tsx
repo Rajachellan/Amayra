@@ -25,7 +25,7 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: "MaiRii | High-End Luxury Jewellery",
-  description: "Exquisite gold, diamond, and bridal jewellery for your special moments. Experience high-end luxury with MaiRii.",
+  description: "Exquisite gold, diamond and bridal jewellery for your special moments. Experience high-end luxury with MaiRii.",
 };
 
 export default function RootLayout({

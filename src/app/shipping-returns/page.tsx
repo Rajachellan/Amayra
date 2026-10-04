@@ -88,7 +88,7 @@ const ShippingReturns = () => {
                   Customised orders and items on sale are not eligible for exchange.
                 </li>
                 <li>Promotional offers cannot be applied to Exchange orders/Credit Notes.</li>
-                <li>Items must be unused, unworn, and have all original tags attached and packaging intact.Items that are damaged or altered once the tags are removed, may not be accepted and will be sent back to the customer. </li>
+                <li>Items must be unused, unworn and have all original tags attached and packaging intact.Items that are damaged or altered once the tags are removed, may not be accepted and will be sent back to the customer. </li>
                 <li>We offer a replacement/refund only for product/s which is/ are damaged /broken, missing or significantly different from website description.</li>
               </ul>
             </div>
@@ -258,7 +258,7 @@ const ShippingReturns = () => {
               <p className="text-foreground/60">All our products go through a thorough 'Quality Check' and are packed with utmost care to ensure it reaches our customers in the most delightful condition. But in some rare cases, it may happen that due to rough handling of the package during transit by the courier partner, the product may not reach you in the condition you expected it to be. In such cases, below is what you need to do:</p>
               <ul className="mt-5 list-disc space-y-3 pl-6  text-foreground/60">
                 <li>Inform within 24 Hours: Create a video of unboxing your package, or click pictures of the product to that clearly shows the issues you are facing. Write an email within 24 hours of receiving the package to our returns support team at connect@mairiijewels.com and attach all the necessary proofs for faster resolution. Our team will respond to your mail within 48 hours. </li>
-                <li> Reverse Pickup: Once your return is approved and our team verifies that your order is eligible for a return and replacement, we will arrange a reverse pickup for your product at no extra cost, and the same will be attempted within 24 hours after confirmation. We will request you to keep the products ready for pickup, failure to do so we lead to cancellation of pickup and you will have to ship the product back to us by bearing the shipping charges. </li>
+                <li> Reverse Pickup: Once your return is approved and our team verifies that your order is eligible for a return and replacement, we will arrange a reverse pickup for your product at no extra cost and the same will be attempted within 24 hours after confirmation. We will request you to keep the products ready for pickup, failure to do so we lead to cancellation of pickup and you will have to ship the product back to us by bearing the shipping charges. </li>
                 <li> Resolution: Once the reverse pickup is successful, we will dispatch a replacement package for your damaged product depending upon the availability of the same or shall issue you a full refund coupon code worth the value of the product for your next purchase which will be valid for the next 3 months from the date of issuance. No refund will be provided in any replacement or damage cases. We will be happy to provide you a replacement or issue a refund coupon code.</li>
               </ul>
             </div>

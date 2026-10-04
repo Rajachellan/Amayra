@@ -253,12 +253,23 @@ export const Footer = () => {
             </h4>
             <ul className="space-y-3 font-light text-xs text-[#E2DFD7]/85">
               {[
-                { name: "Virasat (Royal Heritage)", href: "/category/all?collection=virasat" },
-                { name: "Pehla Tohfa (Festive Grace)", href: "/category/all?collection=pehla-tohfa" },
-                { name: "AAnchal (Bridal Trousseau)", href: "/category/all?collection=aanchal" },
-                { name: "Jashn Noor (Celebrations)", href: "/category/all?collection=Jashn-noor" },
-                { name: "Darpan (Polki & Mirror)", href: "/category/all?collection=darpan" },
-                { name: "New Arrivals Archive", href: "/category/all?sort=newest" },
+                {
+                  name: "Virasat",
+                  href: "/category/all?collection=virasat",
+                },
+                {
+                  name: "Pehla Tohfa",
+                  href: "/category/all?collection=pehla-tohfa",
+                },
+                {
+                  name: "Anchal",
+                  href: "/category/all?collection=aanchal",
+                },
+                {
+                  name: "Jashn e Noor",
+                  href: "/category/all?collection=Jashn-noor",
+                },
+
               ].map((item) => (
                 <li key={item.name}>
                   <Link
