@@ -13,10 +13,13 @@ import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
 export const ProductSpotlight = () => {
   const { addToCart, openCart } = useCart();
-  const { products } = useProducts({ masterpiece: "true", limit: 12 });
-  const product: Product | null = products[0] ?? null;
+  const { products: masterpieces, isLoading: loadingMasterpiece } = useProducts({ masterpiece: "true", limit: 4 });
+  const { products: fallbackProducts, isLoading: loadingFallback } = useProducts({ limit: 4 });
 
-  if (!product) {
+  const product: Product | null = masterpieces[0] ?? fallbackProducts[0] ?? null;
+  const isLoading = (loadingMasterpiece || loadingFallback) && !product;
+
+  if (isLoading) {
     return (
       <section className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-mint-soft)' }}>
         <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
@@ -36,6 +39,8 @@ export const ProductSpotlight = () => {
       </section>
     );
   }
+
+  if (!product) return null;
 
   const href = `/product/${product.slug ?? product.id}`;
   const img = typeof product.image === "string" ? product.image : resolveMediaUrl(undefined);
