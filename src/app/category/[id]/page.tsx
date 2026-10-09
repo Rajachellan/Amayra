@@ -785,7 +785,7 @@ function ProductGridSkeleton({ count = 6, showFilter }: { count?: number; showFi
           key={i}
           className="relative bg-white border border-gray-100 rounded-2xl flex flex-col justify-between overflow-hidden shadow-sm"
         >
-          <div className="relative aspect-[4/5] bg-neutral-200/80 overflow-hidden">
+          <div className="relative aspect-square bg-neutral-200/80 overflow-hidden">
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_1.8s_infinite]" />
           </div>
           <div className="p-5 flex flex-col items-center text-center space-y-3">

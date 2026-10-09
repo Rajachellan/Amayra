@@ -88,7 +88,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
         href={productHref}
         onMouseEnter={handleMouseEnter}
         style={{ position: "relative" }}
-        className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-[#f7f5f0]"
+        className="relative block overflow-hidden aspect-square cursor-pointer bg-[#f7f5f0]"
       >
         <Image
           src={imgSrc}
@@ -98,7 +98,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           quality={90}
           loading="lazy"
           decoding="async"
-          className="object-contain w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
+          className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
       </Link>
