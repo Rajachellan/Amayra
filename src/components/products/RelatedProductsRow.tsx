@@ -27,14 +27,14 @@ function RelatedCard({ product }: { product: Product }) {
       <Link
         href={`/product/${product.slug ?? product.id}`}
         style={{ position: "relative" }}
-        className="relative block aspect-[4/5] sm:aspect-[3/4] overflow-hidden bg-[#f3f0eb]"
+        className="relative block aspect-[4/5] overflow-hidden bg-[#f3f0eb]"
       >
         <Image
           src={imgSrc}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-contain p-1 transition-transform duration-700 group-hover:scale-105"
+          className="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
 
