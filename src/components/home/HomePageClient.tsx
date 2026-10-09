@@ -76,7 +76,7 @@ export function HomePageClient() {
       <MoodCategories />
       <ProductSpotlight />
       <PreviewBanner />
-      <SilverCollection />
+      {/* <SilverCollection /> */}
       <Craftsmanship />
       {settings.showBlogSection ? <MagazineGallery /> : null}
       {settings.showLookbooks ? <CollectionStory /> : null}

@@ -270,7 +270,7 @@ export default function ProfilePage() {
                     <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === "orders" ? "text-[#c9a84c] translate-x-0.5" : "text-stone-400 group-hover:translate-x-0.5"}`} />
                   </button>
 
-                  <button
+                  {/* <button
                     type="button"
                     onClick={() => setActiveTab("profile")}
                     className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${activeTab === "profile"
@@ -285,7 +285,7 @@ export default function ProfilePage() {
                       <span className="font-semibold">Personal Details</span>
                     </div>
                     <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === "profile" ? "text-[#c9a84c] translate-x-0.5" : "text-stone-400 group-hover:translate-x-0.5"}`} />
-                  </button>
+                  </button> */}
 
                   <button
                     type="button"
@@ -324,7 +324,7 @@ export default function ProfilePage() {
               </div>
 
               {/* VIP Concierge Card Banner */}
-              <div className="bg-gradient-to-br from-[#0B2516] to-[#164228] rounded-3xl p-6 text-white border border-[#c9a84c]/30 shadow-lg relative overflow-hidden">
+              {/* <div className="bg-gradient-to-br from-[#0B2516] to-[#164228] rounded-3xl p-6 text-white border border-[#c9a84c]/30 shadow-lg relative overflow-hidden">
                 <BotanicalDecoration className="text-[#c9a84c]" opacity={0.08} />
                 <div className="relative z-10 space-y-3">
                   <span className="text-[9px] font-bold tracking-[0.25em] text-[#c9a84c] uppercase block">
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
-              </div>
+              </div> */}
             </aside>
 
             {/* Main Content Pane (8 cols) */}

@@ -12,13 +12,17 @@ const PrivacyPolicy = () => {
       <Navbar />
 
       <PageBanner
-        title="Privacy Policy"
-        // subtitle="Legal"
         image="/images/optimized/banner (3).png"
-        height="h-[75vh]"
+        height="h-[45vh] md:h-[55vh]"
+        showText={false}
       />
 
-      <section className="pb-24 container mx-auto px-6 max-w-4xl pt-20">
+      <section className="pb-24 container mx-auto px-6 max-w-4xl pt-16">
+        <div className="text-center mb-12">
+          <span className="text-[10px] uppercase tracking-[0.4em] text-champagne font-bold mb-3 block">Legal Policy</span>
+          <h1 className="text-3xl md:text-5xl font-serif text-foreground font-medium">Privacy Policy</h1>
+          <div className="w-16 h-[1px] bg-champagne mx-auto mt-4" />
+        </div>
 
         <motion.div
           initial={{ opacity: 0 }}

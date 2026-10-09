@@ -55,7 +55,7 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
   return (
     <div className="w-full">
       <div
-        className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-[#f3f0eb]"
+        className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-[#f3f0eb]"
         onMouseMove={onMouseMove}
         onMouseLeave={() => setZoom((z) => ({ ...z, active: false }))}
       >

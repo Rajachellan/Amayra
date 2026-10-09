@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "../../../assets/preview_banner/banner.png"
+import bridalBanner from "../../../assets/preview_banner/banner-2.png"
 import necklaceBanner from "@/assets/neckles.jpg";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";

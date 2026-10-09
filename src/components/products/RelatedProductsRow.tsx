@@ -27,7 +27,7 @@ function RelatedCard({ product }: { product: Product }) {
       <Link
         href={`/product/${product.slug ?? product.id}`}
         style={{ position: "relative" }}
-        className="relative block aspect-[4/5] overflow-hidden bg-[#f3f0eb]"
+        className="relative block aspect-[9/16] overflow-hidden bg-[#f3f0eb]"
       >
         <Image
           src={imgSrc}

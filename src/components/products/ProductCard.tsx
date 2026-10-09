@@ -88,7 +88,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
         href={productHref}
         onMouseEnter={handleMouseEnter}
         style={{ position: "relative" }}
-        className="relative block overflow-hidden aspect-[4/5] cursor-pointer bg-[#f7f5f0]"
+        className="relative block overflow-hidden aspect-[9/16] cursor-pointer bg-[#f7f5f0]"
       >
         <Image
           src={imgSrc}
