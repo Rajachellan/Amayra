@@ -36,6 +36,8 @@ export interface Product {
   stylingInspiration?: string[];
   sizes?: string[];
   tags?: string[];
+  collections?: Array<{ _id?: string; name: string; slug: string }>;
+  occasions?: Array<{ _id?: string; name: string; slug: string }>;
   stock: number;
   lookbooks?: {
     id: string;

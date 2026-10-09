@@ -34,3 +34,20 @@ export function useProducts(filters: Record<string, string | number | undefined>
     refetch: query.refetch,
   };
 }
+
+export function useProductFacets(filters: Record<string, string | number | undefined> = {}) {
+  const query = useQuery({
+    queryKey: ["products", "facets", filters],
+    queryFn: () => shopApi.productFacets(filters),
+    placeholderData: keepPreviousData,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  return {
+    facets: query.data,
+    isLoading: query.isLoading,
+    isFetching: query.isFetching,
+    error: query.error,
+    refetch: query.refetch,
+  };
+}

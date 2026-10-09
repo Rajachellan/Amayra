@@ -82,6 +82,8 @@ export function mapListItemToProduct(p: ProductListItem): Product {
     isNewArrival,
     isBestSeller: (p.soldCount ?? 0) >= 40,
     tags: p.tags,
+    collections: p.collections,
+    occasions: p.occasions,
   };
 }
 
