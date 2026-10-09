@@ -300,6 +300,7 @@ export const Footer = () => {
                 { name: "Bridal Sets & Ensembles", href: "/category/bridal" },
                 { name: "Kundan & Jadau Craft", href: "/category/kundan" },
                 { name: "View All Jewellery", href: "/category/all" },
+                { name: "Blogs" , href:"/blog"}
               ].map((item) => (
                 <li key={item.name}>
                   <Link
@@ -398,7 +399,7 @@ export const Footer = () => {
           {/* Copyright & Accreditations */}
           <div className="text-center lg:text-left space-y-1.5">
             <p className="text-[11px] text-[#FAF7F0]/90 tracking-wide font-light">
-              © {new Date().getFullYear()} MaiRii Jewels Private Limited. All Rights Reserved.
+              © {new Date().getFullYear()} MaiRii . All Rights Reserved.
             </p>
             <div className="text-[10px] text-white/50 flex flex-wrap items-center justify-center lg:justify-start gap-2">
               <span>Handcrafted in India with Pride</span>

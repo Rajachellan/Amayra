@@ -18,7 +18,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "../../../assets/preview_banner/banner.png"
+import bridalBanner from "../../../assets/preview_banner/banner-2.png"
 import necklaceBanner from "@/assets/neckles.jpg";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
@@ -28,6 +28,7 @@ import nosePinImg from "@/assets/pexels-ankunijjar-31772512.jpg";
 import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.jpg";
 import chainImg from "@/assets/pexels-thisisjooh-36160928.jpg";
 import pendantImg from "@/assets/pexels-arif-13595746.jpg";
+
 
 const CATEGORY_BANNERS: Record<string, any> = {
   silver: silverBanner,

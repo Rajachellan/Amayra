@@ -193,14 +193,13 @@ const ProductCard = ({
   const href = `/product/${product.slug ?? product.id}`;
   return (
     <Link href={href} className="group block h-full">
-      <div className={`relative overflow-hidden transition-all duration-700 bg-pearl border border-foreground/[0.03] group-hover:border-champagne group-hover:shadow-2xl group-hover:shadow-[var(--gold-glow)] ${size === "large" ? "aspect-[4/3] md:aspect-[5/4]" : "aspect-[4/5] md:aspect-[3/4]"
-        }`}>
+      <div className="relative overflow-hidden transition-all duration-700 bg-pearl border border-foreground/[0.03] group-hover:border-champagne group-hover:shadow-2xl group-hover:shadow-[var(--gold-glow)] aspect-[4/5]">
         <Image
           src={product.image}
           alt={product.name}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-1000 group-hover:scale-110"
+          className="object-contain w-full h-full transition-transform duration-1000 group-hover:scale-110"
         />
 
         {/* Soft overlay gradient */}

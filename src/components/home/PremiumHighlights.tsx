@@ -24,13 +24,17 @@ const HIGHLIGHTS = [
     image: "/aimated-icons/heart.png",
     title: "CURATED WITH LOVE",
   },
+  {
+    image:"/aimated-icons/jewelry.png",
+    title:"Beauty with Purpose"
+  }
 ];
 
 export const PremiumHighlights = () => {
   return (
     <section className="relative w-full bg-[#f6ead9] py-12 md:py-16">
       <div className="mx-auto w-full max-w-7xl px-5 md:px-8">
-        <div className="grid grid-cols-2 gap-y-10 md:grid-cols-5 md:gap-x-8 md:gap-y-0">
+        <div className="grid grid-cols-2 gap-y-10 md:grid-cols-6 md:gap-x-8 md:gap-y-0">
           {HIGHLIGHTS.map((item, index) => (
             <div
               key={item.title}

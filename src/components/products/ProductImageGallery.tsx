@@ -65,7 +65,7 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
           fill
           unoptimized
           priority
-          className="object-cover transition-transform duration-300 ease-out will-change-transform"
+          className="object-contain w-full h-full transition-transform duration-300 ease-out will-change-transform"
           style={{
             transform: zoom.active ? "scale(2.2)" : "scale(1)",
             transformOrigin: `${zoom.x}% ${zoom.y}%`,

@@ -95,10 +95,10 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-          quality={80}
+          quality={90}
           loading="lazy"
           decoding="async"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="object-contain w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
       </Link>

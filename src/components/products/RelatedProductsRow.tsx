@@ -34,7 +34,7 @@ function RelatedCard({ product }: { product: Product }) {
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
+          className="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
 

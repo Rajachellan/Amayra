@@ -1,10 +1,11 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ChevronRight } from "lucide-react";
+import { PageBanner } from "@/components/layout/PageBanner";
 
 const sections = [
   { id: "intro", title: "Introduction", content: "Welcome to MaiRii. By accessing this website, you agree to be bound by these Terms and Conditions. Our services are provided to you subject to the following notices, terms and conditions." },
@@ -39,7 +40,13 @@ export default function TermsPage() {
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      <section className="pt-40 pb-24">
+      <PageBanner
+        image="/images/optimized/banner (4).png"
+        height="h-[45vh] md:h-[55vh]"
+        showText={false}
+      />
+
+      <section className="pt-16 pb-24">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
