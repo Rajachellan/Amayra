@@ -262,6 +262,34 @@ export type ProductListItem = {
   stylingTips?: string[];
   stylingInspiration?: string[];
   tags?: string[];
+  collections?: Array<{ _id?: string; name: string; slug: string }>;
+  occasions?: Array<{ _id?: string; name: string; slug: string }>;
+};
+
+export type FacetItem = {
+  _id?: string;
+  name: string;
+  slug?: string;
+  count: number;
+};
+
+export type PriceRangeFacet = {
+  label: string;
+  min: number;
+  max: number;
+  count: number;
+};
+
+export type ProductFacetsResponse = {
+  occasions: FacetItem[];
+  collections: FacetItem[];
+  colors: FacetItem[];
+  priceRange: {
+    min: number;
+    max: number;
+    total: number;
+  };
+  priceRanges: PriceRangeFacet[];
 };
 
 export type ProductDetail = ProductListItem & {
@@ -398,6 +426,13 @@ export const shopApi = {
       if (v !== undefined && v !== "") sp.set(k, String(v));
     });
     return fetchJson<ProductListResponse>(`/products?${sp.toString()}`);
+  },
+  productFacets: (q: Record<string, string | number | undefined>) => {
+    const sp = new URLSearchParams();
+    Object.entries(q).forEach(([k, v]) => {
+      if (v !== undefined && v !== "") sp.set(k, String(v));
+    });
+    return fetchJson<ProductFacetsResponse>(`/products/facets?${sp.toString()}`);
   },
   productBySlug: (slug: string) => fetchJson<ProductDetail>(`/products/${encodeURIComponent(slug)}?_t=${Date.now()}`),
   blogs: (q?: { page?: number; limit?: number }) => {

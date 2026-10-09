@@ -7,7 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ProductCard } from "@/components/products/ProductCard";
 import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
-import { useProducts } from "@/hooks/useProducts";
+import { useProducts, useProductFacets } from "@/hooks/useProducts";
 import { useCategoriesTree, useCollections, useOccasions } from "@/hooks/useCatalogMetadata";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
@@ -153,6 +153,22 @@ function CategoryContent() {
             ? "bestseller"
             : undefined;
 
+  const facetQueryParams = useMemo(() => {
+    const q: Record<string, string | number | undefined> = {};
+    if (categorySlug && categorySlug !== "all") {
+      q.category = categorySlug;
+    }
+    if (subQuery) {
+      q.subCategory = subQuery;
+    }
+    if (searchQuery.trim()) {
+      q.q = searchQuery.trim();
+    }
+    return q;
+  }, [categorySlug, subQuery, searchQuery]);
+
+  const { facets } = useProductFacets(facetQueryParams);
+
   const productQueryParams = useMemo(() => {
     const q: Record<string, string | number | undefined> = {
       page: 1,
@@ -168,8 +184,29 @@ function CategoryContent() {
     if (searchQuery.trim()) {
       q.q = searchQuery.trim();
     }
+    if (selectedOccasions.length > 0) {
+      q.occasions = selectedOccasions.join(",");
+    }
+    if (selectedCollections.length > 0) {
+      q.collections = selectedCollections.join(",");
+    }
+    if (selectedColors.length > 0) {
+      q.colors = selectedColors.join(",");
+    }
+    if (selectedMaxPrice !== null) {
+      q.maxPrice = selectedMaxPrice;
+    }
     return q;
-  }, [categorySlug, subQuery, searchQuery, sortParam]);
+  }, [
+    categorySlug,
+    subQuery,
+    searchQuery,
+    sortParam,
+    selectedOccasions,
+    selectedCollections,
+    selectedColors,
+    selectedMaxPrice,
+  ]);
 
   const { products: rawProducts, isLoading: loading } = useProducts(productQueryParams);
 
@@ -187,18 +224,6 @@ function CategoryContent() {
     }, 4500);
     return () => clearInterval(timer);
   }, [hasMultipleSlides]);
-
-  const occasionsToUse = useMemo(() => {
-    return occasionsList.length > 0
-      ? occasionsList
-      : [
-        { name: "Wedding", slug: "wedding" },
-        { name: "Cocktail", slug: "cocktail" },
-        { name: "Daily Wear", slug: "daily-wear" },
-        { name: "Festive", slug: "festival" },
-        { name: "Gifting", slug: "gifting" },
-      ];
-  }, [occasionsList]);
 
   const toggleSection = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -221,62 +246,93 @@ function CategoryContent() {
     }
   }, [tree, categorySlug, subQuery]);
 
-  // Compute counts for filter items based on raw products
-  const counts = useMemo(() => {
-    const occCounts: Record<string, number> = {};
-    const colCounts: Record<string, number> = {};
-    const colorCounts: Record<string, number> = {};
-    const priceCounts: Record<number, number> = {};
+  // Real data lists with counts from Facets
+  const displayOccasions = useMemo(() => {
+    if (facets?.occasions && facets.occasions.length > 0) {
+      return facets.occasions;
+    }
+    return occasionsList.map((o) => ({ name: o.name, slug: o.slug, count: 0 }));
+  }, [facets?.occasions, occasionsList]);
 
-    rawProducts.forEach((p) => {
-      occasionsToUse.forEach((o) => {
-        if (
-          p.tags?.some((t) => t.toLowerCase() === o.slug) ||
-          p.description.toLowerCase().includes(o.slug)
-        ) {
-          occCounts[o.name] = (occCounts[o.name] || 0) + 1;
-        }
-      });
-      if (p.color) {
-        COLORS.forEach((c) => {
-          if (p.color?.toLowerCase().includes(c.toLowerCase())) {
-            colorCounts[c] = (colorCounts[c] || 0) + 1;
-          }
-        });
-      }
-      PRICE_RANGES.forEach((r) => {
-        if (p.price >= r.min && p.price <= r.max) {
-          priceCounts[r.max] = (priceCounts[r.max] || 0) + 1;
-        }
-      });
-    });
+  const displayCollections = useMemo(() => {
+    if (facets?.collections && facets.collections.length > 0) {
+      return facets.collections;
+    }
+    return collectionsList.map((c) => ({ name: c.name, slug: c.slug, count: 0 }));
+  }, [facets?.collections, collectionsList]);
 
-    return { occCounts, colCounts, colorCounts, priceCounts };
-  }, [rawProducts, occasionsToUse]);
+  const displayColors = useMemo(() => {
+    if (facets?.colors && facets.colors.length > 0) {
+      return facets.colors;
+    }
+    const colorsFromProducts = Array.from(
+      new Set(rawProducts.map((p) => p.color?.trim()).filter(Boolean))
+    ) as string[];
+    if (colorsFromProducts.length > 0) {
+      return colorsFromProducts.map((c) => ({
+        name: c,
+        count: rawProducts.filter((p) => p.color?.toLowerCase() === c.toLowerCase()).length,
+      }));
+    }
+    return COLORS.map((c) => ({ name: c, count: 0 }));
+  }, [facets?.colors, rawProducts]);
 
-  // Apply active sidebar filters locally
+  const displayPriceRanges = useMemo(() => {
+    if (facets?.priceRanges && facets.priceRanges.length > 0) {
+      return facets.priceRanges;
+    }
+    return PRICE_RANGES.map((r) => ({
+      ...r,
+      count: rawProducts.filter((p) => p.price >= r.min && p.price <= r.max).length,
+    }));
+  }, [facets?.priceRanges, rawProducts]);
+
+  // Apply active sidebar filters
   const filteredProducts = useMemo(() => {
     return rawProducts.filter((p) => {
       if (selectedOccasions.length > 0) {
-        const matchesOcc = selectedOccasions.some(
-          (occ) =>
-            p.tags?.some((t) => t.toLowerCase() === occ.toLowerCase()) ||
-            p.description.toLowerCase().includes(occ.toLowerCase())
-        );
+        const matchesOcc = selectedOccasions.some((occ) => {
+          const occLower = occ.toLowerCase();
+          const inOccasions = p.occasions?.some((o: any) => {
+            if (typeof o === "string") return o.toLowerCase() === occLower;
+            return (
+              o?.slug?.toLowerCase() === occLower ||
+              o?.name?.toLowerCase() === occLower ||
+              String(o?._id) === occLower
+            );
+          });
+          const inTags = p.tags?.some((t) => t.toLowerCase() === occLower);
+          const inDesc = p.description?.toLowerCase().includes(occLower);
+          return inOccasions || inTags || inDesc;
+        });
         if (!matchesOcc) return false;
       }
       if (selectedCollections.length > 0) {
-        const matchesCol = selectedCollections.some(
-          (col) =>
-            p.tags?.some((t) => t.toLowerCase().includes(col.toLowerCase())) ||
-            p.category.toLowerCase().includes(col.toLowerCase())
-        );
+        const matchesCol = selectedCollections.some((col) => {
+          const colLower = col.toLowerCase();
+          const inCollections = p.collections?.some((c: any) => {
+            if (typeof c === "string") return c.toLowerCase() === colLower;
+            return (
+              c?.slug?.toLowerCase() === colLower ||
+              c?.name?.toLowerCase() === colLower ||
+              String(c?._id) === colLower
+            );
+          });
+          const inTags = p.tags?.some((t) => t.toLowerCase().includes(colLower));
+          const inCat = p.category?.toLowerCase().includes(colLower);
+          return inCollections || inTags || inCat;
+        });
         if (!matchesCol) return false;
       }
       if (selectedColors.length > 0) {
-        const matchesColor = selectedColors.some(
-          (col) => p.color && p.color.toLowerCase().includes(col.toLowerCase())
-        );
+        const matchesColor = selectedColors.some((col) => {
+          const cLower = col.toLowerCase();
+          return (
+            (p.color && p.color.toLowerCase().includes(cLower)) ||
+            (p.name && p.name.toLowerCase().includes(cLower)) ||
+            p.tags?.some((t) => t.toLowerCase().includes(cLower))
+          );
+        });
         if (!matchesColor) return false;
       }
       if (selectedMaxPrice !== null) {
@@ -302,9 +358,9 @@ function CategoryContent() {
         }))
         : [];
 
-  const toggleOccasion = (name: string) => {
+  const toggleOccasion = (slugOrName: string) => {
     setSelectedOccasions((prev) =>
-      prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
+      prev.includes(slugOrName) ? prev.filter((x) => x !== slugOrName) : [...prev, slugOrName]
     );
   };
 
@@ -356,21 +412,28 @@ function CategoryContent() {
                 </button>
               )}
             </div>
-            {occasionsToUse.map((occ) => {
-              const cnt = counts.occCounts[occ.name] || Math.floor(Math.random() * 15) + 3;
-              const isChecked = selectedOccasions.includes(occ.name);
+            {displayOccasions.map((occ) => {
+              const occKey = occ.slug || occ.name;
+              const isChecked =
+                selectedOccasions.includes(occ.slug || "") ||
+                selectedOccasions.includes(occ.name);
+              const cnt = occ.count ?? 0;
               return (
                 <label
-                  key={occ.slug}
-                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                  key={occKey}
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
+                    cnt === 0 && !isChecked
+                      ? "text-stone-400 hover:text-stone-600"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
                 >
                   <input
                     type="checkbox"
                     checked={isChecked}
-                    onChange={() => toggleOccasion(occ.name)}
+                    onChange={() => toggleOccasion(occ.slug || occ.name)}
                     className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-0 accent-stone-800"
                   />
-                  <span>
+                  <span className="truncate">
                     {occ.name} ({cnt})
                   </span>
                 </label>
@@ -409,28 +472,25 @@ function CategoryContent() {
                 </button>
               )}
             </div>
-            {(collectionsList.length > 0
-              ? collectionsList
-              : [
-                { name: "Rings", slug: "rings" },
-                { name: "Bracelets & Hathphools", slug: "bracelets" },
-                { name: "Earrings & Crawlers", slug: "earrings" },
-                { name: "Necklaces & Chokers", slug: "necklaces" },
-                { name: "Hand Accessories", slug: "hand-accessories" },
-                { name: "Anklets", slug: "anklets" },
-              ]
-            ).map((col, idx) => {
-              const isChecked = selectedCollections.includes(col.slug);
-              const cnt = Math.floor(Math.random() * 20) + 2;
+            {displayCollections.map((col, idx) => {
+              const colKey = col.slug || col.name || String(idx);
+              const isChecked =
+                selectedCollections.includes(col.slug || "") ||
+                selectedCollections.includes(col.name);
+              const cnt = col.count ?? 0;
               return (
                 <label
-                  key={col.slug || idx}
-                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                  key={colKey}
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
+                    cnt === 0 && !isChecked
+                      ? "text-stone-400 hover:text-stone-600"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
                 >
                   <input
                     type="checkbox"
                     checked={isChecked}
-                    onChange={() => toggleCollection(col.slug)}
+                    onChange={() => toggleCollection(col.slug || col.name)}
                     className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-0 accent-stone-800"
                   />
                   <span className="truncate">
@@ -472,22 +532,26 @@ function CategoryContent() {
                 </button>
               )}
             </div>
-            {COLORS.map((clr) => {
-              const isChecked = selectedColors.includes(clr);
-              const cnt = counts.colorCounts[clr] || Math.floor(Math.random() * 12) + 2;
+            {displayColors.map((clr) => {
+              const isChecked = selectedColors.includes(clr.name);
+              const cnt = clr.count ?? 0;
               return (
                 <label
-                  key={clr}
-                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                  key={clr.name}
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
+                    cnt === 0 && !isChecked
+                      ? "text-stone-400 hover:text-stone-600"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
                 >
                   <input
                     type="checkbox"
                     checked={isChecked}
-                    onChange={() => toggleColor(clr)}
+                    onChange={() => toggleColor(clr.name)}
                     className="w-4 h-4 rounded border-stone-300 text-stone-900 focus:ring-0 accent-stone-800"
                   />
                   <span>
-                    {clr} ({cnt})
+                    {clr.name} ({cnt})
                   </span>
                 </label>
               );
@@ -525,13 +589,17 @@ function CategoryContent() {
                 </button>
               )}
             </div>
-            {PRICE_RANGES.map((range) => {
+            {displayPriceRanges.map((range) => {
               const isChecked = selectedMaxPrice === range.max;
-              const cnt = counts.priceCounts[range.max] || Math.floor(Math.random() * 15) + 4;
+              const cnt = range.count ?? 0;
               return (
                 <label
                   key={range.label}
-                  className="flex items-center space-x-3 cursor-pointer group text-xs text-stone-600 hover:text-stone-900"
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
+                    cnt === 0 && !isChecked
+                      ? "text-stone-400 hover:text-stone-600"
+                      : "text-stone-600 hover:text-stone-900"
+                  }`}
                 >
                   <input
                     type="radio"
