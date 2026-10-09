@@ -39,9 +39,11 @@ const FULFILLMENT_STEPS = [
 ] as const;
 
 function stepIndex(status: string) {
-  const idx = FULFILLMENT_STEPS.findIndex((s) => s.key === status);
+  const norm = (status || "").toLowerCase().trim();
+  const idx = FULFILLMENT_STEPS.findIndex((s) => s.key === norm);
   if (idx >= 0) return idx;
-  if (status === "paid") return 0;
+  if (norm === "confirmed" || norm === "paid" || norm === "pending_payment") return 0;
+  if (norm === "out_for_delivery") return 2;
   return 0;
 }
 

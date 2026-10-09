@@ -415,7 +415,7 @@ export const Footer = () => {
               <Link href="/sitemap" className="hover:text-[#c4a064] transition">
                 Sitemap
               </Link>
-              <span>•</span>
+              {/* <span>•</span>
               <span className="text-white/40">
                 Managed with care by{" "}
                 <a
@@ -426,7 +426,7 @@ export const Footer = () => {
                 >
                   @Rankraze
                 </a>
-              </span>
+              </span> */}
             </div>
           </div>
 
