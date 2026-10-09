@@ -114,14 +114,14 @@ export const SilverCollection = () => {
                   transition={{ duration: 0.5, delay: (idx % 4) * 0.1 }}
                   className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500"
                 >
-                  <div className="relative aspect-[9/16] w-full overflow-hidden bg-pearl">
+                  <div className="relative aspect-[4/5] sm:aspect-[3/4] w-full overflow-hidden bg-pearl">
                     <Link href={`/product/${product.slug ?? product.id}`} className="block w-full h-full">
                       <Image
                         src={product.image}
                         alt={product.name}
                         fill
                         sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        className="object-contain p-1 transition-transform duration-700 group-hover:scale-105"
                       />
                     </Link>
 

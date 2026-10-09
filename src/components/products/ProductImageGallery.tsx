@@ -55,7 +55,7 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
   return (
     <div className="w-full">
       <div
-        className="relative aspect-[9/16] overflow-hidden rounded-2xl bg-[#f3f0eb]"
+        className="relative aspect-[4/5] sm:aspect-[3/4] overflow-hidden rounded-2xl bg-[#f3f0eb]"
         onMouseMove={onMouseMove}
         onMouseLeave={() => setZoom((z) => ({ ...z, active: false }))}
       >
@@ -65,7 +65,7 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
           fill
           unoptimized
           priority
-          className="object-cover transition-transform duration-300 ease-out will-change-transform"
+          className="object-contain p-1 sm:p-2 transition-transform duration-300 ease-out will-change-transform"
           style={{
             transform: zoom.active ? "scale(2.2)" : "scale(1)",
             transformOrigin: `${zoom.x}% ${zoom.y}%`,
