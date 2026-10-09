@@ -791,6 +791,7 @@ function CategoryContent() {
                       router.push("/category/all");
                     }}
                   >
+                    
                     EXPLORE ALL PRODUCTS
                   </Button>
                 </div>
