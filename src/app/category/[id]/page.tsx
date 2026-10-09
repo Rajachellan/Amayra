@@ -29,6 +29,7 @@ import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.
 import chainImg from "@/assets/pexels-thisisjooh-36160928.jpg";
 import pendantImg from "@/assets/pexels-arif-13595746.jpg";
 
+
 const CATEGORY_BANNERS: Record<string, any> = {
   silver: silverBanner,
   earrings: earringsBanner,
