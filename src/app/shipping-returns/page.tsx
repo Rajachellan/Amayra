@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React from "react";
 import { Navbar } from "@/components/layout/Navbar";
@@ -14,14 +14,14 @@ const ShippingReturns = () => {
 
       <PageBanner
         image="/images/optimized/banner (5).png"
-        height="h-[45vh] md:h-[55vh]"
+        height="h-[45vh] md:h-[60vh]"
         showText={false}
       />
 
       {/* Policy Sections */}
       <section className="pt-16 pb-20 container mx-auto px-6">
         <div className="text-center mb-16">
-          <span className="text-[10px] uppercase tracking-[0.4em] text-champagne font-bold mb-3 block">Client Services</span>
+          {/* <span className="text-[10px] uppercase tracking-[0.4em] text-champagne font-bold mb-3 block">Client Services</span> */}
           <h1 className="text-3xl md:text-5xl font-serif text-foreground font-medium">Shipping & Returns</h1>
           <div className="w-16 h-[1px] bg-champagne mx-auto mt-4" />
         </div>

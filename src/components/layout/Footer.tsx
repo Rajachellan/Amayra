@@ -176,7 +176,7 @@ export const Footer = () => {
             </p>
 
             {/* Stylist Concierge Pill */}
-            <div>
+            {/* <div>
               <a
                 href="https://wa.me/919566571655?text=Hello%20MaiRii%20Team%2C%20I%20would%20like%20assistance%20with%20jewellery%20styling"
                 target="_blank"
@@ -192,7 +192,7 @@ export const Footer = () => {
                   Chat with Jewellery Stylist
                 </span>
               </a>
-            </div>
+            </div> */}
 
             {/* Follow The Maison */}
             <div className="pt-2">
@@ -329,7 +329,7 @@ export const Footer = () => {
                 { name: "Track Your Order", href: "/profile" },
                 { name: "Shipping & Delivery Policy", href: "/shipping-returns" },
                 { name: "Returns & Exchanges", href: "/returns-exchanges" },
-                { name: "Jewellery Care Guide", href: "/blog" },
+                // { name: "Jewellery Care Guide", href: "/blog" },
                 { name: "Sitemap Directory", href: "/sitemap" },
               ].map((item) => (
                 <li key={item.name}>
@@ -387,7 +387,7 @@ export const Footer = () => {
                 <span className="text-[11px] text-[#E2DFD7]/75 leading-relaxed">
                   Mon – Sat: 10:30 AM – 8:00 PM IST
                   <br />
-                  <span className="text-[#e6d3a3] font-medium">Sunday: By Appointment Only</span>
+                  {/* <span className="text-[#e6d3a3] font-medium">Sunday: By Appointment Only</span> */}
                 </span>
               </div>
             </div>
