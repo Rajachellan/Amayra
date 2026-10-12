@@ -323,6 +323,7 @@ export const Footer = () => {
               <span className="text-[#c4a064] text-[9px]">✦</span>
               <span>Client Care</span>
             </h4>
+            
             <ul className="space-y-3 font-light text-xs text-[#E2DFD7]/85">
               {[
                 { name: "Our Story & Heritage", href: "/about" },
