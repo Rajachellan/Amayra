@@ -17,10 +17,10 @@ export const navigationData: NavItem[] = [
     description: "Explore our complete gallery of handcrafted brilliance.",
     previewImage: "/images/luxury/shop-preview.png",
     subItems: [
-      { name: "New Arrivals", href: "/category/new" },
+      // { name: "New Arrivals", href: "/category/new" },
       { name: "Best Sellers", href: "/category/all?filter=best" },
       { name: "Limited Edition", href: "/category/all?filter=limited" },
-      { name: "View All", href: "/category/all" },
+      // { name: "View All", href: "/category/all" },
     ],
   },
   {
