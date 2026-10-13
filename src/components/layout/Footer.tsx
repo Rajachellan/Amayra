@@ -295,12 +295,12 @@ export const Footer = () => {
             <ul className="space-y-3 font-light text-xs text-[#E2DFD7]/85">
               {[
                 { name: "Necklace Sets & Haars", href: "/category/necklaces" },
-                { name: "Royal Chokers", href: "/category/choker" },
-                { name: "Earrings & Jhumkis", href: "/category/earrings" },
-                { name: "Bridal Sets & Ensembles", href: "/category/bridal" },
+                { name: "Royal Chokers", href: "/comming-soon" },
+                { name: "Earrings & Jhumkis", href: "/comming-soon" },
+                { name: "Bridal Sets & Ensembles", href: "/comming-soon" },
                 { name: "Kundan & Jadau Craft", href: "/category/kundan" },
                 { name: "View All Jewellery", href: "/category/all" },
-                { name: "Blogs" , href:"/blog"}
+                { name: "Blogs" , href:"/comming-soon"}
               ].map((item) => (
                 <li key={item.name}>
                   <Link

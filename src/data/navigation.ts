@@ -37,14 +37,14 @@ export const navigationData: NavItem[] = [
   },
   {
     name: "Bridal",
-    href: "/category/bridal",
+    href: "/comming-soon",
     description: "Designed for timeless wedding elegance and royal charm.",
     previewImage: "/images/luxury/bridal-preview.png",
     subItems: [
-      { name: "Royal Sets", href: "/category/bridal?sub=Heritage Sets" },
-      { name: "Mathapattis", href: "/category/bridal?sub=Maang Tikka" },
-      { name: "Nose Pins", href: "/category/bridal?sub=Maang Tikka" },
-      { name: "Waist Belts", href: "/category/bridal?sub=Heritage Sets" },
+      { name: "Royal Sets", href: "/comming-soon" },
+      { name: "Mathapattis", href: "/comming-soon" },
+      { name: "Nose Pins", href: "/comming-soon" },
+      { name: "Waist Belts", href: "/comming-soon" },
     ],
   },
   {
