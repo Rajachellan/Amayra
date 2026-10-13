@@ -378,11 +378,13 @@ function CategoryContent() {
   };
 
   /* ── Amama-style Sidebar Component ────────────────────────────────────────── */
-  const AmamaSidebar = () => (
-    <div className="w-full space-y-6 text-stone-800">
-      <h2 className="text-xl font-bold font-sans tracking-tight border-b border-stone-200 pb-3">
-        Filter
-      </h2>
+  const AmamaSidebar = ({ hideTitle = false }: { hideTitle?: boolean } = {}) => (
+    <div className="w-full space-y-6 text-stone-800 pb-6">
+      {!hideTitle && (
+        <h2 className="text-xl font-bold font-serif tracking-tight border-b border-stone-200 pb-3 text-stone-900">
+          Filter
+        </h2>
+      )}
 
       {/* Accordion 1: Occasion */}
       <div className="border-b border-stone-200 pb-4">
@@ -400,7 +402,7 @@ function CategoryContent() {
         </button>
 
         {expanded.occasion && (
-          <div className="mt-2 space-y-3 pl-0.5">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedOccasions.length} selected</span>
               {selectedOccasions.length > 0 && (
@@ -460,7 +462,7 @@ function CategoryContent() {
         </button>
 
         {expanded.collection && (
-          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto pr-1">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedCollections.length} selected</span>
               {selectedCollections.length > 0 && (
@@ -520,7 +522,7 @@ function CategoryContent() {
         </button>
 
         {expanded.color && (
-          <div className="mt-2 space-y-3 pl-0.5">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedColors.length} selected</span>
               {selectedColors.length > 0 && (
@@ -577,7 +579,7 @@ function CategoryContent() {
         </button>
 
         {expanded.price && (
-          <div className="mt-2 space-y-3 pl-0.5">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedMaxPrice !== null ? "1 selected" : "0 selected"}</span>
               {selectedMaxPrice !== null && (
@@ -634,7 +636,7 @@ function CategoryContent() {
               setSelectedColors([]);
               setSelectedMaxPrice(null);
             }}
-            className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2"
+            className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2 pb-2 block"
           >
             Clear All Filters
           </button>
@@ -754,7 +756,7 @@ function CategoryContent() {
           <div className="flex gap-10 items-start">
             {/* Desktop Left Sidebar */}
             {showFilter && (
-              <aside className="hidden lg:block w-64 shrink-0 pr-6 border-r border-stone-200 sticky top-32 self-start">
+              <aside className="hidden lg:block w-64 shrink-0 pr-4 border-r border-stone-200 sticky top-28 self-start max-h-[calc(100vh-7.5rem)] overflow-y-auto scrollbar-gold-slim-vertical overscroll-contain">
                 <AmamaSidebar />
               </aside>
             )}
@@ -804,32 +806,53 @@ function CategoryContent() {
       {/* Mobile Filter Slide-over Drawer */}
       <Suspense>
         {isMobileFilterOpen && (
-          <div className="fixed inset-0 z-[100] lg:hidden">
+          <div className="fixed inset-0 z-[100] lg:hidden flex justify-end">
             <div
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm"
               onClick={() => setIsMobileFilterOpen(false)}
             />
-            <div className="absolute right-0 top-0 h-full w-[320px] bg-white p-6 overflow-y-auto shadow-2xl">
-              <div className="flex justify-between items-center mb-6 pb-3 border-b border-stone-200">
-                <h2 className="text-sm uppercase tracking-widest font-bold text-stone-900">
-                  Filter & Refine
+            <div className="relative h-full w-[320px] sm:w-[360px] bg-white shadow-2xl flex flex-col z-10">
+              <div className="flex justify-between items-center px-6 py-4 border-b border-stone-200 shrink-0">
+                <h2 className="text-sm uppercase tracking-widest font-bold text-stone-900 flex items-center gap-2">
+                  <SlidersHorizontal className="w-4 h-4 text-[#c9a84c]" />
+                  <span>Filter & Refine</span>
                 </h2>
                 <button
                   type="button"
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-1 text-stone-500 hover:text-stone-900"
+                  className="p-1.5 rounded-full hover:bg-stone-100 text-stone-500 hover:text-stone-900 transition-colors"
+                  aria-label="Close filters"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <AmamaSidebar />
-              <div className="mt-8 pt-4 border-t border-stone-200">
+              <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-gold-slim-vertical overscroll-contain">
+                <AmamaSidebar hideTitle />
+              </div>
+              <div className="p-4 border-t border-stone-200 bg-white shrink-0 flex gap-3">
+                {(selectedOccasions.length > 0 ||
+                  selectedCollections.length > 0 ||
+                  selectedColors.length > 0 ||
+                  selectedMaxPrice !== null) && (
+                  <Button
+                    variant="outline"
+                    className="flex-1 py-3 text-xs uppercase tracking-wider"
+                    onClick={() => {
+                      setSelectedOccasions([]);
+                      setSelectedCollections([]);
+                      setSelectedColors([]);
+                      setSelectedMaxPrice(null);
+                    }}
+                  >
+                    Reset
+                  </Button>
+                )}
                 <Button
                   variant="gold"
-                  className="w-full py-3"
+                  className="flex-1 py-3 text-xs uppercase tracking-wider"
                   onClick={() => setIsMobileFilterOpen(false)}
                 >
-                  Apply Filters
+                  Apply ({filteredProducts.length})
                 </Button>
               </div>
             </div>
