@@ -80,11 +80,11 @@ export const BrandStory = () => {
               </p>
 
               <p>
-             That fascination never left her — it grew into a quiet promise: one day, she'd build something that let every woman feel that same wonder. MaiRii celebrates the legacy of Love, Grace & Strength that every woman inherits and yet creates her own unique identity leaving a legacy behind.
+             That fascination never left her — it grew into a quiet promise: one day, she'd build something that let every woman feel that same wonder. It started as MaiRii, Her own way of saying For You, Ma.
               </p>
-              {/* <p>
-              The name carries that inheritance, rooted in memories: love passed down, one generation to the next.
-              </p> */}
+              <p>
+             MaiRii celebrates the legacy of Love, Grace & Strength that every woman inherits and yet creates her own unique identity leaving a legacy behind.
+              </p>
 
               <p>
              Mairii isn't just jewellery. It's the ritual of getting ready, the small joy of catching your reflection and loving yourself.

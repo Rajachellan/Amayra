@@ -9,6 +9,10 @@ import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
 import { useProducts, useProductFacets } from "@/hooks/useProducts";
 import { useCategoriesTree, useCollections, useOccasions } from "@/hooks/useCatalogMetadata";
+import bridalbanner1 from "../../../assets/preview_banner/banner-image (1).png"
+import bridalbanner2 from "../../../assets/preview_banner/banner-image (2).png"
+import bridalbanner3 from "../../../assets/preview_banner/banner-image (3).png"
+import bridalbanner4 from "../../../assets/preview_banner/banner-image (4).png"
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles } from "lucide-react";
@@ -16,7 +20,6 @@ import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-
 import silverBanner from "@/assets/silver.jpg";
 import bridalBanner from "../../../assets/preview_banner/Inspired-by-Her.png"
 import necklaceBanner from "@/assets/neckles.jpg";
@@ -61,6 +64,21 @@ export const DEFAULT_BANNER_SLIDES = [
   {
     id: "slide-2",
     image: bridalBanner, // Slide 2 Default Banner Image (User can replace here)
+  },
+   {
+    id: "slide-2",
+    image: bridalbanner1, // Slide 2 Default Banner Image (User can replace here)
+  },
+   {
+    id: "slide-2",
+    image: bridalbanner2, // Slide 2 Default Banner Image (User can replace here)
+  }, {
+    id: "slide-2",
+    image: bridalbanner3, // Slide 2 Default Banner Image (User can replace here)
+  },
+   {
+    id: "slide-2",
+    image: bridalbanner4, // Slide 2 Default Banner Image (User can replace here)
   },
 ];
 
