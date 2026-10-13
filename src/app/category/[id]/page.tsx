@@ -385,7 +385,6 @@ function CategoryContent() {
           Filter
         </h2>
       )}
-
       {/* Accordion 1: Occasion */}
       <div className="border-b border-stone-200 pb-4">
         <button
