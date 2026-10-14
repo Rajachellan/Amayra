@@ -19,8 +19,8 @@ const REVIEWS = [
   },
   {
     id: 2,
-    name: "Ganesh",
-    location: "Chandigarh, India",
+    name: "Ananya R.",
+    location: "Bengaluru, Karnataka",
     image:
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -50,7 +50,7 @@ const REVIEWS = [
   {
     id: 5,
     name:"Amala",
-    location: "Delhi,India",
+    location: "Salem,India",
     image:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -59,7 +59,7 @@ const REVIEWS = [
   },
   {
     id: 6,
-    name: "Ananya",
+    name: "Sneha",
     location: "Bangalore, India",
     image:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=240&auto=format&fit=crop",

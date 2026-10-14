@@ -9,17 +9,21 @@ import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
 import { useProducts, useProductFacets } from "@/hooks/useProducts";
 import { useCategoriesTree, useCollections, useOccasions } from "@/hooks/useCatalogMetadata";
+import bridalbanner1 from "../../../assets/preview_banner/banner-image (1).png"
+import bridalbanner2 from "../../../assets/preview_banner/banner-image (2).png"
+import bridalbanner3 from "../../../assets/preview_banner/banner-image (3).png"
+import bridalbanner4 from "../../../assets/preview_banner/banner-image (4).png"
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
-import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles } from "lucide-react";
+import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "../../../assets/preview_banner/banner-2.png"
-import necklaceBanner from "@/assets/neckles.jpg";
+import bridalBanner from "../../../assets/preview_banner/Inspired-by-Her.png";
+import necklaceBanner from "@/assets/preview_banner/neckles-banner (2).png";
+import necklaceBanner2 from "../../../assets/preview_banner/neckles-banner (1).png";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
 import bannerImage from "../../../assets/preview_banner/inner-banner-1.png";
@@ -54,13 +58,29 @@ function getCategoryBanner(slug: string, sub?: string | null): any {
  * You can easily update or replace the default slide images below.
  */
 export const DEFAULT_BANNER_SLIDES = [
-  {
-    id: "slide-1",
-    image: bannerImage, // Slide 1 Default Banner Image (User can replace here)
+   {
+    id: "necklace-slide-1",
+    image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
   },
   {
-    id: "slide-2",
-    image: bridalBanner, // Slide 2 Default Banner Image (User can replace here)
+    id: "necklace-slide-2",
+    image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
+  },
+ 
+];
+
+/**
+ * Necklaces Category Banner Slides (2-slide banner configuration)
+ * You can easily update or replace the necklace slide images below.
+ */
+export const NECKLACE_BANNER_SLIDES = [
+  {
+    id: "necklace-slide-1",
+    image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
+  },
+  {
+    id: "necklace-slide-2",
+    image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
   },
 ];
 
@@ -135,9 +155,10 @@ function CategoryContent() {
     price: true,
   });
 
-  const { data: treeData = [] } = useCategoriesTree();
-  const { data: collectionsData = [] } = useCollections();
-  const { data: occasionsData = [] } = useOccasions();
+  const EMPTY_ARRAY = useMemo(() => [] as any[], []);
+  const { data: treeData = EMPTY_ARRAY } = useCategoriesTree();
+  const { data: collectionsData = EMPTY_ARRAY } = useCollections();
+  const { data: occasionsData = EMPTY_ARRAY } = useOccasions();
 
   const tree = treeData;
   const collectionsList = useMemo(() => collectionsData.map((c) => ({ name: c.name, slug: c.slug })), [collectionsData]);
@@ -214,17 +235,44 @@ function CategoryContent() {
   const [heroImage, setHeroImage] = useState<any>(() => getCategoryBanner(categorySlug, subQuery));
   const [title, setTitle] = useState(categorySlug);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [isBannerHovered, setIsBannerHovered] = useState(false);
 
-  const hasMultipleSlides = (categorySlug === "all" || !categorySlug) && !subQuery;
+  const activeSlides = useMemo(() => {
+    const slug = (categorySlug || "all").toLowerCase();
+    if (slug === "necklaces" || slug === "necklace") {
+      return NECKLACE_BANNER_SLIDES;
+    }
+    if (slug === "bridal") {
+      return [
+        { id: "slide-bridal-1", image: bridalBanner },
+        { id: "slide-bridal-2", image: bridalbanner1 },
+        { id: "slide-bridal-3", image: bridalbanner2 },
+        { id: "slide-bridal-4", image: bridalbanner3 },
+        { id: "slide-bridal-5", image: bridalbanner4 },
+      ];
+    }
+    if (slug === "all" || !categorySlug || !CATEGORY_BANNERS[slug]) {
+      return DEFAULT_BANNER_SLIDES;
+    }
+    const catBanner = heroImage || CATEGORY_BANNERS[slug] || DEFAULT_BANNER_SLIDES[0].image;
+    return [{ id: `slide-${slug}`, image: catBanner }];
+  }, [categorySlug, heroImage]);
 
-  // Auto-scroll default banner slides only when category is 'all'
+  const hasMultipleSlides = activeSlides.length > 1;
+
+  // Reset slide index only when category changes
   useEffect(() => {
-    if (!hasMultipleSlides) return;
+    setCurrentBannerIndex(0);
+  }, [categorySlug]);
+
+  // Auto-scroll default banner slides when multiple slides are active and not hovered
+  useEffect(() => {
+    if (!hasMultipleSlides || activeSlides.length <= 1 || isBannerHovered) return;
     const timer = setInterval(() => {
-      setCurrentBannerIndex((prev) => (prev === 0 ? 1 : 0));
+      setCurrentBannerIndex((prev) => (prev + 1) % activeSlides.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [hasMultipleSlides]);
+  }, [hasMultipleSlides, activeSlides.length, isBannerHovered]);
 
   const toggleSection = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -378,12 +426,13 @@ function CategoryContent() {
   };
 
   /* ── Amama-style Sidebar Component ────────────────────────────────────────── */
-  const AmamaSidebar = () => (
-    <div className="w-full space-y-6 text-stone-800">
-      <h2 className="text-xl font-bold font-sans tracking-tight border-b border-stone-200 pb-3">
-        Filter
-      </h2>
-
+  const AmamaSidebar = ({ hideTitle = false }: { hideTitle?: boolean } = {}) => (
+    <div className="w-full space-y-6 text-stone-800 pb-6">
+      {!hideTitle && (
+        <h2 className="text-xl font-bold font-serif tracking-tight border-b border-stone-200 pb-3 text-stone-900">
+          Filter
+        </h2>
+      )}
       {/* Accordion 1: Occasion */}
       <div className="border-b border-stone-200 pb-4">
         <button
@@ -400,7 +449,7 @@ function CategoryContent() {
         </button>
 
         {expanded.occasion && (
-          <div className="mt-2 space-y-3 pl-0.5">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedOccasions.length} selected</span>
               {selectedOccasions.length > 0 && (
@@ -422,11 +471,10 @@ function CategoryContent() {
               return (
                 <label
                   key={occKey}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -460,7 +508,7 @@ function CategoryContent() {
         </button>
 
         {expanded.collection && (
-          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto pr-1">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedCollections.length} selected</span>
               {selectedCollections.length > 0 && (
@@ -482,11 +530,10 @@ function CategoryContent() {
               return (
                 <label
                   key={colKey}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -520,7 +567,7 @@ function CategoryContent() {
         </button>
 
         {expanded.color && (
-          <div className="mt-2 space-y-3 pl-0.5">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedColors.length} selected</span>
               {selectedColors.length > 0 && (
@@ -539,11 +586,10 @@ function CategoryContent() {
               return (
                 <label
                   key={clr.name}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -577,7 +623,7 @@ function CategoryContent() {
         </button>
 
         {expanded.price && (
-          <div className="mt-2 space-y-3 pl-0.5">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedMaxPrice !== null ? "1 selected" : "0 selected"}</span>
               {selectedMaxPrice !== null && (
@@ -596,11 +642,10 @@ function CategoryContent() {
               return (
                 <label
                   key={range.label}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="radio"
@@ -634,7 +679,7 @@ function CategoryContent() {
               setSelectedColors([]);
               setSelectedMaxPrice(null);
             }}
-            className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2"
+            className="text-xs font-semibold uppercase tracking-wider text-red-700 hover:underline pt-2 pb-2 block"
           >
             Clear All Filters
           </button>
@@ -646,56 +691,88 @@ function CategoryContent() {
     <>
       <Navbar />
 
-      <section className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
+      <section
+        onMouseEnter={() => setIsBannerHovered(true)}
+        onMouseLeave={() => setIsBannerHovered(false)}
+        className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16"
+      >
         {/* Background Image Carousel */}
         <div className="absolute inset-0 z-0">
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             <motion.div
               key={hasMultipleSlides ? currentBannerIndex : "single"}
-              initial={{ opacity: 0, scale: 1.03 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
               className="absolute inset-0"
             >
               <Image
                 src={
-                  !hasMultipleSlides || currentBannerIndex === 0
-                    ? (heroImage || DEFAULT_BANNER_SLIDES[0].image)
-                    : DEFAULT_BANNER_SLIDES[1].image
+                  activeSlides[currentBannerIndex]?.image ||
+                  heroImage ||
+                  DEFAULT_BANNER_SLIDES[0].image
                 }
                 alt="Collection Banner Slide"
                 fill
                 className="object-cover object-[center_35%] brightness-100"
-                priority
+                priority={currentBannerIndex === 0}
               />
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* 2-Slide Auto-Scroll Pagination Indicators (only when multiple slides active) */}
-        {hasMultipleSlides && (
-          <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
+        {/* Navigation Arrows */}
+        {hasMultipleSlides && activeSlides.length > 1 && (
+          <>
             <button
               type="button"
-              onClick={() => setCurrentBannerIndex(0)}
-              aria-label="Slide 1"
-              className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-                currentBannerIndex === 0
-                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                  : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
-            />
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCurrentBannerIndex(
+                  (prev) => (prev - 1 + activeSlides.length) % activeSlides.length
+                );
+              }}
+              aria-label="Previous Slide"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-full bg-black/30 hover:bg-black/60 text-white/80 hover:text-white transition-all backdrop-blur-xs border border-white/10 hover:border-[#C4A064]/50 cursor-pointer"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
             <button
               type="button"
-              onClick={() => setCurrentBannerIndex(1)}
-              aria-label="Slide 2"
-              className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-                currentBannerIndex === 1
-                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                  : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
-            />
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCurrentBannerIndex((prev) => (prev + 1) % activeSlides.length);
+              }}
+              aria-label="Next Slide"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-full bg-black/30 hover:bg-black/60 text-white/80 hover:text-white transition-all backdrop-blur-xs border border-white/10 hover:border-[#C4A064]/50 cursor-pointer"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </>
+        )}
+
+        {/* Auto-Scroll Pagination Indicators */}
+        {hasMultipleSlides && activeSlides.length > 1 && (
+          <div className="absolute bottom-5 z-30 flex items-center justify-center gap-2.5">
+            {activeSlides.map((slide, idx) => (
+              <button
+                key={slide.id || idx}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCurrentBannerIndex(idx);
+                }}
+                aria-label={`Slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === idx
+                    ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                    : "w-2.5 bg-white/50 hover:bg-white/80"
+                  }`}
+              />
+            ))}
           </div>
         )}
 
@@ -754,7 +831,7 @@ function CategoryContent() {
           <div className="flex gap-10 items-start">
             {/* Desktop Left Sidebar */}
             {showFilter && (
-              <aside className="hidden lg:block w-64 shrink-0 pr-6 border-r border-stone-200 sticky top-32 self-start">
+              <aside className="hidden lg:block w-64 shrink-0 pr-4 border-r border-stone-200 sticky top-28 self-start max-h-[calc(100vh-7.5rem)] overflow-y-auto scrollbar-gold-slim-vertical overscroll-contain">
                 <AmamaSidebar />
               </aside>
             )}
@@ -765,9 +842,8 @@ function CategoryContent() {
                 <ProductGridSkeleton count={6} showFilter={showFilter} />
               ) : filteredProducts.length > 0 ? (
                 <div
-                  className={`grid grid-cols-2 sm:grid-cols-2 ${
-                    showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
+                  className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
@@ -791,6 +867,7 @@ function CategoryContent() {
                       router.push("/category/all");
                     }}
                   >
+
                     EXPLORE ALL PRODUCTS
                   </Button>
                 </div>
@@ -803,32 +880,53 @@ function CategoryContent() {
       {/* Mobile Filter Slide-over Drawer */}
       <Suspense>
         {isMobileFilterOpen && (
-          <div className="fixed inset-0 z-[100] lg:hidden">
+          <div className="fixed inset-0 z-[100] lg:hidden flex justify-end">
             <div
-              className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm"
               onClick={() => setIsMobileFilterOpen(false)}
             />
-            <div className="absolute right-0 top-0 h-full w-[320px] bg-white p-6 overflow-y-auto shadow-2xl">
-              <div className="flex justify-between items-center mb-6 pb-3 border-b border-stone-200">
-                <h2 className="text-sm uppercase tracking-widest font-bold text-stone-900">
-                  Filter & Refine
+            <div className="relative h-full w-[320px] sm:w-[360px] bg-white shadow-2xl flex flex-col z-10">
+              <div className="flex justify-between items-center px-6 py-4 border-b border-stone-200 shrink-0">
+                <h2 className="text-sm uppercase tracking-widest font-bold text-stone-900 flex items-center gap-2">
+                  <SlidersHorizontal className="w-4 h-4 text-[#c9a84c]" />
+                  <span>Filter & Refine</span>
                 </h2>
                 <button
                   type="button"
                   onClick={() => setIsMobileFilterOpen(false)}
-                  className="p-1 text-stone-500 hover:text-stone-900"
+                  className="p-1.5 rounded-full hover:bg-stone-100 text-stone-500 hover:text-stone-900 transition-colors"
+                  aria-label="Close filters"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <AmamaSidebar />
-              <div className="mt-8 pt-4 border-t border-stone-200">
+              <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-gold-slim-vertical overscroll-contain">
+                <AmamaSidebar hideTitle />
+              </div>
+              <div className="p-4 border-t border-stone-200 bg-white shrink-0 flex gap-3">
+                {(selectedOccasions.length > 0 ||
+                  selectedCollections.length > 0 ||
+                  selectedColors.length > 0 ||
+                  selectedMaxPrice !== null) && (
+                    <Button
+                      variant="outline"
+                      className="flex-1 py-3 text-xs uppercase tracking-wider"
+                      onClick={() => {
+                        setSelectedOccasions([]);
+                        setSelectedCollections([]);
+                        setSelectedColors([]);
+                        setSelectedMaxPrice(null);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  )}
                 <Button
                   variant="gold"
-                  className="w-full py-3"
+                  className="flex-1 py-3 text-xs uppercase tracking-wider"
                   onClick={() => setIsMobileFilterOpen(false)}
                 >
-                  Apply Filters
+                  Apply ({filteredProducts.length})
                 </Button>
               </div>
             </div>
@@ -844,16 +942,15 @@ function CategoryContent() {
 function ProductGridSkeleton({ count = 6, showFilter }: { count?: number; showFilter?: boolean }) {
   return (
     <div
-      className={`grid grid-cols-2 sm:grid-cols-2 ${
-        showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-      } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12 animate-pulse`}
+      className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+        } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12 animate-pulse`}
     >
       {Array.from({ length: count }).map((_, i) => (
         <div
           key={i}
           className="relative bg-white border border-gray-100 rounded-2xl flex flex-col justify-between overflow-hidden shadow-sm"
         >
-          <div className="relative aspect-[4/5] bg-neutral-200/80 overflow-hidden">
+          <div className="relative aspect-square bg-neutral-200/80 overflow-hidden">
             <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_1.8s_infinite]" />
           </div>
           <div className="p-5 flex flex-col items-center text-center space-y-3">

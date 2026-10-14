@@ -27,7 +27,7 @@ export function ProductDetailSkeleton() {
           <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-14 xl:gap-20">
             {/* Gallery Skeleton */}
             <div className="w-full lg:w-[50%]">
-              <div className="relative aspect-[9/16] w-full overflow-hidden rounded-2xl bg-neutral-200/80">
+              <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-neutral-200/80">
                 <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_1.8s_infinite]" />
               </div>
               {/* Thumbnail Row */}

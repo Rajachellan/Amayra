@@ -193,7 +193,7 @@ function OccasionContent() {
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-12">
             <aside className="hidden lg:block w-72 shrink-0 border-r border-gray-100 pr-10">
-              <div className="sticky top-32">
+              <div className="sticky top-28 max-h-[calc(100vh-7.5rem)] overflow-y-auto scrollbar-gold-slim-vertical overscroll-contain pr-2 pb-6">
                 <div className="flex items-center space-x-3 mb-10">
                   <Filter className="w-4 h-4 text-champagne" />
                   <h2 className="text-xs uppercase tracking-[0.4em] font-bold">Refine By</h2>
@@ -261,7 +261,7 @@ function OccasionContent() {
         {isMobileFilterOpen && (
           <div className="fixed inset-0 z-[100] lg:hidden">
             <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsMobileFilterOpen(false)} />
-            <div className="absolute right-0 top-0 h-full w-[300px] bg-white p-8 overflow-y-auto">
+            <div className="absolute right-0 top-0 h-full w-[300px] bg-white p-8 overflow-y-auto scrollbar-gold-slim-vertical overscroll-contain">
               <div className="flex justify-between items-center mb-10">
                 <h2 className="text-xs uppercase tracking-[0.4em] font-bold">Filters</h2>
                 <button type="button" onClick={() => setIsMobileFilterOpen(false)}><X className="w-5 h-5" /></button>

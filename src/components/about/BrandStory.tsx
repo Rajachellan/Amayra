@@ -80,10 +80,10 @@ export const BrandStory = () => {
               </p>
 
               <p>
-             That fascination never left her — it grew into a quiet promise: one day, she'd build something that let every woman feel that same wonder.It started as MaiRii, "mother" in Punjabi — her own quiet way of saying For You, Ma.
+             That fascination never left her — it grew into a quiet promise: one day, she'd build something that let every woman feel that same wonder. It started as MaiRii, Her own way of saying "For You, Ma."
               </p>
               <p>
-              The name carries that inheritance, rooted in memories: love passed down, one generation to the next.
+             MaiRii celebrates the legacy of Love, Grace & Strength that every woman inherits and yet creates her own unique identity leaving a legacy behind.
               </p>
 
               <p>

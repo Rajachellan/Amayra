@@ -100,7 +100,7 @@ export const SilverCollection = () => {
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-[9/16] bg-pearl animate-pulse rounded-xl" />
+              <div key={i} className="aspect-square bg-pearl animate-pulse rounded-xl" />
             ))}
           </div>
         ) : (
@@ -114,14 +114,14 @@ export const SilverCollection = () => {
                   transition={{ duration: 0.5, delay: (idx % 4) * 0.1 }}
                   className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-black/5 shadow-sm hover:shadow-xl transition-all duration-500"
                 >
-                  <div className="relative aspect-[4/5] w-full overflow-hidden bg-pearl">
+                  <div className="relative aspect-square w-full overflow-hidden bg-pearl">
                     <Link href={`/product/${product.slug ?? product.id}`} className="block w-full h-full">
                       <Image
                         src={product.image}
                         alt={product.name}
                         fill
                         sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-contain w-full h-full transition-transform duration-700 group-hover:scale-105"
+                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                       />
                     </Link>
 
