@@ -41,6 +41,154 @@ import {
 import toast from "react-hot-toast";
 import type { Product } from "@/types";
 
+function renderTextWithBold(text: string) {
+  if (!text) return null;
+  if (text.includes("**")) {
+    const parts = text.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((part, i) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return (
+          <strong key={i} className="font-bold text-neutral-900">
+            {part.slice(2, -2)}
+          </strong>
+        );
+      }
+      return part;
+    });
+  }
+  return text;
+}
+
+function renderFormattedTipsList(rawInput: unknown) {
+  if (!rawInput) return null;
+
+  // Flatten into individual non-empty lines even if array contains multiline strings
+  const rawArray = Array.isArray(rawInput) ? rawInput : [rawInput];
+  const lines: string[] = rawArray
+    .flatMap((item) => (typeof item === "string" ? item.split(/\r?\n/) : []))
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (lines.length === 0) return null;
+
+  return (
+    <div className="space-y-2 text-xs leading-relaxed text-neutral-600">
+      {lines.map((rawLine, idx) => {
+        const line = rawLine.trim();
+        // Clean line without leading/trailing ** for accurate pattern matching
+        const clean = line.replace(/^\*\*|\*\*$/g, "").trim();
+
+        // 1. Entire line wrapped in **...** -> explicitly a bold heading!
+        if (line.startsWith("**") && line.endsWith("**")) {
+          const isMain = idx === 0 || /secrets|tips/i.test(clean);
+          return (
+            <p
+              key={idx}
+              className={`font-bold text-neutral-900 ${
+                isMain ? "text-sm pb-1 tracking-tight" : "pt-2.5 first:pt-0 text-xs"
+              }`}
+            >
+              {clean}
+            </p>
+          );
+        }
+
+        // 2. Main Title (e.g. "6 Little Secrets to Keep Your Jewellery Looking Gorgeous", "6 Easy Jewellery Styling Tips")
+        const isMainTitle =
+          (idx === 0 && !/^\d+\./.test(clean) && clean.length < 80) ||
+          /^6\s+(Little Secrets|Easy Jewellery)/i.test(clean) ||
+          /^(Jewellery Care Tips|Styling Tips)$/i.test(clean);
+
+        if (isMainTitle) {
+          return (
+            <p key={idx} className="font-bold text-neutral-900 text-sm pb-1 tracking-tight">
+              {renderTextWithBold(clean)}
+            </p>
+          );
+        }
+
+        // 3. Numbered heading: e.g. "1. Jewellery loves to stay dry.", "1. Let your jewellery set the mood."
+        if (/^\d+\.\s+/.test(clean)) {
+          if (clean.length < 75) {
+            return (
+              <p key={idx} className="font-bold text-neutral-900 pt-2.5 text-xs">
+                {renderTextWithBold(clean)}
+              </p>
+            );
+          }
+
+          const match = clean.match(/^(\d+\.\s+[^.:!?]+[.:!?])\s*(.*)$/);
+          if (match && match[2].trim()) {
+            return (
+              <div key={idx} className="pt-2.5 space-y-0.5">
+                <p className="font-bold text-neutral-900 text-xs">{renderTextWithBold(match[1].trim())}</p>
+                <p className="text-neutral-600 leading-relaxed text-xs">{renderTextWithBold(match[2].trim())}</p>
+              </div>
+            );
+          }
+
+          return (
+            <p key={idx} className="font-bold text-neutral-900 pt-2.5 text-xs">
+              {renderTextWithBold(clean)}
+            </p>
+          );
+        }
+
+        // 4. Heading with colon: "Title: Description" (e.g. "The golden rule: Last on, first off!")
+        const colonIdx = clean.indexOf(":");
+        if (colonIdx > 0 && colonIdx < 60) {
+          const headingPart = clean.slice(0, colonIdx).trim().replace(/^\*\*|\*\*$/g, "");
+          const descPart = clean.slice(colonIdx + 1).trim();
+          if (!headingPart.includes(".") || /The golden rule|Styling secret|Hack/i.test(headingPart)) {
+            return (
+              <div key={idx} className="pt-2.5 space-y-0.5">
+                <p className="font-bold text-neutral-900 text-xs">{headingPart}:</p>
+                {descPart && (
+                  <p className="text-neutral-600 leading-relaxed text-xs">
+                    {renderTextWithBold(descPart)}
+                  </p>
+                )}
+              </div>
+            );
+          }
+        }
+
+        // 5. Special Callout Subheadings
+        const isSpecialSubheading =
+          /^And here's/i.test(clean) ||
+          /^A little styling/i.test(clean) ||
+          /^The golden rule/i.test(clean) ||
+          /^Styling secret/i.test(clean) ||
+          /^There's no ["']right["'] way/i.test(clean) ||
+          (clean.length < 55 && (clean.endsWith("...") || clean.endsWith("!") || clean.endsWith(":")));
+
+        if (isSpecialSubheading) {
+          return (
+            <p key={idx} className="font-bold text-neutral-900 pt-2.5 text-xs">
+              {renderTextWithBold(clean)}
+            </p>
+          );
+        }
+
+        // 6. Tender loving care closing note
+        if (/^Because every beautiful piece/i.test(clean)) {
+          return (
+            <p key={idx} className="italic text-neutral-500 pt-2 text-xs">
+              {renderTextWithBold(clean)}
+            </p>
+          );
+        }
+
+        // 7. Regular description text
+        return (
+          <p key={idx} className="text-neutral-600 leading-relaxed text-xs">
+            {renderTextWithBold(line)}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
 
 function ProductDetail() {
   const params = useParams();
@@ -508,53 +656,45 @@ function ProductDetail() {
                   )}
                 </div>
 
-                {/* 2. Product Features Accordion */}
-                <div className="py-4">
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion("features")}
-                    className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
-                  >
-                    <span>Product Features</span>
-                    {openAccordions.features ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
-                  </button>
-                  {openAccordions.features && (
-                    <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
-                      {product.productFeatures && product.productFeatures.length > 0 ? (
-                        product.productFeatures.map((feat: any, idx: number) => {
+                {/* 2. Product Features Accordion - only shown when features exist */}
+                {product.productFeatures && product.productFeatures.length > 0 && (
+                  <div className="py-4">
+                    <button
+                      type="button"
+                      onClick={() => toggleAccordion("features")}
+                      className="flex w-full items-center justify-between text-left font-serif text-base font-medium text-neutral-900 hover:text-[#c4a574] transition"
+                    >
+                      <span>Product Features</span>
+                      {openAccordions.features ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
+                    </button>
+                    {openAccordions.features && (
+                      <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
+                        {product.productFeatures.map((feat: any, idx: number) => {
                           if (typeof feat === "string") {
-                            return <p key={idx}>{feat}</p>;
+                            const cIdx = feat.indexOf(":");
+                            if (cIdx !== -1) {
+                              return (
+                                <div key={idx} className="space-y-0.5">
+                                  <p className="font-bold text-neutral-900">{renderTextWithBold(feat.slice(0, cIdx).trim())}:</p>
+                                  <p className="text-neutral-600 leading-relaxed">{renderTextWithBold(feat.slice(cIdx + 1).trim())}</p>
+                                </div>
+                              );
+                            }
+                            return <p key={idx} className="text-neutral-700 leading-relaxed">{renderTextWithBold(feat)}</p>;
                           }
                           return (
-                            <div key={idx} className="space-y-1">
-                              <p className="font-bold text-neutral-800">{feat.title}:</p>
-                              {feat.description && <p className="text-neutral-600">{feat.description}</p>}
+                            <div key={idx} className="space-y-0.5">
+                              <p className="font-bold text-neutral-900">{renderTextWithBold(feat.title)}:</p>
+                              {feat.description && (
+                                <p className="text-neutral-600 leading-relaxed">{renderTextWithBold(feat.description)}</p>
+                              )}
                             </div>
                           );
-                        })
-                      ) : (
-                        <div className="space-y-3">
-                          <div>
-                            <p className="font-bold text-neutral-800">Timeless Designs:</p>
-                            <p>Every accessory is designed to add a graceful touch to every look, ensuring a hint of classic, timeless charm that will never go out of style.</p>
-                          </div>
-                          <div>
-                            <p className="font-bold text-neutral-800">Trendsetting Pieces:</p>
-                            <p>Curated by drawing major inspiration from the latest fashion jewellery trends to bring a fresh, modern, diva-like look.</p>
-                          </div>
-                          <div>
-                            <p className="font-bold text-neutral-800">Superior Quality Finish:</p>
-                            <p>Curated with skin-friendly materials plated with 18k gold, rhodium, or silver for lasting radiance.</p>
-                          </div>
-                          <div>
-                            <p className="font-bold text-neutral-800">Enjoy Comfortable Wear:</p>
-                            <p>Lightweight style with skin-safe materials offering highest comfort from morning to night.</p>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+                        })}
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* 3. Care Tips Accordion */}
                 <div className="py-4">
@@ -567,42 +707,38 @@ function ProductDetail() {
                     {openAccordions.care ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
                   </button>
                   {openAccordions.care && (
-                    <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
+                    <div className="mt-4 text-xs leading-relaxed text-neutral-600">
                       {product.careLabel && product.careLabel.length > 0 ? (
-                        <div className="space-y-2">
-                          {product.careLabel.map((item, idx) => (
-                            <p key={idx} className="whitespace-pre-line leading-relaxed">{item}</p>
-                          ))}
-                        </div>
+                        renderFormattedTipsList(product.careLabel)
                       ) : (
                         <div className="space-y-3">
-                          <p className="font-semibold text-neutral-800">6 Little Secrets to Keep Your Jewellery Looking Gorgeous</p>
+                          <p className="font-bold text-neutral-900 text-sm">6 Little Secrets to Keep Your Jewellery Looking Gorgeous</p>
                           <div>
-                            <p className="font-bold text-neutral-800">1. Jewellery loves to stay dry.</p>
-                            <p>Take it off before a shower, swim, or washing up. Water and moisture can make your favourite pieces lose their shine faster.</p>
+                            <p className="font-bold text-neutral-900">1. Jewellery loves to stay dry.</p>
+                            <p className="text-neutral-600">Take it off before a shower, swim, or washing up. Water and moisture can make your favourite pieces lose their shine faster.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">2. Perfume first, jewellery last.</p>
-                            <p>Your perfume, lotion and hairspray should get their moment before you put on your jewellery. Chemicals can affect the finish over time.</p>
+                            <p className="font-bold text-neutral-900">2. Perfume first, jewellery last.</p>
+                            <p className="text-neutral-600">Your perfume, lotion and hairspray should get their moment before you put on your jewellery. Chemicals can affect the finish over time.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">3. Give every piece its own little home.</p>
-                            <p>Store your jewellery in a soft pouch or box, preferably separately. This helps prevent scratches, tangles and unnecessary rubbing.</p>
+                            <p className="font-bold text-neutral-900">3. Give every piece its own little home.</p>
+                            <p className="text-neutral-600">Store your jewellery in a soft pouch or box, preferably separately. This helps prevent scratches, tangles and unnecessary rubbing.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">4. Sweat? Give it a wipe!</p>
-                            <p>Heading to the gym or out in the heat? It's best to remove your jewellery. After wearing, gently wipe it with a soft, dry cloth.</p>
+                            <p className="font-bold text-neutral-900">4. Sweat? Give it a wipe!</p>
+                            <p className="text-neutral-600">Heading to the gym or out in the heat? It's best to remove your jewellery. After wearing, gently wipe it with a soft, dry cloth.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">5. Handle your pretties gently!</p>
-                            <p>Chains, clasps, beads and stones can be delicate. Avoid pulling, twisting or bending them - treat them as gently as you would your favourite silk outfit!</p>
+                            <p className="font-bold text-neutral-900">5. Handle your pretties gently!</p>
+                            <p className="text-neutral-600">Chains, clasps, beads and stones can be delicate. Avoid pulling, twisting or bending them - treat them as gently as you would your favourite silk outfit!</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">6. A little wipe goes a long way.</p>
-                            <p>After every wear, give your jewellery a quick wipe with a soft, dry cotton or microfiber cloth. Avoid soaking or using harsh cleaners.</p>
+                            <p className="font-bold text-neutral-900">6. A little wipe goes a long way.</p>
+                            <p className="text-neutral-600">After every wear, give your jewellery a quick wipe with a soft, dry cotton or microfiber cloth. Avoid soaking or using harsh cleaners.</p>
                           </div>
                           <div className="rounded-lg bg-[#FAF8F3] p-3 border border-[#e8d7c3]/60">
-                            <p className="font-bold text-neutral-800">The golden rule: Last on, first off!</p>
+                            <p className="font-bold text-neutral-900">The golden rule: Last on, first off!</p>
                             <p className="italic text-neutral-700">Put your jewellery on after getting ready, and take it off before changing, bathing or going to bed. This one simple habit can help your pieces stay beautiful for longer.</p>
                           </div>
                           <p className="italic text-neutral-500">Because every beautiful piece deserves a little Tender Loving Care.</p>
@@ -623,42 +759,38 @@ function ProductDetail() {
                     {openAccordions.styling ? <ChevronUp className="h-4 w-4 text-neutral-500" /> : <ChevronDown className="h-4 w-4 text-neutral-500" />}
                   </button>
                   {openAccordions.styling && (
-                    <div className="mt-4 space-y-3 text-xs leading-relaxed text-neutral-600">
+                    <div className="mt-4 text-xs leading-relaxed text-neutral-600">
                       {product.stylingTips && product.stylingTips.length > 0 ? (
-                        <div className="space-y-2">
-                          {product.stylingTips.map((tip, idx) => (
-                            <p key={idx} className="whitespace-pre-line leading-relaxed">{tip}</p>
-                          ))}
-                        </div>
+                        renderFormattedTipsList(product.stylingTips)
                       ) : (
                         <div className="space-y-3">
-                          <p className="font-semibold text-neutral-800">6 Easy Jewellery Styling Tips</p>
+                          <p className="font-bold text-neutral-900 text-sm">6 Easy Jewellery Styling Tips</p>
                           <div>
-                            <p className="font-bold text-neutral-800">1. Let your jewellery set the mood.</p>
-                            <p>Choosing a statement piece? Keep the rest of your look simple and let your jewellery take centre stage. For a minimal look, layer a few delicate pieces together.</p>
+                            <p className="font-bold text-neutral-900">1. Let your jewellery set the mood.</p>
+                            <p className="text-neutral-600">Choosing a statement piece? Keep the rest of your look simple and let your jewellery take centre stage. For a minimal look, layer a few delicate pieces together.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">2. Mix, match & make it yours.</p>
-                            <p>Don't be afraid to pair different designs, textures or finishes. Sometimes, the most unexpected combinations create the prettiest looks.</p>
+                            <p className="font-bold text-neutral-900">2. Mix, match & make it yours.</p>
+                            <p className="text-neutral-600">Don't be afraid to pair different designs, textures or finishes. Sometimes, the most unexpected combinations create the prettiest looks.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">3. Balance is everything.</p>
-                            <p>If you're wearing a bold piece around your face, keep the rest of your jewellery subtle - or go all out for a festive, statement look. There are no hard rules, just find your balance!</p>
+                            <p className="font-bold text-neutral-900">3. Balance is everything.</p>
+                            <p className="text-neutral-600">If you're wearing a bold piece around your face, keep the rest of your jewellery subtle - or go all out for a festive, statement look. There are no hard rules, just find your balance!</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">4. Style according to the neckline.</p>
-                            <p>Use your outfit's neckline as your styling guide. A necklace can beautifully complement an open neckline, while earrings can add impact when your outfit is more covered.</p>
+                            <p className="font-bold text-neutral-900">4. Style according to the neckline.</p>
+                            <p className="text-neutral-600">Use your outfit's neckline as your styling guide. A necklace can beautifully complement an open neckline, while earrings can add impact when your outfit is more covered.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">5. Layer with intention.</p>
-                            <p>When layering necklaces, bracelets or rings, play with different lengths and sizes. Give each piece a little space to shine rather than letting everything compete for attention.</p>
+                            <p className="font-bold text-neutral-900">5. Layer with intention.</p>
+                            <p className="text-neutral-600">When layering necklaces, bracelets or rings, play with different lengths and sizes. Give each piece a little space to shine rather than letting everything compete for attention.</p>
                           </div>
                           <div>
-                            <p className="font-bold text-neutral-800">6. Day to night, just switch it up.</p>
-                            <p>The same jewellery can create completely different looks. Keep it understated for the day and add a few more pieces for an effortlessly elevated evening or festive look.</p>
+                            <p className="font-bold text-neutral-900">6. Day to night, just switch it up.</p>
+                            <p className="text-neutral-600">The same jewellery can create completely different looks. Keep it understated for the day and add a few more pieces for an effortlessly elevated evening or festive look.</p>
                           </div>
                           <div className="rounded-lg bg-[#FAF8F3] p-3 border border-[#e8d7c3]/60">
-                            <p className="font-bold text-neutral-800">Styling secret:</p>
+                            <p className="font-bold text-neutral-900">Styling secret:</p>
                             <p className="italic text-neutral-700">There's no "right" way to wear jewellery. Your jewellery should reflect your personality, mood and style. If you love the look, you're wearing it right.</p>
                           </div>
                         </div>
