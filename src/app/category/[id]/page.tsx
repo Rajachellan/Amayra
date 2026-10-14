@@ -98,7 +98,66 @@ const CATEGORY_DESCRIPTIONS: Record<string, string> = {
   all: "Explore the full spectrum of MaiRii imitation jewellery — where affordability meets timeless elegance.",
 };
 
-const COLORS = ["Gold", "Silver", "Rose Gold", "Antique"];
+export const JEWELLERY_COLORS = [
+  "Red",
+  "Pink",
+  "Blue",
+  "Green",
+  "Grey",
+  "Orange",
+  "Purple/Voilet/Lavendar",
+  "Ivory/White",
+  "Golden",
+  "Black",
+  "Antique",
+  "Multicolour",
+] as const;
+
+export function matchesCanonicalColor(
+  productColor: string | undefined | null,
+  targetColor: string
+): boolean {
+  if (!productColor) return false;
+  const p = productColor.trim().toLowerCase();
+  const t = targetColor.toLowerCase();
+
+  if (p === t) return true;
+
+  switch (targetColor) {
+    case "Red":
+      return p.includes("red") || p.includes("ruby");
+    case "Pink":
+      return p.includes("pink") || p.includes("peach") || p.includes("blush") || p.includes("rose");
+    case "Blue":
+      return p.includes("blue") || p.includes("sapphire");
+    case "Green":
+      return p.includes("green") || p.includes("emerald") || p.includes("mint");
+    case "Grey":
+      return p.includes("grey") || p.includes("gray") || p.includes("silver");
+    case "Orange":
+      return p.includes("orange");
+    case "Purple/Voilet/Lavendar":
+      return (
+        p.includes("purple") ||
+        p.includes("violet") ||
+        p.includes("voilet") ||
+        p.includes("lavender") ||
+        p.includes("lavendar")
+      );
+    case "Ivory/White":
+      return p.includes("white") || p.includes("ivory") || p.includes("pearl") || p.includes("kundan");
+    case "Golden":
+      return p.includes("gold") || p.includes("golden");
+    case "Black":
+      return p.includes("black") || p.includes("metallic") || p.includes("oxidised");
+    case "Antique":
+      return p.includes("antique");
+    case "Multicolour":
+      return p.includes("multi");
+    default:
+      return p.includes(t);
+  }
+}
 const PRICE_RANGES = [
   { label: "Under ₹5,000", min: 0, max: 5000 },
   { label: "₹5,000 - ₹10,000", min: 5000, max: 10000 },
@@ -311,19 +370,21 @@ function CategoryContent() {
   }, [facets?.collections, collectionsList]);
 
   const displayColors = useMemo(() => {
+    const facetMap = new Map<string, number>();
     if (facets?.colors && facets.colors.length > 0) {
-      return facets.colors;
+      for (const fc of facets.colors) {
+        facetMap.set(fc.name, fc.count);
+      }
     }
-    const colorsFromProducts = Array.from(
-      new Set(rawProducts.map((p) => p.color?.trim()).filter(Boolean))
-    ) as string[];
-    if (colorsFromProducts.length > 0) {
-      return colorsFromProducts.map((c) => ({
-        name: c,
-        count: rawProducts.filter((p) => p.color?.toLowerCase() === c.toLowerCase()).length,
-      }));
-    }
-    return COLORS.map((c) => ({ name: c, count: 0 }));
+
+    return JEWELLERY_COLORS.map((clr) => {
+      const facetCount = facetMap.get(clr);
+      const productCount = rawProducts.filter((p) => matchesCanonicalColor(p.color, clr)).length;
+      return {
+        name: clr,
+        count: facetCount !== undefined ? facetCount : productCount,
+      };
+    });
   }, [facets?.colors, rawProducts]);
 
   const displayPriceRanges = useMemo(() => {
@@ -374,12 +435,11 @@ function CategoryContent() {
         if (!matchesCol) return false;
       }
       if (selectedColors.length > 0) {
-        const matchesColor = selectedColors.some((col) => {
-          const cLower = col.toLowerCase();
+        const matchesColor = selectedColors.some((selectedClr) => {
           return (
-            (p.color && p.color.toLowerCase().includes(cLower)) ||
-            (p.name && p.name.toLowerCase().includes(cLower)) ||
-            p.tags?.some((t) => t.toLowerCase().includes(cLower))
+            matchesCanonicalColor(p.color, selectedClr) ||
+            matchesCanonicalColor(p.name, selectedClr) ||
+            p.tags?.some((t) => matchesCanonicalColor(t, selectedClr))
           );
         });
         if (!matchesColor) return false;
