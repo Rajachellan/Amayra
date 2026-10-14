@@ -58,9 +58,13 @@ function getCategoryBanner(slug: string, sub?: string | null): any {
  * You can easily update or replace the default slide images below.
  */
 export const DEFAULT_BANNER_SLIDES = [
+   {
+    id: "necklace-slide-1",
+    image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
+  },
   {
-    id: "slide-1",
-    image: necklaceBanner, // Slide 1 Default Banner Image
+    id: "necklace-slide-2",
+    image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
   },
  
 ];
