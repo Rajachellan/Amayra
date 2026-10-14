@@ -21,8 +21,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import silverBanner from "@/assets/silver.jpg";
-import bridalBanner from "../../../assets/preview_banner/Inspired-by-Her.png"
-import necklaceBanner from "@/assets/neckles.jpg";
+import bridalBanner from "../../../assets/preview_banner/Inspired-by-Her.png";
+import necklaceBanner from "@/assets/preview_banner/neckles-banner (2).png";
+import necklaceBanner2 from "../../../assets/preview_banner/neckles-banner (1).png";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
 import bannerImage from "../../../assets/preview_banner/inner-banner-1.png";
@@ -59,27 +60,23 @@ function getCategoryBanner(slug: string, sub?: string | null): any {
 export const DEFAULT_BANNER_SLIDES = [
   {
     id: "slide-1",
-    image: bannerImage, // Slide 1 Default Banner Image
+    image: necklaceBanner, // Slide 1 Default Banner Image
+  },
+ 
+];
+
+/**
+ * Necklaces Category Banner Slides (2-slide banner configuration)
+ * You can easily update or replace the necklace slide images below.
+ */
+export const NECKLACE_BANNER_SLIDES = [
+  {
+    id: "necklace-slide-1",
+    image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
   },
   {
-    id: "slide-2",
-    image: bridalBanner, // Slide 2 Default Banner Image
-  },
-  {
-    id: "slide-3",
-    image: bridalbanner1, // Slide 3 Banner Image
-  },
-  {
-    id: "slide-4",
-    image: bridalbanner2, // Slide 4 Banner Image
-  },
-  {
-    id: "slide-5",
-    image: bridalbanner3, // Slide 5 Banner Image
-  },
-  {
-    id: "slide-6",
-    image: bridalbanner4, // Slide 6 Banner Image
+    id: "necklace-slide-2",
+    image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
   },
 ];
 
@@ -238,6 +235,9 @@ function CategoryContent() {
 
   const activeSlides = useMemo(() => {
     const slug = (categorySlug || "all").toLowerCase();
+    if (slug === "necklaces" || slug === "necklace") {
+      return NECKLACE_BANNER_SLIDES;
+    }
     if (slug === "bridal") {
       return [
         { id: "slide-bridal-1", image: bridalBanner },
@@ -467,11 +467,10 @@ function CategoryContent() {
               return (
                 <label
                   key={occKey}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -527,11 +526,10 @@ function CategoryContent() {
               return (
                 <label
                   key={colKey}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -584,11 +582,10 @@ function CategoryContent() {
               return (
                 <label
                   key={clr.name}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="checkbox"
@@ -641,11 +638,10 @@ function CategoryContent() {
               return (
                 <label
                   key={range.label}
-                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${
-                    cnt === 0 && !isChecked
+                  className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
                       ? "text-stone-400 hover:text-stone-600"
                       : "text-stone-600 hover:text-stone-900"
-                  }`}
+                    }`}
                 >
                   <input
                     type="radio"
@@ -767,11 +763,10 @@ function CategoryContent() {
                   setCurrentBannerIndex(idx);
                 }}
                 aria-label={`Slide ${idx + 1}`}
-                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-                  currentBannerIndex === idx
+                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === idx
                     ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
                     : "w-2.5 bg-white/50 hover:bg-white/80"
-                }`}
+                  }`}
               />
             ))}
           </div>
@@ -843,9 +838,8 @@ function CategoryContent() {
                 <ProductGridSkeleton count={6} showFilter={showFilter} />
               ) : filteredProducts.length > 0 ? (
                 <div
-                  className={`grid grid-cols-2 sm:grid-cols-2 ${
-                    showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                  } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
+                  className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                    } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
                 >
                   {filteredProducts.map((product) => (
                     <ProductCard key={product.id} product={product} />
@@ -869,7 +863,7 @@ function CategoryContent() {
                       router.push("/category/all");
                     }}
                   >
-                    
+
                     EXPLORE ALL PRODUCTS
                   </Button>
                 </div>
@@ -910,19 +904,19 @@ function CategoryContent() {
                   selectedCollections.length > 0 ||
                   selectedColors.length > 0 ||
                   selectedMaxPrice !== null) && (
-                  <Button
-                    variant="outline"
-                    className="flex-1 py-3 text-xs uppercase tracking-wider"
-                    onClick={() => {
-                      setSelectedOccasions([]);
-                      setSelectedCollections([]);
-                      setSelectedColors([]);
-                      setSelectedMaxPrice(null);
-                    }}
-                  >
-                    Reset
-                  </Button>
-                )}
+                    <Button
+                      variant="outline"
+                      className="flex-1 py-3 text-xs uppercase tracking-wider"
+                      onClick={() => {
+                        setSelectedOccasions([]);
+                        setSelectedCollections([]);
+                        setSelectedColors([]);
+                        setSelectedMaxPrice(null);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  )}
                 <Button
                   variant="gold"
                   className="flex-1 py-3 text-xs uppercase tracking-wider"
@@ -944,9 +938,8 @@ function CategoryContent() {
 function ProductGridSkeleton({ count = 6, showFilter }: { count?: number; showFilter?: boolean }) {
   return (
     <div
-      className={`grid grid-cols-2 sm:grid-cols-2 ${
-        showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-      } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12 animate-pulse`}
+      className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+        } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12 animate-pulse`}
     >
       {Array.from({ length: count }).map((_, i) => (
         <div
