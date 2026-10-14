@@ -15,7 +15,7 @@ import bridalbanner3 from "../../../assets/preview_banner/banner-image (3).png"
 import bridalbanner4 from "../../../assets/preview_banner/banner-image (4).png"
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
-import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles } from "lucide-react";
+import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -59,26 +59,27 @@ function getCategoryBanner(slug: string, sub?: string | null): any {
 export const DEFAULT_BANNER_SLIDES = [
   {
     id: "slide-1",
-    image: bannerImage, // Slide 1 Default Banner Image (User can replace here)
+    image: bannerImage, // Slide 1 Default Banner Image
   },
   {
     id: "slide-2",
-    image: bridalBanner, // Slide 2 Default Banner Image (User can replace here)
+    image: bridalBanner, // Slide 2 Default Banner Image
   },
-   {
+  {
     id: "slide-3",
-    image: bridalbanner1, // Slide 2 Default Banner Image (User can replace here)
+    image: bridalbanner1, // Slide 3 Banner Image
   },
-   {
+  {
     id: "slide-4",
-    image: bridalbanner2, // Slide 2 Default Banner Image (User can replace here)
-  }, {
-    id: "slide-5",
-    image: bridalbanner3, // Slide 2 Default Banner Image (User can replace here)
+    image: bridalbanner2, // Slide 4 Banner Image
   },
-   {
+  {
+    id: "slide-5",
+    image: bridalbanner3, // Slide 5 Banner Image
+  },
+  {
     id: "slide-6",
-    image: bridalbanner4, // Slide 2 Default Banner Image (User can replace here)
+    image: bridalbanner4, // Slide 6 Banner Image
   },
 ];
 
@@ -153,9 +154,10 @@ function CategoryContent() {
     price: true,
   });
 
-  const { data: treeData = [] } = useCategoriesTree();
-  const { data: collectionsData = [] } = useCollections();
-  const { data: occasionsData = [] } = useOccasions();
+  const EMPTY_ARRAY = useMemo(() => [] as any[], []);
+  const { data: treeData = EMPTY_ARRAY } = useCategoriesTree();
+  const { data: collectionsData = EMPTY_ARRAY } = useCollections();
+  const { data: occasionsData = EMPTY_ARRAY } = useOccasions();
 
   const tree = treeData;
   const collectionsList = useMemo(() => collectionsData.map((c) => ({ name: c.name, slug: c.slug })), [collectionsData]);
@@ -232,17 +234,41 @@ function CategoryContent() {
   const [heroImage, setHeroImage] = useState<any>(() => getCategoryBanner(categorySlug, subQuery));
   const [title, setTitle] = useState(categorySlug);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [isBannerHovered, setIsBannerHovered] = useState(false);
 
-  const hasMultipleSlides = (categorySlug === "all" || !categorySlug) && !subQuery;
+  const activeSlides = useMemo(() => {
+    const slug = (categorySlug || "all").toLowerCase();
+    if (slug === "bridal") {
+      return [
+        { id: "slide-bridal-1", image: bridalBanner },
+        { id: "slide-bridal-2", image: bridalbanner1 },
+        { id: "slide-bridal-3", image: bridalbanner2 },
+        { id: "slide-bridal-4", image: bridalbanner3 },
+        { id: "slide-bridal-5", image: bridalbanner4 },
+      ];
+    }
+    if (slug === "all" || !categorySlug || !CATEGORY_BANNERS[slug]) {
+      return DEFAULT_BANNER_SLIDES;
+    }
+    const catBanner = heroImage || CATEGORY_BANNERS[slug] || DEFAULT_BANNER_SLIDES[0].image;
+    return [{ id: `slide-${slug}`, image: catBanner }];
+  }, [categorySlug, heroImage]);
 
-  // Auto-scroll default banner slides only when category is 'all'
+  const hasMultipleSlides = activeSlides.length > 1;
+
+  // Reset slide index only when category changes
   useEffect(() => {
-    if (!hasMultipleSlides) return;
+    setCurrentBannerIndex(0);
+  }, [categorySlug]);
+
+  // Auto-scroll default banner slides when multiple slides are active and not hovered
+  useEffect(() => {
+    if (!hasMultipleSlides || activeSlides.length <= 1 || isBannerHovered) return;
     const timer = setInterval(() => {
-      setCurrentBannerIndex((prev) => (prev === 0 ? 1 : 0));
+      setCurrentBannerIndex((prev) => (prev + 1) % activeSlides.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, [hasMultipleSlides]);
+  }, [hasMultipleSlides, activeSlides.length, isBannerHovered]);
 
   const toggleSection = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -665,56 +691,89 @@ function CategoryContent() {
     <>
       <Navbar />
 
-      <section className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16">
+      <section
+        onMouseEnter={() => setIsBannerHovered(true)}
+        onMouseLeave={() => setIsBannerHovered(false)}
+        className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16"
+      >
         {/* Background Image Carousel */}
         <div className="absolute inset-0 z-0">
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false}>
             <motion.div
               key={hasMultipleSlides ? currentBannerIndex : "single"}
-              initial={{ opacity: 0, scale: 1.03 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 1.2, ease: "easeInOut" }}
+              transition={{ duration: 0.8, ease: "easeInOut" }}
               className="absolute inset-0"
             >
               <Image
                 src={
-                  !hasMultipleSlides || currentBannerIndex === 0
-                    ? (heroImage || DEFAULT_BANNER_SLIDES[0].image)
-                    : DEFAULT_BANNER_SLIDES[1].image
+                  activeSlides[currentBannerIndex]?.image ||
+                  heroImage ||
+                  DEFAULT_BANNER_SLIDES[0].image
                 }
                 alt="Collection Banner Slide"
                 fill
                 className="object-cover object-[center_35%] brightness-100"
-                priority
+                priority={currentBannerIndex === 0}
               />
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* 2-Slide Auto-Scroll Pagination Indicators (only when multiple slides active) */}
-        {hasMultipleSlides && (
-          <div className="absolute bottom-5 z-30 flex items-center justify-center gap-3">
+        {/* Navigation Arrows */}
+        {hasMultipleSlides && activeSlides.length > 1 && (
+          <>
             <button
               type="button"
-              onClick={() => setCurrentBannerIndex(0)}
-              aria-label="Slide 1"
-              className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-                currentBannerIndex === 0
-                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                  : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
-            />
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCurrentBannerIndex(
+                  (prev) => (prev - 1 + activeSlides.length) % activeSlides.length
+                );
+              }}
+              aria-label="Previous Slide"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-full bg-black/30 hover:bg-black/60 text-white/80 hover:text-white transition-all backdrop-blur-xs border border-white/10 hover:border-[#C4A064]/50 cursor-pointer"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
             <button
               type="button"
-              onClick={() => setCurrentBannerIndex(1)}
-              aria-label="Slide 2"
-              className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
-                currentBannerIndex === 1
-                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                  : "w-2.5 bg-white/50 hover:bg-white/80"
-              }`}
-            />
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setCurrentBannerIndex((prev) => (prev + 1) % activeSlides.length);
+              }}
+              aria-label="Next Slide"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-full bg-black/30 hover:bg-black/60 text-white/80 hover:text-white transition-all backdrop-blur-xs border border-white/10 hover:border-[#C4A064]/50 cursor-pointer"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </>
+        )}
+
+        {/* Auto-Scroll Pagination Indicators */}
+        {hasMultipleSlides && activeSlides.length > 1 && (
+          <div className="absolute bottom-5 z-30 flex items-center justify-center gap-2.5">
+            {activeSlides.map((slide, idx) => (
+              <button
+                key={slide.id || idx}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setCurrentBannerIndex(idx);
+                }}
+                aria-label={`Slide ${idx + 1}`}
+                className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${
+                  currentBannerIndex === idx
+                    ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                    : "w-2.5 bg-white/50 hover:bg-white/80"
+                }`}
+              />
+            ))}
           </div>
         )}
 
