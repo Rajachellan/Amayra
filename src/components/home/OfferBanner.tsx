@@ -136,50 +136,83 @@ export const OffersSection = () => {
   }
 
   const mode = layout?.layout ?? "one_large_two_small";
-  const useClassicTrio =
-    (mode === "one_large_two_small" || mode === "auto_responsive") && cards.length === 3;
 
   return (
     <section
-      className="relative overflow-hidden py-16"
-      style={{ backgroundColor: "var(--bg-sage-light)" }}
+      className="relative overflow-hidden"
+      style={{
+        backgroundColor:
+          layout?.backgroundColor && layout.backgroundColor !== "transparent"
+            ? layout.backgroundColor
+            : "var(--bg-sage-light)",
+        padding: layout?.sectionPadding || "4rem 0",
+      }}
     >
       <BotanicalDecoration className="text-emerald-900" opacity={0.03} />
       <div className="container relative z-10 mx-auto space-y-6 px-4 md:px-6">
         <TickerBar items={ticker} />
 
-        {cards.length === 1 ? (
-          <MainOfferCard card={cards[0]} />
-        ) : cards.length === 2 ? (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
-            <SideOfferCard card={cards[0]} index={0} />
-            <SideOfferCard card={cards[1]} index={1} />
-          </div>
-        ) : (mode === "one_large_two_small" || mode === "auto_responsive") && cards.length >= 3 ? (
-          <div className="space-y-5">
-            <div className="flex flex-col gap-5 lg:flex-row">
-              <MainOfferCard card={cards[0]} />
-              <div className="flex w-full flex-col gap-5 lg:w-[38%]">
-                <SideOfferCard card={cards[1]} index={1} />
-                <SideOfferCard card={cards[2]} index={2} />
-              </div>
-            </div>
+        {(() => {
+          const effectiveGap = Math.max(layout?.gap || 32, 28);
 
-            {cards.length > 3 && (
-              <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-                {cards.slice(3).map((card, i) => (
-                  <SideOfferCard key={card._id} card={card} index={i + 3} />
-                ))}
+          if (cards.length === 1) {
+            return <MainOfferCard card={cards[0]} layout={layout} />;
+          }
+
+          if (cards.length === 2) {
+            return (
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10"
+                style={{ gap: `${effectiveGap}px` }}
+              >
+                <SideOfferCard card={cards[0]} index={0} layout={layout} />
+                <SideOfferCard card={cards[1]} index={1} layout={layout} />
               </div>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {cards.map((card, i) => (
-              <SideOfferCard key={card._id} card={card} index={i} />
-            ))}
-          </div>
-        )}
+            );
+          }
+
+          if (mode === "one_large_two_small" && cards.length >= 3) {
+            return (
+              <div className="space-y-8 md:space-y-10">
+                <div
+                  className="flex flex-col gap-8 md:gap-10 lg:flex-row"
+                  style={{ gap: `${effectiveGap}px` }}
+                >
+                  <MainOfferCard card={cards[0]} layout={layout} />
+                  <div
+                    className="flex w-full flex-col gap-8 md:gap-10 lg:w-[38%]"
+                    style={{ gap: `${effectiveGap}px` }}
+                  >
+                    <SideOfferCard card={cards[1]} index={1} layout={layout} />
+                    <SideOfferCard card={cards[2]} index={2} layout={layout} />
+                  </div>
+                </div>
+
+                {cards.length > 3 && (
+                  <div
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+                    style={{ gap: `${effectiveGap}px` }}
+                  >
+                    {cards.slice(3).map((card, i) => (
+                      <SideOfferCard key={card._id} card={card} index={i + 3} layout={layout} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }
+
+          return (
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10"
+              style={{ gap: `${effectiveGap}px` }}
+            >
+              {cards.map((card, i) => (
+                <SideOfferCard key={card._id} card={card} index={i} layout={layout} />
+              ))}
+            </div>
+          );
+        })()}
       </div>
     </section>
   );
@@ -204,156 +237,301 @@ function TickerBar({ items }: { items: string[] }) {
   );
 }
 
-function MainOfferCard({ card }: { card: OfferCard }) {
+function MainOfferCard({ card, layout }: { card: OfferCard; layout?: PromotionLayoutDoc | null }) {
   const href = hrefOf(card);
+  const imageSrc = card.backgroundImage || card.image;
+  const hasImage = Boolean(imageSrc);
+  const borderRadius = layout?.borderRadius || "1.5rem";
+
+  const hasCoupon = Boolean(card.couponCode && card.couponCode.trim());
+  const hasBadge = Boolean(card.badge && card.badge.trim());
+  const hasTitle = Boolean(card.title && card.title.trim());
+  const hasDesc = Boolean(card.description && card.description.trim());
+  const hasButton = Boolean(card.buttonText && card.buttonText.trim());
+  const showOverlay = hasImage && (hasCoupon || hasBadge || hasTitle || hasDesc || hasButton);
+
   return (
     <Link
       href={href}
-      className="group relative flex min-h-[380px] flex-1 animate-fade-right flex-col justify-center overflow-hidden rounded-3xl border border-emerald-dark/10 bg-white p-10 md:p-14"
+      className="group relative flex min-h-[380px] flex-1 animate-fade-right flex-col justify-center overflow-hidden border border-emerald-dark/10 bg-white p-8 md:p-14 shadow-md hover:shadow-xl transition-all duration-300"
       style={{
+        borderRadius,
         backgroundColor: card.backgroundColor || "#ffffff",
         color: card.textColor || "#0b2516",
+        height: layout?.autoHeight ? undefined : layout?.cardHeight || undefined,
       }}
     >
-      {card.image || card.backgroundImage ? (
+      {hasImage ? (
         <Image
-          src={resolveMediaUrl(card.backgroundImage || card.image)}
+          src={resolveMediaUrl(imageSrc)}
           alt={card.title || card.name || "Offer"}
           fill
           sizes="(max-width: 768px) 100vw, 60vw"
-          className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+          className="object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+          priority
         />
       ) : null}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(196,160,100,0.09)_0%,transparent_65%)]" />
-      <span className="absolute top-4 left-4 h-5 w-5 animate-shimmer-border rounded-tl border-t-2 border-l-2 border-emerald-dark/20" />
-      <span className="absolute top-4 right-4 h-5 w-5 animate-shimmer-border rounded-tr border-t-2 border-r-2 border-emerald-dark/20 [animation-delay:0.6s]" />
-      <span className="absolute bottom-4 left-4 h-5 w-5 animate-shimmer-border rounded-bl border-b-2 border-l-2 border-emerald-dark/20 [animation-delay:1.2s]" />
-      <span className="absolute bottom-4 right-4 h-5 w-5 animate-shimmer-border rounded-br border-b-2 border-r-2 border-emerald-dark/20 [animation-delay:1.8s]" />
 
-      {card.badge ? (
-        <div className="absolute top-5 right-5 z-10 flex h-[72px] w-[72px] animate-float flex-col items-center justify-center rounded-full bg-brand-gold shadow-[0_4px_20px_rgba(196,160,100,0.4)]">
-          <Tag className="mb-0.5 h-4 w-4 text-emerald-dark" />
-          <span className="px-1 text-center text-[8px] font-semibold uppercase leading-tight tracking-wide text-emerald-dark">
-            {card.badge.length > 18 ? "Offer" : card.badge}
+      {!hasImage && (
+        <>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_20%,rgba(196,160,100,0.09)_0%,transparent_65%)]" />
+          <span className="absolute top-4 left-4 h-5 w-5 animate-shimmer-border rounded-tl border-t-2 border-l-2 border-emerald-dark/20" />
+          <span className="absolute top-4 right-4 h-5 w-5 animate-shimmer-border rounded-tr border-t-2 border-r-2 border-emerald-dark/20 [animation-delay:0.6s]" />
+          <span className="absolute bottom-4 left-4 h-5 w-5 animate-shimmer-border rounded-bl border-b-2 border-l-2 border-emerald-dark/20 [animation-delay:1.2s]" />
+          <span className="absolute bottom-4 right-4 h-5 w-5 animate-shimmer-border rounded-br border-b-2 border-r-2 border-emerald-dark/20 [animation-delay:1.8s]" />
+        </>
+      )}
+
+      {hasImage ? (
+        showOverlay ? (
+          <div className="relative z-10 max-w-lg rounded-2xl border border-white/15 bg-black/60 p-6 backdrop-blur-md sm:p-8 text-white shadow-2xl">
+            {hasBadge ? (
+              <div className="mb-4 inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-brand-gold px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-emerald-950 shadow">
+                {card.badge}
+              </div>
+            ) : null}
+
+            {hasTitle ? (
+              <h2 className="mb-3 animate-fade-up font-serif text-3xl font-light leading-tight text-white md:text-4xl lg:text-5xl drop-shadow-md">
+                {card.title}
+              </h2>
+            ) : null}
+
+            {hasDesc ? (
+              <p className="mb-5 max-w-xs animate-fade-up text-[14px] leading-relaxed text-white/85">
+                {card.description}
+              </p>
+            ) : null}
+
+            {hasCoupon ? (
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-950/90 border border-brand-gold/60 px-4 py-1.5 text-xs font-bold text-brand-gold shadow-lg backdrop-blur-md">
+                <Tag className="h-3.5 w-3.5 text-brand-gold" />
+                <span className="font-mono tracking-wider">USE CODE: {card.couponCode}</span>
+              </div>
+            ) : null}
+
+            {hasButton ? (
+              <div>
+                <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-brand-gold px-6 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-emerald-950 transition-all duration-200 group-hover:translate-x-1 group-hover:bg-brand-gold-light shadow-md">
+                  {card.buttonText}
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            ) : null}
+          </div>
+        ) : null
+      ) : (
+        <div className="relative z-10">
+          {card.badge ? (
+            <div className="mb-5 inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-brand-gold">
+              <span className="h-1.5 w-1.5 flex-shrink-0 animate-pulse-ring rounded-full bg-brand-gold" />
+              {card.badge}
+            </div>
+          ) : null}
+
+          <h2 className="mb-4 animate-fade-up font-serif text-4xl font-light leading-tight text-emerald-dark md:text-5xl lg:text-[3.2rem] [animation-delay:0.1s]">
+            {card.title || card.name}
+          </h2>
+
+          {card.description || card.subtitle ? (
+            <p className="mb-8 max-w-xs animate-fade-up text-[15px] leading-relaxed text-emerald-dark/70 [animation-delay:0.2s]">
+              {card.description || card.subtitle}
+            </p>
+          ) : null}
+
+          {card.couponCode ? (
+            <span className="mb-6 inline-block w-fit rounded bg-emerald-dark/07 px-2.5 py-1 text-[11px] font-semibold tracking-widest text-emerald-dark">
+              {card.couponCode}
+            </span>
+          ) : null}
+
+          <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-gold transition-all duration-200 group-hover:translate-x-1 group-hover:bg-emerald-medium [animation-delay:0.3s]">
+            {card.buttonText || "Shop now"}
+            <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
           </span>
         </div>
-      ) : null}
-
-      {card.badge ? (
-        <div className="mb-5 inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-brand-gold">
-          <span className="h-1.5 w-1.5 flex-shrink-0 animate-pulse-ring rounded-full bg-brand-gold" />
-          {card.badge}
-        </div>
-      ) : null}
-
-      <h2 className="mb-4 animate-fade-up font-serif text-4xl font-light leading-tight text-emerald-dark md:text-5xl lg:text-[3.2rem] [animation-delay:0.1s]">
-        {card.title || card.name}
-      </h2>
-
-      {card.description || card.subtitle ? (
-        <p className="mb-8 max-w-xs animate-fade-up text-[15px] leading-relaxed text-emerald-dark/70 [animation-delay:0.2s]">
-          {card.description || card.subtitle}
-        </p>
-      ) : null}
-
-      {card.couponCode ? (
-        <span className="mb-6 inline-block w-fit rounded bg-emerald-dark/07 px-2.5 py-1 text-[11px] font-semibold tracking-widest text-emerald-dark">
-          {card.couponCode}
-        </span>
-      ) : null}
-
-      <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-gold transition-all duration-200 group-hover:translate-x-1 group-hover:bg-emerald-medium [animation-delay:0.3s]">
-        {card.buttonText || "Shop now"}
-        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-      </span>
+      )}
     </Link>
   );
 }
 
-function SideOfferCard({ card, index }: { card: OfferCard; index: number }) {
+function SideOfferCard({
+  card,
+  index,
+  layout,
+}: {
+  card: OfferCard;
+  index: number;
+  layout?: PromotionLayoutDoc | null;
+}) {
   const dark = isDarkCard(card, index);
   const href = hrefOf(card);
   const Icon = index % 2 === 0 ? Gift : Star;
+  const imageSrc = card.backgroundImage || card.image;
+  const hasImage = Boolean(imageSrc);
+
+  const hasCoupon = Boolean(card.couponCode && card.couponCode.trim());
+  const hasBadge = Boolean(card.badge && card.badge.trim());
+  const hasTitle = Boolean(card.title && card.title.trim());
+  const hasDesc = Boolean(card.description && card.description.trim());
+  const hasButton = Boolean(card.buttonText && card.buttonText.trim());
+
+  const showOverlay = hasImage && (hasCoupon || hasBadge || hasTitle || hasDesc || hasButton);
+
+  const aspectClass =
+    layout?.aspectRatio && layout.aspectRatio !== "auto"
+      ? layout.aspectRatio === "16/9"
+        ? "aspect-video"
+        : layout.aspectRatio === "16/7"
+        ? "aspect-[16/7]"
+        : layout.aspectRatio === "4/3"
+        ? "aspect-[4/3]"
+        : layout.aspectRatio === "1/1"
+        ? "aspect-square"
+        : layout.aspectRatio === "3/4"
+        ? "aspect-[3/4]"
+        : ""
+      : hasImage
+      ? "aspect-[16/7] min-h-[190px] sm:min-h-[210px] md:min-h-[230px]"
+      : "min-h-[190px]";
+
+  const borderRadius = layout?.borderRadius || "1.25rem";
 
   return (
     <Link
       href={href}
-      className={`group relative flex-1 cursor-pointer overflow-hidden rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 animate-fade-left ${
+      className={`group relative cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl flex flex-col justify-between isolate ${aspectClass} ${
         dark
-          ? "bg-emerald-dark hover:shadow-[0_16px_40px_rgba(11,37,22,0.25)]"
-          : "border border-emerald-dark/10 bg-white hover:shadow-[0_16px_40px_rgba(11,37,22,0.12)]"
+          ? "bg-emerald-dark"
+          : "border border-emerald-dark/10 bg-white"
       }`}
       style={{
+        borderRadius,
         backgroundColor: card.backgroundColor || undefined,
         color: card.textColor || undefined,
         animationDelay: index === 2 ? "0.15s" : undefined,
+        height: layout?.autoHeight ? undefined : layout?.cardHeight || undefined,
+        boxShadow: "0 10px 30px -5px rgba(11, 37, 22, 0.12)",
       }}
     >
-      {card.image || card.backgroundImage ? (
+      {hasImage ? (
         <Image
-          src={resolveMediaUrl(card.backgroundImage || card.image)}
+          src={resolveMediaUrl(imageSrc)}
           alt={card.title || card.name || "Offer"}
           fill
-          sizes="(max-width: 768px) 100vw, 40vw"
-          className="object-cover opacity-25 group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover group-hover:scale-105 transition-transform duration-700 pointer-events-none"
+          priority={index < 3}
         />
       ) : null}
-      <div
-        className={`pointer-events-none absolute -top-5 -right-5 h-24 w-24 rounded-full ${
-          dark ? "bg-brand-gold/08" : "bg-brand-gold/05"
-        }`}
-      />
 
-      <div
-        className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${
-          dark ? "bg-brand-gold/15" : "bg-brand-gold/10"
-        }`}
-      >
-        <Icon className="h-5 w-5 text-brand-gold" />
-      </div>
-
-      {card.badge ? (
-        <p
-          className={`mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] ${
-            dark ? "text-brand-gold" : "text-emerald-dark/50"
+      {!hasImage && (
+        <div
+          className={`pointer-events-none absolute -top-5 -right-5 h-24 w-24 rounded-full ${
+            dark ? "bg-brand-gold/08" : "bg-brand-gold/05"
           }`}
-        >
-          {card.badge}
-        </p>
-      ) : null}
+        />
+      )}
 
-      <h3
-        className={`mb-2 font-serif text-xl font-normal ${
-          dark ? "text-white" : "text-emerald-dark"
-        }`}
-      >
-        {card.title || card.name}
-      </h3>
+      {hasImage ? (
+        showOverlay ? (
+          <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-5 md:p-6 bg-gradient-to-t from-black/85 via-black/30 to-transparent text-white pointer-events-none">
+            {/* Top row: Badge and/or Coupon Code */}
+            <div className="flex items-start justify-between gap-2">
+              {hasBadge ? (
+                <span className="rounded-full bg-brand-gold px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-950 shadow">
+                  {card.badge}
+                </span>
+              ) : <span />}
 
-      {card.description || card.subtitle ? (
-        <p
-          className={`mb-3 text-[13px] leading-relaxed ${
-            dark ? "text-white/70" : "text-emerald-dark/60"
-          }`}
-        >
-          {card.description || card.subtitle}
-        </p>
-      ) : null}
+              {hasCoupon ? (
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/90 border border-brand-gold/60 px-3 py-1 text-xs font-bold text-brand-gold shadow-lg backdrop-blur-md">
+                  <Tag className="h-3 w-3 text-brand-gold flex-shrink-0" />
+                  <span className="font-mono tracking-wider">CODE: {card.couponCode}</span>
+                </div>
+              ) : null}
+            </div>
 
-      {card.couponCode ? (
-        <span
-          className={`mb-4 inline-block rounded px-2.5 py-1 text-[11px] font-semibold tracking-widest ${
-            dark ? "bg-white/10 text-white" : "bg-emerald-dark/07 text-emerald-dark"
-          }`}
-        >
-          {card.couponCode}
-        </span>
-      ) : null}
+            {/* Bottom section: Title, Description, Button */}
+            <div className="mt-auto pt-3">
+              {hasTitle ? (
+                <h3 className="font-serif text-lg sm:text-xl font-normal text-white drop-shadow-md leading-snug">
+                  {card.title}
+                </h3>
+              ) : null}
 
-      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-gold transition-all duration-200 group-hover:gap-3">
-        {card.buttonText || "Learn more"}
-        <ArrowRight className="h-3.5 w-3.5" />
-      </span>
+              {hasDesc ? (
+                <p className="mt-1 text-xs text-white/80 line-clamp-2 leading-relaxed">
+                  {card.description}
+                </p>
+              ) : null}
+
+              {hasButton ? (
+                <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-brand-gold transition-all duration-200 group-hover:gap-2.5">
+                  {card.buttonText}
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </span>
+              ) : null}
+            </div>
+          </div>
+        ) : null
+      ) : (
+        /* Classic text card without image */
+        <div className="relative z-10 flex h-full flex-col justify-between p-6 md:p-7">
+          <div>
+            <div
+              className={`mb-4 flex h-10 w-10 items-center justify-center rounded-xl ${
+                dark ? "bg-brand-gold/15" : "bg-brand-gold/10"
+              }`}
+            >
+              <Icon className="h-5 w-5 text-brand-gold" />
+            </div>
+
+            {card.badge ? (
+              <p
+                className={`mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] ${
+                  dark ? "text-brand-gold" : "text-emerald-dark/50"
+                }`}
+              >
+                {card.badge}
+              </p>
+            ) : null}
+
+            <h3
+              className={`mb-2 font-serif text-xl font-normal ${
+                dark ? "text-white" : "text-emerald-dark"
+              }`}
+            >
+              {card.title || card.name}
+            </h3>
+
+            {card.description || card.subtitle ? (
+              <p
+                className={`mb-3 text-[13px] leading-relaxed ${
+                  dark ? "text-white/70" : "text-emerald-dark/60"
+                }`}
+              >
+                {card.description || card.subtitle}
+              </p>
+            ) : null}
+
+            {card.couponCode ? (
+              <span
+                className={`mb-4 inline-block rounded px-2.5 py-1 text-[11px] font-semibold tracking-widest ${
+                  dark ? "bg-white/10 text-white" : "bg-emerald-dark/07 text-emerald-dark"
+                }`}
+              >
+                {card.couponCode}
+              </span>
+            ) : null}
+          </div>
+
+          <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-brand-gold transition-all duration-200 group-hover:gap-3">
+            {card.buttonText || "Learn more"}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </span>
+        </div>
+      )}
     </Link>
   );
 }

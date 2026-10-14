@@ -107,6 +107,7 @@ export type PromotionalBannerDoc = {
   priority?: number;
   link: string;
   order: number;
+  showOverlay?: boolean;
 };
 
 export type PromotionsPayload = {
@@ -134,6 +135,10 @@ export type CartPricingResponse = {
     minimumCartValue: number;
     discountPercentage: number;
   };
+  discountSlabs?: Array<{
+    minimumCartValue: number;
+    discountPercentage: number;
+  }>;
   upsell: {
     available: boolean;
     nextThreshold?: number;
@@ -376,20 +381,27 @@ export const shopApi = {
   coupons: () => fetchJson<PublicCouponDoc[]>("/coupons/public"),
   banners: () => fetchJson<BannerDoc[]>("/banners"),
   promotionalBanners: async () => {
-    const data = await fetchJson<PromotionsPayload | PromotionalBannerDoc[]>("/promotional-banners");
+    const [bannersRes, layoutRes] = await Promise.allSettled([
+      fetchJson<PromotionsPayload | PromotionalBannerDoc[]>("/promotional-banners"),
+      fetchJson<PromotionLayoutDoc>("/promotion-layout"),
+    ]);
+    const data = bannersRes.status === "fulfilled" ? bannersRes.value : [];
+    const customLayout = layoutRes.status === "fulfilled" ? layoutRes.value : null;
+
     if (Array.isArray(data)) {
       return {
         layout: {
-          layout: "auto_responsive" as const,
-          gap: 16,
-          aspectRatio: "16/7" as const,
-          borderRadius: "1rem",
-          shadow: true,
-          containerWidth: "boxed" as const,
-          autoHeight: true,
-          equalHeight: true,
-          sectionPadding: "2rem 0",
-          backgroundColor: "transparent",
+          layout: customLayout?.layout || ("auto_responsive" as const),
+          gap: customLayout?.gap ?? 28,
+          aspectRatio: customLayout?.aspectRatio || ("auto" as const),
+          borderRadius: customLayout?.borderRadius || "1.25rem",
+          shadow: customLayout?.shadow ?? true,
+          containerWidth: customLayout?.containerWidth || ("boxed" as const),
+          autoHeight: customLayout?.autoHeight ?? true,
+          equalHeight: customLayout?.equalHeight ?? true,
+          sectionPadding: customLayout?.sectionPadding || "3rem 0",
+          backgroundColor: customLayout?.backgroundColor || "transparent",
+          ...customLayout,
         },
         cards: data,
       } satisfies PromotionsPayload;
@@ -457,4 +469,13 @@ export const shopApi = {
         body: JSON.stringify({ items }),
       }
     ),
+  pricingSettings: () =>
+    fetchJson<{
+      discountSlabs: Array<{ minimumCartValue: number; discountPercentage: number }>;
+      allowCouponWithSlabDiscount: boolean;
+      defaultGstRate: number;
+      enableFreeGift: boolean;
+      freeGiftThreshold: number;
+      freeGiftName: string;
+    }>("/pricing-settings"),
 };

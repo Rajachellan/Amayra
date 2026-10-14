@@ -136,7 +136,7 @@ function PromoCard({
           alt=""
           fill
           sizes="(max-width: 768px) 100vw, 40vw"
-          className="object-cover opacity-50"
+          className="object-cover"
         />
       ) : null}
       {card.image ? (
@@ -148,19 +148,21 @@ function PromoCard({
           className="object-cover"
         />
       ) : null}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-      <div
-        className="relative z-[1] flex h-full flex-col justify-end gap-1.5 p-5"
-        style={{ color: card.textColor || "#faf7f2" }}
-      >
-        {card.badge ? (
-          <span className="w-fit rounded-full bg-[#c4a46a] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1c1916]">
-            {card.badge}
-          </span>
-        ) : null}
-        {card.title || card.name ? (
-          <h3 className="font-serif text-xl leading-tight md:text-2xl">{card.title || card.name}</h3>
-        ) : null}
+      {card.showOverlay ? (
+        <>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div
+            className="relative z-[1] flex h-full flex-col justify-end gap-1.5 p-5"
+            style={{ color: card.textColor || "#faf7f2" }}
+          >
+            {card.badge ? (
+              <span className="w-fit rounded-full bg-[#c4a46a] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#1c1916]">
+                {card.badge}
+              </span>
+            ) : null}
+            {card.title || card.name ? (
+              <h3 className="font-serif text-xl leading-tight md:text-2xl">{card.title || card.name}</h3>
+            ) : null}
         {card.subtitle ? <p className="text-sm opacity-90">{card.subtitle}</p> : null}
         {card.description ? (
           <p className="line-clamp-2 text-xs opacity-80 md:text-sm">{card.description}</p>
@@ -168,12 +170,14 @@ function PromoCard({
         {card.couponCode ? (
           <p className="text-[11px] tracking-wide opacity-85">Use code {card.couponCode}</p>
         ) : null}
-        {card.buttonText ? (
-          <span className="mt-1 w-fit rounded-full bg-[#c4a46a] px-4 py-1.5 text-xs font-medium text-[#1c1916]">
-            {card.buttonText}
-          </span>
-        ) : null}
-      </div>
+            {card.buttonText ? (
+              <span className="mt-1 w-fit rounded-full bg-[#c4a46a] px-4 py-1.5 text-xs font-medium text-[#1c1916]">
+                {card.buttonText}
+              </span>
+            ) : null}
+          </div>
+        </>
+      ) : null}
     </Link>
   );
 }

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight, Tag } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShieldCheck, ArrowRight, Tag, Check } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/Button";
@@ -61,57 +61,181 @@ export function CartDrawer() {
       .catch((err) => console.error("Failed to load active coupons:", err));
   }, [isCartOpen]);
 
-  const FREE_SHIPPING_THRESHOLD = 1499;
-  const DISCOUNT_THRESHOLD = 3499;
-  const GIFT_THRESHOLD = 6999;
+  const [pricingConfig, setPricingConfig] = useState<{
+    discountSlabs: Array<{ minimumCartValue: number; discountPercentage: number }>;
+    enableFreeGift: boolean;
+    freeGiftThreshold: number;
+    freeGiftName: string;
+  } | null>(null);
 
-  const discountPct = pricingResult?.discountSlab?.discountPercentage ?? (subtotal >= DISCOUNT_THRESHOLD ? 10 : 0);
+  useEffect(() => {
+    shopApi.pricingSettings()
+      .then(setPricingConfig)
+      .catch((err) => console.error("Failed to load pricing settings:", err));
+  }, []);
 
+  const FREE_SHIPPING_THRESHOLD = 999;
   const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
-  const tax = 0;
-  const freeGiftEnabled = Boolean(pricingResult?.freeGift?.enabled);
-  const freeGiftThreshold = pricingResult?.freeGift?.threshold ?? 6999;
-  const freeGiftName = pricingResult?.freeGift?.name || "Free Gift (Worth ₹799)";
-  const freeGiftUnlocked = Boolean(pricingResult?.freeGift?.unlocked);
+
+  // Active discount slabs from pricingResult (calculated) or pricingConfig (public settings)
+  const discountSlabs = useMemo(() => {
+    const raw = pricingResult?.discountSlabs || pricingConfig?.discountSlabs || [];
+    return raw
+      .filter((s) => s.discountPercentage > 0 && s.minimumCartValue > 0)
+      .sort((a, b) => a.minimumCartValue - b.minimumCartValue);
+  }, [pricingResult, pricingConfig]);
+
+  // Current active discount percentage from highest matching slab
+  const activeSlab = useMemo(() => {
+    const matched = [...discountSlabs]
+      .reverse()
+      .find((s) => subtotal >= s.minimumCartValue);
+    return matched || { minimumCartValue: 0, discountPercentage: 0 };
+  }, [discountSlabs, subtotal]);
+
+  const discountPct = pricingResult?.discountSlab?.discountPercentage ?? activeSlab.discountPercentage;
+
+  const freeGiftEnabled = Boolean(pricingResult?.freeGift?.enabled ?? pricingConfig?.enableFreeGift);
+  const freeGiftThreshold = pricingResult?.freeGift?.threshold ?? pricingConfig?.freeGiftThreshold ?? 6999;
+  const freeGiftName = pricingResult?.freeGift?.name || pricingConfig?.freeGiftName || "Free Gift (Worth ₹799)";
+  const freeGiftUnlocked = Boolean(pricingResult?.freeGift?.unlocked ?? (freeGiftEnabled && subtotal >= freeGiftThreshold));
 
   const milestoneDiscount = pricingResult
     ? pricingResult.automaticDiscount
-    : subtotal >= DISCOUNT_THRESHOLD
-      ? Math.round(subtotal * 0.1 * 100) / 100
+    : discountPct > 0
+      ? Math.round(subtotal * (discountPct / 100))
       : 0;
+
   const total = Math.max(0, subtotal - discountAmount - milestoneDiscount + shipping);
 
-  const progressVal = useMemo(() => {
-    if (subtotal <= 0) return 0;
-    if (subtotal < FREE_SHIPPING_THRESHOLD) {
-      return (subtotal / FREE_SHIPPING_THRESHOLD) * (freeGiftEnabled ? 33.33 : 50);
-    }
-    if (subtotal < DISCOUNT_THRESHOLD) {
-      return (freeGiftEnabled ? 33.33 : 50) + ((subtotal - FREE_SHIPPING_THRESHOLD) / (DISCOUNT_THRESHOLD - FREE_SHIPPING_THRESHOLD)) * (freeGiftEnabled ? 33.33 : 50);
-    }
-    if (!freeGiftEnabled) return 100;
-    if (subtotal < freeGiftThreshold) {
-      return 66.66 + ((subtotal - DISCOUNT_THRESHOLD) / (freeGiftThreshold - DISCOUNT_THRESHOLD)) * 33.34;
-    }
-    return 100;
-  }, [subtotal, freeGiftEnabled, freeGiftThreshold]);
+  // Dynamic milestones list generated from all added slabs
+  // Dynamic milestones list generated from all added slabs
+  const milestones = useMemo(() => {
+    const list: Array<{
+      id: string;
+      label: string;
+      threshold: number;
+      type: "shipping" | "discount" | "gift" | "discount_and_gift";
+      discountPct?: number;
+      hasGift?: boolean;
+      unlocked: boolean;
+    }> = [];
 
+    // Milestone 1: Free Shipping
+    list.push({
+      id: "shipping",
+      label: "FREE SHIPPING",
+      threshold: FREE_SHIPPING_THRESHOLD,
+      type: "shipping",
+      unlocked: subtotal >= FREE_SHIPPING_THRESHOLD,
+    });
+
+    // Each discount slab configured in admin panel
+    discountSlabs.forEach((s) => {
+      // If a slab has the same threshold as shipping, merge/override label
+      const existing = list.find((m) => m.threshold === s.minimumCartValue);
+      if (existing) {
+        existing.label = `${s.discountPercentage}% OFF`;
+        existing.type = "discount";
+        existing.discountPct = s.discountPercentage;
+      } else {
+        list.push({
+          id: `slab-${s.minimumCartValue}`,
+          label: `${s.discountPercentage}% OFF`,
+          threshold: s.minimumCartValue,
+          type: "discount",
+          discountPct: s.discountPercentage,
+          unlocked: subtotal >= s.minimumCartValue,
+        });
+      }
+    });
+
+    // Free Gift milestone if enabled (merge if threshold matches an existing slab/milestone!)
+    if (freeGiftEnabled && freeGiftThreshold > 0) {
+      const existing = list.find((m) => m.threshold === freeGiftThreshold);
+      if (existing) {
+        if (existing.discountPct) {
+          existing.label = `${existing.discountPct}% OFF + GIFT`;
+        } else if (existing.id === "shipping") {
+          existing.label = "FREE SHIP + GIFT";
+        } else {
+          existing.label = "FREE GIFT";
+        }
+        existing.type = "discount_and_gift";
+        existing.hasGift = true;
+      } else {
+        list.push({
+          id: "free-gift",
+          label: "FREE GIFT",
+          threshold: freeGiftThreshold,
+          type: "gift",
+          hasGift: true,
+          unlocked: subtotal >= freeGiftThreshold,
+        });
+      }
+    }
+
+    return list.sort((a, b) => a.threshold - b.threshold);
+  }, [subtotal, discountSlabs, freeGiftEnabled, freeGiftThreshold]);
+
+  // Next locked milestone
+  const nextMilestone = useMemo(() => {
+    return milestones.find((m) => subtotal < m.threshold);
+  }, [milestones, subtotal]);
+
+  // Visual position of each milestone node along the horizontal track [0% - 100%]
+  const nodePositions = useMemo(() => {
+    const n = milestones.length;
+    if (n === 0) return [];
+    if (n === 1) return [70];
+    if (n === 2) return [48, 92];
+    if (n === 3) return [24, 58, 92];
+    if (n === 4) return [18, 42, 68, 92];
+    return milestones.map((_, i) => Math.round(15 + (i / (n - 1)) * 77));
+  }, [milestones]);
+
+  // Smooth progress calculation across all milestone nodes
+  const progressVal = useMemo(() => {
+    if (subtotal <= 0 || milestones.length === 0) return 0;
+    const n = milestones.length;
+    const firstThreshold = milestones[0].threshold;
+    const firstPos = nodePositions[0] ?? 50;
+
+    if (subtotal <= firstThreshold) {
+      return (subtotal / firstThreshold) * firstPos;
+    }
+
+    for (let i = 0; i < n - 1; i++) {
+      const curT = milestones[i].threshold;
+      const nextT = milestones[i + 1].threshold;
+      const curP = nodePositions[i] ?? 0;
+      const nextP = nodePositions[i + 1] ?? 100;
+
+      if (subtotal <= nextT) {
+        const ratio = (subtotal - curT) / (nextT - curT);
+        return curP + ratio * (nextP - curP);
+      }
+    }
+
+    return 100;
+  }, [subtotal, milestones, nodePositions]);
+
+  // Banner text at the top of the cart (Matching reference image)
   const bannerText = useMemo(() => {
-    if (subtotal <= 0) return "Add items to your bag to unlock luxury benefits!";
-    if (subtotal < FREE_SHIPPING_THRESHOLD) {
-      return `You are ₹${formatPrice(FREE_SHIPPING_THRESHOLD - subtotal)} away from Free Shipping`;
+    if (subtotal <= 0) return "Add items to your bag to unlock luxury discounts!";
+    if (nextMilestone) {
+      const diff = nextMilestone.threshold - subtotal;
+      const targetLabel = nextMilestone.hasGift && nextMilestone.discountPct
+        ? `${nextMilestone.discountPct}% OFF + Free Gift`
+        : nextMilestone.label;
+      return (
+        <span>
+          You are <strong>₹{formatPrice(diff)}</strong> away from <strong>{targetLabel}</strong>
+        </span>
+      );
     }
-    if (subtotal < DISCOUNT_THRESHOLD) {
-      return `✓ Free Shipping Unlocked! Add ₹${formatPrice(DISCOUNT_THRESHOLD - subtotal)} more for Extra ${discountPct || 10}% OFF!`;
-    }
-    if (!freeGiftEnabled) {
-      return `✓ Free Shipping & ${discountPct || 10}% OFF Unlocked! 🎉`;
-    }
-    if (subtotal < freeGiftThreshold) {
-      return `✓ ${discountPct || 10}% OFF Unlocked! Add ₹${formatPrice(freeGiftThreshold - subtotal)} more for a ${freeGiftName}!`;
-    }
-    return `✓ All luxury milestones unlocked! Free Shipping, ${discountPct || 10}% OFF, & ${freeGiftName} applied! 🎉`;
-  }, [subtotal, discountPct, freeGiftEnabled, freeGiftThreshold, freeGiftName]);
+    return <span>✓ All luxury discount milestones unlocked! ({discountPct}% OFF applied) 🎉</span>;
+  }, [subtotal, nextMilestone, discountPct]);
 
   const cartIds = useMemo(() => new Set(cart.map((i) => i.id)), [cart]);
 
@@ -172,10 +296,15 @@ export function CartDrawer() {
             aria-modal="true"
             aria-labelledby="cart-drawer-title"
           >
-            <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-10 py-4">
-              <h2 id="cart-drawer-title" className="font-serif text-lg tracking-[0.2em] text-brand-emerald uppercase">
-                Your bag ({cart.length})
-              </h2>
+            <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-6 sm:px-8 py-4">
+              <div className="flex items-center gap-2">
+                <h2 id="cart-drawer-title" className="font-serif text-lg tracking-[0.15em] text-brand-emerald uppercase">
+                  Shopping Cart
+                </h2>
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-stone-100 text-xs font-semibold text-stone-700">
+                  {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                </span>
+              </div>
               <button
                 type="button"
                 onClick={closeCart}
@@ -186,75 +315,81 @@ export function CartDrawer() {
               </button>
             </div>
 
-            <div className="scrollbar-gold-slim-vertical min-h-0 flex-1 overflow-y-auto px-10">
-              <div className="px-5 py-4">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-gray-400">
-                  Items in your bag are reserved briefly while you check out.
-                </p>
+            {/* Top Gold Banner (matching reference image) */}
+            {cart.length > 0 && (
+              <div className="bg-[#856514] text-white py-2.5 px-4 text-center font-sans text-xs tracking-wider shrink-0 font-medium select-none shadow-sm">
+                {bannerText}
               </div>
+            )}
 
-              {cart.length > 0 && (
-                <div className="px-5 pb-6 space-y-3">
-                  {pricingResult?.upsell?.available ? (
-                    <div className="bg-[#fdfbf7] border border-[#c4a064]/50 rounded-lg p-4 font-sans shadow-sm text-center space-y-1">
-                      <p className="text-xs font-extrabold text-[#1a3d2f] uppercase tracking-wider">
-                        🎉 Add ₹{formatPrice(pricingResult.upsell.amountToUnlock)} more to unlock {pricingResult.upsell.nextDiscountPercentage}% OFF!
-                      </p>
-                      <p className="text-[11.5px] text-gray-600 font-medium">
-                        You'll receive ₹{formatPrice(pricingResult.upsell.amountToUnlock)} worth of additional products for only{" "}
-                        <strong className="text-emerald-800 font-bold underline">
-                          ₹{formatPrice(pricingResult.upsell.additionalPayment)}
-                        </strong>{" "}
-                        more.
-                      </p>
-                    </div>
-                  ) : null}
+            {/* Dynamic Milestone Progress Track (matching reference image) */}
+            {cart.length > 0 && milestones.length > 0 && (
+              <div className="bg-white border-b border-stone-200/70 px-8 sm:px-10 pt-10 pb-11 select-none shrink-0 relative">
+                <div className="relative h-1.5 bg-[#ebe4d8] rounded-full">
+                  {/* Progress Fill */}
+                  <div
+                    className="absolute top-0 left-0 h-full bg-[#856514] rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${Math.min(100, Math.max(0, progressVal))}%` }}
+                  />
 
-                  <div className="bg-[#fdfbf7] border border-[#f0e6d2] rounded p-4 text-center space-y-4 font-sans shadow-sm select-none">
-                    <p className="text-xs font-semibold tracking-wider text-[#1a3d2f] uppercase leading-relaxed">
-                      {bannerText}
-                    </p>
-                    
-                    {/* Progress Track */}
-                    <div 
-                      className="relative h-2 bg-stone-100 rounded-full overflow-hidden border border-stone-200"
-                      role="progressbar"
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-valuenow={Math.round(progressVal)}
-                    >
-                      <div 
-                        className="absolute top-0 left-0 h-full bg-[#c4a064] transition-all duration-500 ease-out" 
-                        style={{ width: `${progressVal}%` }}
-                      />
-                    </div>
-                    
-                    {/* Milestone labels / nodes */}
-                    <div className={`grid ${freeGiftEnabled ? "grid-cols-3" : "grid-cols-2"} gap-2 text-[10px] text-gray-500 uppercase tracking-wider font-semibold`}>
-                      <div className="text-left space-y-0.5">
-                        <span className={`block transition-colors duration-300 ${subtotal >= FREE_SHIPPING_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
-                          {subtotal >= FREE_SHIPPING_THRESHOLD ? "✓ Free Ship" : "Free Ship"}
-                        </span>
-                        <span className="text-[9px] text-gray-400 font-normal">₹{formatPrice(1499)}</span>
-                      </div>
-                      
-                      <div className={`${freeGiftEnabled ? "text-center" : "text-right"} space-y-0.5`}>
-                        <span className={`block transition-colors duration-300 ${subtotal >= DISCOUNT_THRESHOLD ? 'text-emerald-700 font-bold' : ''}`}>
-                          {subtotal >= DISCOUNT_THRESHOLD ? `✓ ${discountPct || 10}% OFF` : `${discountPct || 10}% OFF`}
-                        </span>
-                        <span className="text-[9px] text-gray-400 font-normal">₹{formatPrice(3499)}</span>
-                      </div>
-                      
-                      {freeGiftEnabled && (
-                        <div className="text-right space-y-0.5">
-                          <span className={`block transition-colors duration-300 ${freeGiftUnlocked ? 'text-emerald-700 font-bold' : ''}`}>
-                            {freeGiftUnlocked ? "✓ Free Gift" : "Free Gift"}
+                  {/* Milestone Nodes */}
+                  {milestones.map((m, idx) => {
+                    const pos = nodePositions[idx] ?? 50;
+                    const isUnlocked = subtotal >= m.threshold;
+                    return (
+                      <div
+                        key={m.id}
+                        className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex items-center justify-center"
+                        style={{ left: `${pos}%` }}
+                      >
+                        {/* Top Label */}
+                        <div className="absolute bottom-full mb-2 -translate-x-1/2 left-1/2 text-center whitespace-nowrap">
+                          <span
+                            className={`text-[9.5px] sm:text-[10.5px] font-bold tracking-wider uppercase transition-colors ${
+                              isUnlocked ? "text-[#856514]" : "text-stone-800"
+                            }`}
+                          >
+                            {m.label}
                           </span>
-                          <span className="text-[9px] text-gray-400 font-normal">₹{formatPrice(freeGiftThreshold)}</span>
                         </div>
-                      )}
-                    </div>
-                  </div>
+
+                        {/* Node Circle */}
+                        {isUnlocked ? (
+                          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#856514] text-white flex items-center justify-center shadow-md shrink-0">
+                            <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[3]" />
+                          </div>
+                        ) : (
+                          <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white border-2 border-[#856514] text-[#856514] flex items-center justify-center font-bold text-xs shadow-sm shrink-0">
+                            {m.hasGift || m.type === "gift" ? "🎁" : "%"}
+                          </div>
+                        )}
+
+                        {/* Bottom Threshold Badge Pill */}
+                        <div className="absolute top-full mt-2 -translate-x-1/2 left-1/2 text-center whitespace-nowrap">
+                          <span className="inline-block bg-[#735818] text-white text-[9px] sm:text-[10px] font-bold px-2.5 py-0.5 rounded-full shadow-sm tracking-wide">
+                            ₹ {formatPrice(m.threshold)}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="scrollbar-gold-slim-vertical min-h-0 flex-1 overflow-y-auto px-6 sm:px-8">
+              {cart.length > 0 && pricingResult?.upsell?.available && (
+                <div className="my-3 bg-[#fdfbf7] border border-[#c4a064]/50 rounded-lg p-3 font-sans shadow-sm text-center space-y-0.5">
+                  <p className="text-xs font-extrabold text-[#1a3d2f] uppercase tracking-wider">
+                    🎉 Add ₹{formatPrice(pricingResult.upsell.amountToUnlock)} more to unlock {pricingResult.upsell.nextDiscountPercentage}% OFF!
+                  </p>
+                  <p className="text-[11px] text-gray-600 font-medium">
+                    Get ₹{formatPrice(pricingResult.upsell.amountToUnlock)} worth of jewelry for only{" "}
+                    <strong className="text-emerald-800 font-bold underline">
+                      ₹{formatPrice(pricingResult.upsell.additionalPayment)}
+                    </strong>{" "}
+                    more.
+                  </p>
                 </div>
               )}
 
@@ -523,7 +658,7 @@ export function CartDrawer() {
 
               {!pricingResult && milestoneDiscount > 0 && (
                 <div className="flex items-center justify-between text-xs text-[#c4a064] uppercase tracking-widest font-semibold">
-                  <span>Steal Deal (10% Off)</span>
+                  <span>Slab Discount ({discountPct}% Off)</span>
                   <span>- ₹{formatPrice(milestoneDiscount)}</span>
                 </div>
               )}

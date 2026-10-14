@@ -312,23 +312,6 @@ function ProductDetail() {
                 </div>
               )}
 
-              <div className="mb-8 rounded-xl border border-neutral-200/80 bg-white p-4 text-xs">
-                <div className="mb-2 flex items-center justify-between border-b border-neutral-100 pb-2 font-bold uppercase tracking-wider text-neutral-700">
-                  <span>Estimated Delivery</span>
-                  <span className="text-emerald-700 font-semibold">In Stock</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 pt-1">
-                  <div>
-                    <span className="font-bold text-neutral-900">Pan India</span>
-                    <p className="text-neutral-500">3–5 days (Mon, 24 Aug – Wed, 26 Aug)</p>
-                  </div>
-                  <div>
-                    <span className="font-bold text-neutral-900">International (INT)</span>
-                    <p className="text-neutral-500">8–12 days (Sat, 29 Aug – Thu, 3 Sep)</p>
-                  </div>
-                </div>
-              </div>
-
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-8">
                   <p className="mb-3 text-xs font-bold uppercase tracking-widest text-neutral-500">
