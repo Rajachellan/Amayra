@@ -24,8 +24,53 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "MaiRii | High-End Luxury Jewellery",
-  description: "Exquisite gold, diamond and bridal jewellery for your special moments. Experience high-end luxury with MaiRii.",
+  metadataBase: new URL("https://mairiijewels.com"),
+  title: {
+    default: "MaiRii | High-End Luxury Jewellery",
+    template: "%s | MaiRii Jewellery",
+  },
+  description:
+    "Exquisite gold, diamond and bridal jewellery for your special moments. Experience high-end luxury with MaiRii.",
+  keywords: [
+    "MaiRii",
+    "MaiRii Jewels",
+    "luxury jewellery",
+    "imitation jewellery",
+    "bridal jewellery",
+    "kundan jewellery",
+    "polki necklaces",
+    "choker sets",
+    "Indian wedding jewellery",
+  ],
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    title: "MaiRii | High-End Luxury Jewellery",
+    description:
+      "Exquisite gold, diamond and bridal jewellery for your special moments. Experience high-end luxury with MaiRii.",
+    url: "https://mairiijewels.com",
+    siteName: "MaiRii",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MaiRii | High-End Luxury Jewellery",
+    description:
+      "Exquisite gold, diamond and bridal jewellery for your special moments. Experience high-end luxury with MaiRii.",
+  },
 };
 
 export default function RootLayout({

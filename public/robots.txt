@@ -1,0 +1,115 @@
+# ==============================================================================
+# MaiRii Luxury Jewellery - Robots Exclusion Standard
+# Domain: https://mairiijewels.com
+# Sitemap: https://mairiijewels.com/sitemap.xml
+# ==============================================================================
+
+User-agent: *
+# Allow primary public content
+Allow: /
+Allow: /category/
+Allow: /product/
+Allow: /occasion/
+Allow: /blog/
+Allow: /about
+Allow: /our-story
+Allow: /contact
+Allow: /store-locator
+Allow: /sitemap
+Allow: /shipping-returns
+Allow: /returns-exchanges
+Allow: /privacy-policy
+Allow: /terms-of-service
+Allow: /terms-and-conditions
+
+# Allow critical static assets for rendering & indexing
+Allow: /_next/static/
+Allow: /images/
+Allow: /videos/
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.css$
+Allow: /*.js$
+
+# Disallow private, transactional, and dynamic user routes
+Disallow: /profile/
+Disallow: /checkout/
+Disallow: /auth/
+Disallow: /wishlist
+Disallow: /api/
+Disallow: /comming-soon
+
+# Prevent duplicate content and crawl budget waste from faceted query filters
+Disallow: /*?*sort=
+Disallow: /*?*filter=
+Disallow: /*?*minPrice=
+Disallow: /*?*maxPrice=
+Disallow: /*?*color=
+Disallow: /*?*page=
+Disallow: /*?*search=
+Disallow: /*?*token=
+Disallow: /*?*session=
+
+# ==============================================================================
+# Major Search Engine Crawlers
+# ==============================================================================
+User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+User-agent: Baiduspider
+User-agent: YandexBot
+Allow: /
+Allow: /_next/static/
+Allow: /images/
+Disallow: /profile/
+Disallow: /checkout/
+Disallow: /auth/
+Disallow: /wishlist
+Disallow: /api/
+Disallow: /comming-soon
+
+# ==============================================================================
+# AI Search, LLM & Retrieval Crawlers (Optimized for AI Discovery & Citations)
+# ==============================================================================
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: PerplexityBot
+User-agent: Applebot
+User-agent: Applebot-Extended
+User-agent: Google-Extended
+User-agent: Amazonbot
+User-agent: FacebookBot
+User-agent: Meta-ExternalAgent
+User-agent: cohere-ai
+User-agent: Bytespider
+User-agent: Diffbot
+User-agent: CCBot
+Allow: /
+Allow: /category/
+Allow: /product/
+Allow: /occasion/
+Allow: /blog/
+Allow: /about
+Allow: /our-story
+Allow: /contact
+Allow: /images/
+Allow: /_next/static/
+Disallow: /profile/
+Disallow: /checkout/
+Disallow: /auth/
+Disallow: /wishlist
+Disallow: /api/
+Disallow: /comming-soon
+
+# ==============================================================================
+# Canonical Sitemap Specification
+# ==============================================================================
+Sitemap: https://mairiijewels.com/sitemap.xml

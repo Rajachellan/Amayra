@@ -30,7 +30,7 @@ const REVIEWS = [
   {
     id: 3,
     name: "Devi",
-    location:"Jaipur, India",
+    location:"Chennai, India",
     image:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=240&auto=format&fit=crop",
     rating: 5,
@@ -50,7 +50,7 @@ const REVIEWS = [
   {
     id: 5,
     name:"Amala",
-    location: "Salem,India",
+    location: "Chennai,India",
     image:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=240&auto=format&fit=crop",
     rating: 5,
