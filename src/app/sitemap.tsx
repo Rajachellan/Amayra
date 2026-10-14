@@ -12,20 +12,20 @@ const STATIC_ROUTES: Array<{
   changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
   priority: number;
 }> = [
-  { path: "", changeFrequency: "daily", priority: 1.0 }, // Homepage
-  { path: "/about", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/our-story", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/contact", changeFrequency: "monthly", priority: 0.8 },
-  { path: "/blog", changeFrequency: "daily", priority: 0.85 },
-  { path: "/store-locator", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/category/all", changeFrequency: "daily", priority: 0.95 },
-  { path: "/sitemap", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/shipping-returns", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/returns-exchanges", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.5 },
-  { path: "/terms-of-service", changeFrequency: "yearly", priority: 0.5 },
-  { path: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.5 },
-];
+    { path: "", changeFrequency: "daily", priority: 1.0 }, // Homepage
+    { path: "/about", changeFrequency: "monthly", priority: 0.8 },
+    { path: "/our-story", changeFrequency: "monthly", priority: 0.8 },
+    { path: "/contact", changeFrequency: "monthly", priority: 0.8 },
+    { path: "/blog", changeFrequency: "daily", priority: 0.85 },
+    { path: "/store-locator", changeFrequency: "monthly", priority: 0.7 },
+    { path: "/category/all", changeFrequency: "daily", priority: 0.95 },
+    { path: "/sitemap", changeFrequency: "monthly", priority: 0.6 },
+    { path: "/shipping-returns", changeFrequency: "monthly", priority: 0.6 },
+    { path: "/returns-exchanges", changeFrequency: "monthly", priority: 0.6 },
+    { path: "/privacy-policy", changeFrequency: "yearly", priority: 0.5 },
+    { path: "/terms-of-service", changeFrequency: "yearly", priority: 0.5 },
+    { path: "/terms-and-conditions", changeFrequency: "yearly", priority: 0.5 },
+  ];
 
 // Fallback curated categories if API is unreachable
 const FALLBACK_CATEGORIES = [

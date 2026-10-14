@@ -58,7 +58,7 @@ function getCategoryBanner(slug: string, sub?: string | null): any {
  * You can easily update or replace the default slide images below.
  */
 export const DEFAULT_BANNER_SLIDES = [
-   {
+  {
     id: "necklace-slide-1",
     image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
   },
@@ -66,7 +66,7 @@ export const DEFAULT_BANNER_SLIDES = [
     id: "necklace-slide-2",
     image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
   },
- 
+
 ];
 
 /**
@@ -532,8 +532,8 @@ function CategoryContent() {
                 <label
                   key={occKey}
                   className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
-                      ? "text-stone-400 hover:text-stone-600"
-                      : "text-stone-600 hover:text-stone-900"
+                    ? "text-stone-400 hover:text-stone-600"
+                    : "text-stone-600 hover:text-stone-900"
                     }`}
                 >
                   <input
@@ -591,8 +591,8 @@ function CategoryContent() {
                 <label
                   key={colKey}
                   className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
-                      ? "text-stone-400 hover:text-stone-600"
-                      : "text-stone-600 hover:text-stone-900"
+                    ? "text-stone-400 hover:text-stone-600"
+                    : "text-stone-600 hover:text-stone-900"
                     }`}
                 >
                   <input
@@ -647,8 +647,8 @@ function CategoryContent() {
                 <label
                   key={clr.name}
                   className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
-                      ? "text-stone-400 hover:text-stone-600"
-                      : "text-stone-600 hover:text-stone-900"
+                    ? "text-stone-400 hover:text-stone-600"
+                    : "text-stone-600 hover:text-stone-900"
                     }`}
                 >
                   <input
@@ -703,8 +703,8 @@ function CategoryContent() {
                 <label
                   key={range.label}
                   className={`flex items-center space-x-3 cursor-pointer group text-xs ${cnt === 0 && !isChecked
-                      ? "text-stone-400 hover:text-stone-600"
-                      : "text-stone-600 hover:text-stone-900"
+                    ? "text-stone-400 hover:text-stone-600"
+                    : "text-stone-600 hover:text-stone-900"
                     }`}
                 >
                   <input
@@ -828,8 +828,8 @@ function CategoryContent() {
                 }}
                 aria-label={`Slide ${idx + 1}`}
                 className={`h-2 rounded-full transition-all duration-500 cursor-pointer ${currentBannerIndex === idx
-                    ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
-                    : "w-2.5 bg-white/50 hover:bg-white/80"
+                  ? "w-8 bg-[#C4A064] shadow-[0_0_10px_rgba(196,160,100,0.8)]"
+                  : "w-2.5 bg-white/50 hover:bg-white/80"
                   }`}
               />
             ))}
