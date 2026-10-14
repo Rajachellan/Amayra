@@ -66,18 +66,18 @@ export const DEFAULT_BANNER_SLIDES = [
     image: bridalBanner, // Slide 2 Default Banner Image (User can replace here)
   },
    {
-    id: "slide-2",
+    id: "slide-3",
     image: bridalbanner1, // Slide 2 Default Banner Image (User can replace here)
   },
    {
-    id: "slide-2",
+    id: "slide-4",
     image: bridalbanner2, // Slide 2 Default Banner Image (User can replace here)
   }, {
-    id: "slide-2",
+    id: "slide-5",
     image: bridalbanner3, // Slide 2 Default Banner Image (User can replace here)
   },
    {
-    id: "slide-2",
+    id: "slide-6",
     image: bridalbanner4, // Slide 2 Default Banner Image (User can replace here)
   },
 ];
