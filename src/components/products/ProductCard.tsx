@@ -110,14 +110,14 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
             {product.category}
           </span>
           <Link href={productHref} onMouseEnter={handleMouseEnter} className="block group/title w-full">
-            <h3 className="font-serif text-xs sm:text-base text-stone-900 transition-colors duration-300 group-hover/title:text-[#c9a84c] truncate font-medium">
+            <h3 className="font-serif text-xs sm:text-base text-stone-900 transition-colors duration-300 group-hover/title:text-[#c9a84c] font-medium">
               {product.name}
             </h3>
           </Link>
 
-          <p className="text-[9px] sm:text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-3.5 sm:h-4">
+          {/* <p className="text-[9px] sm:text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-3.5 sm:h-4">
             {product.shortDescription || product.description || "Handcrafted Luxury Jewellery"}
-          </p>
+          </p> */}
         </div>
 
         <div className="w-full space-y-2 sm:space-y-3 pt-2 border-t border-stone-100">
