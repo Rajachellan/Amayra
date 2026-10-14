@@ -156,6 +156,9 @@ export type CartPricingResponse = {
     name: string;
     unlocked: boolean;
   };
+  freeShippingThreshold?: number;
+  shippingFee?: number;
+  shipping?: number;
   items: Array<{
     productId: string;
     name: string;
@@ -477,5 +480,7 @@ export const shopApi = {
       enableFreeGift: boolean;
       freeGiftThreshold: number;
       freeGiftName: string;
+      freeShippingThreshold?: number;
+      shippingFee?: number;
     }>("/pricing-settings"),
 };

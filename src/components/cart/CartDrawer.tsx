@@ -66,6 +66,8 @@ export function CartDrawer() {
     enableFreeGift: boolean;
     freeGiftThreshold: number;
     freeGiftName: string;
+    freeShippingThreshold?: number;
+    shippingFee?: number;
   } | null>(null);
 
   useEffect(() => {
@@ -74,8 +76,13 @@ export function CartDrawer() {
       .catch((err) => console.error("Failed to load pricing settings:", err));
   }, []);
 
-  const FREE_SHIPPING_THRESHOLD = 999;
-  const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
+  const FREE_SHIPPING_THRESHOLD =
+    pricingResult?.freeShippingThreshold ?? pricingConfig?.freeShippingThreshold ?? 999;
+  const standardShippingFee =
+    pricingResult?.shippingFee ?? pricingConfig?.shippingFee ?? 199;
+  const shipping =
+    pricingResult?.shipping ??
+    (subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? standardShippingFee : 0);
 
   // Active discount slabs from pricingResult (calculated) or pricingConfig (public settings)
   const discountSlabs = useMemo(() => {
