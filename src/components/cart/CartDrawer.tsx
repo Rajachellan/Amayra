@@ -66,6 +66,8 @@ export function CartDrawer() {
     enableFreeGift: boolean;
     freeGiftThreshold: number;
     freeGiftName: string;
+    freeShippingThreshold?: number;
+    shippingFee?: number;
   } | null>(null);
 
   useEffect(() => {
@@ -74,15 +76,52 @@ export function CartDrawer() {
       .catch((err) => console.error("Failed to load pricing settings:", err));
   }, []);
 
-  const FREE_SHIPPING_THRESHOLD = 999;
-  const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
+  const FREE_SHIPPING_THRESHOLD =
+    pricingResult?.freeShippingThreshold ?? pricingConfig?.freeShippingThreshold ?? 999;
+  const standardShippingFee =
+    pricingResult?.shippingFee ?? pricingConfig?.shippingFee ?? 199;
+  const shipping =
+    pricingResult?.shipping ??
+    (subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? standardShippingFee : 0);
 
   // Active discount slabs from pricingResult (calculated) or pricingConfig (public settings)
   const discountSlabs = useMemo(() => {
     const raw = pricingResult?.discountSlabs || pricingConfig?.discountSlabs || [];
-    return raw
-      .filter((s) => s.discountPercentage > 0 && s.minimumCartValue > 0)
-      .sort((a, b) => a.minimumCartValue - b.minimumCartValue);
+    let list = raw.filter((s) => s.discountPercentage > 0 && s.minimumCartValue > 0);
+
+    // Resilient fallback: extract active slab and upcoming upsell slab if raw is not yet returned
+    if (list.length === 0 && pricingResult) {
+      if (
+        pricingResult.discountSlab &&
+        pricingResult.discountSlab.discountPercentage > 0 &&
+        pricingResult.discountSlab.minimumCartValue > 0
+      ) {
+        list.push({
+          minimumCartValue: pricingResult.discountSlab.minimumCartValue,
+          discountPercentage: pricingResult.discountSlab.discountPercentage,
+        });
+      }
+      if (
+        pricingResult.upsell?.available &&
+        pricingResult.upsell.nextThreshold &&
+        pricingResult.upsell.nextDiscountPercentage
+      ) {
+        list.push({
+          minimumCartValue: pricingResult.upsell.nextThreshold,
+          discountPercentage: pricingResult.upsell.nextDiscountPercentage,
+        });
+      }
+    }
+
+    // Default standard slabs fallback if API is still loading or returned empty
+    if (list.length === 0) {
+      list = [
+        { minimumCartValue: 3499, discountPercentage: 10 },
+        { minimumCartValue: 6999, discountPercentage: 16 },
+      ];
+    }
+
+    return list.sort((a, b) => a.minimumCartValue - b.minimumCartValue);
   }, [pricingResult, pricingConfig]);
 
   // Current active discount percentage from highest matching slab

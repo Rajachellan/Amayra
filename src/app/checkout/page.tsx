@@ -134,11 +134,13 @@ export default function CheckoutPage() {
 
   const [paying, setPaying] = useState(false);
 
-  const FREE_SHIPPING_THRESHOLD = 1499;
-  const DISCOUNT_THRESHOLD = 3499;
-  const GIFT_THRESHOLD = 6999;
+  const FREE_SHIPPING_THRESHOLD = pricingResult?.freeShippingThreshold ?? 999;
+  const DISCOUNT_THRESHOLD = pricingResult?.discountSlab?.minimumCartValue ?? 3499;
+  const GIFT_THRESHOLD = pricingResult?.freeGift?.threshold ?? 6999;
 
-  const shipping = subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? 199 : 0;
+  const shipping =
+    pricingResult?.shipping ??
+    (subtotal > 0 && subtotal < FREE_SHIPPING_THRESHOLD ? (pricingResult?.shippingFee ?? 199) : 0);
   const automaticDiscount = pricingResult
     ? Math.round(pricingResult.automaticDiscount)
     : subtotal >= DISCOUNT_THRESHOLD
