@@ -153,16 +153,23 @@ export const OffersSection = () => {
         <TickerBar items={ticker} />
 
         {(() => {
-          const effectiveGap = Math.max(layout?.gap || 32, 28);
+          const effectiveGap =
+            typeof layout?.gap === "number" && !isNaN(layout.gap) && layout.gap > 0
+              ? Math.max(layout.gap, 28)
+              : 32;
 
           if (cards.length === 1) {
-            return <MainOfferCard card={cards[0]} layout={layout} />;
+            return (
+              <div className="max-w-4xl mx-auto flex justify-center">
+                <MainOfferCard card={cards[0]} layout={layout} />
+              </div>
+            );
           }
 
           if (cards.length === 2) {
             return (
               <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10"
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 lg:gap-10 justify-center max-w-5xl mx-auto items-stretch"
                 style={{ gap: `${effectiveGap}px` }}
               >
                 <SideOfferCard card={cards[0]} index={0} layout={layout} />
@@ -173,14 +180,16 @@ export const OffersSection = () => {
 
           if (mode === "one_large_two_small" && cards.length >= 3) {
             return (
-              <div className="space-y-8 md:space-y-10">
+              <div className="space-y-6 sm:space-y-8 lg:space-y-10">
                 <div
-                  className="flex flex-col gap-8 md:gap-10 lg:flex-row"
+                  className="flex flex-col gap-6 sm:gap-8 lg:gap-10 lg:flex-row items-stretch"
                   style={{ gap: `${effectiveGap}px` }}
                 >
-                  <MainOfferCard card={cards[0]} layout={layout} />
+                  <div className="flex-1 flex">
+                    <MainOfferCard card={cards[0]} layout={layout} />
+                  </div>
                   <div
-                    className="flex w-full flex-col gap-8 md:gap-10 lg:w-[38%]"
+                    className="flex w-full flex-col gap-6 sm:gap-8 lg:w-[38%] justify-between"
                     style={{ gap: `${effectiveGap}px` }}
                   >
                     <SideOfferCard card={cards[1]} index={1} layout={layout} />
@@ -190,7 +199,7 @@ export const OffersSection = () => {
 
                 {cards.length > 3 && (
                   <div
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 justify-center items-stretch"
                     style={{ gap: `${effectiveGap}px` }}
                   >
                     {cards.slice(3).map((card, i) => (
@@ -204,7 +213,7 @@ export const OffersSection = () => {
 
           return (
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-10"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 justify-center items-stretch"
               style={{ gap: `${effectiveGap}px` }}
             >
               {cards.map((card, i) => (
@@ -253,11 +262,12 @@ function MainOfferCard({ card, layout }: { card: OfferCard; layout?: PromotionLa
   return (
     <Link
       href={href}
-      className="group relative flex min-h-[380px] flex-1 animate-fade-right flex-col justify-center overflow-hidden border border-emerald-dark/10 bg-white p-8 md:p-14 shadow-md hover:shadow-xl transition-all duration-300"
+      className="group relative flex min-h-[460px] sm:min-h-[500px] md:min-h-[540px] w-full flex-1 animate-fade-right flex-col justify-center overflow-hidden border border-emerald-dark/10 bg-white p-8 md:p-14 shadow-md hover:shadow-xl transition-all duration-300"
       style={{
         borderRadius,
         backgroundColor: card.backgroundColor || "#ffffff",
         color: card.textColor || "#0b2516",
+        minHeight: "440px",
         height: layout?.autoHeight ? undefined : layout?.cardHeight || undefined,
       }}
     >
@@ -381,26 +391,26 @@ function SideOfferCard({
   const aspectClass =
     layout?.aspectRatio && layout.aspectRatio !== "auto"
       ? layout.aspectRatio === "16/9"
-        ? "aspect-video"
+        ? "aspect-video min-h-[300px] sm:min-h-[340px] md:min-h-[380px]"
         : layout.aspectRatio === "16/7"
-        ? "aspect-[16/7]"
+        ? "aspect-[16/7] min-h-[300px] sm:min-h-[340px] md:min-h-[380px]"
         : layout.aspectRatio === "4/3"
-        ? "aspect-[4/3]"
+        ? "aspect-[4/3] min-h-[320px] sm:min-h-[360px] md:min-h-[400px]"
         : layout.aspectRatio === "1/1"
-        ? "aspect-square"
+        ? "aspect-square min-h-[320px] sm:min-h-[360px] md:min-h-[400px]"
         : layout.aspectRatio === "3/4"
-        ? "aspect-[3/4]"
-        : ""
+        ? "aspect-[3/4] min-h-[360px] sm:min-h-[400px] md:min-h-[440px]"
+        : "min-h-[320px] sm:min-h-[360px] md:min-h-[380px] lg:min-h-[420px]"
       : hasImage
-      ? "aspect-[16/7] min-h-[190px] sm:min-h-[210px] md:min-h-[230px]"
-      : "min-h-[190px]";
+      ? "aspect-[4/3] sm:aspect-[16/11] md:aspect-[4/3] lg:aspect-[4/3] min-h-[320px] sm:min-h-[360px] md:min-h-[380px] lg:min-h-[420px]"
+      : "min-h-[320px] sm:min-h-[360px] md:min-h-[380px]";
 
   const borderRadius = layout?.borderRadius || "1.25rem";
 
   return (
     <Link
       href={href}
-      className={`group relative cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl flex flex-col justify-between isolate ${aspectClass} ${
+      className={`group relative w-full cursor-pointer overflow-hidden transition-all duration-300 hover:-translate-y-1.5 shadow-md hover:shadow-xl flex flex-col justify-between isolate ${aspectClass} ${
         dark
           ? "bg-emerald-dark"
           : "border border-emerald-dark/10 bg-white"
@@ -410,6 +420,7 @@ function SideOfferCard({
         backgroundColor: card.backgroundColor || undefined,
         color: card.textColor || undefined,
         animationDelay: index === 2 ? "0.15s" : undefined,
+        minHeight: "320px",
         height: layout?.autoHeight ? undefined : layout?.cardHeight || undefined,
         boxShadow: "0 10px 30px -5px rgba(11, 37, 22, 0.12)",
       }}
@@ -435,41 +446,41 @@ function SideOfferCard({
 
       {hasImage ? (
         showOverlay ? (
-          <div className="relative z-10 flex h-full flex-col justify-between p-4 sm:p-5 md:p-6 bg-gradient-to-t from-black/85 via-black/30 to-transparent text-white pointer-events-none">
+          <div className="relative z-10 flex h-full flex-col justify-between p-5 sm:p-6 md:p-7 bg-gradient-to-t from-black/85 via-black/20 to-black/30 text-white pointer-events-none">
             {/* Top row: Badge and/or Coupon Code */}
             <div className="flex items-start justify-between gap-2">
               {hasBadge ? (
-                <span className="rounded-full bg-brand-gold px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-950 shadow">
+                <span className="rounded-full bg-brand-gold px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-950 shadow">
                   {card.badge}
                 </span>
               ) : <span />}
 
               {hasCoupon ? (
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/90 border border-brand-gold/60 px-3 py-1 text-xs font-bold text-brand-gold shadow-lg backdrop-blur-md">
-                  <Tag className="h-3 w-3 text-brand-gold flex-shrink-0" />
+                <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/90 border border-brand-gold/60 px-3.5 py-1 text-xs font-bold text-brand-gold shadow-lg backdrop-blur-md">
+                  <Tag className="h-3.5 w-3.5 text-brand-gold flex-shrink-0" />
                   <span className="font-mono tracking-wider">CODE: {card.couponCode}</span>
                 </div>
               ) : null}
             </div>
 
             {/* Bottom section: Title, Description, Button */}
-            <div className="mt-auto pt-3">
+            <div className="mt-auto pt-4">
               {hasTitle ? (
-                <h3 className="font-serif text-lg sm:text-xl font-normal text-white drop-shadow-md leading-snug">
+                <h3 className="font-serif text-xl sm:text-2xl font-normal text-white drop-shadow-md leading-snug">
                   {card.title}
                 </h3>
               ) : null}
 
               {hasDesc ? (
-                <p className="mt-1 text-xs text-white/80 line-clamp-2 leading-relaxed">
+                <p className="mt-1.5 text-xs sm:text-sm text-white/85 line-clamp-2 leading-relaxed">
                   {card.description}
                 </p>
               ) : null}
 
               {hasButton ? (
-                <span className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-brand-gold transition-all duration-200 group-hover:gap-2.5">
+                <span className="mt-3 inline-flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-brand-gold transition-all duration-200 group-hover:gap-3">
                   {card.buttonText}
-                  <ArrowRight className="h-3.5 w-3.5" />
+                  <ArrowRight className="h-4 w-4" />
                 </span>
               ) : null}
             </div>

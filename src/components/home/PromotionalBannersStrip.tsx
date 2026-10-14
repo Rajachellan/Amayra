@@ -64,17 +64,17 @@ function cardSpanClass(mode: PromoLayoutMode, index: number, count: number): str
 function aspectClass(ratio?: PromotionLayoutDoc["aspectRatio"]) {
   switch (ratio) {
     case "16/9":
-      return "aspect-video";
+      return "aspect-video min-h-[300px] sm:min-h-[340px] md:min-h-[380px]";
     case "16/7":
-      return "aspect-[16/7]";
+      return "aspect-[16/7] min-h-[300px] sm:min-h-[340px] md:min-h-[380px]";
     case "4/3":
-      return "aspect-[4/3]";
+      return "aspect-[4/3] min-h-[320px] sm:min-h-[360px] md:min-h-[400px]";
     case "1/1":
-      return "aspect-square";
+      return "aspect-square min-h-[320px] sm:min-h-[360px] md:min-h-[400px]";
     case "3/4":
-      return "aspect-[3/4]";
+      return "aspect-[3/4] min-h-[360px] sm:min-h-[400px] md:min-h-[440px]";
     default:
-      return "min-h-[180px]";
+      return "min-h-[320px] sm:min-h-[360px] md:min-h-[380px] lg:min-h-[420px]";
   }
 }
 
@@ -213,7 +213,10 @@ export function PromotionalBannersStrip() {
 
   if (!layout || !cards.length) return null;
 
-  const gap = layout.gap ?? 16;
+  const gap =
+    typeof layout.gap === "number" && !isNaN(layout.gap) && layout.gap > 0
+      ? Math.max(layout.gap, 24)
+      : 28;
   const containerClass =
     layout.containerWidth === "full"
       ? "w-full px-4"
@@ -229,7 +232,7 @@ export function PromotionalBannersStrip() {
       <div className={containerClass}>
         <div
           ref={scrollerRef}
-          className={`${gridClassForLayout(mode, cards.length)} ${
+          className={`${gridClassForLayout(mode, cards.length)} gap-6 sm:gap-8 justify-center ${
             isScroll ? "" : layout.equalHeight ? "items-stretch" : ""
           }`}
           style={{ gap: `${gap}px` }}
