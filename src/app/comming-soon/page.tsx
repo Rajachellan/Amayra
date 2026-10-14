@@ -22,6 +22,7 @@ export default function ComingSoonPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative w-full aspect-[16/9] max-h-[72vh] rounded-2xl overflow-hidden shadow-2xl border border-stone-200/80 bg-stone-950"
           >
+            
             <Image
               src="/images/optimized/banner.jpeg"
               alt="MaiRii Coming Soon - A new chapter of timeless jewellery is arriving"
