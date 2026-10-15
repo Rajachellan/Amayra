@@ -82,8 +82,8 @@ export const Navbar = () => {
             sub.push({ name: ch.name, href: `/category/${ch.slug}` });
           }
         }
-        sub.push({ name: "New Arrivals", href: "/category/new" });
-        sub.push({ name: "View All", href: "/category/all" });
+        // sub.push({ name: "New Arrivals", href: "/category/new" });
+        // sub.push({ name: "View All", href: "/category/all" });
         setShopSubItems(sub.slice(0, 14));
       })
       .catch(() => setShopSubItems(null));

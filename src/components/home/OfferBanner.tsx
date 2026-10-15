@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { ArrowRight, Gift, Star, Tag } from "lucide-react";
+import { ArrowRight, Gift, Star } from "lucide-react";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import {
@@ -252,12 +252,11 @@ function MainOfferCard({ card, layout }: { card: OfferCard; layout?: PromotionLa
   const hasImage = Boolean(imageSrc);
   const borderRadius = layout?.borderRadius || "1.5rem";
 
-  const hasCoupon = Boolean(card.couponCode && card.couponCode.trim());
   const hasBadge = Boolean(card.badge && card.badge.trim());
   const hasTitle = Boolean(card.title && card.title.trim());
   const hasDesc = Boolean(card.description && card.description.trim());
   const hasButton = Boolean(card.buttonText && card.buttonText.trim());
-  const showOverlay = hasImage && (hasCoupon || hasBadge || hasTitle || hasDesc || hasButton);
+  const showOverlay = hasImage && (hasBadge || hasTitle || hasDesc || hasButton);
 
   return (
     <Link
@@ -313,13 +312,6 @@ function MainOfferCard({ card, layout }: { card: OfferCard; layout?: PromotionLa
               </p>
             ) : null}
 
-            {hasCoupon ? (
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-emerald-950/90 border border-brand-gold/60 px-4 py-1.5 text-xs font-bold text-brand-gold shadow-lg backdrop-blur-md">
-                <Tag className="h-3.5 w-3.5 text-brand-gold" />
-                <span className="font-mono tracking-wider">USE CODE: {card.couponCode}</span>
-              </div>
-            ) : null}
-
             {hasButton ? (
               <div>
                 <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-brand-gold px-6 py-3 text-[12px] font-bold uppercase tracking-[0.14em] text-emerald-950 transition-all duration-200 group-hover:translate-x-1 group-hover:bg-brand-gold-light shadow-md">
@@ -349,12 +341,6 @@ function MainOfferCard({ card, layout }: { card: OfferCard; layout?: PromotionLa
             </p>
           ) : null}
 
-          {card.couponCode ? (
-            <span className="mb-6 inline-block w-fit rounded bg-emerald-dark/07 px-2.5 py-1 text-[11px] font-semibold tracking-widest text-emerald-dark">
-              {card.couponCode}
-            </span>
-          ) : null}
-
           <span className="inline-flex w-fit animate-fade-up items-center gap-2 rounded-full bg-emerald-dark px-7 py-3.5 text-[13px] font-semibold uppercase tracking-[0.14em] text-brand-gold transition-all duration-200 group-hover:translate-x-1 group-hover:bg-emerald-medium [animation-delay:0.3s]">
             {card.buttonText || "Shop now"}
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
@@ -380,13 +366,12 @@ function SideOfferCard({
   const imageSrc = card.backgroundImage || card.image;
   const hasImage = Boolean(imageSrc);
 
-  const hasCoupon = Boolean(card.couponCode && card.couponCode.trim());
   const hasBadge = Boolean(card.badge && card.badge.trim());
   const hasTitle = Boolean(card.title && card.title.trim());
   const hasDesc = Boolean(card.description && card.description.trim());
   const hasButton = Boolean(card.buttonText && card.buttonText.trim());
 
-  const showOverlay = hasImage && (hasCoupon || hasBadge || hasTitle || hasDesc || hasButton);
+  const showOverlay = hasImage && (hasBadge || hasTitle || hasDesc || hasButton);
 
   const aspectClass =
     layout?.aspectRatio && layout.aspectRatio !== "auto"
@@ -447,21 +432,14 @@ function SideOfferCard({
       {hasImage ? (
         showOverlay ? (
           <div className="relative z-10 flex h-full flex-col justify-between p-5 sm:p-6 md:p-7 bg-gradient-to-t from-black/85 via-black/20 to-black/30 text-white pointer-events-none">
-            {/* Top row: Badge and/or Coupon Code */}
-            <div className="flex items-start justify-between gap-2">
-              {hasBadge ? (
+            {/* Top row: Badge */}
+            {hasBadge ? (
+              <div className="flex items-start justify-between gap-2">
                 <span className="rounded-full bg-brand-gold px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-950 shadow">
                   {card.badge}
                 </span>
-              ) : <span />}
-
-              {hasCoupon ? (
-                <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-950/90 border border-brand-gold/60 px-3.5 py-1 text-xs font-bold text-brand-gold shadow-lg backdrop-blur-md">
-                  <Tag className="h-3.5 w-3.5 text-brand-gold flex-shrink-0" />
-                  <span className="font-mono tracking-wider">CODE: {card.couponCode}</span>
-                </div>
-              ) : null}
-            </div>
+              </div>
+            ) : null}
 
             {/* Bottom section: Title, Description, Button */}
             <div className="mt-auto pt-4">
@@ -524,16 +502,6 @@ function SideOfferCard({
               >
                 {card.description || card.subtitle}
               </p>
-            ) : null}
-
-            {card.couponCode ? (
-              <span
-                className={`mb-4 inline-block rounded px-2.5 py-1 text-[11px] font-semibold tracking-widest ${
-                  dark ? "bg-white/10 text-white" : "bg-emerald-dark/07 text-emerald-dark"
-                }`}
-              >
-                {card.couponCode}
-              </span>
             ) : null}
           </div>
 

@@ -167,9 +167,6 @@ function PromoCard({
         {card.description ? (
           <p className="line-clamp-2 text-xs opacity-80 md:text-sm">{card.description}</p>
         ) : null}
-        {card.couponCode ? (
-          <p className="text-[11px] tracking-wide opacity-85">Use code {card.couponCode}</p>
-        ) : null}
             {card.buttonText ? (
               <span className="mt-1 w-fit rounded-full bg-[#c4a46a] px-4 py-1.5 text-xs font-medium text-[#1c1916]">
                 {card.buttonText}
