@@ -615,13 +615,6 @@ function ProductDetail() {
                         {(product.color || (product.specifications as any)?.color || (product.specifications as any)?.colour) && (
                           <p><strong className="text-neutral-800">Colour:</strong> {product.color || (product.specifications as any)?.color || (product.specifications as any)?.colour}</p>
                         )}
-                        {(product.length || product.breadth || product.height) && (
-                          <div className="pt-2 border-t border-neutral-100 flex flex-wrap gap-x-6 gap-y-1 text-neutral-800">
-                            {product.length && <p><strong>Length:</strong> {product.length}</p>}
-                            {product.breadth && <p><strong>Breadth / Width:</strong> {product.breadth}</p>}
-                            {product.height && <p><strong>Height:</strong> {product.height}</p>}
-                          </div>
-                        )}
                       </div>
 
                       {/* Perfect for occasions */}

@@ -66,18 +66,6 @@ export function ProductReviewsSection({
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    try {
-      const d = new Date(dateStr);
-      return d.toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      });
-    } catch {
-      return "Recently";
-    }
-  };
 
   return (
     <section className="border-t border-neutral-200 bg-[#FAF9F7] py-14 sm:py-20">
@@ -180,21 +168,16 @@ export function ProductReviewsSection({
                     ))}
                   </div>
 
-                  {/* Reviewer & Date */}
-                  <div className="flex items-baseline justify-between gap-2 border-b border-neutral-100 pb-2.5">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="font-semibold text-xs sm:text-sm text-neutral-900">
-                        {rev.reviewerName}
-                      </span>
-                      {rev.verified && (
-                        <span className="rounded-full bg-neutral-100 px-1.5 py-0.2 text-[9px] font-medium text-neutral-600 border border-neutral-200">
-                          Verified
-                        </span>
-                      )}
-                    </div>
-                    <span className="text-[11px] text-neutral-400 shrink-0">
-                      {formatDate(rev.createdAt)}
+                  {/* Reviewer */}
+                  <div className="flex items-center gap-1.5 flex-wrap border-b border-neutral-100 pb-2.5">
+                    <span className="font-semibold text-xs sm:text-sm text-neutral-900">
+                      {rev.reviewerName}
                     </span>
+                    {rev.verified && (
+                      <span className="rounded-full bg-neutral-100 px-1.5 py-0.2 text-[9px] font-medium text-neutral-600 border border-neutral-200">
+                        Verified
+                      </span>
+                    )}
                   </div>
 
                   {/* Title & Comment */}
