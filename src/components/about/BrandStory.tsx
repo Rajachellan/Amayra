@@ -49,7 +49,7 @@ export const BrandStory = () => {
             >
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg shadow-2xl">
                 <Image
-                  src="/images/bandhana.png"
+                  src="/images/bandana.png"
                   alt="MaiRii Heritage & Bangles"
                   fill
                   className="object-cover transition-transform duration-1000 hover:scale-105"
