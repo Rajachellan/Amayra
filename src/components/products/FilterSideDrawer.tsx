@@ -16,7 +16,20 @@ interface FilterSideDrawerProps {
   setFilters: (filters: any) => void;
 }
 
-const COLORS = ["Emerald", "Ruby", "Blue", "Gold", "White", "Multi"];
+const COLORS = [
+  "Antique/Metallic",
+  "Black",
+  "Blue/ Teal",
+  "Golden/Yellow",
+  "Green/Mint",
+  "Grey/Smokey",
+  "Ivory/White",
+  "Multicolour",
+  "Orange/Peach",
+  "Pink/Magenta",
+  "Purple/Voilet/Lavendar",
+  "Red/ Maroon",
+];
 const MATERIALS = ["18k Gold", "22k Gold", "Platinum", "925 Silver", "Kundan"];
 const PRICE_RANGES = [
   { label: "Under ₹1,000", max: 1000 },
