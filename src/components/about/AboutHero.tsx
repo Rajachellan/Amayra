@@ -15,17 +15,25 @@ export const AboutHero = () => {
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="absolute inset-0"
       >
+        {/* MOBILE banner (below 768px) */}
+        <Image
+          src="/images/optimized/A Mother-Daughter Vanity Moment.png"
+          alt="MaiRii Heritage Jewellery"
+          fill
+          sizes="100vw"
+          className="block md:hidden object-cover object-[center_35%] brightness-90"
+        />
+
+        {/* LAPTOP / DESKTOP banner (768px and above) */}
         <Image
           src="/images/optimized/banner-image.png"
           alt="MaiRii Heritage Jewellery"
           fill
           priority
-          className="object-cover object-[center_35%] brightness-90"
+          sizes="100vw"
+          className="hidden md:block object-cover object-[center_35%] brightness-90"
         />
-        
       </motion.div>
-
-    
 
       {/* Floating Scroll Indicator */}
       <motion.div
