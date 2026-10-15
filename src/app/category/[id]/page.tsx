@@ -573,7 +573,7 @@ function CategoryContent() {
         </button>
 
         {expanded.occasion && (
-          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto no-scrollbar pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedOccasions.length} selected</span>
               {selectedOccasions.length > 0 && (
@@ -632,7 +632,7 @@ function CategoryContent() {
         </button>
 
         {expanded.collection && (
-          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto no-scrollbar pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedCollections.length} selected</span>
               {selectedCollections.length > 0 && (
@@ -691,7 +691,7 @@ function CategoryContent() {
         </button>
 
         {expanded.color && (
-          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto no-scrollbar pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedColors.length} selected</span>
               {selectedColors.length > 0 && (
@@ -747,7 +747,7 @@ function CategoryContent() {
         </button>
 
         {expanded.price && (
-          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto scrollbar-gold-slim-vertical pr-1">
+          <div className="mt-2 space-y-3 pl-0.5 max-h-60 overflow-y-auto no-scrollbar pr-1">
             <div className="flex items-center justify-between text-xs text-stone-500 mb-2">
               <span>{selectedMaxPrice !== null ? "1 selected" : "0 selected"}</span>
               {selectedMaxPrice !== null && (
@@ -961,7 +961,7 @@ function CategoryContent() {
           <div className="flex gap-10 items-start">
             {/* Desktop Left Sidebar */}
             {showFilter && (
-              <aside className="hidden lg:block w-64 shrink-0 pr-4 border-r border-stone-200 sticky top-28 self-start max-h-[calc(100vh-7.5rem)] overflow-y-auto scrollbar-gold-slim-vertical overscroll-contain">
+              <aside className="hidden lg:block w-64 shrink-0 pr-4 border-r border-stone-200 sticky top-28 self-start max-h-[calc(100vh-7.5rem)] overflow-y-auto no-scrollbar overscroll-contain">
                 <AmamaSidebar />
               </aside>
             )}
@@ -1030,7 +1030,7 @@ function CategoryContent() {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-gold-slim-vertical overscroll-contain">
+              <div className="flex-1 overflow-y-auto px-6 py-4 no-scrollbar overscroll-contain">
                 <AmamaSidebar hideTitle />
               </div>
               <div className="p-4 border-t border-stone-200 bg-white shrink-0 flex gap-3">
