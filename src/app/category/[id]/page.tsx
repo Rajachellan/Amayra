@@ -9,6 +9,7 @@ import { CategorySlider } from "@/components/products/CategorySlider";
 import { shopApi, type CategoryTreeNode } from "@/lib/api/shop";
 import { useProducts, useProductFacets } from "@/hooks/useProducts";
 import { useCategoriesTree, useCollections, useOccasions } from "@/hooks/useCatalogMetadata";
+import innerbanner1 from "../../../assets/preview_banner/Emerald Lotus Bridal Necklace ad.png"
 import bridalbanner1 from "../../../assets/preview_banner/banner-image (1).png"
 import bridalbanner2 from "../../../assets/preview_banner/banner-image (2).png"
 import bridalbanner3 from "../../../assets/preview_banner/banner-image (3).png"
@@ -23,7 +24,7 @@ import Link from "next/link";
 import silverBanner from "@/assets/silver.jpg";
 import bridalBanner from "../../../assets/preview_banner/Inspired-by-Her.png";
 import necklaceBanner from "@/assets/preview_banner/neckles-banner (2).png";
-import necklaceBanner2 from "../../../assets/preview_banner/neckles-banner (1).png";
+import necklaceBanner2 from "../../../assets/preview_banner/previewbanner1.jpeg";
 import banglesBanner from "@/assets/bangles_7.jpg";
 import earringsBanner from "@/assets/kammal_6.jpg";
 import bannerImage from "../../../assets/preview_banner/inner-banner-1.png";
@@ -33,6 +34,19 @@ import mangalsutraImg from "@/assets/pexels-the-glorious-studio-3584518-8306531.
 import chainImg from "@/assets/pexels-thisisjooh-36160928.jpg";
 import pendantImg from "@/assets/pexels-arif-13595746.jpg";
 
+/* ── MOBILE BANNER IMAGES ─────────────────────────────────────────────────────
+ * Unga generate pannina mobile images-a inga import pannunga.
+ * File names / path unga folder-ku match aagura maathiri maathikonga.
+ * (Idhe folder: assets/preview_banner/)
+ * ──────────────────────────────────────────────────────────────────────────── */
+import mobileBanner1 from "../../../assets/preview_banner/inner-banner-mobile.jpeg"; // Mobile Slide 1
+import mobileBanner2 from "../../../assets/preview_banner/inner-banner-mobile.jpeg"; // Mobile Slide 2
+
+type BannerSlide = {
+  id: string;
+  image: any; // Laptop / desktop image
+  mobileImage?: any; // Mobile image (illaina laptop image-ae use aagum)
+};
 
 const CATEGORY_BANNERS: Record<string, any> = {
   silver: silverBanner,
@@ -55,32 +69,36 @@ function getCategoryBanner(slug: string, sub?: string | null): any {
 
 /**
  * Default 2-slide banner configuration for category/collection pages (e.g. category/all?collection=aanchal).
- * You can easily update or replace the default slide images below.
+ * image = laptop view, mobileImage = mobile view.
  */
-export const DEFAULT_BANNER_SLIDES = [
+export const DEFAULT_BANNER_SLIDES: BannerSlide[] = [
   {
     id: "necklace-slide-1",
-    image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
+    image: bannerImage, // Slide 1 LAPTOP Banner Image (Wear What Lives Within You)
+    mobileImage: innerbanner1, // Slide 1 MOBILE Banner Image
   },
   {
     id: "necklace-slide-2",
-    image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
+    image: necklaceBanner2, // Slide 2 LAPTOP Banner Image (Inspired by Her. Made for You.)
+    mobileImage: mobileBanner2, // Slide 2 MOBILE Banner Image
   },
 
 ];
 
 /**
  * Necklaces Category Banner Slides (2-slide banner configuration)
- * You can easily update or replace the necklace slide images below.
+ * image = laptop view, mobileImage = mobile view.
  */
-export const NECKLACE_BANNER_SLIDES = [
+export const NECKLACE_BANNER_SLIDES: BannerSlide[] = [
   {
     id: "necklace-slide-1",
-    image: bannerImage, // Slide 1 Default Banner Image (Wear What Lives Within You)
+    image: bannerImage, // Slide 1 LAPTOP Banner Image (Wear What Lives Within You)
+    mobileImage: innerbanner1, // Slide 1 MOBILE Banner Image
   },
   {
     id: "necklace-slide-2",
-    image: necklaceBanner2, // Slide 2 Default Banner Image (Inspired by Her. Made for You.)
+    image: necklaceBanner2, // Slide 2 LAPTOP Banner Image (Inspired by Her. Made for You.)
+    mobileImage: mobileBanner2, // Slide 2 MOBILE Banner Image
   },
 ];
 
@@ -296,7 +314,7 @@ function CategoryContent() {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isBannerHovered, setIsBannerHovered] = useState(false);
 
-  const activeSlides = useMemo(() => {
+  const activeSlides: BannerSlide[] = useMemo(() => {
     const slug = (categorySlug || "all").toLowerCase();
     if (slug === "necklaces" || slug === "necklace") {
       return NECKLACE_BANNER_SLIDES;
@@ -484,6 +502,14 @@ function CategoryContent() {
       prev.includes(name) ? prev.filter((x) => x !== name) : [...prev, name]
     );
   };
+
+  // Laptop & mobile image sources for the current slide
+  const desktopBannerSrc =
+    activeSlides[currentBannerIndex]?.image ||
+    heroImage ||
+    DEFAULT_BANNER_SLIDES[0].image;
+  const mobileBannerSrc =
+    activeSlides[currentBannerIndex]?.mobileImage || desktopBannerSrc;
 
   /* ── Amama-style Sidebar Component ────────────────────────────────────────── */
   const AmamaSidebar = ({ hideTitle = false }: { hideTitle?: boolean } = {}) => (
@@ -754,7 +780,7 @@ function CategoryContent() {
       <section
         onMouseEnter={() => setIsBannerHovered(true)}
         onMouseLeave={() => setIsBannerHovered(false)}
-        className="relative h-[80vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16"
+       className="relative h-[100vh] md:h-[80vh] min-h-[480px] md:min-h-[480px] flex items-center justify-center overflow-hidden bg-stone-950 pt-16"
       >
         {/* Background Image Carousel */}
         <div className="absolute inset-0 z-0">
@@ -767,15 +793,21 @@ function CategoryContent() {
               transition={{ duration: 0.8, ease: "easeInOut" }}
               className="absolute inset-0"
             >
+              {/* MOBILE view image (below 768px) */}
               <Image
-                src={
-                  activeSlides[currentBannerIndex]?.image ||
-                  heroImage ||
-                  DEFAULT_BANNER_SLIDES[0].image
-                }
+                src={mobileBannerSrc}
                 alt="Collection Banner Slide"
                 fill
-                className="object-cover object-[center_35%] brightness-100"
+                sizes="100vw"
+                className="block md:hidden object-cover object-[center_35%] brightness-100"
+              />
+              {/* LAPTOP / DESKTOP view image (768px and above) */}
+              <Image
+                src={desktopBannerSrc}
+                alt="Collection Banner Slide"
+                fill
+                sizes="100vw"
+                className="hidden md:block object-cover object-[center_35%] brightness-100"
                 priority={currentBannerIndex === 0}
               />
             </motion.div>
