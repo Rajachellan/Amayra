@@ -55,7 +55,7 @@ export const FilterSideDrawer = ({ isOpen, onClose, filters, setFilters }: Filte
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed top-0 right-0 h-full w-full max-w-[350px] bg-white z-[110] shadow-2xl overflow-y-auto"
+            className="fixed top-0 right-0 h-full w-full max-w-[350px] bg-white z-[110] shadow-2xl overflow-y-auto no-scrollbar"
           >
             <div className="p-8">
               <div className="flex justify-between items-center mb-10 pb-4 border-b border-gray-100">
