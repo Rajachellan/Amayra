@@ -56,6 +56,16 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "mairiijewels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.mairiijewels.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "**.r2.dev",
         pathname: "/**",
       },
