@@ -26,7 +26,7 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL("https://mairiijewels.com"),
   title: {
-    default: "MaiRii | Premium Artificial Jewellery",
+    default: "MaiRii | Premium Imitation Statement Jewellery",
     template: "%s | MaiRii Jewellery",
   },
   description:
@@ -34,6 +34,9 @@ export const metadata: Metadata = {
   keywords: [
     "MaiRii",
     "MaiRii Jewels",
+    "premium imitation statement jewellery",
+    "imitation statement jewellery",
+    "statement jewellery",
     "premium artificial jewellery",
     "artificial jewellery",
     "luxury jewellery",
@@ -59,7 +62,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "MaiRii | Premium Artificial Jewellery",
+    title: "MaiRii | Premium Imitation Statement Jewellery",
     description:
       "Exquisite premium artificial jewellery for your special moments. Experience high-end luxury with MaiRii.",
     url: "https://mairiijewels.com",
@@ -69,7 +72,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MaiRii | Premium Artificial Jewellery",
+    title: "MaiRii | Premium Imitation Statement Jewellery",
     description:
       "Exquisite premium artificial jewellery for your special moments. Experience high-end luxury with MaiRii.",
   },
