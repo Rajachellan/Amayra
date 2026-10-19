@@ -39,6 +39,7 @@ export interface Product {
   collections?: Array<{ _id?: string; name: string; slug: string }>;
   occasions?: Array<{ _id?: string; name: string; slug: string }>;
   stock: number;
+  isPromotionalGift?: boolean;
   lookbooks?: {
     id: string;
     title: string;

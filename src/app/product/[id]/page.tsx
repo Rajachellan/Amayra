@@ -241,6 +241,10 @@ function ProductDetail() {
       toast.error("This product cannot be added to cart.");
       return;
     }
+    if (product.isPromotionalGift || product.sku === "GIFT799" || product.slug === "free-gift-worth-799") {
+      toast.error("This is a complimentary gift and cannot be purchased directly.");
+      return;
+    }
     if (product.stock <= 0) {
       toast.error("This item is sold out.");
       return;
@@ -260,6 +264,10 @@ function ProductDetail() {
     if (!product) return;
     if (!product.slug?.trim()) {
       toast.error("This product cannot be purchased online.");
+      return;
+    }
+    if (product.isPromotionalGift || product.sku === "GIFT799" || product.slug === "free-gift-worth-799") {
+      toast.error("This is a complimentary gift and cannot be purchased directly.");
       return;
     }
     if (product.stock <= 0) {
@@ -305,7 +313,10 @@ function ProductDetail() {
     : [mainSrc];
   const catHref = product.categorySlug ? `/category/${product.categorySlug}` : "/category/all";
   const inWishlist = isInWishlist(product.id);
-  const inStock = product.stock > 0;
+  const isPromoGift = Boolean(
+    product.isPromotionalGift || product.sku === "GIFT799" || product.slug === "free-gift-worth-799"
+  );
+  const inStock = product.stock > 0 && !isPromoGift;
   const lowStock = inStock && product.stock <= 10;
   const maxQty = inStock ? product.stock : 1;
 
@@ -523,7 +534,7 @@ function ProductDetail() {
                     disabled={!inStock}
                     className="flex-1 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500 disabled:hover:shadow-none disabled:hover:translate-y-0 min-h-[48px] flex items-center justify-center text-center"
                   >
-                    {inStock ? "Add to Cart" : "Sold Out"}
+                    {isPromoGift ? "Complimentary Gift" : inStock ? "Add to Cart" : "Sold Out"}
                   </button>
 
                   {/* Buy It Now Button */}
@@ -531,17 +542,21 @@ function ProductDetail() {
                     type="button"
                     onClick={handleBuyNow}
                     disabled={!inStock}
-                    className="flex-1 rounded-xl bg-[#d4af37] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:shadow-none disabled:hover:translate-y-0 min-h-[48px] flex items-center justify-center text-center"
+                    className="flex-1 rounded-xl bg-[#d4af37] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:shadow-none min-h-[48px] flex items-center justify-center text-center"
                   >
-                    {inStock ? "Buy It Now" : "Sold Out"}
+                    {isPromoGift ? "Complimentary Gift" : inStock ? "Buy It Now" : "Sold Out"}
                   </button>
                 </div>
 
-                {!inStock && (
+                {isPromoGift ? (
+                  <p className="text-sm font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 rounded-xl p-3">
+                    🎁 Complimentary Gift — Automatically added to your bag on qualifying orders.
+                  </p>
+                ) : !inStock ? (
                   <p className="text-sm font-semibold text-rose-600">
                     This item is currently sold out.
                   </p>
-                )}
+                ) : null}
               </div>
 
               {/* 5 Homepage Highlight Category Icons */}

@@ -18,6 +18,7 @@ import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { SortDropdown } from "@/components/ui/SortDropdown";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -456,6 +457,9 @@ function CategoryContent() {
   // Apply active sidebar filters
   const filteredProducts = useMemo(() => {
     return rawProducts.filter((p) => {
+      if (p.isPromotionalGift || p.sku === "GIFT799" || p.slug === "free-gift-worth-799") {
+        return false;
+      }
       if (selectedOccasions.length > 0) {
         const matchesOcc = selectedOccasions.some((occ) => {
           const occLower = occ.toLowerCase();
@@ -936,24 +940,18 @@ function CategoryContent() {
                 {filteredProducts.length} products
               </span>
 
-              <div className="flex items-center space-x-2">
-                <span className="text-stone-500 text-xs hidden sm:inline">Sort by:</span>
-                <div className="relative">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="appearance-none bg-transparent border-b border-stone-300 py-1 pr-6 text-xs font-semibold tracking-wider text-stone-800 focus:outline-none cursor-pointer"
-                  >
-                    <option value="Featured">Featured</option>
-                    <option value="Newest Arrivals">Newest Arrivals</option>
-                    <option value="Price: Low to High">Price: Low to High</option>
-                    <option value="Price: High to Low">Price: High to Low</option>
-                    <option value="Trending">Trending</option>
-                    <option value="Bestsellers">Bestsellers</option>
-                  </select>
-                  <ChevronDown className="absolute right-0 top-1.5 w-3.5 h-3.5 text-stone-600 pointer-events-none" />
-                </div>
-              </div>
+              <SortDropdown
+                value={sortBy}
+                onChange={setSortBy}
+                options={[
+                  "Featured",
+                  "Newest Arrivals",
+                  "Price: Low to High",
+                  "Price: High to Low",
+                  "Trending",
+                  "Bestsellers",
+                ]}
+              />
             </div>
           </div>
 

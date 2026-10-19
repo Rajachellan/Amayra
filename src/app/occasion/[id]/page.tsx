@@ -10,6 +10,7 @@ import { mapListItemToProduct } from "@/lib/mapProduct";
 import { resolveMediaUrl } from "@/lib/apiBase";
 import { Filter, ChevronDown, X, Star } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { SortDropdown } from "@/components/ui/SortDropdown";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -81,7 +82,11 @@ function OccasionContent() {
     shopApi.products(q)
       .then((res) => {
         if (cancelled) return;
-        setRawProducts(res.items.map(mapListItemToProduct));
+        setRawProducts(
+          res.items
+            .map(mapListItemToProduct)
+            .filter((p) => !p.isPromotionalGift && p.sku !== "GIFT799" && p.slug !== "free-gift-worth-799")
+        );
       })
       .catch(() => {
         if (!cancelled) setRawProducts([]);
@@ -218,23 +223,17 @@ function OccasionContent() {
                   </p>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <span className="text-gray-400 text-[10px] tracking-widest uppercase">Sort By</span>
-                  <div className="relative">
-                    <select
-                      value={sortBy}
-                      onChange={(e) => setSortBy(e.target.value)}
-                      className="appearance-none bg-transparent border-b border-brand-gold py-1 pr-6 text-xs font-bold tracking-widest uppercase focus:outline-none cursor-pointer text-foreground"
-                    >
-                      <option>Newest Arrivals</option>
-                      <option>Price: Low to High</option>
-                      <option>Price: High to Low</option>
-                      <option>Trending</option>
-                      <option>Bestsellers</option>
-                    </select>
-                    <ChevronDown className="absolute right-0 top-1 w-3 h-3 text-brand-gold pointer-events-none" />
-                  </div>
-                </div>
+                <SortDropdown
+                  value={sortBy}
+                  onChange={setSortBy}
+                  options={[
+                    "Newest Arrivals",
+                    "Price: Low to High",
+                    "Price: High to Low",
+                    "Trending",
+                    "Bestsellers",
+                  ]}
+                />
               </div>
 
               {loading ? (

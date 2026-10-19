@@ -84,6 +84,10 @@ export function mapListItemToProduct(p: ProductListItem): Product {
     tags: p.tags,
     collections: p.collections,
     occasions: p.occasions,
+    isPromotionalGift:
+      (p as any).isPromotionalGift === true ||
+      p.sku === "GIFT799" ||
+      p.slug === "free-gift-worth-799",
   };
 }
 
