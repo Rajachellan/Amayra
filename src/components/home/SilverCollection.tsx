@@ -121,8 +121,15 @@ export const SilverCollection = () => {
                         alt={product.name}
                         fill
                         sizes="(max-width: 768px) 50vw, 25vw"
-                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                        className={`object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 ${
+                          typeof product.stock === "number" && product.stock <= 0 ? "opacity-75 grayscale-[20%]" : ""
+                        }`}
                       />
+                      {typeof product.stock === "number" && product.stock <= 0 && (
+                        <span className="absolute top-3 left-3 px-2.5 py-0.5 text-white text-[8px] sm:text-[9px] font-bold uppercase tracking-widest rounded-full bg-stone-900/90 border border-white/20 z-10 shadow-sm">
+                          Sold Out
+                        </span>
+                      )}
                     </Link>
 
                     {/* Wishlist Button */}
@@ -160,16 +167,26 @@ export const SilverCollection = () => {
                       </span>
                     </div>
 
-                    <button
-                      onClick={() => {
-                        addToCart(product);
-                        toast.success("Added to cart");
-                      }}
-                      className="mt-auto w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] sm:text-xs uppercase tracking-[0.15em] font-bold flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer"
-                    >
-                      <ShoppingBag className="w-3.5 h-3.5" />
-                      <span className="text-white font-bold">Add to Cart</span>
-                    </button>
+                    {typeof product.stock === "number" && product.stock <= 0 ? (
+                      <button
+                        type="button"
+                        disabled
+                        className="mt-auto w-full py-2.5 px-4 rounded-xl bg-stone-200 text-stone-500 text-[10px] sm:text-xs uppercase tracking-[0.15em] font-bold flex items-center justify-center gap-2 cursor-not-allowed opacity-80"
+                      >
+                        <span className="font-bold">Sold Out</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          addToCart(product);
+                          toast.success("Added to cart");
+                        }}
+                        className="mt-auto w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white text-[10px] sm:text-xs uppercase tracking-[0.15em] font-bold flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer"
+                      >
+                        <ShoppingBag className="w-3.5 h-3.5" />
+                        <span className="text-white font-bold">Add to Cart</span>
+                      </button>
+                    )}
                   </div>
                 </motion.div>
               ))}

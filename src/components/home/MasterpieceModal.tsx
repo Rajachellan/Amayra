@@ -72,7 +72,7 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
   const handleAddToCart = () => {
     if (!product) return;
     if (typeof product.stock === "number" && product.stock <= 0) {
-      toast.error("This masterpiece is currently out of stock!");
+      toast.error("This masterpiece is currently sold out!");
       return;
     }
     addToCart(product);
@@ -192,9 +192,9 @@ export const MasterpieceModal: React.FC<MasterpieceModalProps> = ({
                 <button
                   type="button"
                   disabled
-                  className="w-full py-3.5 px-6 rounded-xl bg-stone-200 text-stone-500 text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 cursor-not-allowed opacity-50 shadow-none border-none"
+                  className="w-full py-3.5 px-6 rounded-xl bg-stone-200 text-stone-500 text-xs uppercase tracking-[0.2em] font-bold flex items-center justify-center gap-2 cursor-not-allowed opacity-75 shadow-none border-none"
                 >
-                  <span className="text-stone-500 font-bold">Out of Stock</span>
+                  <span className="text-stone-500 font-bold">Sold Out</span>
                 </button>
               ) : (
                 <button

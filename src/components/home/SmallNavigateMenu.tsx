@@ -222,7 +222,11 @@ export function SmallNavigationMenu() {
                                         fill
                                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                         quality={85}
-                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                        className={`object-cover transition-transform duration-700 group-hover:scale-105 ${
+                                            typeof product.global?.stock === "number" && product.global.stock <= 0
+                                                ? "opacity-75 grayscale-[20%]"
+                                                : ""
+                                        }`}
                                     />
                                 </Link>
 
@@ -237,7 +241,16 @@ export function SmallNavigationMenu() {
                                 />
 
                                 {/* Badge */}
-                                {product.badge && (
+                                {typeof product.global?.stock === "number" && product.global.stock <= 0 ? (
+                                    <div
+                                        className="absolute top-2 left-2 sm:top-4 sm:left-4 px-2 py-0.5 sm:px-3 sm:py-1 text-white text-[8px] sm:text-xs tracking-widest uppercase rounded-sm border border-white/20 z-10 bg-stone-900/90 shadow-md"
+                                        style={{
+                                            letterSpacing: "0.1em",
+                                        }}
+                                    >
+                                        Sold Out
+                                    </div>
+                                ) : product.badge ? (
                                     <div
                                         className="absolute top-2 left-2 sm:top-4 sm:left-4 px-2 py-0.5 sm:px-3 sm:py-1 text-white text-[8px] sm:text-xs tracking-widest uppercase rounded-sm border border-[#d4af37]/40 z-10"
                                         style={{
@@ -248,7 +261,7 @@ export function SmallNavigationMenu() {
                                     >
                                         {product.badge}
                                     </div>
-                                )}
+                                ) : null}
 
                                 {/* Wishlist icon */}
                                 <button
@@ -313,39 +326,49 @@ export function SmallNavigationMenu() {
                                         </span>
                                     </div>
 
-                                    {/* Dark Green Add to Cart Button with White Text */}
-                                    <button
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            e.stopPropagation();
-                                            addToCart(product.global);
-                                        }}
-                                        className="relative w-full group/btn rounded-full flex items-center justify-center py-2 px-2 sm:py-3 sm:px-5 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
-                                        style={{
-                                            background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
-                                            color: "#ffffff",
-                                        }}
-                                    >
-                                        {/* Shimmer sweep effect */}
-                                        <span
-                                            className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full"
-                                        />
-
-                                        <svg
-                                            width="12"
-                                            height="12"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2.2"
-                                            className="mr-1 sm:mr-2 shrink-0 transition-transform duration-300 group-hover/btn:scale-110 group-hover/btn:-rotate-6"
+                                    {/* Action Button: Sold Out or Add to Cart */}
+                                    {typeof product.global?.stock === "number" && product.global.stock <= 0 ? (
+                                        <button
+                                            type="button"
+                                            disabled
+                                            className="w-full rounded-full flex items-center justify-center py-2 px-2 sm:py-3 sm:px-5 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-[0.15em] uppercase bg-stone-200 text-stone-500 cursor-not-allowed border-none shadow-none whitespace-nowrap opacity-85"
                                         >
-                                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                                            <line x1="3" y1="6" x2="21" y2="6" />
-                                            <path d="M16 10a4 4 0 0 1-8 0" />
-                                        </svg>
-                                        <span className="relative z-10 font-bold text-white whitespace-nowrap">Add to Cart</span>
-                                    </button>
+                                            <span className="font-bold whitespace-nowrap">Sold Out</span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                addToCart(product.global);
+                                            }}
+                                            className="relative w-full group/btn rounded-full flex items-center justify-center py-2 px-2 sm:py-3 sm:px-5 text-[9px] sm:text-xs font-bold tracking-normal sm:tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.45)] hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap"
+                                            style={{
+                                                background: "linear-gradient(135deg, #1a3d2f 0%, #2e5a44 100%)",
+                                                color: "#ffffff",
+                                            }}
+                                        >
+                                            {/* Shimmer sweep effect */}
+                                            <span
+                                                className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full"
+                                            />
+
+                                            <svg
+                                                width="12"
+                                                height="12"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2.2"
+                                                className="mr-1 sm:mr-2 shrink-0 transition-transform duration-300 group-hover/btn:scale-110 group-hover/btn:-rotate-6"
+                                            >
+                                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                                <line x1="3" y1="6" x2="21" y2="6" />
+                                                <path d="M16 10a4 4 0 0 1-8 0" />
+                                            </svg>
+                                            <span className="relative z-10 font-bold text-white whitespace-nowrap">Add to Cart</span>
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -27,6 +27,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
 
   const isFavorite = isInWishlist(product.id);
   const productHref = `/product/${product.slug ?? product.id}`;
+  const isSoldOut = typeof product.stock === "number" && product.stock <= 0;
 
   const handleMouseEnter = () => {
     if (product.slug) {
@@ -44,15 +45,23 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
     >
       {/* Badges */}
       <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex flex-col space-y-1.5 sm:space-y-2">
-        {product.isNewArrival && (
-          <span className="bg-[#0B2516] text-white text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
-            New Arrival
+        {isSoldOut ? (
+          <span className="bg-stone-900/90 backdrop-blur-xs text-white text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-md border border-white/20">
+            Sold Out
           </span>
-        )}
-        {product.isBestSeller && (
-          <span className="bg-[#c9a84c] text-[#0B2516] text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
-            Bestseller
-          </span>
+        ) : (
+          <>
+            {product.isNewArrival && (
+              <span className="bg-[#0B2516] text-white text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
+                New Arrival
+              </span>
+            )}
+            {product.isBestSeller && (
+              <span className="bg-[#c9a84c] text-[#0B2516] text-[7px] sm:text-[8px] font-bold px-2 py-0.5 sm:px-3 sm:py-1 tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-full shadow-sm">
+                Bestseller
+              </span>
+            )}
+          </>
         )}
       </div>
 
@@ -98,12 +107,21 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           quality={90}
           loading="lazy"
           decoding="async"
-          className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
+          className={`object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105 ${
+            isSoldOut ? "opacity-75 grayscale-[20%]" : ""
+          }`}
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
+        {isSoldOut && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/15 pointer-events-none">
+            <span className="bg-stone-900/85 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-serif uppercase tracking-[0.25em] px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-md border border-white/20">
+              Sold Out
+            </span>
+          </div>
+        )}
       </Link>
 
-      {/* Product Info & Always-Visible Add to Cart Button */}
+      {/* Product Info & Always-Visible Add to Cart / Sold Out Button */}
       <div className="p-3 sm:p-5 flex flex-col items-center text-center flex-grow justify-between space-y-2.5 sm:space-y-4">
         <div className="w-full space-y-1 sm:space-y-1.5">
           <span className="text-[#c9a84c] text-[8px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.35em] block font-bold">
@@ -114,10 +132,6 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
               {product.name}
             </h3>
           </Link>
-
-          {/* <p className="text-[9px] sm:text-[10px] text-stone-400 uppercase tracking-widest line-clamp-1 h-3.5 sm:h-4">
-            {product.shortDescription || product.description || "Handcrafted Luxury Jewellery"}
-          </p> */}
         </div>
 
         <div className="w-full space-y-2 sm:space-y-3 pt-2 border-t border-stone-100">
@@ -133,20 +147,30 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
             </span>
           </div>
 
-          {/* Always Visible Add to Cart Button below price */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              addToCart(product);
-            }}
-            className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 px-1.5 sm:py-3 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-tight sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 group/btn cursor-pointer whitespace-nowrap"
-          >
-            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
-            <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 transition-transform duration-300 group-hover/btn:scale-110" />
-            <span className="relative z-10 font-bold whitespace-nowrap">Add to Bag</span>
-          </button>
+          {/* Action Button: Sold Out or Add to Bag */}
+          {isSoldOut ? (
+            <button
+              type="button"
+              disabled
+              className="w-full bg-stone-200 text-stone-500 py-2 px-1.5 sm:py-3 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-tight sm:tracking-[0.25em] font-bold flex items-center justify-center space-x-1 sm:space-x-2 cursor-not-allowed opacity-85 shadow-none"
+            >
+              <span className="font-bold whitespace-nowrap">Sold Out</span>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                addToCart(product);
+              }}
+              className="relative overflow-hidden w-full bg-gradient-to-r from-[#0B2516] to-[#164228] text-white py-2 px-1.5 sm:py-3 sm:px-4 rounded-full text-[8px] sm:text-[9px] uppercase tracking-tight sm:tracking-[0.25em] font-bold shadow-md hover:shadow-xl hover:from-[#c9a84c] hover:to-[#e5ca78] hover:text-[#0B2516] transition-all duration-300 flex items-center justify-center space-x-1 sm:space-x-2 group/btn cursor-pointer whitespace-nowrap"
+            >
+              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 -translate-x-full group-hover/btn:translate-x-full" />
+              <ShoppingBag className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 transition-transform duration-300 group-hover/btn:scale-110" />
+              <span className="relative z-10 font-bold whitespace-nowrap">Add to Bag</span>
+            </button>
+          )}
         </div>
       </div>
     </motion.div>

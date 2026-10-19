@@ -242,7 +242,7 @@ function ProductDetail() {
       return;
     }
     if (product.stock <= 0) {
-      toast.error("This item is out of stock.");
+      toast.error("This item is sold out.");
       return;
     }
     if (product.sizes?.length && !selectedSize) {
@@ -263,7 +263,7 @@ function ProductDetail() {
       return;
     }
     if (product.stock <= 0) {
-      toast.error("This item is out of stock.");
+      toast.error("This item is sold out.");
       return;
     }
     if (product.sizes?.length && !selectedSize) {
@@ -360,7 +360,12 @@ function ProductDetail() {
             <div className="w-full lg:w-[50%] min-w-0">
               <div className="mb-4 flex flex-wrap items-start justify-between gap-4">
                 <div className="flex flex-wrap items-center gap-3">
-                  {product.isNewArrival && (
+                  {!inStock && (
+                    <span className="rounded-md bg-stone-900 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white shadow-xs">
+                      Sold Out
+                    </span>
+                  )}
+                  {inStock && product.isNewArrival && (
                     <span className="rounded-md bg-[#d4c4a8] px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-900">
                       Party Jewels
                     </span>
@@ -516,9 +521,9 @@ function ProductDetail() {
                     type="button"
                     onClick={handleAddToCart}
                     disabled={!inStock}
-                    className="flex-1 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400 min-h-[48px] flex items-center justify-center text-center"
+                    className="flex-1 rounded-xl bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-300 disabled:text-neutral-500 disabled:hover:shadow-none disabled:hover:translate-y-0 min-h-[48px] flex items-center justify-center text-center"
                   >
-                    Add to Cart
+                    {inStock ? "Add to Cart" : "Sold Out"}
                   </button>
 
                   {/* Buy It Now Button */}
@@ -526,15 +531,15 @@ function ProductDetail() {
                     type="button"
                     onClick={handleBuyNow}
                     disabled={!inStock}
-                    className="flex-1 rounded-xl bg-[#d4af37] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-400 min-h-[48px] flex items-center justify-center text-center"
+                    className="flex-1 rounded-xl bg-[#d4af37] py-3.5 px-5 text-[11px] font-bold uppercase tracking-[0.2em] text-[#1a2e22] transition hover:bg-[#c59b27] hover:shadow-md cursor-pointer disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:hover:shadow-none disabled:hover:translate-y-0 min-h-[48px] flex items-center justify-center text-center"
                   >
-                    Buy It Now
+                    {inStock ? "Buy It Now" : "Sold Out"}
                   </button>
                 </div>
 
                 {!inStock && (
-                  <p className="text-sm font-medium text-red-600">
-                    Out of stock — update stock in admin or choose another piece.
+                  <p className="text-sm font-semibold text-rose-600">
+                    This item is currently sold out.
                   </p>
                 )}
               </div>

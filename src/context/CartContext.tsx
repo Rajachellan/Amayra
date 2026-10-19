@@ -162,7 +162,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const requestedQty = Math.max(1, Math.floor(quantity));
       const maxStock = typeof product.stock === "number" ? product.stock : 0;
       if (maxStock <= 0) {
-        toast.error("This item is out of stock.");
+        toast.error("This item is sold out.");
         return;
       }
       let isCapped = false;

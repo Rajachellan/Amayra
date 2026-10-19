@@ -107,9 +107,9 @@ export const ProductSpotlight = () => {
                     <button
                       type="button"
                       disabled
-                      className="px-8 py-4 rounded-full bg-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-[0.3em] cursor-not-allowed opacity-50"
+                      className="px-8 py-4 rounded-full bg-stone-200 text-stone-500 text-[10px] font-bold uppercase tracking-[0.3em] cursor-not-allowed opacity-75"
                     >
-                      Out of Stock
+                      Sold Out
                     </button>
                   ) : (
                     <button

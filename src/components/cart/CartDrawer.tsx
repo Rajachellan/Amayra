@@ -515,7 +515,7 @@ export function CartDrawer() {
                           </div>
                           {typeof item.stock === "number" && item.stock <= 0 && (
                             <span className="text-[9px] text-red-600 font-bold uppercase tracking-wider">
-                              Out of Stock
+                              Sold Out
                             </span>
                           )}
                           {typeof item.stock === "number" && item.stock > 0 && item.quantity >= item.stock && (

@@ -22,6 +22,8 @@ function RelatedCard({ product }: { product: Product }) {
     setImgSrc(product.image || "/images/placeholder.svg");
   }, [product.image]);
 
+  const isSoldOut = typeof product.stock === "number" && product.stock <= 0;
+
   return (
     <article className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-neutral-200/90 bg-white shadow-xs transition-all hover:shadow-lg min-w-[210px] sm:min-w-[260px] max-w-[280px] shrink-0">
       <Link
@@ -34,13 +36,23 @@ function RelatedCard({ product }: { product: Product }) {
           alt={product.name}
           fill
           sizes="(max-width: 768px) 50vw, 25vw"
-          className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+          className={`object-cover w-full h-full transition-transform duration-700 group-hover:scale-105 ${
+            isSoldOut ? "opacity-75 grayscale-[20%]" : ""
+          }`}
           onError={() => setImgSrc("/images/placeholder.svg")}
         />
 
-        {/* Badge styled like reference app */}
-        <span className="absolute left-2.5 top-2.5 rounded-sm bg-[#1a2e22]/90 backdrop-blur-xs px-2.5 py-1 text-[8px] sm:text-[9px] font-bold uppercase tracking-widest text-[#e8d7c3] shadow-xs">
-          {product.isBestSeller
+        {/* Badge */}
+        <span
+          className={`absolute left-2.5 top-2.5 rounded-sm backdrop-blur-xs px-2.5 py-1 text-[8px] sm:text-[9px] font-bold uppercase tracking-widest shadow-xs ${
+            isSoldOut
+              ? "bg-stone-900/90 text-white border border-white/20"
+              : "bg-[#1a2e22]/90 text-[#e8d7c3]"
+          }`}
+        >
+          {isSoldOut
+            ? "Sold Out"
+            : product.isBestSeller
             ? "Bestseller"
             : product.isNewArrival
             ? "New Arrival"
@@ -73,13 +85,23 @@ function RelatedCard({ product }: { product: Product }) {
           )}
         </div>
 
-        <button
-          type="button"
-          onClick={() => addToCartWithQuantity(product, 1)}
-          className="mt-auto w-full rounded-xl bg-neutral-900 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-neutral-800 hover:shadow-md cursor-pointer active:scale-95"
-        >
-          Add to Cart
-        </button>
+        {isSoldOut ? (
+          <button
+            type="button"
+            disabled
+            className="mt-auto w-full rounded-xl bg-neutral-200 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-500 cursor-not-allowed"
+          >
+            Sold Out
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => addToCartWithQuantity(product, 1)}
+            className="mt-auto w-full rounded-xl bg-neutral-900 py-2.5 sm:py-3 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em] text-white transition hover:bg-neutral-800 hover:shadow-md cursor-pointer active:scale-95"
+          >
+            Add to Cart
+          </button>
+        )}
       </div>
     </article>
   );
