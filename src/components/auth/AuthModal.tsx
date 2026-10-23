@@ -7,11 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { GoogleAuthSection } from "@/components/auth/GoogleAuthSection";
 import toast from "react-hot-toast";
 
-interface AuthModalProps {
-  onCloseMasterpiece?: () => void;
-}
-
-export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
+export const AuthModal: React.FC = () => {
   const { user, login, register, loginWithGoogleIdToken } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [mode, setMode] = useState<"login" | "signup">("login");
@@ -24,17 +20,9 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // If user is logged in or has already seen auth modal, trigger Masterpiece modal for session
     const hasSeenAuthModal = sessionStorage.getItem("mairii_auth_modal_seen");
-    const hasSeenMasterpieceModal = sessionStorage.getItem("mairii_masterpiece_modal_seen");
 
     if (user || hasSeenAuthModal) {
-      if (!hasSeenMasterpieceModal && onCloseMasterpiece) {
-        const timer = setTimeout(() => {
-          onCloseMasterpiece();
-        }, 3000);
-        return () => clearTimeout(timer);
-      }
       return;
     }
 
@@ -44,13 +32,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [user, onCloseMasterpiece]);
+  }, [user]);
 
   const handleClose = () => {
     setIsOpen(false);
-    if (onCloseMasterpiece) {
-      onCloseMasterpiece();
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -66,9 +51,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
         toast.success("Account created successfully!");
       }
       setIsOpen(false);
-      if (onCloseMasterpiece) {
-        onCloseMasterpiece();
-      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -137,9 +119,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({ onCloseMasterpiece }) => {
                   await loginWithGoogleIdToken(idToken);
                   toast.success("Signed in with Google");
                   setIsOpen(false);
-                  if (onCloseMasterpiece) {
-                    onCloseMasterpiece();
-                  }
                 } catch (err) {
                   toast.error(err instanceof Error ? err.message : "Google sign-in failed");
                 }

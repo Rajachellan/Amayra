@@ -332,6 +332,7 @@ export const Footer = () => {
                 { name: "Returns & Exchanges", href: "/returns-exchanges" },
                 // { name: "Jewellery Care Guide", href: "/blog" },
                 { name: "Sitemap Directory", href: "/sitemap" },
+                { name: "Contact Us", href: "/contact" },
               ].map((item) => (
                 <li key={item.name}>
                   <Link
