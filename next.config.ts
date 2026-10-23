@@ -12,6 +12,41 @@ const nextConfig: NextConfig = {
     { source: "/cart", destination: "/?openCart=1", permanent: false },
   ],
 
+  headers: async () => [
+    {
+      source: "/favicon.ico",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Content-Type", value: "image/x-icon" },
+      ],
+    },
+    {
+      source: "/icon-:size.png",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Content-Type", value: "image/png" },
+      ],
+    },
+    {
+      source: "/apple-touch-icon.png",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Content-Type", value: "image/png" },
+      ],
+    },
+    {
+      source: "/icon.png",
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" },
+        { key: "Access-Control-Allow-Origin", value: "*" },
+        { key: "Content-Type", value: "image/png" },
+      ],
+    },
+  ],
+
   // Resize/WebP via Next image optimizer (unoptimized for instant loading and zero server timeouts)
   images: {
     unoptimized: true,

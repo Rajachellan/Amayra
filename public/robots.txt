@@ -26,6 +26,12 @@ Allow: /terms-and-conditions
 Allow: /_next/static/
 Allow: /images/
 Allow: /videos/
+Allow: /favicon.ico
+Allow: /favicon*
+Allow: /icon-*.png
+Allow: /icon.png
+Allow: /apple-touch-icon.png
+Allow: /*.ico$
 Allow: /*.jpg$
 Allow: /*.jpeg$
 Allow: /*.png$
@@ -55,6 +61,20 @@ Disallow: /*?*session=
 
 
 # ==============================================================================
+# Google Favicon Crawler (Dedicated crawler for Google Search results favicon)
+# ==============================================================================
+User-agent: Google-Favicon
+Allow: /
+Allow: /favicon.ico
+Allow: /favicon*
+Allow: /icon-*.png
+Allow: /icon.png
+Allow: /apple-touch-icon.png
+Allow: /*.ico$
+Allow: /*.png$
+
+
+# ==============================================================================
 # Major Search Engine Crawlers
 # ==============================================================================
 User-agent: Googlebot
@@ -65,6 +85,10 @@ User-agent: DuckDuckBot
 User-agent: Baiduspider
 User-agent: YandexBot
 Allow: /
+Allow: /favicon.ico
+Allow: /icon-*.png
+Allow: /icon.png
+Allow: /apple-touch-icon.png
 Allow: /_next/static/
 Allow: /images/
 Disallow: /profile/
