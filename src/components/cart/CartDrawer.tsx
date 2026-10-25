@@ -45,9 +45,11 @@ export function CartDrawer() {
 
     // Fetch real products for suggestions
     setLoadingSuggestions(true);
-    shopApi.products({ limit: 12, page: 1 })
+    shopApi.products({ inStock: "true", limit: 12, page: 1 })
       .then((res) => {
-        const mapped = res.items.map(mapListItemToProduct);
+        const mapped = res.items
+          .map(mapListItemToProduct)
+          .filter((p) => typeof p.stock !== "number" || p.stock > 0);
         setRealProducts(mapped);
       })
       .catch((err) => console.error("Failed to load suggestions:", err))

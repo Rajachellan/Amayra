@@ -20,9 +20,11 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const prefetchProduct = usePrefetchProductDetail();
   const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/placeholder.svg");
+  const [isLoaded, setIsLoaded] = useState(false);
 
   React.useEffect(() => {
     setImgSrc(product.image || "/images/placeholder.svg");
+    setIsLoaded(false);
   }, [product.image]);
 
   const isFavorite = isInWishlist(product.id);
@@ -97,20 +99,29 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
         href={productHref}
         onMouseEnter={handleMouseEnter}
         style={{ position: "relative" }}
-        className="relative block overflow-hidden aspect-square cursor-pointer bg-[#f7f5f0]"
+        className="relative block overflow-hidden aspect-square cursor-pointer bg-stone-100"
       >
+        {/* Shimmer skeleton until image loads */}
+        {!isLoaded && (
+          <div className="absolute inset-0 bg-gradient-to-r from-stone-100 via-stone-200 to-stone-100 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] pointer-events-none z-0" />
+        )}
+
         <Image
           src={imgSrc}
           alt={product.name}
           fill
-          sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-          quality={90}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          quality={75}
           loading="lazy"
           decoding="async"
-          className={`object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105 ${
-            isSoldOut ? "opacity-75 grayscale-[20%]" : ""
-          }`}
-          onError={() => setImgSrc("/images/placeholder.svg")}
+          onLoad={() => setIsLoaded(true)}
+          className={`object-cover w-full h-full transition-all duration-500 ease-out group-hover:scale-105 ${
+            isLoaded ? "opacity-100" : "opacity-0"
+          } ${isSoldOut ? "opacity-75 grayscale-[20%]" : ""}`}
+          onError={() => {
+            setImgSrc("/images/placeholder.svg");
+            setIsLoaded(true);
+          }}
         />
         {isSoldOut && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/15 pointer-events-none">

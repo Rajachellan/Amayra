@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, Suspense } from "react";
+import React, { useState, useEffect, useMemo, useRef, Suspense } from "react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -246,6 +246,8 @@ function CategoryContent() {
   const maxPriceQuery = searchParams.get("maxPrice");
   const collectionQuery = searchParams.get("collection");
   const searchQuery = searchParams.get("q") || "";
+  const filterQuery = searchParams.get("filter");
+  const sortQuery = searchParams.get("sort");
 
   // Amama-style Sidebar Filter States
   const [selectedOccasions, setSelectedOccasions] = useState<string[]>([]);
@@ -259,7 +261,11 @@ function CategoryContent() {
     maxPriceQuery ? Number(maxPriceQuery) : null
   );
 
-  const [sortBy, setSortBy] = useState("Featured");
+  const [sortBy, setSortBy] = useState(() => {
+    if (filterQuery === "best" || sortQuery === "bestseller") return "Bestsellers";
+    if (sortQuery === "trending") return "Trending";
+    return "Featured";
+  });
   const [showFilter, setShowFilter] = useState(true);
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
@@ -510,6 +516,36 @@ function CategoryContent() {
       return true;
     });
   }, [rawProducts, selectedOccasions, selectedCollections, selectedColors, selectedMaxPrice]);
+
+  // Progressive batching: loads 16 items initially, dynamically streams more as user scrolls.
+  // Prevents flooding the browser connection pool with 100 images simultaneously.
+  const [displayCount, setDisplayCount] = useState(16);
+  const observerTarget = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setDisplayCount(16);
+  }, [categorySlug, subQuery, searchQuery, sortBy, selectedOccasions, selectedCollections, selectedColors, selectedMaxPrice]);
+
+  useEffect(() => {
+    if (displayCount >= filteredProducts.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setDisplayCount((prev) => Math.min(prev + 16, filteredProducts.length));
+        }
+      },
+      { rootMargin: "400px" }
+    );
+    const target = observerTarget.current;
+    if (target) observer.observe(target);
+    return () => {
+      if (target) observer.unobserve(target);
+    };
+  }, [displayCount, filteredProducts.length]);
+
+  const visibleProducts = useMemo(() => {
+    return filteredProducts.slice(0, displayCount);
+  }, [filteredProducts, displayCount]);
 
   const ctx = findInTree(tree, categorySlug);
   const subCategoryItems =
@@ -969,14 +1005,25 @@ function CategoryContent() {
               {loading ? (
                 <ProductGridSkeleton count={6} showFilter={showFilter} />
               ) : filteredProducts.length > 0 ? (
-                <div
-                  className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
-                    } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
-                >
-                  {filteredProducts.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
+                <>
+                  <div
+                    className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
+                      } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
+                  >
+                    {visibleProducts.map((product) => (
+                      <ProductCard key={product.id} product={product} />
+                    ))}
+                  </div>
+
+                  {displayCount < filteredProducts.length && (
+                    <div ref={observerTarget} className="w-full py-10 flex justify-center items-center">
+                      <div className="flex items-center gap-2.5 text-stone-400 text-xs tracking-widest uppercase">
+                        <div className="w-4 h-4 rounded-full border-2 border-champagne/40 border-t-champagne animate-spin" />
+                        <span>Loading more handcrafted pieces…</span>
+                      </div>
+                    </div>
+                  )}
+                </>
               ) : (
                 <div className="py-24 text-center bg-stone-50 border border-dashed border-stone-200 rounded-sm">
                   <h3 className="font-serif text-2xl text-stone-400 uppercase tracking-widest mb-4">

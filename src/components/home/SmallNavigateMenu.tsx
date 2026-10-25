@@ -66,25 +66,122 @@ export function SmallNavigationMenu() {
         newarrivals: [],
         trending: [],
     });
-    const visibleProducts = pool[activeTab];
+    const visibleProducts = (pool[activeTab] || []).filter(
+        (p) => typeof p.global?.stock !== "number" || p.global.stock > 0
+    );
     const [hoveredId, setHoveredId] = useState<string | null>(null);
 
     useEffect(() => {
+        let isMounted = true;
+
+        const isAvailable = (p: GlobalProduct) => {
+            if (p.isPromotionalGift) return false;
+            if (typeof p.stock === "number") {
+                return p.stock > 0;
+            }
+            return true;
+        };
+
         Promise.all([
-            shopApi.products({ sort: "bestseller", limit: 4, page: 1 }),
-            shopApi.products({ category: "new", limit: 4, page: 1 }),
-            shopApi.products({ trending: "true", limit: 4, page: 1 }),
+            shopApi.products({ sort: "bestseller", inStock: "true", limit: 24, page: 1 }),
+            shopApi.products({ category: "new", inStock: "true", limit: 24, page: 1 }),
+            shopApi.products({ trending: "true", inStock: "true", limit: 24, page: 1 }),
+            shopApi.products({ inStock: "true", limit: 30, page: 1 }),
         ])
-            .then(([b, n, t]) => {
+            .then(([bRes, nRes, tRes, fallbackRes]) => {
+                if (!isMounted) return;
+
+                const bCandidates = bRes.items.map(mapListItemToProduct).filter(isAvailable);
+                const nCandidates = nRes.items.map(mapListItemToProduct).filter(isAvailable);
+                const tCandidates = tRes.items.map(mapListItemToProduct).filter(isAvailable);
+                const allAvailable = fallbackRes.items.map(mapListItemToProduct).filter(isAvailable);
+
+                const usedIds = new Set<string>();
+
+                // 1. Pick Best Sellers (top 4 in-stock)
+                const bestsellers: GlobalProduct[] = [];
+                for (const p of bCandidates) {
+                    if (bestsellers.length >= 4) break;
+                    if (!usedIds.has(p.id)) {
+                        bestsellers.push(p);
+                        usedIds.add(p.id);
+                    }
+                }
+                for (const p of allAvailable) {
+                    if (bestsellers.length >= 4) break;
+                    if (!usedIds.has(p.id)) {
+                        bestsellers.push(p);
+                        usedIds.add(p.id);
+                    }
+                }
+
+                // 2. Pick New Arrivals (top 4 in-stock, strictly distinct from Best Sellers)
+                const newArrivals: GlobalProduct[] = [];
+                for (const p of nCandidates) {
+                    if (newArrivals.length >= 4) break;
+                    if (!usedIds.has(p.id)) {
+                        newArrivals.push(p);
+                        usedIds.add(p.id);
+                    }
+                }
+                for (const p of allAvailable) {
+                    if (newArrivals.length >= 4) break;
+                    if (!usedIds.has(p.id)) {
+                        newArrivals.push(p);
+                        usedIds.add(p.id);
+                    }
+                }
+                // Fallback only if database has fewer than 8 total in-stock items
+                if (newArrivals.length < 4) {
+                    for (const p of nCandidates.concat(allAvailable)) {
+                        if (newArrivals.length >= 4) break;
+                        if (!newArrivals.some((x) => x.id === p.id)) {
+                            newArrivals.push(p);
+                        }
+                    }
+                }
+                newArrivals.forEach((p) => usedIds.add(p.id));
+
+                // 3. Pick Trending Now (top 4 in-stock, distinct from both Best Sellers and New Arrivals)
+                const trending: GlobalProduct[] = [];
+                for (const p of tCandidates) {
+                    if (trending.length >= 4) break;
+                    if (!usedIds.has(p.id)) {
+                        trending.push(p);
+                        usedIds.add(p.id);
+                    }
+                }
+                for (const p of allAvailable) {
+                    if (trending.length >= 4) break;
+                    if (!usedIds.has(p.id)) {
+                        trending.push(p);
+                        usedIds.add(p.id);
+                    }
+                }
+                // Fallback only if database has fewer than 12 total in-stock items
+                if (trending.length < 4) {
+                    for (const p of tCandidates.concat(allAvailable)) {
+                        if (trending.length >= 4) break;
+                        if (!trending.some((x) => x.id === p.id)) {
+                            trending.push(p);
+                        }
+                    }
+                }
+
                 setPool({
-                    bestsellers: b.items.map((x) => toRow(mapListItemToProduct(x), "bestsellers")),
-                    newarrivals: n.items.map((x) => toRow(mapListItemToProduct(x), "newarrivals")),
-                    trending: t.items.map((x) => toRow(mapListItemToProduct(x), "trending")),
+                    bestsellers: bestsellers.map((p) => toRow(p, "bestsellers")),
+                    newarrivals: newArrivals.map((p) => toRow(p, "newarrivals")),
+                    trending: trending.map((p) => toRow(p, "trending")),
                 });
             })
-            .catch(() =>
-                setPool({ bestsellers: [], newarrivals: [], trending: [] })
-            );
+            .catch(() => {
+                if (!isMounted) return;
+                setPool({ bestsellers: [], newarrivals: [], trending: [] });
+            });
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
     const indicatorRef = useRef<HTMLDivElement>(null);
     const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
@@ -221,7 +318,9 @@ export function SmallNavigationMenu() {
                                         alt={product.name}
                                         fill
                                         sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                                        quality={85}
+                                        quality={75}
+                                        loading="lazy"
+                                        decoding="async"
                                         className={`object-cover transition-transform duration-700 group-hover:scale-105 ${
                                             typeof product.global?.stock === "number" && product.global.stock <= 0
                                                 ? "opacity-75 grayscale-[20%]"

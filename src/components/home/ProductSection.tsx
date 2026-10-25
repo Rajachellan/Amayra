@@ -22,11 +22,17 @@ export const ProductSection = () => {
     let cancelled = false;
     (async () => {
       try {
-        let r = await shopApi.products({ featured: "true", limit: 5, page: 1 });
+        let r = await shopApi.products({ featured: "true", inStock: "true", limit: 8, page: 1 });
         if (!r.items.length) {
-          r = await shopApi.products({ limit: 5, page: 1 });
+          r = await shopApi.products({ inStock: "true", limit: 8, page: 1 });
         }
-        if (!cancelled) setFeaturedProducts(r.items.map(mapListItemToProduct));
+        if (!cancelled) {
+          const available = r.items
+            .map(mapListItemToProduct)
+            .filter((p) => typeof p.stock !== "number" || p.stock > 0)
+            .slice(0, 5);
+          setFeaturedProducts(available);
+        }
       } catch {
         if (!cancelled) setFeaturedProducts([]);
       }

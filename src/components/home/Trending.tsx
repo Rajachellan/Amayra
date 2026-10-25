@@ -15,11 +15,17 @@ export const Trending = () => {
     let cancelled = false;
     (async () => {
       try {
-        let r = await shopApi.products({ trending: "true", limit: 4, page: 1 });
+        let r = await shopApi.products({ trending: "true", inStock: "true", limit: 8, page: 1 });
         if (!r.items.length) {
-          r = await shopApi.products({ sort: "trending", limit: 4, page: 1 });
+          r = await shopApi.products({ sort: "trending", inStock: "true", limit: 8, page: 1 });
         }
-        if (!cancelled) setTrendingProducts(r.items.map(mapListItemToProduct));
+        if (!cancelled) {
+          const available = r.items
+            .map(mapListItemToProduct)
+            .filter((p) => typeof p.stock !== "number" || p.stock > 0)
+            .slice(0, 4);
+          setTrendingProducts(available);
+        }
       } catch {
         if (!cancelled) setTrendingProducts([]);
       }
