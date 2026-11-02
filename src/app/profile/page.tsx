@@ -26,10 +26,12 @@ import {
   ArrowRight,
   CheckCircle2,
   ShoppingBag,
+  CreditCard,
 } from "lucide-react";
 import { api } from "@/lib/api";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 import { PersonalDetailsPanel } from "@/components/profile/PersonalDetailsPanel";
+import { StoreCreditsPanel } from "@/components/profile/StoreCreditsPanel";
 
 type OrderRow = {
   _id: string;
@@ -268,6 +270,23 @@ export default function ProfilePage() {
                       <span className="font-semibold">Order History</span>
                     </div>
                     <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === "orders" ? "text-[#c9a84c] translate-x-0.5" : "text-stone-400 group-hover:translate-x-0.5"}`} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("credits")}
+                    className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-xs tracking-[0.15em] transition-all duration-300 uppercase font-medium group ${activeTab === "credits"
+                        ? "bg-[#0B2516] text-white shadow-lg shadow-[#0B2516]/20"
+                        : "text-stone-700 hover:bg-stone-50 hover:text-[#0B2516]"
+                      }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl transition-colors ${activeTab === "credits" ? "bg-[#c9a84c] text-[#0B2516]" : "bg-stone-100 text-stone-600 group-hover:bg-[#c9a84c]/20 group-hover:text-[#0B2516]"}`}>
+                        <CreditCard className="w-4 h-4" />
+                      </div>
+                      <span className="font-semibold">My Store Credits</span>
+                    </div>
+                    <ChevronRight className={`w-4 h-4 transition-transform ${activeTab === "credits" ? "text-[#c9a84c] translate-x-0.5" : "text-stone-400 group-hover:translate-x-0.5"}`} />
                   </button>
 
                   {/* <button
@@ -515,6 +534,19 @@ export default function ProfilePage() {
                           })}
                         </div>
                       )}
+                    </motion.div>
+                  )}
+
+                  {/* TAB: Store Credits */}
+                  {activeTab === "credits" && (
+                    <motion.div
+                      key="credits"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <StoreCreditsPanel />
                     </motion.div>
                   )}
 

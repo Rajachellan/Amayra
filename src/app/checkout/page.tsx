@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { api } from "@/lib/api";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2, CreditCard, Trash2, CheckCircle2, AlertCircle, Sparkles, Tag, Plus } from "lucide-react";
 import toast from "react-hot-toast";
 import { addressFormSchema } from "@/lib/validation/customerProfile";
 import { formatPrice } from "@/lib/formatPrice";
@@ -30,6 +30,18 @@ type CheckoutBody = {
   amount: number;
   currency: string;
   key: string;
+  paymentMethod?: string;
+  payableAmount?: number;
+  storeCreditAmount?: number;
+  displayTotal?: number;
+};
+
+type AppliedStoreCredit = {
+  code: string;
+  availableBalance: number;
+  initialBalance: number;
+  expiryDate: string;
+  creditNoteNumber?: string;
 };
 
 type CustomerAddress = {
@@ -133,6 +145,10 @@ export default function CheckoutPage() {
   const [savingNewAddress, setSavingNewAddress] = useState(false);
 
   const [paying, setPaying] = useState(false);
+  const [creditInputCode, setCreditInputCode] = useState("");
+  const [validatingCredit, setValidatingCredit] = useState(false);
+  const [appliedCredits, setAppliedCredits] = useState<AppliedStoreCredit[]>([]);
+  const [availableCustomerCredits, setAvailableCustomerCredits] = useState<any[]>([]);
 
   const FREE_SHIPPING_THRESHOLD = pricingResult?.freeShippingThreshold ?? 999;
   const DISCOUNT_THRESHOLD = pricingResult?.discountSlab?.minimumCartValue ?? 3499;
@@ -154,6 +170,74 @@ export default function CheckoutPage() {
       ? pricingResult.finalAmount + shipping
       : Math.max(0, subtotal - discountAmount - automaticDiscount + shipping)
   );
+
+  let runningOrderBalance = displayTotal;
+  const creditAllocations = appliedCredits.map((c) => {
+    const applied = Math.min(c.availableBalance, runningOrderBalance);
+    const remaining = c.availableBalance - applied;
+    runningOrderBalance = Math.max(0, runningOrderBalance - applied);
+    return {
+      ...c,
+      appliedAmount: applied,
+      remainingAfterOrder: remaining,
+    };
+  });
+
+  const totalStoreCreditApplied = creditAllocations.reduce((sum, c) => sum + c.appliedAmount, 0);
+  const finalPayable = Math.max(0, displayTotal - totalStoreCreditApplied);
+
+  async function handleApplyCreditCode(codeToApply?: string) {
+    const raw = (codeToApply || creditInputCode).trim().toUpperCase();
+    if (!raw) {
+      toast.error("Please enter a store credit code");
+      return;
+    }
+    if (appliedCredits.some((c) => c.code.toUpperCase() === raw)) {
+      toast.error("This store credit code is already applied");
+      return;
+    }
+    setValidatingCredit(true);
+    try {
+      const res = await api<{
+        valid: boolean;
+        couponCode: string;
+        availableBalance: number;
+        initialBalance: number;
+        expiryDate: string;
+        creditNoteNumber?: string;
+      }>("/store-credits/validate", {
+        method: "POST",
+        body: JSON.stringify({ code: raw }),
+      });
+
+      if (!res.valid) {
+        toast.error("Invalid store credit");
+        return;
+      }
+
+      setAppliedCredits((prev) => [
+        ...prev,
+        {
+          code: res.couponCode,
+          availableBalance: res.availableBalance,
+          initialBalance: res.initialBalance,
+          expiryDate: res.expiryDate,
+          creditNoteNumber: res.creditNoteNumber,
+        },
+      ]);
+      setCreditInputCode("");
+      toast.success(`Store credit ₹${formatPrice(res.availableBalance)} applied!`);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to apply store credit");
+    } finally {
+      setValidatingCredit(false);
+    }
+  }
+
+  function handleRemoveCredit(code: string) {
+    setAppliedCredits((prev) => prev.filter((c) => c.code !== code));
+    toast("Store credit removed", { icon: "ℹ️" });
+  }
 
   useEffect(() => {
     if (authLoading) return;
@@ -185,7 +269,17 @@ export default function CheckoutPage() {
       .catch(() => {
         /* me already implied by checkout gate */
       })
-      .finally(() => setProfileLoaded(true));
+      .finally(() => {
+        setProfileLoaded(true);
+        api<{ credits?: any[] }>("/store-credits/me")
+          .then((res) => {
+            const active = (res.credits || []).filter(
+              (c) => (c.status === "ACTIVE" || c.status === "PARTIALLY_REDEEMED") && c.availableBalance > 0
+            );
+            setAvailableCustomerCredits(active);
+          })
+          .catch(() => {});
+      });
   }, [authLoading, user, router]);
 
   /** Restore typed shipping before persistence effects run (avoid wiping session draft). */
@@ -293,8 +387,32 @@ export default function CheckoutPage() {
             country: ship.country || "IN",
           },
           couponCode: couponCode || undefined,
+          storeCreditCodes: appliedCredits.length > 0 ? appliedCredits.map((c) => c.code) : undefined,
         }),
       });
+
+      // Zero-payment Order directly settled with Store Credit
+      if (checkoutRes.paymentMethod === "STORE_CREDIT" || checkoutRes.amount === 0) {
+        if (saveAddressToProfile) {
+          try {
+            await api("/auth/customer/me/addresses", {
+              method: "POST",
+              body: JSON.stringify({
+                ...ship,
+                label: addressLabel.trim() || "Home",
+                isDefault: savedAddresses.length === 0,
+              }),
+            });
+          } catch {
+            /* non-blocking */
+          }
+        }
+        clearCart();
+        clearCheckoutShippingDraft(user.id);
+        toast.success("Order confirmed successfully with Store Credit!");
+        router.push(`/checkout/success?order=${encodeURIComponent(checkoutRes.orderNumber)}`);
+        return;
+      }
 
       const key = checkoutRes.key || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
       if (!key) throw new Error("Payment key not configured (set RAZORPAY_KEY_ID on server or NEXT_PUBLIC_RAZORPAY_KEY_ID)");
@@ -596,11 +714,129 @@ export default function CheckoutPage() {
                 </button>
               )}
 
+              {/* STORE CREDIT / CREDIT NOTE SECTION */}
+              <div className="pt-6 border-t border-stone-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="p-1.5 rounded-lg bg-[#c9a84c]/20 text-[#c9a84c]">
+                      <CreditCard className="w-4 h-4" />
+                    </span>
+                    <h3 className="font-serif text-base tracking-wider uppercase text-stone-900 font-semibold">
+                      Apply Store Credit / Credit Note
+                    </h3>
+                  </div>
+                  {totalStoreCreditApplied > 0 && (
+                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                      -₹{formatPrice(totalStoreCreditApplied)} Applied
+                    </span>
+                  )}
+                </div>
+
+                <p className="text-xs text-stone-500">
+                  Have a credit note coupon code from a return? Enter your code below. Validity is 3 months (90 days) from issue date.
+                </p>
+
+                {/* Available credits in account */}
+                {availableCustomerCredits.length > 0 && (
+                  <div className="space-y-1.5 p-3.5 bg-stone-50 rounded-xl border border-stone-200">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 block">
+                      Available In Your Account:
+                    </span>
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {availableCustomerCredits.map((ac) => {
+                        const isAlreadyApplied = appliedCredits.some((x) => x.code === ac.couponCode);
+                        return (
+                          <button
+                            key={ac._id}
+                            type="button"
+                            disabled={isAlreadyApplied}
+                            onClick={() => handleApplyCreditCode(ac.couponCode)}
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition cursor-pointer ${
+                              isAlreadyApplied
+                                ? "bg-stone-200 text-stone-400 border-stone-200 cursor-not-allowed"
+                                : "bg-white text-stone-800 border-stone-300 hover:border-[#c9a84c] hover:text-[#0B2516] shadow-2xs"
+                            }`}
+                          >
+                            <span className="font-mono font-bold">{ac.couponCode}</span>
+                            <span className="text-stone-500">(₹{formatPrice(ac.availableBalance)})</span>
+                            {isAlreadyApplied ? (
+                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 ml-0.5" />
+                            ) : (
+                              <Plus className="w-3.5 h-3.5 text-[#c9a84c] ml-0.5" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Manual Code Input */}
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={creditInputCode}
+                    onChange={(e) => setCreditInputCode(e.target.value.toUpperCase())}
+                    placeholder="Enter Coupon Code (e.g. SC-A8F2-E93C)"
+                    className="flex-1 font-mono uppercase text-xs tracking-wider border border-gray-200 px-4 py-3 rounded focus:outline-none focus:border-[#c9a84c]"
+                  />
+                  <button
+                    type="button"
+                    disabled={validatingCredit || !creditInputCode.trim()}
+                    onClick={() => handleApplyCreditCode()}
+                    className="px-6 py-3 bg-[#0B2516] text-white text-xs uppercase tracking-widest font-bold rounded hover:bg-[#103822] disabled:opacity-50 transition flex items-center gap-2 cursor-pointer"
+                  >
+                    {validatingCredit ? <Loader2 className="w-4 h-4 animate-spin" /> : "Apply"}
+                  </button>
+                </div>
+
+                {/* Applied Credits List */}
+                {creditAllocations.length > 0 && (
+                  <div className="space-y-2.5 pt-1">
+                    {creditAllocations.map((c) => (
+                      <div
+                        key={c.code}
+                        className="p-3.5 bg-emerald-50/70 border border-emerald-200 rounded-xl flex items-center justify-between text-xs"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <span className="font-mono font-bold text-[#0B2516] text-sm">{c.code}</span>
+                            {c.creditNoteNumber && (
+                              <span className="text-[10px] text-stone-500 font-mono">({c.creditNoteNumber})</span>
+                            )}
+                          </div>
+                          <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[11px] text-stone-600">
+                            <span>Available: <strong>₹{formatPrice(c.availableBalance)}</strong></span>
+                            <span>Applied: <strong className="text-emerald-700">₹{formatPrice(c.appliedAmount)}</strong></span>
+                            <span>Remaining: <strong>₹{formatPrice(c.remainingAfterOrder)}</strong></span>
+                          </div>
+                          <p className="text-[10px] text-stone-400">
+                            Valid until {new Date(c.expiryDate).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveCredit(c.code)}
+                          className="p-1.5 rounded-lg text-stone-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
+                          title="Remove store credit"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <Button type="submit" variant="gold" size="lg" className="w-full mt-4" disabled={validCart.length === 0 || paying}>
                 {paying ? (
                   <>
                     <Loader2 className="animate-spin mr-2 w-5 h-5" /> Processing…
                   </>
+                ) : finalPayable === 0 && totalStoreCreditApplied > 0 ? (
+                  "Place Order with Store Credit (₹0)"
+                ) : totalStoreCreditApplied > 0 ? (
+                  `Pay ₹${formatPrice(finalPayable)} securely`
                 ) : (
                   "Pay securely"
                 )}
@@ -687,9 +923,19 @@ export default function CheckoutPage() {
                     <span>Taxes & Duties</span>
                     <span>Included</span>
                   </div>
+                  {totalStoreCreditApplied > 0 && (
+                    <div className="flex justify-between text-emerald-700 font-semibold">
+                      <span>Store Credit Applied</span>
+                      <span>- ₹{formatPrice(totalStoreCreditApplied)}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between font-serif font-bold text-brand-emerald text-base pt-3 border-t">
-                    <span className="uppercase tracking-widest text-xs">Estimated total</span>
-                    <span>₹{formatPrice(displayTotal)}</span>
+                    <span className="uppercase tracking-widest text-xs">
+                      {totalStoreCreditApplied > 0 ? "Final Payable" : "Estimated total"}
+                    </span>
+                    <span className={finalPayable === 0 && totalStoreCreditApplied > 0 ? "text-emerald-700 font-bold" : ""}>
+                      ₹{formatPrice(finalPayable)}
+                    </span>
                   </div>
                 </div>
               </div>
