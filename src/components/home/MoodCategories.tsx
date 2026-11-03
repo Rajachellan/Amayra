@@ -1,37 +1,46 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { api, mediaSrc } from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { resolveOptionalMediaUrl } from "@/lib/apiBase";
+import { useOccasions } from "@/hooks/useCatalogMetadata";
+import { shopApi } from "@/lib/api/shop";
+import { queryKeys } from "@/lib/queryKeys";
+import { mapListItemToProduct } from "@/lib/mapProduct";
 import { BotanicalDecoration } from "@/components/ui/BotanicalDecoration";
 
-interface Occasion {
-  _id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  image?: string;
-}
-
 export const MoodCategories = () => {
-  const [occasions, setOccasions] = useState<Occasion[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: occasions = [], isLoading: loading } = useOccasions();
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const data = await api<Occasion[]>("/occasions");
-        setOccasions(data);
-      } catch (e) {
-        console.error("Failed to load occasions", e);
-      } finally {
-        setLoading(false);
-      }
-    }
-    load();
-  }, []);
+  const handlePrefetchOccasion = useCallback(
+    (slug: string) => {
+      if (!slug) return;
+      const filters: Record<string, string | number | undefined> = {
+        page: 1,
+        limit: 100,
+        sort: undefined,
+        occasions: slug,
+      };
+      queryClient.prefetchQuery({
+        queryKey: queryKeys.products.list(filters),
+        queryFn: async () => {
+          const res = await shopApi.products(filters);
+          return {
+            items: (res.items || []).map(mapListItemToProduct),
+            total: res.total || 0,
+            page: res.page || 1,
+            pages: res.pages || 0,
+          };
+        },
+        staleTime: 5 * 60 * 1000,
+      });
+    },
+    [queryClient]
+  );
 
   return (
     <section className="py-24 overflow-hidden relative" style={{ backgroundColor: 'var(--bg-ivory)' }}>
@@ -52,24 +61,32 @@ export const MoodCategories = () => {
               <div key={i} className="aspect-[4/5] bg-pearl animate-pulse rounded-[24px]" />
             ))
           ) : (
-            occasions.map((occ, index) => (
+            occasions.map((occ, index) => {
+              const imgUrl = resolveOptionalMediaUrl(occ.image);
+              return (
               <motion.div
                 key={occ._id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: index * 0.1 }}
+                viewport={{ once: true, margin: "120px" }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                onMouseEnter={() => handlePrefetchOccasion(occ.slug)}
+                onTouchStart={() => handlePrefetchOccasion(occ.slug)}
                 className="group relative overflow-hidden flex flex-col rounded-[24px] aspect-[4/5] bg-pearl border border-foreground/10 transition-all duration-700 hover:shadow-2xl hover:-translate-y-2"
               >
                 <Link href={`/occasion/${occ.slug}`} className="block h-full relative flex flex-col">
-                  <div className="absolute inset-[16px] bottom-[110px] overflow-hidden rounded-[16px]">
-                    <Image
-                      src={mediaSrc(occ.image)}
-                      alt={occ.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                      className="object-cover transition-transform duration-[2s] group-hover:scale-110"
-                    />
+                  <div className="absolute inset-[16px] bottom-[110px] overflow-hidden rounded-[16px] bg-stone-200/60">
+                    {imgUrl && (
+                      <Image
+                        src={imgUrl}
+                        alt={occ.name}
+                        fill
+                        quality={70}
+                        decoding="async"
+                        sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 25vw"
+                        className="object-cover transition-transform duration-[2s] group-hover:scale-110"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-foreground/5 group-hover:bg-foreground/5 transition-colors" />
                   </div>
 
@@ -90,7 +107,8 @@ export const MoodCategories = () => {
                   <div className="absolute inset-4 border border-foreground/10 rounded-[20px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 </Link>
               </motion.div>
-            ))
+              );
+            })
           )}
         </div>
       </div>

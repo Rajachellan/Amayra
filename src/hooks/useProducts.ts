@@ -6,7 +6,17 @@ import { queryKeys } from "@/lib/queryKeys";
 import { mapListItemToProduct } from "@/lib/mapProduct";
 import type { Product } from "@/types";
 
-export function useProducts(filters: Record<string, string | number | undefined> = {}) {
+export type ProductsQueryData = {
+  items: Product[];
+  total: number;
+  page: number;
+  pages: number;
+};
+
+export function useProducts(
+  filters: Record<string, string | number | undefined> = {},
+  options?: { initialData?: ProductsQueryData }
+) {
   const query = useQuery({
     queryKey: queryKeys.products.list(filters),
     queryFn: async () => {
@@ -19,6 +29,7 @@ export function useProducts(filters: Record<string, string | number | undefined>
         pages: res.pages || 0,
       };
     },
+    ...(options?.initialData ? { initialData: options.initialData } : {}),
     placeholderData: keepPreviousData,
     staleTime: 5 * 60 * 1000,
   });

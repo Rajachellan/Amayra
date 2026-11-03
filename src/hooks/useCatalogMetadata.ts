@@ -20,10 +20,11 @@ export function useCollections() {
   });
 }
 
-export function useOccasions() {
+export function useOccasions(initialData?: Awaited<ReturnType<typeof shopApi.occasions>>) {
   return useQuery({
     queryKey: queryKeys.occasions.all,
     queryFn: () => shopApi.occasions(),
+    ...(initialData ? { initialData } : {}),
     staleTime: 10 * 60 * 1000,
   });
 }

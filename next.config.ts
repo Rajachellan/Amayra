@@ -47,13 +47,14 @@ const nextConfig: NextConfig = {
     },
   ],
 
-  // Resize/WebP via Next image optimizer for high-speed WebP/AVIF compression
+  // Resize/WebP via Next image optimizer for fast WebP compression without slow AVIF CPU stalls
   images: {
     unoptimized: false,
-    formats: ["image/avif", "image/webp"],
+    contentDispositionType: "inline",
+    formats: ["image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [64, 96, 128, 256, 384],
-    qualities: [60, 70, 75, 80, 85, 95],
+    imageSizes: [64, 96, 128, 256, 384, 480],
+    qualities: [60, 65, 70, 75, 80, 85, 95],
     minimumCacheTTL: 60 * 60 * 24 * 30,
     remotePatterns: [
       {

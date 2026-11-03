@@ -15,7 +15,7 @@ import bridalbanner2 from "../../../assets/preview_banner/banner-image (2).png"
 import bridalbanner3 from "../../../assets/preview_banner/banner-image (3).png"
 import bridalbanner4 from "../../../assets/preview_banner/banner-image (4).png"
 import { mapListItemToProduct } from "@/lib/mapProduct";
-import { resolveMediaUrl } from "@/lib/apiBase";
+import { resolveMediaUrl, resolveOptionalMediaUrl } from "@/lib/apiBase";
 import { ChevronUp, ChevronDown, SlidersHorizontal, X, Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { SortDropdown } from "@/components/ui/SortDropdown";
@@ -278,7 +278,7 @@ function CategoryContent() {
   });
 
   const EMPTY_ARRAY = useMemo(() => [] as any[], []);
-  const { data: treeData = EMPTY_ARRAY } = useCategoriesTree();
+  const { data: treeData = EMPTY_ARRAY, isLoading: isTreeLoading } = useCategoriesTree();
   const { data: collectionsData = EMPTY_ARRAY } = useCollections();
   const { data: occasionsData = EMPTY_ARRAY } = useOccasions();
 
@@ -338,6 +338,10 @@ function CategoryContent() {
       q.colors = selectedColors.join(",");
     }
     if (selectedMaxPrice !== null) {
+      const matchedRange = PRICE_RANGES.find((r) => r.max === selectedMaxPrice);
+      if (matchedRange && matchedRange.min > 0) {
+        q.minPrice = matchedRange.min;
+      }
       q.maxPrice = selectedMaxPrice;
     }
     return q;
@@ -354,10 +358,10 @@ function CategoryContent() {
 
   const { products: rawProducts, isLoading: loading } = useProducts(productQueryParams);
 
-  const [heroImage, setHeroImage] = useState<any>(() => getCategoryBanner(categorySlug, subQuery));
-  const [title, setTitle] = useState(categorySlug);
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [isBannerHovered, setIsBannerHovered] = useState(false);
+
+  const treeCtx = useMemo(() => findInTree(tree, categorySlug), [tree, categorySlug]);
 
   const activeSlides: BannerSlide[] = useMemo(() => {
     const slug = (categorySlug || "all").toLowerCase();
@@ -373,12 +377,26 @@ function CategoryContent() {
         { id: "slide-bridal-5", image: bridalbanner4 },
       ];
     }
-    if (slug === "all" || !categorySlug || !CATEGORY_BANNERS[slug]) {
+    if (slug === "all" || !categorySlug) {
       return DEFAULT_BANNER_SLIDES;
     }
-    const catBanner = heroImage || CATEGORY_BANNERS[slug] || DEFAULT_BANNER_SLIDES[0].image;
-    return [{ id: `slide-${slug}`, image: catBanner }];
-  }, [categorySlug, heroImage]);
+
+    const dbImage = resolveOptionalMediaUrl(treeCtx?.node.image);
+    if (dbImage) {
+      return [{ id: `slide-${slug}`, image: dbImage }];
+    }
+
+    // Avoid flashing a fallback banner while category metadata is still loading
+    if (isTreeLoading) {
+      return [];
+    }
+
+    const matchedStatic = getCategoryBanner(categorySlug, subQuery);
+    if (CATEGORY_BANNERS[slug] || (subQuery && CATEGORY_BANNERS[subQuery.toLowerCase()])) {
+      return [{ id: `slide-${slug}`, image: matchedStatic }];
+    }
+    return DEFAULT_BANNER_SLIDES;
+  }, [categorySlug, subQuery, treeCtx, isTreeLoading]);
 
   const hasMultipleSlides = activeSlides.length > 1;
 
@@ -399,23 +417,6 @@ function CategoryContent() {
   const toggleSection = (key: string) => {
     setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
   };
-
-  useEffect(() => {
-    const matchedBanner = getCategoryBanner(categorySlug, subQuery);
-
-    const ctx = findInTree(tree, categorySlug);
-    if (ctx?.node.image && typeof ctx.node.image === "string") {
-      setHeroImage(resolveMediaUrl(ctx.node.image));
-    } else {
-      setHeroImage(matchedBanner);
-    }
-
-    if (ctx?.node.name) {
-      setTitle(ctx.node.name);
-    } else {
-      setTitle(categorySlug);
-    }
-  }, [tree, categorySlug, subQuery]);
 
   // Real data lists with counts from Facets
   const displayOccasions = useMemo(() => {
@@ -511,6 +512,8 @@ function CategoryContent() {
         if (!matchesColor) return false;
       }
       if (selectedMaxPrice !== null) {
+        const matchedRange = PRICE_RANGES.find((r) => r.max === selectedMaxPrice);
+        if (matchedRange && p.price < matchedRange.min) return false;
         if (p.price > selectedMaxPrice) return false;
       }
       return true;
@@ -581,13 +584,11 @@ function CategoryContent() {
     );
   };
 
-  // Laptop & mobile image sources for the current slide
-  const desktopBannerSrc =
-    activeSlides[currentBannerIndex]?.image ||
-    heroImage ||
-    DEFAULT_BANNER_SLIDES[0].image;
-  const mobileBannerSrc =
-    activeSlides[currentBannerIndex]?.mobileImage || desktopBannerSrc;
+  // Laptop & mobile image sources for the current slide (null while waiting on DB category image)
+  const currentSlide = activeSlides[currentBannerIndex] ?? activeSlides[0] ?? null;
+  const desktopBannerSrc = currentSlide?.image ?? null;
+  const mobileBannerSrc = currentSlide?.mobileImage ?? desktopBannerSrc;
+  const hasSeparateMobileBanner = Boolean(currentSlide?.mobileImage && currentSlide.mobileImage !== desktopBannerSrc);
 
   /* ── Amama-style Sidebar Component ────────────────────────────────────────── */
   const AmamaSidebar = ({ hideTitle = false }: { hideTitle?: boolean } = {}) => (
@@ -862,34 +863,57 @@ function CategoryContent() {
       >
         {/* Background Image Carousel */}
         <div className="absolute inset-0 z-0">
-          <AnimatePresence initial={false}>
-            <motion.div
-              key={hasMultipleSlides ? currentBannerIndex : "single"}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeInOut" }}
-              className="absolute inset-0"
-            >
-              {/* MOBILE view image (below 768px) */}
-              <Image
-                src={mobileBannerSrc}
-                alt="Collection Banner Slide"
-                fill
-                sizes="100vw"
-                className="block md:hidden object-cover object-[center_35%] brightness-100"
-              />
-              {/* LAPTOP / DESKTOP view image (768px and above) */}
-              <Image
-                src={desktopBannerSrc}
-                alt="Collection Banner Slide"
-                fill
-                sizes="100vw"
-                className="hidden md:block object-cover object-[center_35%] brightness-100"
-                priority={currentBannerIndex === 0}
-              />
-            </motion.div>
-          </AnimatePresence>
+          {desktopBannerSrc && (
+            <AnimatePresence initial={false}>
+              <motion.div
+                key={hasMultipleSlides ? currentBannerIndex : "single"}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="absolute inset-0"
+              >
+                {hasSeparateMobileBanner ? (
+                  <>
+                    {/* MOBILE view image (below 768px) */}
+                    <Image
+                      src={mobileBannerSrc}
+                      alt="Collection Banner Slide"
+                      fill
+                      quality={75}
+                      sizes="(max-width: 767px) 100vw, 1px"
+                      priority={currentBannerIndex === 0}
+                      decoding="async"
+                      className="block md:hidden object-cover object-[center_35%] brightness-100"
+                    />
+                    {/* LAPTOP / DESKTOP view image (768px and above) */}
+                    <Image
+                      src={desktopBannerSrc}
+                      alt="Collection Banner Slide"
+                      fill
+                      quality={75}
+                      sizes="(min-width: 768px) 100vw, 1px"
+                      priority={currentBannerIndex === 0}
+                      decoding="async"
+                      className="hidden md:block object-cover object-[center_35%] brightness-100"
+                    />
+                  </>
+                ) : (
+                  <Image
+                    src={desktopBannerSrc}
+                    alt="Collection Banner Slide"
+                    fill
+                    quality={75}
+                    sizes="100vw"
+                    priority={currentBannerIndex === 0}
+                    fetchPriority={currentBannerIndex === 0 ? "high" : "auto"}
+                    decoding="async"
+                    className="object-cover object-[center_35%] brightness-100"
+                  />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
 
         {/* Navigation Arrows */}
@@ -1010,8 +1034,12 @@ function CategoryContent() {
                     className={`grid grid-cols-2 sm:grid-cols-2 ${showFilter ? "lg:grid-cols-3" : "lg:grid-cols-4"
                       } gap-x-3 sm:gap-x-6 gap-y-6 sm:gap-y-12`}
                   >
-                    {visibleProducts.map((product) => (
-                      <ProductCard key={product.id} product={product} />
+                    {visibleProducts.map((product, idx) => (
+                      <ProductCard
+                        key={product.id}
+                        product={product}
+                        priority={idx < (showFilter ? 3 : 4)}
+                      />
                     ))}
                   </div>
 

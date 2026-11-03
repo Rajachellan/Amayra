@@ -14,13 +14,22 @@ export function getPublicApiUrl(): string {
     return `${protocol}//${hostname}:${DEFAULT_API_PORT}`;
   }
 
+  if (process.env.NODE_ENV === "production") {
+    return "https://api.mairiijewels.com";
+  }
+
   return `http://localhost:${DEFAULT_API_PORT}`;
+}
+
+/** Resolves an API image path or absolute URL if present, or returns `null` (never returns the fallback placeholder). */
+export function resolveOptionalMediaUrl(pathOrUrl: string | undefined | null): string | null {
+  const raw = typeof pathOrUrl === "string" ? pathOrUrl.trim() : "";
+  if (!raw || raw === "/images/placeholder.svg") return null;
+  if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) return raw;
+  return `${getPublicApiUrl()}${raw.startsWith("/") ? "" : "/"}${raw}`;
 }
 
 /** Turn API image path or absolute URL into a usable `next/image` src. */
 export function resolveMediaUrl(pathOrUrl: string | undefined | null): string {
-  const raw = typeof pathOrUrl === "string" ? pathOrUrl.trim() : "";
-  if (!raw) return "/images/placeholder.svg";
-  if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("data:")) return raw;
-  return `${getPublicApiUrl()}${raw.startsWith("/") ? "" : "/"}${raw}`;
+  return resolveOptionalMediaUrl(pathOrUrl) ?? "/images/placeholder.svg";
 }

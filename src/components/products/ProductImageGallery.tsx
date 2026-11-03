@@ -63,8 +63,9 @@ export function ProductImageGallery({ images, alt, activeIndex, onActiveIndexCha
           src={src}
           alt={alt}
           fill
-          unoptimized
           priority
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+          quality={85}
           className="object-cover w-full h-full transition-transform duration-300 ease-out will-change-transform"
           style={{
             transform: zoom.active ? "scale(2.2)" : "scale(1)",

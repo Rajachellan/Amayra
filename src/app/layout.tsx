@@ -113,6 +113,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
+        <link rel="preconnect" href="https://api.mairiijewels.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://api.mairiijewels.com" />
         <link rel="preconnect" href="https://assets.mairiijewels.com" />
         <link rel="dns-prefetch" href="https://assets.mairiijewels.com" />
         <link rel="preconnect" href="https://images.unsplash.com" />

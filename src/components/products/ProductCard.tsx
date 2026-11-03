@@ -1,31 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Eye, X, ShoppingBag } from "lucide-react";
+import { motion } from "framer-motion";
+import { Heart, Eye, ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { formatPrice } from "@/lib/formatPrice";
+import { resolveOptionalMediaUrl } from "@/lib/apiBase";
 import { usePrefetchProductDetail } from "@/hooks/useProductDetail";
 import { Product } from "@/types";
 
 interface ProductCardProps {
   product: Product;
+  priority?: boolean;
 }
 
-export const ProductCard = React.memo(({ product }: ProductCardProps) => {
+export const ProductCard = React.memo(({ product, priority = false }: ProductCardProps) => {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const prefetchProduct = usePrefetchProductDetail();
-  const [imgSrc, setImgSrc] = useState<any>(product.image || "/images/placeholder.svg");
+
+  const resolvedSrc = typeof product.image === "string"
+    ? resolveOptionalMediaUrl(product.image)
+    : (product.image as any) || null;
+
+  const [hasImgError, setHasImgError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  React.useEffect(() => {
-    setImgSrc(product.image || "/images/placeholder.svg");
+  useEffect(() => {
+    setHasImgError(false);
     setIsLoaded(false);
   }, [product.image]);
+
+  const finalSrc = !hasImgError && resolvedSrc ? resolvedSrc : "/images/placeholder.svg";
 
   const isFavorite = isInWishlist(product.id);
   const productHref = `/product/${product.slug ?? product.id}`;
@@ -39,9 +48,10 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      initial={priority ? false : { opacity: 0, y: 12 }}
+      whileInView={priority ? undefined : { opacity: 1, y: 0 }}
+      viewport={priority ? undefined : { once: true, margin: "180px" }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
       onMouseEnter={handleMouseEnter}
       className="group relative bg-white overflow-hidden transition-all duration-500 border border-gray-100 hover:border-champagne/40 hover:shadow-[0_15px_30px_rgba(230,211,163,0.15)] rounded-2xl flex flex-col justify-between"
     >
@@ -88,7 +98,6 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
         <Link
           href={productHref}
           title="View product details"
-          onMouseEnter={handleMouseEnter}
           className="p-1.5 sm:p-2.5 bg-white/90 text-stone-700 rounded-full shadow-md backdrop-blur-md hover:bg-[#0B2516] hover:text-white transition-all duration-300"
         >
           <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
@@ -97,34 +106,35 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
 
       <Link
         href={productHref}
-        onMouseEnter={handleMouseEnter}
         style={{ position: "relative" }}
         className="relative block overflow-hidden aspect-square cursor-pointer bg-stone-100"
       >
-        {/* Shimmer skeleton until image loads */}
-        {!isLoaded && (
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-100 via-stone-200 to-stone-100 bg-[length:200%_100%] animate-[shimmer_1.5s_infinite] pointer-events-none z-0" />
+        {!isLoaded && !hasImgError && Boolean(resolvedSrc) && (
+          <div className="absolute inset-0 bg-stone-100 animate-pulse pointer-events-none" />
         )}
-
         <Image
-          src={imgSrc}
+          src={finalSrc}
           alt={product.name}
           fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          quality={75}
-          loading="lazy"
+          sizes="(max-width: 640px) 48vw, (max-width: 1024px) 33vw, 340px"
+          quality={70}
+          priority={priority}
+          fetchPriority={priority ? "high" : "auto"}
+          loading={priority ? "eager" : "lazy"}
           decoding="async"
-          onLoad={() => setIsLoaded(true)}
-          className={`object-cover w-full h-full transition-all duration-500 ease-out group-hover:scale-105 ${
-            isLoaded ? "opacity-100" : "opacity-0"
-          } ${isSoldOut ? "opacity-75 grayscale-[20%]" : ""}`}
+          className={`relative z-[1] object-cover w-full h-full transition-transform duration-500 ease-out group-hover:scale-105 ${
+            isSoldOut ? "opacity-75 grayscale-[20%]" : ""
+          }`}
+          onLoad={() => {
+            setIsLoaded(true);
+          }}
           onError={() => {
-            setImgSrc("/images/placeholder.svg");
+            setHasImgError(true);
             setIsLoaded(true);
           }}
         />
         {isSoldOut && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/15 pointer-events-none">
+          <div className="absolute inset-0 z-[2] flex items-center justify-center bg-black/15 pointer-events-none">
             <span className="bg-stone-900/85 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-serif uppercase tracking-[0.25em] px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full shadow-md border border-white/20">
               Sold Out
             </span>
@@ -138,7 +148,7 @@ export const ProductCard = React.memo(({ product }: ProductCardProps) => {
           <span className="text-[#c9a84c] text-[8px] sm:text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.35em] block font-bold">
             {product.category}
           </span>
-          <Link href={productHref} onMouseEnter={handleMouseEnter} className="block group/title w-full">
+          <Link href={productHref} className="block group/title w-full">
             <h3 className="font-serif text-xs sm:text-base text-stone-900 transition-colors duration-300 group-hover/title:text-[#c9a84c] font-medium">
               {product.name}
             </h3>

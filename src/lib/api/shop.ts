@@ -433,7 +433,8 @@ export const shopApi = {
     const qs = sp.toString();
     return fetchJson<LookbookDoc[]>(`/lookbooks${qs ? `?${qs}` : ""}`);
   },
-  occasions: () => fetchJson<{ _id: string; name: string; slug: string }[]>("/occasions"),
+  occasions: () =>
+    fetchJson<{ _id: string; name: string; slug: string; description?: string; image?: string }[]>("/occasions"),
   homepageSections: () => fetchJson<HomepageSectionPublic[]>("/homepage-sections"),
   products: (q: Record<string, string | number | undefined>) => {
     const sp = new URLSearchParams();
@@ -449,7 +450,7 @@ export const shopApi = {
     });
     return fetchJson<ProductFacetsResponse>(`/products/facets?${sp.toString()}`);
   },
-  productBySlug: (slug: string) => fetchJson<ProductDetail>(`/products/${encodeURIComponent(slug)}?_t=${Date.now()}`),
+  productBySlug: (slug: string) => fetchJson<ProductDetail>(`/products/${encodeURIComponent(slug)}`),
   blogs: (q?: { page?: number; limit?: number }) => {
     const sp = new URLSearchParams();
     if (q?.page) sp.set("page", String(q.page));

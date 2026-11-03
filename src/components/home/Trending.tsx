@@ -56,8 +56,12 @@ export const Trending = () => {
           {trendingProducts.length === 0 ? (
             <p className="text-gray-400 col-span-full text-center py-8">Loading…</p>
           ) : (
-            trendingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+            trendingProducts.map((product, idx) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                priority={idx < 4}
+              />
             ))
           )}
         </div>
