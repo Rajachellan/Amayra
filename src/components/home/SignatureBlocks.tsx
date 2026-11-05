@@ -107,56 +107,64 @@ export const SignatureBlocks = () => {
                 transform: `translateX(calc(-${currentIndex} * (100% + 24px) / ${itemsToShow}))`,
               }}
             >
-              {collections.map((col, idx) => (
-                <div
-                  key={col._id}
-                  className="shrink-0 group flex flex-col"
-                  style={{
-                    width: `calc((100% - ${(itemsToShow - 1) * 24}px) / ${itemsToShow})`,
-                  }}
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.05 }}
-                    className="flex flex-col h-full"
-                  >
-                    {/* Image Card */}
-                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-md border border-stone-200/60 bg-white">
-                      <Image
-                        src={resolveMediaUrl(col.image)}
-                        alt={col.name}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                        className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      />
-                      {(col.isNewCollection || col.isNew) && (
-                        <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 z-10 pointer-events-none">
-                          <span className="inline-flex items-center bg-[#0B2516]/95 backdrop-blur-md text-[#c9a84c] border border-[#c9a84c]/30 text-[9px] sm:text-[10px] font-bold px-3 py-1 tracking-[0.15em] uppercase rounded-full shadow-md">
-                            New Collection
-                          </span>
-                        </div>
-                      )}
-                    </div>
+              {collections.map((col, idx) => {
+                const isNewCollection = Boolean(
+                  col.isNewCollection ||
+                  col.isNew ||
+                  (typeof col.description === "string" && col.description.includes("<!--__NEW_COLLECTION__-->"))
+                );
 
-                    {/* Title & Button Below Image */}
-                    <div className="pt-4 flex flex-col items-center text-center flex-grow justify-between">
-                      <h4 className="font-serif text-xl sm:text-2xl text-[#1a3d2f] font-semibold tracking-wide mb-3 line-clamp-1">
-                        {col.name}
-                      </h4>
-                      <Link href={`/category/all?collection=${encodeURIComponent(col.slug)}`} className="w-full">
-                        <button
-                          type="button"
-                          className="relative w-full rounded-xl flex items-center justify-center py-3 px-4 text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white"
-                        >
-                          <span className="relative z-10 font-bold text-white">View Collection</span>
-                        </button>
-                      </Link>
-                    </div>
-                  </motion.div>
-                </div>
-              ))}
+                return (
+                  <div
+                    key={col._id}
+                    className="shrink-0 group flex flex-col"
+                    style={{
+                      width: `calc((100% - ${(itemsToShow - 1) * 24}px) / ${itemsToShow})`,
+                    }}
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: idx * 0.05 }}
+                      className="flex flex-col h-full"
+                    >
+                      {/* Image Card */}
+                      <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-md border border-stone-200/60 bg-white">
+                        <Image
+                          src={resolveMediaUrl(col.image)}
+                          alt={col.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                          className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                        {isNewCollection && (
+                          <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 z-10 pointer-events-none">
+                            <span className="inline-flex items-center bg-[#0B2516]/95 backdrop-blur-md text-[#c9a84c] border border-[#c9a84c]/30 text-[9px] sm:text-[10px] font-bold px-3 py-1 tracking-[0.15em] uppercase rounded-full shadow-md">
+                              New Collection
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Title & Button Below Image */}
+                      <div className="pt-4 flex flex-col items-center text-center flex-grow justify-between">
+                        <h4 className="font-serif text-xl sm:text-2xl text-[#1a3d2f] font-semibold tracking-wide mb-3 line-clamp-1">
+                          {col.name}
+                        </h4>
+                        <Link href={`/category/all?collection=${encodeURIComponent(col.slug)}`} className="w-full">
+                          <button
+                            type="button"
+                            className="relative w-full rounded-xl flex items-center justify-center py-3 px-4 text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer overflow-hidden border-none shadow-md hover:shadow-[0_8px_25px_rgba(26,61,47,0.4)] hover:-translate-y-0.5 active:translate-y-0 bg-gradient-to-r from-[#1a3d2f] to-[#2e5a44] text-white"
+                          >
+                            <span className="relative z-10 font-bold text-white">View Collection</span>
+                          </button>
+                        </Link>
+                      </div>
+                    </motion.div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         )}
