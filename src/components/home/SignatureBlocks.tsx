@@ -131,6 +131,13 @@ export const SignatureBlocks = () => {
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
                       />
+                      {(col.isNewCollection || col.isNew) && (
+                        <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 z-10 pointer-events-none">
+                          <span className="inline-flex items-center bg-[#0B2516]/95 backdrop-blur-md text-[#c9a84c] border border-[#c9a84c]/30 text-[9px] sm:text-[10px] font-bold px-3 py-1 tracking-[0.15em] uppercase rounded-full shadow-md">
+                            New Collection
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Title & Button Below Image */}

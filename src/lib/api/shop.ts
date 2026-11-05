@@ -192,6 +192,8 @@ export type CollectionDoc = {
   description?: string;
   image?: string;
   featured: boolean;
+  isNewCollection?: boolean;
+  isNew?: boolean;
   order: number;
 };
 
