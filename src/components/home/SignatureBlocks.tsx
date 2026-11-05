@@ -17,8 +17,21 @@ export const SignatureBlocks = () => {
 
   useEffect(() => {
     shopApi
-      .collections({ featured: true })
-      .then(setCollections)
+      .collections()
+      .then((data) => {
+        const relevant = data.filter(
+          (c) =>
+            c.featured ||
+            c.isNewCollection ||
+            c.isNew ||
+            (typeof c.description === "string" && (
+              c.description.includes("[NEW_COLLECTION]") ||
+              c.description.includes("__NEW_COLLECTION__") ||
+              c.description.includes("<!--__NEW_COLLECTION__-->")
+            ))
+        );
+        setCollections(relevant.length > 0 ? relevant : data);
+      })
       .catch(() => setCollections([]));
   }, []);
 
@@ -111,7 +124,11 @@ export const SignatureBlocks = () => {
                 const isNewCollection = Boolean(
                   col.isNewCollection ||
                   col.isNew ||
-                  (typeof col.description === "string" && col.description.includes("<!--__NEW_COLLECTION__-->"))
+                  (typeof col.description === "string" && (
+                    col.description.includes("[NEW_COLLECTION]") ||
+                    col.description.includes("__NEW_COLLECTION__") ||
+                    col.description.includes("<!--__NEW_COLLECTION__-->")
+                  ))
                 );
 
                 return (
@@ -139,8 +156,8 @@ export const SignatureBlocks = () => {
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                         {isNewCollection && (
-                          <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 z-10 pointer-events-none">
-                            <span className="inline-flex items-center bg-[#0B2516]/95 backdrop-blur-md text-[#c9a84c] border border-[#c9a84c]/30 text-[9px] sm:text-[10px] font-bold px-3 py-1 tracking-[0.15em] uppercase rounded-full shadow-md">
+                          <div className="absolute top-3 left-3 sm:top-3.5 sm:left-3.5 z-20 pointer-events-none">
+                            <span className="inline-flex items-center bg-[#0B2516]/95 backdrop-blur-md text-[#c9a84c] border border-[#c9a84c]/30 text-[9px] sm:text-[10px] font-bold px-2.5 py-1 tracking-[0.15em] uppercase rounded-full shadow-md">
                               New Collection
                             </span>
                           </div>
